@@ -1,0 +1,479 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>The Lighthouse | Fine Dining Restaurant</title>
+  <meta name="description" content="Experience culinary excellence at The Lighthouse. Reservations available for breakfast, lunch, and dinner.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <!-- Navigation -->
+  <nav class="nav" id="nav">
+    <div class="nav-container">
+      <a href="#home" class="nav-logo">The Lighthouse</a>
+      <button class="nav-toggle" id="navToggle" aria-label="Toggle menu">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+      <ul class="nav-menu" id="navMenu">
+        <li><a href="#home" class="nav-link active" data-section="home">Home</a></li>
+        <li><a href="#menu" class="nav-link" data-section="menu">Menu</a></li>
+        <li><a href="#reservation" class="nav-link" data-section="reservation">Reservations</a></li>
+        <li><a href="#location" class="nav-link" data-section="location">Location</a></li>
+      </ul>
+      <a href="#reservation" class="nav-cta">Book a Table</a>
+    </div>
+  </nav>
+
+  <!-- Hero Section -->
+  <section class="hero" id="home">
+    <div class="hero-bg" id="heroBg">
+      <img src="./images/hero-restaurant.jpg" alt="The Lighthouse Restaurant Interior">
+    </div>
+    <div class="hero-overlay"></div>
+    <div class="hero-content">
+      <span class="hero-tagline">Est. 1987</span>
+      <h1 class="hero-title">The Lighthouse</h1>
+      <p class="hero-subtitle">Where culinary artistry meets timeless elegance</p>
+      <div class="hero-buttons">
+        <a href="#menu" class="btn btn-primary">Explore Menu</a>
+        <a href="#reservation" class="btn btn-outline">Reserve Table</a>
+      </div>
+      <div class="hero-scroll">
+        <span>Scroll to discover</span>
+        <div class="scroll-indicator"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- About Section -->
+  <section class="about" id="about">
+    <div class="container">
+      <div class="about-grid">
+        <div class="about-image">
+          <img src="./images/chef.jpg" alt="Our Chef at Work">
+        </div>
+        <div class="about-content">
+          <span class="section-label">Our Story</span>
+          <h2 class="section-title">A Legacy of Flavor</h2>
+          <p class="about-text">For over three decades, The Lighthouse has been a beacon of culinary excellence. Our chef combines classical techniques with modern innovation, sourcing only the finest seasonal ingredients from local farms and trusted suppliers.</p>
+          <p class="about-text">Every dish tells a story, every meal creates a memory. We invite you to experience the art of fine dining in an atmosphere of warmth and sophistication.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Menu Section -->
+  <section class="menu-section" id="menu">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-label">Culinary Offerings</span>
+        <h2 class="section-title">Our Menu</h2>
+      </div>
+      
+      <!-- Menu Tabs -->
+      <div class="menu-tabs">
+        <button class="menu-tab active" data-tab="breakfast">Breakfast</button>
+        <button class="menu-tab" data-tab="lunch">Lunch</button>
+        <button class="menu-tab" data-tab="dinner">Dinner</button>
+        <button class="menu-tab" data-tab="drinks">Drinks</button>
+      </div>
+
+      <!-- Menu Content -->
+      <div class="menu-content">
+        <!-- Breakfast -->
+        <div class="menu-panel active" id="breakfast">
+          <div class="menu-grid">
+            <div class="menu-image">
+              <img src="./images/breakfast.jpg" alt="Breakfast Selection">
+            </div>
+            <div class="menu-items">
+              <div class="menu-item">
+                <div class="menu-item-header">
+                  <h3>Eggs Benedict Royale</h3>
+                  <span class="menu-price">$24</span>
+                </div>
+                <p>Poached eggs, smoked salmon, hollandaise, toasted brioche</p>
+              </div>
+              <div class="menu-item">
+                <div class="menu-item-header">
+                  <h3>French Toast Brioche</h3>
+                  <span class="menu-price">$19</span>
+                </div>
+                <p>Vanilla bean custard, fresh berries, maple syrup, whipped cream</p>
+              </div>
+              <div class="menu-item">
+                <div class="menu-item-header">
+                  <h3>Avocado Toast</h3>
+                  <span class="menu-price">$18</span>
+                </div>
+                <p>Sourdough, heirloom tomatoes, poached eggs, microgreens</p>
+              </div>
+              <div class="menu-item">
+                <div class="menu-item-header">
+                  <h3>Belgian Waffles</h3>
+                  <span class="menu-price">$17</span>
+                </div>
+                <p>Caramelized bananas, toasted pecans, bourbon vanilla cream</p>
+              </div>
+              <div class="menu-item">
+                <div class="menu-item-header">
+                  <h3>Shakshuka</h3>
+                  <span class="menu-price">$21</span>
+                </div>
+                <p>Spiced tomato sauce, baked eggs, feta, fresh herbs, warm pita</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Lunch -->
+        <div class="menu-panel" id="lunch">
+          <div class="menu-grid">
+            <div class="menu-image">
+              <img src="./images/lunch.jpg" alt="Lunch Selection">
+            </div>
+            <div class="menu-items">
+              <div class="menu-item">
+                <div class="menu-item-header">
+                  <h3>Grilled Salmon Salad</h3>
+                  <span class="menu-price">$28</span>
+                </div>
+                <p>Atlantic salmon, mixed greens, citrus vinaigrette, avocado</p>
+              </div>
+              <div class="menu-item">
+                <div class="menu-item-header">
+                  <h3>Truffle Burger</h3>
+                  <span class="menu-price">$26</span>
+                </div>
+                <p>Wagyu beef, truffle aioli, aged cheddar, caramelized onions</p>
+              </div>
+              <div class="menu-item">
+                <div class="menu-item-header">
+                  <h3>Lobster Roll</h3>
+                  <span class="menu-price">$34</span>
+                </div>
+                <p>Maine lobster, lemon herb butter, toasted brioche roll</p>
+              </div>
+              <div class="menu-item">
+                <div class="menu-item-header">
+                  <h3>Mediterranean Bowl</h3>
+                  <span class="menu-price">$22</span>
+                </div>
+                <p>Quinoa, grilled chicken, hummus, roasted vegetables, tahini</p>
+              </div>
+              <div class="menu-item">
+                <div class="menu-item-header">
+                  <h3>French Onion Soup</h3>
+                  <span class="menu-price">$16</span>
+                </div>
+                <p>Caramelized onions, beef broth, gruyere crouton</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Dinner -->
+        <div class="menu-panel" id="dinner">
+          <div class="menu-grid">
+            <div class="menu-image">
+              <img src="./images/dinner.jpg" alt="Dinner Selection">
+            </div>
+            <div class="menu-items">
+              <div class="menu-item">
+                <div class="menu-item-header">
+                  <h3>Filet Mignon</h3>
+                  <span class="menu-price">$58</span>
+                </div>
+                <p>8oz center cut, herb butter, truffle mashed potatoes, asparagus</p>
+              </div>
+              <div class="menu-item">
+                <div class="menu-item-header">
+                  <h3>Pan-Seared Duck Breast</h3>
+                  <span class="menu-price">$46</span>
+                </div>
+                <p>Cherry gastrique, wild rice, seasonal vegetables</p>
+              </div>
+              <div class="menu-item">
+                <div class="menu-item-header">
+                  <h3>Chilean Sea Bass</h3>
+                  <span class="menu-price">$52</span>
+                </div>
+                <p>Miso glaze, bok choy, shiitake mushrooms, ginger</p>
+              </div>
+              <div class="menu-item">
+                <div class="menu-item-header">
+                  <h3>Lamb Chops</h3>
+                  <span class="menu-price">$54</span>
+                </div>
+                <p>Herb crusted, mint pesto, roasted fingerling potatoes</p>
+              </div>
+              <div class="menu-item">
+                <div class="menu-item-header">
+                  <h3>Mushroom Risotto</h3>
+                  <span class="menu-price">$32</span>
+                </div>
+                <p>Wild mushrooms, parmesan, truffle oil, fresh herbs</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Drinks -->
+        <div class="menu-panel" id="drinks">
+          <div class="menu-grid">
+            <div class="menu-image">
+              <img src="./images/drinks.jpg" alt="Drinks Selection">
+            </div>
+            <div class="menu-items">
+              <div class="menu-item">
+                <div class="menu-item-header">
+                  <h3>Lighthouse Old Fashioned</h3>
+                  <span class="menu-price">$18</span>
+                </div>
+                <p>Bourbon, demerara, angostura, orange peel, luxardo cherry</p>
+              </div>
+              <div class="menu-item">
+                <div class="menu-item-header">
+                  <h3>Espresso Martini</h3>
+                  <span class="menu-price">$17</span>
+                </div>
+                <p>Vodka, kahlua, fresh espresso, vanilla</p>
+              </div>
+              <div class="menu-item">
+                <div class="menu-item-header">
+                  <h3>French 75</h3>
+                  <span class="menu-price">$16</span>
+                </div>
+                <p>Gin, champagne, lemon, simple syrup</p>
+              </div>
+              <div class="menu-item">
+                <div class="menu-item-header">
+                  <h3>Negroni</h3>
+                  <span class="menu-price">$16</span>
+                </div>
+                <p>Gin, campari, sweet vermouth, orange twist</p>
+              </div>
+              <div class="menu-item">
+                <div class="menu-item-header">
+                  <h3>Wine Selection</h3>
+                  <span class="menu-price">$14+</span>
+                </div>
+                <p>Curated wines by the glass, see sommelier for pairings</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Reservation Section -->
+  <section class="reservation" id="reservation">
+    <div class="reservation-bg" id="reservationBg">
+      <img src="./images/hero-restaurant.jpg" alt="Restaurant Ambiance">
+    </div>
+    <div class="reservation-overlay"></div>
+    <div class="container">
+      <div class="reservation-content">
+        <div class="reservation-info">
+          <span class="section-label">Join Us</span>
+          <h2 class="section-title">Make a Reservation</h2>
+          <p>Reserve your table and experience an unforgettable evening of culinary excellence. For parties larger than 8, please call us directly.</p>
+          <div class="reservation-details">
+            <div class="detail-item">
+              <svg class="detail-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <circle cx="12" cy="12" r="10"/>
+                <path d="M12 6v6l4 2"/>
+              </svg>
+              <div>
+                <strong>Hours</strong>
+                <span>Mon-Sun: 7AM - 11PM</span>
+              </div>
+            </div>
+            <div class="detail-item">
+              <svg class="detail-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07 19.5 19.5 0 01-6-6 19.79 19.79 0 01-3.07-8.67A2 2 0 014.11 2h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L8.09 9.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z"/>
+              </svg>
+              <div>
+                <strong>Call Us</strong>
+                <span>(555) 123-4567</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <form class="reservation-form" id="reservationForm">
+          <div class="form-row">
+            <div class="form-group">
+              <label for="name">Full Name</label>
+              <input type="text" id="name" name="name" placeholder="John Smith" required>
+            </div>
+            <div class="form-group">
+              <label for="email">Email</label>
+              <input type="email" id="email" name="email" placeholder="john@example.com" required>
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label for="phone">Phone</label>
+              <input type="tel" id="phone" name="phone" placeholder="(555) 123-4567" required>
+            </div>
+            <div class="form-group">
+              <label for="guests">Guests</label>
+              <select id="guests" name="guests" required>
+                <option value="">Select guests</option>
+                <option value="1">1 Guest</option>
+                <option value="2">2 Guests</option>
+                <option value="3">3 Guests</option>
+                <option value="4">4 Guests</option>
+                <option value="5">5 Guests</option>
+                <option value="6">6 Guests</option>
+                <option value="7">7 Guests</option>
+                <option value="8">8 Guests</option>
+              </select>
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label for="date">Date</label>
+              <input type="date" id="date" name="date" required>
+            </div>
+            <div class="form-group">
+              <label for="time">Time</label>
+              <select id="time" name="time" required>
+                <option value="">Select time</option>
+                <option value="07:00">7:00 AM</option>
+                <option value="08:00">8:00 AM</option>
+                <option value="09:00">9:00 AM</option>
+                <option value="10:00">10:00 AM</option>
+                <option value="11:00">11:00 AM</option>
+                <option value="12:00">12:00 PM</option>
+                <option value="13:00">1:00 PM</option>
+                <option value="14:00">2:00 PM</option>
+                <option value="17:00">5:00 PM</option>
+                <option value="18:00">6:00 PM</option>
+                <option value="19:00">7:00 PM</option>
+                <option value="20:00">8:00 PM</option>
+                <option value="21:00">9:00 PM</option>
+              </select>
+            </div>
+          </div>
+          <div class="form-group full-width">
+            <label for="requests">Special Requests</label>
+            <textarea id="requests" name="requests" rows="4" placeholder="Dietary restrictions, special occasions, seating preferences..."></textarea>
+          </div>
+          <button type="submit" class="btn btn-primary btn-full">Request Reservation</button>
+          <p class="form-note">You will receive a confirmation email within 24 hours.</p>
+        </form>
+      </div>
+    </div>
+  </section>
+
+  <!-- Location Section -->
+  <section class="location" id="location">
+    <div class="container">
+      <div class="location-grid">
+        <div class="location-info">
+          <span class="section-label">Find Us</span>
+          <h2 class="section-title">Our Location</h2>
+          <div class="location-address">
+            <svg class="location-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/>
+              <circle cx="12" cy="10" r="3"/>
+            </svg>
+            <div>
+              <p>123 Harbor View Drive</p>
+              <p>Coastal City, CA 90210</p>
+            </div>
+          </div>
+          <div class="location-hours">
+            <h3>Opening Hours</h3>
+            <div class="hours-grid">
+              <div class="hours-item">
+                <span>Breakfast</span>
+                <span>7:00 AM - 11:00 AM</span>
+              </div>
+              <div class="hours-item">
+                <span>Lunch</span>
+                <span>11:30 AM - 3:00 PM</span>
+              </div>
+              <div class="hours-item">
+                <span>Dinner</span>
+                <span>5:00 PM - 11:00 PM</span>
+              </div>
+              <div class="hours-item">
+                <span>Bar</span>
+                <span>11:00 AM - Midnight</span>
+              </div>
+            </div>
+          </div>
+          <div class="location-contact">
+            <h3>Contact</h3>
+            <p><strong>Phone:</strong> (555) 123-4567</p>
+            <p><strong>Email:</strong> reservations@thelighthouse.com</p>
+          </div>
+          <div class="social-links">
+            <a href="#" class="social-link" aria-label="Instagram">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <rect x="2" y="2" width="20" height="20" rx="5"/>
+                <path d="M16 11.37A4 4 0 1112.63 8 4 4 0 0116 11.37z"/>
+                <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/>
+              </svg>
+            </a>
+            <a href="#" class="social-link" aria-label="Facebook">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M18 2h-3a5 5 0 00-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 011-1h3z"/>
+              </svg>
+            </a>
+            <a href="#" class="social-link" aria-label="Twitter">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M23 3a10.9 10.9 0 01-3.14 1.53 4.48 4.48 0 00-7.86 3v1A10.66 10.66 0 013 4s-4 9 5 13a11.64 11.64 0 01-7 2c9 5 20 0 20-11.5a4.5 4.5 0 00-.08-.83A7.72 7.72 0 0023 3z"/>
+              </svg>
+            </a>
+          </div>
+        </div>
+        <div class="location-map">
+          <iframe 
+            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3305.7152203499!2d-118.4911912!3d34.0194543!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x80c2a4d74d5ea79b%3A0xcd9a111d76f7336e!2sSanta%20Monica%20Pier!5e0!3m2!1sen!2sus!4v1699999999999!5m2!1sen!2sus"
+            width="100%" 
+            height="100%" 
+            style="border:0;" 
+            allowfullscreen="" 
+            loading="lazy" 
+            referrerpolicy="no-referrer-when-downgrade"
+            title="Restaurant Location Map">
+          </iframe>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-content">
+        <div class="footer-brand">
+          <h3>The Lighthouse</h3>
+          <p>Fine Dining Since 1987</p>
+        </div>
+        <div class="footer-links">
+          <a href="#home">Home</a>
+          <a href="#menu">Menu</a>
+          <a href="#reservation">Reservations</a>
+          <a href="#location">Location</a>
+        </div>
+        <div class="footer-copy">
+          <p>&copy; 2026 The Lighthouse. All rights reserved.</p>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>
