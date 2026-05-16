@@ -28,6 +28,7 @@
         <li><a href="#home" class="nav-link active" data-section="home">Home</a></li>
         <li><a href="#about" class="nav-link" data-section="about">About</a></li>
         <li><a href="#menu" class="nav-link" data-section="menu">Menu</a></li>
+        <li><a href="#gallery" class="nav-link" data-section="gallery">Gallery</a></li>
         <li><a href="#reservation" class="nav-link" data-section="reservation">Reservations</a></li>
         <li><a href="#reviews" class="nav-link" data-section="reviews">Reviews</a></li>
         <li><a href="#location" class="nav-link" data-section="location">Location</a></li>
@@ -172,7 +173,7 @@
               <div class="menu-item">
                 <div class="menu-item-header">
                   <h3>Truffle Burger</h3>
-                  <span class="menu-price">RS.26</span>
+                  <span class="menu-price">Rs.26</span>
                 </div>
                 <p>Wagyu beef, truffle aioli, aged cheddar, caramelized onions</p>
               </div>
@@ -294,7 +295,157 @@
         </div>
       </div>
     </div>
-  </section>
+  </section> 
+
+ <!-- Gallery Section -->
+
+<section id="gallery">
+  <div class="gallery-container">
+ 
+    <div class="gallery-header">
+      <p class="gallery-label">Visual Journey</p>
+      <h2 class="gallery-title">Our Gallery</h2>
+      <p class="gallery-subtitle">
+        A glimpse into the world of The Lighthouse — where every detail is crafted with intention.
+      </p>
+    </div>
+ 
+    <!-- Filter Buttons -->
+    <div class="gallery-filters">
+      <button class="gallery-filter-btn active" data-filter="all">All</button>
+      <button class="gallery-filter-btn" data-filter="food">Food &amp; Drinks</button>
+      <button class="gallery-filter-btn" data-filter="ambience">Ambience</button>
+      <button class="gallery-filter-btn" data-filter="events">Events</button>
+    </div>
+ 
+    <!-- Image Grid -->
+    <div class="gallery-grid">
+ 
+      <div class="gallery-item" data-category="food">
+        <img
+          src="https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=600&q=80"
+          alt="Signature dish at The Lighthouse"
+          loading="lazy"
+        />
+        <div class="gallery-overlay">
+          <span class="gallery-icon">&#x1F50D;</span>
+          <p class="gallery-item-label">Signature Dish</p>
+        </div>
+      </div>
+ 
+      <div class="gallery-item" data-category="ambience">
+        <img
+          src="https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=600&q=80"
+          alt="Elegant dining room interior"
+          loading="lazy"
+        />
+        <div class="gallery-overlay">
+          <span class="gallery-icon">&#x1F50D;</span>
+          <p class="gallery-item-label">Dining Room</p>
+        </div>
+      </div>
+ 
+      <div class="gallery-item" data-category="food">
+        <img
+          src="https://images.unsplash.com/photo-1470337458703-46ad1756a187?w=600&q=80"
+          alt="Artisan cocktails"
+          loading="lazy"
+        />
+        <div class="gallery-overlay">
+          <span class="gallery-icon">&#x1F50D;</span>
+          <p class="gallery-item-label">Artisan Cocktails</p>
+        </div>
+      </div>
+ 
+      <div class="gallery-item" data-category="events">
+        <img
+          src="https://images.unsplash.com/photo-1464366400600-7168b8af9bc3?w=600&q=80"
+          alt="Private dining event"
+          loading="lazy"
+        />
+        <div class="gallery-overlay">
+          <span class="gallery-icon">&#x1F50D;</span>
+          <p class="gallery-item-label">Wedding Receptions</p>
+        </div>
+      </div>
+ 
+      <div class="gallery-item" data-category="ambience">
+        <img
+          src="https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=600&q=80"
+          alt="Bar and lounge area"
+          loading="lazy"
+        />
+        <div class="gallery-overlay">
+          <span class="gallery-icon">&#x1F50D;</span>
+          <p class="gallery-item-label">Bar &amp; Lounge</p>
+        </div>
+      </div>
+ 
+      <div class="gallery-item" data-category="food">
+        <img
+          src="https://images.unsplash.com/photo-1588166524941-3bf61a9c41db?w=600&q=80"
+          alt="Grilled salmon platter"
+          loading="lazy"
+        />
+        <div class="gallery-overlay">
+          <span class="gallery-icon">&#x1F50D;</span>
+          <p class="gallery-item-label">Chef's Special</p>
+        </div>
+      </div>
+ 
+      <div class="gallery-item" data-category="events">
+        <img
+          src="https://images.unsplash.com/photo-1501339847302-ac426a4a7cbb?w=600&q=80"
+          alt="Elegant dinner party event"
+          loading="lazy"
+        />
+        <div class="gallery-overlay">
+          <span class="gallery-icon">&#x1F50D;</span>
+          <p class="gallery-item-label">Private Events</p>
+        </div>
+      </div>
+ 
+      <div class="gallery-item" data-category="ambience">
+        <img
+          src="https://images.unsplash.com/photo-1550966871-3ed3cdb5ed0c?w=600&q=80"
+          alt="Cozy restaurant interior lighting"
+          loading="lazy"
+        />
+        <div class="gallery-overlay">
+          <span class="gallery-icon">&#x1F50D;</span>
+          <p class="gallery-item-label">Terrace View</p>
+        </div>
+      </div>
+ 
+      <div class="gallery-item" data-category="food">
+        <img
+          src="https://images.unsplash.com/photo-1551024506-0bccd828d307?w=600&q=80"
+          alt="Dessert platter"
+          loading="lazy"
+        />
+        <div class="gallery-overlay">
+          <span class="gallery-icon">&#x1F50D;</span>
+          <p class="gallery-item-label">Dessert Platter</p>
+        </div>
+      </div>
+ 
+    </div>
+    <!-- end .gallery-grid -->
+ 
+  </div>
+</section>
+ 
+<!-- Lightbox -->
+<div class="lightbox" id="lightbox" role="dialog" aria-modal="true" aria-label="Image preview">
+  <button class="lightbox-close" id="lightboxClose" aria-label="Close preview">&times;</button>
+  <button class="lightbox-prev" id="lightboxPrev" aria-label="Previous image">&#8249;</button>
+  <button class="lightbox-next" id="lightboxNext" aria-label="Next image">&#8250;</button>
+  <div class="lightbox-content">
+    <img src="" alt="" id="lightboxImg" />
+    <p class="lightbox-caption" id="lightboxCaption"></p>
+  </div>
+</div>
+
 
   <!-- Reservation Section -->
   <section class="reservation" id="reservation">

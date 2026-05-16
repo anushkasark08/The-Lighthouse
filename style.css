@@ -1101,4 +1101,233 @@ h1, h2, h3, h4 {
 #backToTop.visible {
   opacity: 1;
   visibility: visible;
+} 
+
+/* ---------- Gallery Section ---------- */
+#gallery {
+  padding: 100px 0;
+  background-color: #0a0a0a;
+}
+ 
+.gallery-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 2rem;
+}
+ 
+/* Header */
+.gallery-header {
+  text-align: center;
+  margin-bottom: 3rem;
+}
+ 
+.gallery-label {
+  font-size: 0.8rem;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  color: #c9a96e;
+  margin-bottom: 0.75rem;
+}
+ 
+.gallery-title {
+  font-size: clamp(2rem, 4vw, 3rem);
+  font-weight: 300;
+  color: #f5f0e8;
+  margin-bottom: 1rem;
+  letter-spacing: 0.05em;
+}
+ 
+.gallery-subtitle {
+  color: #888;
+  font-size: 1rem;
+  max-width: 500px;
+  margin: 0 auto;
+  line-height: 1.7;
+}
+ 
+/* Filter Buttons */
+.gallery-filters {
+  display: flex;
+  justify-content: center;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+  margin-bottom: 2.5rem;
+}
+ 
+.gallery-filter-btn {
+  padding: 0.5rem 1.4rem;
+  border: 1px solid #333;
+  background: transparent;
+  color: #888;
+  font-size: 0.85rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  cursor: pointer;
+  border-radius: 2px;
+  transition: all 0.3s ease;
+}
+ 
+.gallery-filter-btn:hover,
+.gallery-filter-btn.active {
+  border-color: #c9a96e;
+  color: #c9a96e;
+  background: rgba(201, 169, 110, 0.08);
+}
+ 
+/* Grid */
+.gallery-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-auto-rows: 260px;
+  gap: 12px;
+}
+ 
+/* Cards */
+.gallery-item {
+  position: relative;
+  overflow: hidden;
+  cursor: pointer;
+  border-radius: 3px;
+  background: #111;
+}
+ 
+.gallery-item img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  transition: transform 0.5s ease, filter 0.5s ease;
+  filter: brightness(0.85);
+}
+ 
+.gallery-item:hover img {
+  transform: scale(1.07);
+  filter: brightness(0.5);
+}
+ 
+/* Overlay */
+.gallery-overlay {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  opacity: 0;
+  transition: opacity 0.35s ease;
+}
+ 
+.gallery-item:hover .gallery-overlay {
+  opacity: 1;
+}
+ 
+.gallery-icon {
+  font-size: 1.6rem;
+  line-height: 1;
+}
+ 
+.gallery-item-label {
+  color: #f5f0e8;
+  font-size: 0.85rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+ 
+/* Hidden state for filter */
+.gallery-item.hidden {
+  display: none;
+}
+ 
+/* Lightbox */
+.lightbox {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.95);
+  z-index: 9999;
+  display: none;
+  align-items: center;
+  justify-content: center;
+}
+ 
+.lightbox.active {
+  display: flex;
+}
+ 
+.lightbox-content {
+  max-width: 85vw;
+  max-height: 85vh;
+  text-align: center;
+}
+ 
+.lightbox-content img {
+  max-width: 100%;
+  max-height: 78vh;
+  object-fit: contain;
+  border-radius: 3px;
+  display: block;
+  margin: 0 auto;
+}
+ 
+.lightbox-caption {
+  color: #888;
+  font-size: 0.85rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  margin-top: 1rem;
+}
+ 
+.lightbox-close,
+.lightbox-prev,
+.lightbox-next {
+  position: absolute;
+  background: transparent;
+  border: 1px solid #444;
+  color: #f5f0e8;
+  cursor: pointer;
+  border-radius: 2px;
+  transition: all 0.2s ease;
+  line-height: 1;
+}
+ 
+.lightbox-close {
+  top: 1.5rem;
+  right: 1.5rem;
+  font-size: 1.5rem;
+  padding: 0.3rem 0.7rem;
+}
+ 
+.lightbox-prev,
+.lightbox-next {
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 2rem;
+  padding: 0.5rem 1rem;
+}
+ 
+.lightbox-prev { left: 1.5rem; }
+.lightbox-next { right: 1.5rem; }
+ 
+.lightbox-close:hover,
+.lightbox-prev:hover,
+.lightbox-next:hover {
+  border-color: #c9a96e;
+  color: #c9a96e;
+}
+ 
+/* Responsive */
+@media (max-width: 768px) {
+  .gallery-grid {
+    grid-template-columns: repeat(2, 1fr);
+    grid-auto-rows: 200px;
+  }
+}
+ 
+@media (max-width: 480px) {
+  .gallery-grid {
+    grid-template-columns: 1fr;
+    grid-auto-rows: 220px;
+  }
+  .lightbox-prev { left: 0.5rem; }
+  .lightbox-next { right: 0.5rem; }
 }
