@@ -5,6 +5,146 @@ const navMenu = document.getElementById('navMenu');
 const navLinks = document.querySelectorAll('.nav-link');
 const menuTabs = document.querySelectorAll('.menu-tab');
 const menuPanels = document.querySelectorAll('.menu-panel');
+// Full menu data (titles, prices, descriptions, exact image filenames)
+const menuData = {
+  breakfast: [
+    {
+      title: 'Eggs Benedict Royale',
+      price: 'Rs.24',
+      description: 'Poached eggs, smoked salmon, hollandaise, toasted brioche',
+      image: 'images/breakfast.jpg'
+    },
+    {
+      title: 'Avocado Toast Sourdough',
+      price: 'Rs.18',
+      description: 'Sourdough, heirloom tomatoes, poached eggs, microgreens',
+      image: 'images/Avocado Toast Sourdough.jpg'
+    },
+    {
+      title: 'Belgian Waffles',
+      price: 'Rs.17',
+      description: 'Caramelized bananas, toasted pecans, bourbon vanilla cream',
+      image: 'images/Belgian Waffles.jpg'
+    },
+    {
+      title: 'French Toast Brioche',
+      price: 'Rs.19',
+      description: 'Vanilla bean custard, fresh berries, maple syrup, whipped cream',
+      image: 'images/French Toast Brioche.jpg'
+    },
+    {
+      title: 'Shakshuka Spiced tomato sauce',
+      price: 'Rs.21',
+      description: 'Spiced tomato sauce, baked eggs, feta, fresh herbs, warm pita',
+      image: 'images/Shakshuka Spiced tomato sauce.jpg'
+    }
+  ],
+  lunch: [
+    {
+      title: 'Grilled Salmon Salad',
+      price: 'Rs.28',
+      description: 'Atlantic salmon, mixed greens, citrus vinaigrette, avocado',
+      image: 'images/lunch.jpg'
+    },
+    {
+      title: 'French Onion Soup',
+      price: 'Rs.22',
+      description: 'Slow-cooked onions, gruyère toast, rich beef broth',
+      image: 'images/French Onion Soup.jpg'
+    },
+    {
+      title: 'Lobster Roll Maine lobster',
+      price: 'Rs.28',
+      description: 'Butter toasted brioche, fresh lobster, herb aioli',
+      image: 'images/Lobster Roll Maine lobster.jpg'
+    },
+    {
+      title: 'Mediterranean Bowl Quinoa',
+      price: 'Rs.20',
+      description: 'Quinoa, roasted vegetables, feta, tahini dressing',
+      image: 'images/Mediterranean Bowl Quinoa.jpg'
+    },
+    {
+      title: 'Truffle Burger',
+      price: 'Rs.26',
+      description: 'Black truffle aioli, aged cheddar, brioche bun',
+      image: 'images/Truffle Burger.jpg'
+    }
+  ],
+  dinner: [
+    {
+      title: 'Filet Mignon',
+      price: 'Rs.58',
+      description: '8oz center cut, herb butter, truffle mashed potatoes, asparagus',
+      image: 'images/dinner.jpg'
+    },
+    {
+      title: 'Chilean Sea Bass',
+      price: 'Rs.38',
+      description: 'Miso glaze, asparagus, citrus beurre blanc',
+      image: 'images/Chilean Sea Bass.jpg'
+    },
+    {
+      title: 'Lamb Chops',
+      price: 'Rs.36',
+      description: 'Rosemary crust, garlic mash, red wine reduction',
+      image: 'images/Lamb Chops.jpg'
+    },
+    {
+      title: 'Mushroom Risotto',
+      price: 'Rs.29',
+      description: 'Wild mushrooms, parmesan, truffle oil',
+      image: 'images/Mushroom Risotto.jpg'
+    },
+    {
+      title: 'Pan-Seared Duck Breast',
+      price: 'Rs.34',
+      description: 'Cherry glaze, roasted vegetables, herb jus',
+      image: 'images/Pan-Seared Duck Breast.jpg'
+    }
+  ],
+  drinks: [
+    {
+      title: 'Lighthouse Old Fashioned',
+      price: 'Rs.18',
+      description: 'Bourbon, demerara, angostura, orange peel, luxardo cherry',
+      image: 'images/drinks.jpg'
+    },
+    {
+      title: 'Espresso Martini',
+      price: 'Rs.16',
+      description: 'Vodka, espresso, coffee liqueur',
+      image: 'images/Espresso Martini.jpg'
+    },
+    {
+      title: 'French 75',
+      price: 'Rs.15',
+      description: 'Gin, lemon, champagne',
+      image: 'images/French 75.jpg'
+    },
+    {
+      title: 'Negroni Gin',
+      price: 'Rs.17',
+      description: 'Gin, Campari, sweet vermouth',
+      image: 'images/Negroni Gin.jpg'
+    },
+    {
+      title: 'Wine Selection',
+      price: 'Rs.14+',
+      description: 'Curated wines by the glass',
+      image: 'images/Wine Selection.jpg'
+    }
+  ],
+  _fallbacks: {
+    breakfast: './images/breakfast.jpg',
+    lunch: './images/lunch.jpg',
+    dinner: './images/dinner.jpg',
+    drinks: './images/drinks.jpg'
+  }
+};
+const previewFadeClass = 'fade-out';
+const menuPanelElements = Array.from(menuPanels);
+
 const heroBg = document.getElementById('heroBg');
 const reservationBg = document.getElementById('reservationBg');
 const reservationForm = document.getElementById('reservationForm');
@@ -49,6 +189,131 @@ function updateAvailableTimes() {
       option.disabled = false;
     }
   });
+}
+
+function preloadMenuImages() {
+  Object.keys(menuData).forEach(key => {
+    if (key === '_fallbacks') return;
+    menuData[key].forEach(item => {
+      const image = new Image();
+      image.src = item.image;
+      // if image fails, browser will fall back when used — no flicker due to buffering
+    });
+  });
+}
+
+function updateFeaturedImage(panel, item) {
+  if (!panel || !item) return;
+  const imageEl = panel.querySelector('.menu-image img');
+  if (!imageEl) return;
+
+  const currentSrc = imageEl.getAttribute('src');
+  const isSameSource = imageEl.dataset.currentImage === item.image || currentSrc === item.image;
+
+  if (isSameSource) {
+    imageEl.alt = item.alt;
+    imageEl.dataset.currentImage = item.image;
+    return;
+  }
+
+  const buffer = new Image();
+  buffer.src = item.image;
+  buffer.onload = () => applyBufferedImage(item.image, item.alt);
+  buffer.onerror = () => {
+    // use category fallback if specific image missing
+    const category = panel.id;
+    const fallback = (menuData._fallbacks && menuData._fallbacks[category]) || imageEl.getAttribute('src');
+    applyBufferedImage(fallback, item.alt + ' (image unavailable)');
+  };
+
+  function applyBufferedImage(src, alt) {
+    imageEl.classList.add(previewFadeClass);
+    imageEl.addEventListener('transitionend', function handleFade() {
+      imageEl.removeEventListener('transitionend', handleFade);
+      imageEl.src = src;
+      imageEl.alt = alt || '';
+      imageEl.dataset.currentImage = src;
+      requestAnimationFrame(() => imageEl.classList.remove(previewFadeClass));
+    }, { once: true });
+  }
+}
+
+// Render menu items from `menuData` into their panels while preserving markup structure
+function renderMenuItems() {
+  Object.keys(menuData).forEach(key => {
+    if (key === '_fallbacks') return;
+    const panel = document.getElementById(key);
+    if (!panel) return;
+
+    const container = panel.querySelector('.menu-items');
+    if (!container) return;
+
+    // Create markup for each item using price and description
+    container.innerHTML = menuData[key].map((item, idx) => `
+      <div class="menu-item" data-index="${idx}">
+        <div class="menu-item-header">
+          <h3>${item.title}</h3>
+          <span class="menu-price">${item.price || ''}</span>
+        </div>
+        <p>${item.description || ''}</p>
+      </div>
+    `).join('');
+  });
+}
+
+function setActiveMenuItem(panel, index) {
+  if (!panel) return;
+  const menuItems = Array.from(panel.querySelectorAll('.menu-item'));
+  const category = panel.id;
+  const selectedItem = menuData[category] && menuData[category][index];
+
+  if (!selectedItem) return;
+
+  menuItems.forEach((menuItem, menuIndex) => {
+    const isActive = menuIndex === index;
+    menuItem.classList.toggle('active', isActive);
+    menuItem.setAttribute('aria-pressed', isActive ? 'true' : 'false');
+  });
+
+  updateFeaturedImage(panel, selectedItem);
+}
+
+function bindMenuPanel(panel) {
+  if (!panel) return;
+  const category = panel.id;
+  const items = Array.from(panel.querySelectorAll('.menu-item'));
+
+  items.forEach((menuItem, index) => {
+    const item = menuData[category] && menuData[category][index];
+    if (!item) return;
+
+    menuItem.setAttribute('tabindex', '0');
+    menuItem.setAttribute('role', 'button');
+    menuItem.setAttribute('aria-label', `Preview ${item.title}`);
+    menuItem.setAttribute('aria-pressed', 'false');
+
+    menuItem.addEventListener('mouseenter', () => setActiveMenuItem(panel, index));
+    menuItem.addEventListener('click', () => setActiveMenuItem(panel, index));
+    menuItem.addEventListener('focus', () => setActiveMenuItem(panel, index));
+    menuItem.addEventListener('keydown', (event) => {
+      if (event.key === 'Enter' || event.key === ' ') {
+        event.preventDefault();
+        setActiveMenuItem(panel, index);
+      }
+    });
+  });
+
+  // Load category default image on initial load
+  loadCategoryDefaultImage(panel);
+  markFirstMenuItemActive(panel);
+}
+
+function initializeMenuPreviews() {
+  renderMenuItems();
+  // refresh panel element list after rendering
+  const refreshedPanels = document.querySelectorAll('.menu-panel');
+  refreshedPanels.forEach(panel => bindMenuPanel(panel));
+  preloadMenuImages();
 }
 
 // Navigation scroll effect
@@ -120,6 +385,30 @@ function closeMobileMenu() {
   document.body.style.overflow = '';
 }
 
+// Load category default image (breakfast.jpg, lunch.jpg, etc.)
+function loadCategoryDefaultImage(panel) {
+  if (!panel) return;
+  const imageEl = panel.querySelector('.menu-image img');
+  const category = panel.id;
+  const fallbackSrc = menuData._fallbacks && menuData._fallbacks[category];
+  
+  if (!imageEl || !fallbackSrc) return;
+  
+  imageEl.src = fallbackSrc;
+  imageEl.alt = category.charAt(0).toUpperCase() + category.slice(1) + ' Selection';
+  imageEl.dataset.currentImage = fallbackSrc;
+}
+
+// Mark first menu item as active visually
+function markFirstMenuItemActive(panel) {
+  if (!panel) return;
+  const menuItems = Array.from(panel.querySelectorAll('.menu-item'));
+  menuItems.forEach((menuItem, idx) => {
+    menuItem.classList.toggle('active', idx === 0);
+    menuItem.setAttribute('aria-pressed', idx === 0 ? 'true' : 'false');
+  });
+}
+
 // Menu tabs functionality
 function switchMenuTab(e) {
   const targetTab = e.target.dataset.tab;
@@ -135,6 +424,8 @@ function switchMenuTab(e) {
     panel.classList.remove('active');
     if (panel.id === targetTab) {
       panel.classList.add('active');
+      loadCategoryDefaultImage(panel);
+      markFirstMenuItemActive(panel);
     }
   });
 }
@@ -296,6 +587,7 @@ if (reservationForm) {
 document.addEventListener('DOMContentLoaded', () => {
   handleScroll();
   setupIntersectionObserver();
+  initializeMenuPreviews();
   updateAvailableTimes();
 });
 
