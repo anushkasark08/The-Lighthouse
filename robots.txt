@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://theelighthouse.netlify.app/sitemap.xml
