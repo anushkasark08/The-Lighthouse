@@ -108,6 +108,10 @@ function switchMenuTab(e) {
 function smoothScroll(e) {
   e.preventDefault();
   const targetId = this.getAttribute('href');
+  if (!/^#[A-Za-z][\w-]*$/.test(targetId)) {
+    return;
+  }
+
   const targetSection = document.querySelector(targetId);
   
   if (targetSection) {
@@ -125,16 +129,14 @@ function smoothScroll(e) {
 function handleFormSubmit(e) {
   e.preventDefault();
   
-  // Get form data
-  const formData = new FormData(reservationForm);
-  const data = Object.fromEntries(formData.entries());
-  
   // Simple validation visual feedback
   const inputs = reservationForm.querySelectorAll('input, select, textarea');
   let isValid = true;
   
   inputs.forEach(input => {
-    if (input.required && !input.value) {
+    const isTooLong = input.maxLength > 0 && input.value.length > input.maxLength;
+
+    if ((input.required && !input.value) || isTooLong || !input.checkValidity()) {
       input.style.borderColor = '#c94a4a';
       isValid = false;
     } else {
@@ -186,16 +188,6 @@ function setupIntersectionObserver() {
     observer.observe(el);
   });
 }
-
-// Add visible class styles
-const style = document.createElement('style');
-style.textContent = `
-  .visible {
-    opacity: 1 !important;
-    transform: translateY(0) !important;
-  }
-`;
-document.head.appendChild(style);
 
 // Event Listeners
 window.addEventListener('scroll', handleScroll);

@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>The Lighthouse | Fine Dining Restaurant</title>
   <meta name="description" content="Experience culinary excellence at The Lighthouse. Reservations available for breakfast, lunch, and dinner.">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; base-uri 'self'; object-src 'none'; script-src 'self'; style-src 'self' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https://www.google.com https://maps.gstatic.com; frame-src https://www.google.com; connect-src 'none'; form-action 'self'; upgrade-insecure-requests">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
@@ -297,7 +298,7 @@
           <p>Reserve your table and experience an unforgettable evening of culinary excellence. For parties larger than 8, please call us directly.</p>
           <div class="reservation-details">
             <div class="detail-item">
-              <svg class="detail-icon" viewBox="0 0 Rs  Rs " fill="none" stroke="currentColor" stroke-width="2">
+              <svg class="detail-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                 <circle cx="12" cy="12" r="10"/>
                 <path d="M12 6v6l4 2"/>
               </svg>
@@ -307,7 +308,7 @@
               </div>
             </div>
             <div class="detail-item">
-              <svg class="detail-icon" viewBox="0 0 Rs  Rs " fill="none" stroke="currentColor" stroke-width="2">
+              <svg class="detail-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                 <path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07 19.5 19.5 0 01-6-6 19.79 19.79 0 01-3.07-8.67A2 2 0 014.11 2h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L8.09 9.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z"/>
               </svg>
               <div>
@@ -321,17 +322,17 @@
           <div class="form-row">
             <div class="form-group">
               <label for="name">Full Name</label>
-              <input type="text" id="name" name="name" placeholder="John Smith" required>
+              <input type="text" id="name" name="name" placeholder="John Smith" autocomplete="name" maxlength="80" required>
             </div>
             <div class="form-group">
               <label for="email">Email</label>
-              <input type="email" id="email" name="email" placeholder="john@example.com" required>
+              <input type="email" id="email" name="email" placeholder="john@example.com" autocomplete="email" maxlength="120" required>
             </div>
           </div>
           <div class="form-row">
             <div class="form-group">
               <label for="phone">Phone</label>
-              <input type="tel" id="phone" name="phone" placeholder="(555) 123-4567" required>
+              <input type="tel" id="phone" name="phone" placeholder="(555) 123-4567" autocomplete="tel" maxlength="24" pattern="[0-9()+.\s-]{7,24}" required>
             </div>
             <div class="form-group">
               <label for="guests">Guests</label>
@@ -375,7 +376,7 @@
           </div>
           <div class="form-group full-width">
             <label for="requests">Special Requests</label>
-            <textarea id="requests" name="requests" rows="4" placeholder="Dietary restrictions, special occasions, seating preferences..."></textarea>
+            <textarea id="requests" name="requests" rows="4" maxlength="500" placeholder="Dietary restrictions, special occasions, seating preferences..."></textarea>
           </div>
           <button type="submit" class="btn btn-primary btn-full">Request Reservation</button>
           <p class="form-note">You will receive a confirmation email within Rs  hours.</p>
@@ -392,7 +393,7 @@
           <span class="section-label">Find Us</span>
           <h2 class="section-title">Our Location</h2>
           <div class="location-address">
-            <svg class="location-icon" viewBox="0 0 Rs  Rs " fill="none" stroke="currentColor" stroke-width="2">
+            <svg class="location-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
               <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/>
               <circle cx="12" cy="10" r="3"/>
             </svg>
@@ -429,19 +430,19 @@
           </div>
           <div class="social-links">
             <a href="#" class="social-link" aria-label="Instagram">
-              <svg viewBox="0 0 Rs  Rs " fill="none" stroke="currentColor" stroke-width="2">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                 <rect x="2" y="2" width="20" height="20" rx="5"/>
                 <path d="M16 11.37A4 4 0 1112.63 8 4 4 0 0116 11.37z"/>
                 <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/>
               </svg>
             </a>
             <a href="#" class="social-link" aria-label="Facebook">
-              <svg viewBox="0 0 Rs  Rs " fill="none" stroke="currentColor" stroke-width="2">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                 <path d="M18 2h-3a5 5 0 00-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 011-1h3z"/>
               </svg>
             </a>
             <a href="#" class="social-link" aria-label="Twitter">
-              <svg viewBox="0 0 Rs  Rs " fill="none" stroke="currentColor" stroke-width="2">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                 <path d="M23 3a10.9 10.9 0 01-3.14 1.53 4.48 4.48 0 00-7.86 3v1A10.66 10.66 0 013 4s-4 9 5 13a11.64 11.64 0 01-7 2c9 5 20 0 20-11.5a4.5 4.5 0 00-.08-.83A7.72 7.72 0 0023 3z"/>
               </svg>
             </a>
@@ -452,10 +453,10 @@
             src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3305.7152203499!2d-118.4911912!3d34.0194543!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x80c2a4d74d5ea79b%3A0xcd9a111d76f7336e!2sSanta%20Monica%20Pier!5e0!3m2!1sen!2sus!4v1699999999999!5m2!1sen!2sus"
             width="100%" 
             height="100%" 
-            style="border:0;" 
             allowfullscreen="" 
             loading="lazy" 
             referrerpolicy="no-referrer-when-downgrade"
+            sandbox="allow-scripts allow-same-origin allow-popups"
             title="Restaurant Location Map">
           </iframe>
         </div>
