@@ -14,7 +14,7 @@ const timeSelect = document.getElementById('time');
 if (dateInput) {
   const today = new Date().toISOString().split('T')[0];
   dateInput.setAttribute('min', today);
-  
+
   dateInput.addEventListener('change', updateAvailableTimes);
 }
 
@@ -56,22 +56,22 @@ let lastScroll = 0;
 
 function handleScroll() {
   const currentScroll = window.pageYOffset;
-  
+
   // Add scrolled class for background
   if (currentScroll > 50) {
     nav.classList.add('scrolled');
   } else {
     nav.classList.remove('scrolled');
   }
-  
+
   lastScroll = currentScroll;
-  
+
   // Parallax effect for hero and reservation backgrounds
   if (heroBg) {
     const heroSpeed = 0.5;
     heroBg.style.transform = `translateY(${currentScroll * heroSpeed}px)`;
   }
-  
+
   if (reservationBg && currentScroll > window.innerHeight) {
     const reservationSection = document.getElementById('reservation');
     if (reservationSection) {
@@ -80,7 +80,7 @@ function handleScroll() {
       reservationBg.style.transform = `translateY(${offset}px)`;
     }
   }
-  
+
   // Update active nav link based on scroll position
   updateActiveNavLink();
 }
@@ -89,12 +89,12 @@ function handleScroll() {
 function updateActiveNavLink() {
   const sections = document.querySelectorAll('section[id]');
   const scrollPosition = window.pageYOffset + 150;
-  
+
   sections.forEach(section => {
     const sectionTop = section.offsetTop;
     const sectionHeight = section.offsetHeight;
     const sectionId = section.getAttribute('id');
-    
+
     if (scrollPosition >= sectionTop && scrollPosition < sectionTop + sectionHeight) {
       navLinks.forEach(link => {
         link.classList.remove('active');
@@ -120,31 +120,28 @@ function closeMobileMenu() {
   document.body.style.overflow = '';
 }
 
-// Menu tabs functionality
 function switchMenuTab(e) {
   const targetTab = e.target.dataset.tab;
-  
-  // Update tab buttons
-  menuTabs.forEach(tab => {
-    tab.classList.remove('active');
-  });
+  if (!targetTab) return;
+
+  menuTabs.forEach(tab => tab.classList.remove('active'));
   e.target.classList.add('active');
-  
-  // Update panels
-  menuPanels.forEach(panel => {
-    panel.classList.remove('active');
-    if (panel.id === targetTab) {
-      panel.classList.add('active');
-    }
-  });
+
+  menuPanels.forEach(panel => panel.classList.remove('active'));
+
+  const nextPanel = document.getElementById(targetTab);
+  if (nextPanel) {
+    nextPanel.classList.add('active');
+  }
 }
+
 
 // Smooth scroll for navigation links
 function smoothScroll(e) {
   e.preventDefault();
   const targetId = this.getAttribute('href');
   const targetSection = document.querySelector(targetId);
-  
+
   if (targetSection) {
     const offsetTop = targetSection.offsetTop - 80;
     window.scrollTo({
@@ -152,22 +149,22 @@ function smoothScroll(e) {
       behavior: 'smooth'
     });
   }
-  
+
   closeMobileMenu();
 }
 
 // Form submission handler (visual only)
 function handleFormSubmit(e) {
   e.preventDefault();
-  
+
   // Get form data
   const formData = new FormData(reservationForm);
   const data = Object.fromEntries(formData.entries());
-  
+
   // Simple validation visual feedback
   const inputs = reservationForm.querySelectorAll('input, select, textarea');
   let isValid = true;
-  
+
   inputs.forEach(input => {
     if (input.required && !input.value) {
       input.style.borderColor = '#c94a4a';
@@ -176,16 +173,16 @@ function handleFormSubmit(e) {
       input.style.borderColor = '';
     }
   });
-  
+
   if (isValid) {
     // Show success message (visual only)
     const submitBtn = reservationForm.querySelector('button[type="submit"]');
     const originalText = submitBtn.textContent;
-    
+
     submitBtn.textContent = 'Reservation Requested!';
     submitBtn.style.backgroundColor = '#4a9c6a';
     submitBtn.disabled = true;
-    
+
     // Reset form after delay
     setTimeout(() => {
       reservationForm.reset();
@@ -203,7 +200,7 @@ function setupIntersectionObserver() {
     rootMargin: '0px',
     threshold: 0.1
   };
-  
+
   const observer = new IntersectionObserver((entries) => {
     entries.forEach(entry => {
       if (entry.isIntersecting) {
@@ -211,9 +208,9 @@ function setupIntersectionObserver() {
       }
     });
   }, observerOptions);
-  
+
   // Observe sections for animations
-  const animatedElements = document.querySelectorAll('.about-content, .menu-panel, .reservation-form, .location-info');
+  const animatedElements = document.querySelectorAll('.about-content, .reservation-form, .location-info');
   animatedElements.forEach(el => {
     el.style.opacity = '0';
     el.style.transform = 'translateY(30px)';
@@ -378,10 +375,10 @@ starBtns.forEach(btn => {
 
 // Form submit
 const reviewForm = document.getElementById('review-form');
-const reviewMsg  = document.getElementById('review-msg');
+const reviewMsg = document.getElementById('review-msg');
 
 if (reviewForm) {
-  reviewForm.addEventListener('submit', function(e) {
+  reviewForm.addEventListener('submit', function (e) {
     e.preventDefault();
 
     if (!selectedRating) {
