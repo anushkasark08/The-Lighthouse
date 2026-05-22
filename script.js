@@ -3,8 +3,8 @@ const nav = document.getElementById('nav');
 const navToggle = document.getElementById('navToggle');
 const navMenu = document.getElementById('navMenu');
 const navLinks = document.querySelectorAll('.nav-link');
-const menuTabs = document.querySelectorAll('.menu-tab');
-const menuPanels = document.querySelectorAll('.menu-panel');
+let menuTabs = [];
+let menuPanels = [];
 // Full menu data (titles, prices, descriptions, exact image filenames)
 const menuData = {
   breakfast: [
@@ -143,7 +143,6 @@ const menuData = {
   }
 };
 const previewFadeClass = 'fade-out';
-const menuPanelElements = Array.from(menuPanels);
 
 const heroBg = document.getElementById('heroBg');
 const reservationBg = document.getElementById('reservationBg');
@@ -208,34 +207,38 @@ function updateFeaturedImage(panel, item) {
   if (!imageEl) return;
 
   const currentSrc = imageEl.getAttribute('src');
-  const isSameSource = imageEl.dataset.currentImage === item.image || currentSrc === item.image;
+  const newSrc = item.image;
+  if (!newSrc) return;
 
-  if (isSameSource) {
-    imageEl.alt = item.alt;
-    imageEl.dataset.currentImage = item.image;
+  if (imageEl.dataset.currentImage === newSrc || currentSrc === newSrc) {
+    imageEl.alt = item.alt || item.title || '';
+    imageEl.dataset.currentImage = newSrc;
     return;
   }
 
-  const buffer = new Image();
-  buffer.src = item.image;
-  buffer.onload = () => applyBufferedImage(item.image, item.alt);
-  buffer.onerror = () => {
-    // use category fallback if specific image missing
-    const category = panel.id;
-    const fallback = (menuData._fallbacks && menuData._fallbacks[category]) || imageEl.getAttribute('src');
-    applyBufferedImage(fallback, item.alt + ' (image unavailable)');
+  const applyNewImage = () => {
+    imageEl.src = newSrc;
+    imageEl.alt = item.alt || item.title || '';
+    imageEl.dataset.currentImage = newSrc;
+    requestAnimationFrame(() => imageEl.classList.remove(previewFadeClass));
   };
 
-  function applyBufferedImage(src, alt) {
-    imageEl.classList.add(previewFadeClass);
-    imageEl.addEventListener('transitionend', function handleFade() {
+  const handleFade = () => {
+    imageEl.removeEventListener('transitionend', handleFade);
+    applyNewImage();
+  };
+
+  imageEl.addEventListener('transitionend', handleFade, { once: true });
+  imageEl.classList.remove(previewFadeClass);
+  void imageEl.offsetWidth;
+  requestAnimationFrame(() => imageEl.classList.add(previewFadeClass));
+
+  setTimeout(() => {
+    if (imageEl.classList.contains(previewFadeClass)) {
       imageEl.removeEventListener('transitionend', handleFade);
-      imageEl.src = src;
-      imageEl.alt = alt || '';
-      imageEl.dataset.currentImage = src;
-      requestAnimationFrame(() => imageEl.classList.remove(previewFadeClass));
-    }, { once: true });
-  }
+      applyNewImage();
+    }
+  }, 600);
 }
 
 // Render menu items from `menuData` into their panels while preserving markup structure
@@ -575,16 +578,19 @@ document.querySelectorAll('.nav-cta, .hero-buttons a').forEach(link => {
   link.addEventListener('click', smoothScroll);
 });
 
-menuTabs.forEach(tab => {
-  tab.addEventListener('click', switchMenuTab);
-});
-
 if (reservationForm) {
   reservationForm.addEventListener('submit', handleFormSubmit);
 }
 
 // Initialize
 document.addEventListener('DOMContentLoaded', () => {
+  menuTabs = document.querySelectorAll('.menu-tab');
+  menuPanels = document.querySelectorAll('.menu-panel');
+
+  menuTabs.forEach(tab => {
+    tab.addEventListener('click', switchMenuTab);
+  });
+
   handleScroll();
   setupIntersectionObserver();
   initializeMenuPreviews();
