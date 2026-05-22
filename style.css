@@ -84,6 +84,7 @@ h4 {
 .section-title {
   font-size: clamp(2rem, 5vw, 3.5rem);
   margin-bottom: 24px;
+  color: #e39c48f0;
 }
 
 /* Buttons */
@@ -112,9 +113,9 @@ h4 {
 }
 
 .btn-outline {
-  background-color: transparent;
-  border-color: var(--color-text);
-  color: var(--color-text);
+    background-color: #00000038;
+    border-color: #fbfbfb;
+    color: #ffffff;
 }
 
 .btn-outline:hover {
@@ -233,7 +234,7 @@ body.light-theme .nav.scrolled {
 }
 
 body.light-theme .nav {
-  background: rgba(214, 184, 112, 0.15);
+  background:rgb(255 255 255 / 65%);
 }
 
 body.light-theme .nav-link {
@@ -332,11 +333,12 @@ body.light-theme .nav-cta:hover {
   font-weight: 300;
   margin-bottom: 16px;
   text-shadow: 0 2px 40px rgba(0, 0, 0, 0.3);
+  color: beige;
 }
 
 .hero-subtitle {
   font-size: 1.125rem;
-  color: var(--color-text-muted);
+  color:#e8b15d;
   margin-bottom: 40px;
   font-style: italic;
 }
@@ -364,7 +366,7 @@ body.light-theme .nav-cta:hover {
   font-size: 0.75rem;
   text-transform: uppercase;
   letter-spacing: 2px;
-  color: var(--color-text-muted);
+  color: #f8f4ed;
 }
 
 .scroll-indicator {
@@ -705,7 +707,7 @@ body.light-theme .nav-cta:hover {
 }
 
 .reservation-info p {
-  color: var(--color-text-muted);
+  color: #a9a296;
   margin-bottom: 32px;
   line-height: 1.8;
 }
@@ -720,6 +722,7 @@ body.light-theme .nav-cta:hover {
   display: flex;
   align-items: flex-start;
   gap: 16px;
+  color: bisque;
 }
 
 .detail-icon {
@@ -742,7 +745,7 @@ body.light-theme .nav-cta:hover {
 }
 
 .detail-item span {
-  color: var(--color-text-muted);
+  color: #a1937c;
   font-size: 0.9rem;
 }
 
