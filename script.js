@@ -37,10 +37,9 @@ function updateAvailableTimes() {
 
     if (selectedDate === today) {
       // Disable if time is in the past (with a 30 min buffer)
-      if (
-        optionHours < currentHours ||
-        (optionHours === currentHours && optionMinutes <= currentMinutes + 30)
-      ) {
+      const bufferTotalMinutes = currentHours * 60 + currentMinutes + 30;
+      const optionTotalMinutes = optionHours * 60 + optionMinutes;
+      if (selectedDate === today && optionTotalMinutes <= bufferTotalMinutes) {
         option.disabled = true;
         if (option.selected) {
           timeSelect.value = "";
