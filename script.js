@@ -367,7 +367,7 @@ if (heroScroll) {
 }
 
 // Stop scrolling on any user interaction
-["mousemove", "touchstart", "keydown", "wheel", "pointerdown"].forEach(
+["touchstart", "keydown", "wheel", "pointerdown"].forEach(
   (event) => {
     window.addEventListener(event, stopAutoScroll);
   },
