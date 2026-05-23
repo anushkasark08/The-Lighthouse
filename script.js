@@ -415,9 +415,14 @@ const STORAGE_KEY = "lighthouse_reviews";
 const defaultReviews = [];
 
 function getReviews() {
-  const stored = localStorage.getItem(STORAGE_KEY);
-  if (stored) return JSON.parse(stored);
-  localStorage.setItem(STORAGE_KEY, JSON.stringify(defaultReviews));
+  try {
+    const stored = localStorage.getItem(STORAGE_KEY);
+    if (stored) return JSON.parse(stored);
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(defaultReviews));
+  } catch (e) {
+    console.warn("Review data was corrupted and has been reset.", e);
+    localStorage.removeItem(STORAGE_KEY);
+  }
   return defaultReviews;
 }
 
