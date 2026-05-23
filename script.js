@@ -1,3 +1,13 @@
+function escapeHtml(str) {
+  if (typeof str !== "string") return "";
+  return str
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#039;");
+}
+
 // DOM Elements
 const nav = document.getElementById("nav");
 const navToggle = document.getElementById("navToggle");
@@ -447,11 +457,11 @@ function renderReviews() {
       (r) => `
     <div class="review-card">
       <div class="review-stars">${"★".repeat(r.rating)}${"☆".repeat(5 - r.rating)}</div>
-      <p class="review-text">${r.text}</p>
+      <p class="review-text">${escapeHtml(r.text)}</p>
       <div class="review-author">
-        <div class="review-avatar">${r.name.slice(0, 2).toUpperCase()}</div>
+        <div class="review-avatar">${escapeHtml(r.name.slice(0, 2).toUpperCase())}</div>
         <div>
-          <span class="review-name">${r.name}</span>
+          <span class="review-name">${escapeHtml(r.name)}</span>
           <span class="review-date">${r.date}</span>
         </div>
       </div>
