@@ -585,20 +585,8 @@ renderReviews();
 const backToTopBtn = document.getElementById("backToTop");
 
 window.addEventListener("scroll", () => {
-  if (window.scrollY > 200) {
-    backToTopBtn.style.display = "block";
-  } else {
-    backToTopBtn.style.display = "none";
-  }
-});
-
-// Show/hide on scroll
-window.addEventListener("scroll", () => {
-  if (window.scrollY > 300) {
-    backToTopBtn.classList.add("visible");
-  } else {
-    backToTopBtn.classList.remove("visible");
-  }
+  const show = window.scrollY > 300;
+  backToTopBtn.classList.toggle("visible", show);
 });
 
 // Scroll to top on click
