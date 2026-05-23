@@ -381,6 +381,10 @@ navLinks.forEach((link) => {
   link.addEventListener("click", smoothScroll);
 });
 
+document.querySelectorAll(".footer-links a").forEach((link) => {
+  link.addEventListener("click", smoothScroll);
+});
+
 document.querySelectorAll(".nav-cta, .hero-buttons a").forEach((link) => {
   link.addEventListener("click", smoothScroll);
 });
