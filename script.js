@@ -254,6 +254,11 @@ function smoothScroll(e) {
   closeMobileMenu();
 }
 
+function isValidPhone(phone) {
+  // Accepts: +91 9876543210, (555) 123-4567, 555-123-4567, 9876543210
+  return /^[\+]?[\d\s\-\(\)]{7,15}$/.test(phone.trim());
+}
+
 // Form submission handler (visual only)
 function handleFormSubmit(e) {
   e.preventDefault();
@@ -274,6 +279,14 @@ function handleFormSubmit(e) {
       input.style.borderColor = "";
     }
   });
+
+  const phoneInput = reservationForm.querySelector('[name="phone"]') 
+                  || document.getElementById("phone");
+  if (phoneInput && !isValidPhone(phoneInput.value)) {
+    phoneInput.style.borderColor = "#c94a4a";
+    isValid = false;
+    // optionally add an error message element here
+  }
 
   if (isValid) {
     // Show success message (visual only)
