@@ -12,209 +12,78 @@ Designed with elegant dark aesthetics, immersive visuals, smooth animations, and
 
 ---
 
-# ✨ Features
+## ✨ Features
 
-## 🎨 Premium UI & Branding
-
-- Elegant dark-themed luxury interface
-- Gold-accented modern design
-- Premium typography using:
-  - **Cormorant Garamond**
-  - **Inter**
-- Smooth transitions and hover effects
+### 🎨 Premium UI & Branding
+- **Flawless Light/Dark Modes**: Intelligently adapts text contrast, glassmorphism, and imagery across themes to ensure perfect readability.
+- Elegant dark-themed luxury interface with gold accents.
+- Premium typography using **Cormorant Garamond** & **Inter**.
+- Smooth transitions, parallax scrolling backgrounds, and engaging hover effects.
 
 ---
 
-## 📋 Dynamic Menu System
-
-Interactive category-based menu tabs:
-
-- 🍳 Breakfast
-- 🥗 Lunch
-- 🍽️ Dinner
-- 🍸 Drinks
-
-Switch seamlessly between menu sections without page reloads.
+### 📖 Interactive 3D Flipbook Menu
+Say goodbye to flat grids! The menu has been completely reimagined as a fully interactive 3D Flipbook.
+- **Realistic 3D Physics**: Built with vanilla CSS (`preserve-3d`, `rotateY`, `cubic-bezier` timing) to simulate the weight and physics of real turning pages.
+- **Dynamic Shadows**: Employs complex box-shadows to emulate book creases and spine shading.
+- **Smart Bookmarks**: Instantly jump to categories like Breakfast, Lunch, Dinner, Drinks, and Desserts via interactive bookmark tabs.
+- **Responsive Degradation**: Gracefully scales down to a readable, stacked layout on mobile devices.
 
 ---
 
-## 📱 Fully Responsive Design
-
-- Mobile-first architecture
-- Responsive layouts for all devices
-- Hamburger navigation menu
-- Optimized user experience across screen sizes
-
----
-
-## ⚡ Smooth User Experience
-
-### ✨ Advanced UI Interactions
-
-- Sticky glassmorphism navbar
-- Smooth scrolling navigation
-- Scroll reveal animations
-- Hover effects and transitions
-- Parallax scrolling backgrounds
+### 🗓️ Reservation System & Admin Dashboard
+- **Live Reservation Booking**: Interactive form with live field validation preventing past-date bookings.
+- **Node.js + Express backend** with REST API.
+- **SQLite Database** (via sql.js — zero-config, no native compilation needed).
+- **Secure Admin Dashboard**: Session-based authentication with a premium dark-themed management interface at `/admin`.
+- **Easy Access**: Features a discreet "Admin Login 🔒" button in the footer for staff access.
+- View, confirm, cancel, and delete reservations with sortable tables and status filters.
 
 ---
 
-## 🗓️ Reservation System
-
-- Interactive reservation form with live field validation
-- **Node.js + Express backend** with REST API
-- **SQLite database** (via sql.js — zero-config, no native compilation needed)
-- Server-side validation: date must be future, guests 1–8, valid time slots
-- Prevents past-date and past-time booking
-- Success feedback with reservation ID confirmation
+### ⚡ Smooth User Experience
+- Sticky glassmorphism navbar (with smart transparency handling in light mode).
+- Smooth scrolling navigation & Scroll reveal animations.
+- Google Maps Integration with custom grayscale styling.
 
 ---
 
-## 🔐 Admin Dashboard
-
-- Session-based authentication with configurable credentials
-- Premium dark/gold themed management interface at `/admin`
-- View, confirm, cancel, and delete reservations
-- Sortable table with status filters (All / Pending / Confirmed / Cancelled)
-- Summary count cards and real-time search
-- Confirmation dialogs and toast notifications
-
----
-
-## 📍 Google Maps Integration
-
-- Embedded Google Maps support
-- Custom grayscale styling matching site aesthetics
-
----
-
-# 📸 Website Assets
-
-## 🏠 Hero Background
-
-![Hero Background](./images/hero-restaurant.jpg)
-
----
-
-## 👨‍🍳 Chef Section
-
-![Chef](./images/chef.jpg)
-
----
-
-## 🍳 Breakfast Menu
-
-![Breakfast](./images/breakfast.jpg)
-
----
-
-## 🥗 Lunch Menu
-
-![Lunch](./images/lunch.jpg)
-
----
-
-## 🍽️ Dinner Menu
-
-![Dinner](./images/dinner.jpg)
-
----
-
-## 🍸 Drinks Menu
-
-![Drinks](./images/drinks.jpg)
-
----
-
-# 🛠️ Tech Stack
+## 🛠️ Tech Stack
 
 | Technology | Purpose |
 |------------|----------|
-| HTML5 | Semantic structure |
-| CSS3 | Styling, layouts & animations |
-| JavaScript (ES6+) | Frontend interactions |
-| Node.js + Express | Backend server & REST API |
-| SQLite (sql.js) | Reservation database (zero-config) |
-| express-session | Admin session authentication |
-| express-validator | Server-side input validation |
-| Google Fonts | Premium typography |
-| Intersection Observer API | Scroll animations |
+| **HTML5 & CSS3** | Semantic structure, 3D Flipbook architecture, layout & animations |
+| **JavaScript (ES6+)** | Frontend interactions, 3D Flipbook logic, DOM manipulation |
+| **Node.js + Express** | Backend server & REST API |
+| **SQLite (sql.js)** | Reservation database (zero-config, WebAssembly) |
+| **express-session** | Admin session authentication |
+| **express-validator** | Server-side input validation |
 
 ---
 
-# 📂 Project Structure
+## 🚀 Getting Started
 
-```bash
-The-Lighthouse/
-│
-├── admin/
-│   └── index.html          # Admin dashboard (login + reservation management)
-│
-├── db/
-│   └── database.js         # SQLite database layer (sql.js / WASM)
-│
-├── images/                 # Menu item and hero images
-│   ├── breakfast.jpg
-│   ├── chef.jpg
-│   ├── dinner.jpg
-│   ├── drinks.jpg
-│   ├── hero-restaurant.jpg
-│   ├── lunch.jpg
-│   └── ... (menu item images)
-│
-├── routes/
-│   ├── admin.js            # Admin auth endpoints (login / logout)
-│   └── reservations.js     # Reservation REST API (CRUD)
-│
-├── .gitignore              # Excludes node_modules, reservations.db, etc.
-├── Favicon.ico
-├── index.html              # Main restaurant website
-├── LICENSE
-├── package.json            # Node.js dependencies & scripts
-├── Readme.md
-├── robots.txt
-├── script.js               # Frontend interactions (menu, forms, reviews)
-├── server.js               # Express application server
-├── sitemap.xml
-└── style.css               # All styling, themes, responsive breakpoints
-```
-
----
-
-# 🚀 Getting Started
-
-## 1️⃣ Clone the Repository
-
+### 1️⃣ Clone the Repository
 ```bash
 git clone https://github.com/Anushka-Sarkar/the-lighthouse-restaurant.git
 ```
 
----
-
-## 2️⃣ Navigate to the Project Directory
-
+### 2️⃣ Navigate to the Project Directory
 ```bash
 cd the-lighthouse-restaurant
 ```
 
----
-
-## 3️⃣ Install Dependencies
-
+### 3️⃣ Install Dependencies
 ```bash
 npm install
 ```
 
----
-
-## 4️⃣ Start the Server
-
+### 4️⃣ Start the Server
 ```bash
 npm start
 ```
 
 This will launch the server. You'll see:
-
 ```
   🌊  The Lighthouse — Reservation Server
   ─────────────────────────────────────────
@@ -222,22 +91,15 @@ This will launch the server. You'll see:
   Admin:  http://localhost:3000/admin
   API:    http://localhost:3000/api/reservations
 ```
-
-Open `http://localhost:3000` in your browser to view the full site.
-
+Open `http://localhost:3000` in your browser.
 > **Tip:** Use `npm run dev` during development — it auto-restarts the server on file changes.
 
----
-
-## 5️⃣ Admin Dashboard
-
-Navigate to `http://localhost:3000/admin` and log in with:
-
+### 5️⃣ Admin Dashboard
+Navigate to `http://localhost:3000/admin` (or click the lock icon in the footer) and log in with:
 - **Username:** `admin`
 - **Password:** `lighthouse2026`
 
 To change credentials, set environment variables before starting:
-
 ```bash
 # Linux / macOS
 export ADMIN_USER="myuser"
@@ -252,12 +114,10 @@ npm start
 
 ---
 
-# 🎨 Customization
+## 🎨 Customization
 
 This project uses **CSS Variables** for easy theme customization.
-
 Modify colors inside `style.css`:
-
 ```css
 :root {
   --color-primary: #c9a962;
@@ -269,79 +129,44 @@ Modify colors inside `style.css`:
 
 ---
 
-# 🌟 Future Improvements
-
+## 🌟 Future Improvements
 - ~~Dark/Light mode toggle~~ ✅ Implemented
 - ~~Online reservation backend~~ ✅ Implemented
+- ~~Interactive 3D Menu~~ ✅ Implemented
 - Email notifications (Nodemailer + SMTP / SendGrid)
 - OAuth 2.0 or JWT-based admin authentication
 - Rate limiting on login and reservation endpoints
-- Payment gateway integration
-- Food ordering functionality
-- Multi-language support
 - Accessibility improvements (WCAG 2.1 AA)
 - Production hardening (helmet.js, CORS, compression, HTTPS)
 
 ---
 
-# 🤝 Contributing
-
+## 🤝 Contributing
 Contributions are welcome and appreciated.
 
-## Steps to Contribute
-
+### Steps to Contribute
 1. Fork the repository
-
-2. Create a feature branch
-
-```bash
-git checkout -b feature-name
-```
-
-3. Commit your changes
-
-```bash
-git commit -m "Added new feature"
-```
-
-4. Push the branch
-
-```bash
-git push origin feature-name
-```
-
+2. Create a feature branch (`git checkout -b feature-name`)
+3. Commit your changes (`git commit -m "Added new feature"`)
+4. Push the branch (`git push origin feature-name`)
 5. Open a Pull Request
 
 ---
 
-# 📜 License
-
+## 📜 License
 This project is licensed under the **MIT License**.
 
 ---
 
-# 💖 Acknowledgements
-
+## 💖 Acknowledgements
 Developed with passion by **Anushka Sarkar**
 
 Special thanks to:
-
 - GirlScript Summer of Code 2026
 - Open-source contributors ❤️
 
 ---
 
-# ⭐ Support
-
-If you like this project:
-
-- Give it a ⭐ on GitHub
-- Share it with others
-- Contribute to improve it further
-
----
-
-# 🔗 Repository
-
+## 🔗 Repository
 GitHub Repository:  
 https://github.com/Anushka-Sarkar/the-lighthouse-restaurant
