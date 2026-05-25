@@ -14,7 +14,7 @@
       href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&family=Inter:wght@400;500;600&display=swap"
       rel="stylesheet"
     />
-    <link rel="stylesheet" href="style.css" />
+    <link rel="stylesheet" href="style.css?v=1.4" />
   </head>
   <body>
     <!-- Navigation -->
@@ -129,287 +129,197 @@
           <span class="section-label">Culinary Offerings</span>
           <h2 class="section-title">Our Menu</h2>
         </div>
-        <!-- Menu Search + Filters -->
+        <!-- Menu Bookmarks -->
         <div class="menu-controls">
-          <input
-            type="text"
-            id="menu-search"
-            placeholder="Search dishes..."
-            class="menu-search"
-          />
-
-          <div class="menu-filters">
-            <button class="filter-btn active" data-filter="all">All</button>
-            <button class="filter-btn" data-filter="breakfast">
-              Breakfast
-            </button>
-            <button class="filter-btn" data-filter="lunch">Lunch</button>
-            <button class="filter-btn" data-filter="dinner">Dinner</button>
-            <button class="filter-btn" data-filter="desserts">Desserts</button>
-            <button class="filter-btn" data-filter="drinks">Drinks</button>
+          <div class="menu-filters" id="book-bookmarks">
+            <button class="filter-btn active" data-target="0">Cover</button>
+            <button class="filter-btn" data-target="1">Breakfast</button>
+            <button class="filter-btn" data-target="1.5">Lunch</button>
+            <button class="filter-btn" data-target="2">Dinner</button>
+            <button class="filter-btn" data-target="2.5">Drinks</button>
+            <button class="filter-btn" data-target="3">Desserts</button>
           </div>
         </div>
 
-        <!-- Menu Content -->
-        <div class="menu-content">
-          <!-- breakfast -->
-          <div class="menu-item" data-category="breakfast">
-            <div class="food-card">
-              <img
-                src="./images/MasalaDosa.jpg"
-                alt="Masala Dosa"
-                class="food-image"
-              />
-
-              <div class="food-content">
-                <div class="menu-item-header">
-                  <h3>Masala Dosa</h3>
-                  <span class="menu-price">₹180</span>
+        <!-- 3D Flipbook Content -->
+        <div class="book-container">
+          <button class="book-nav prev-page" id="prevPage" aria-label="Previous Page">❮</button>
+          
+          <div class="book" id="flipbook">
+            
+            <!-- Cover (Page 0) -->
+            <div class="page" data-page="0">
+              <div class="front cover-front">
+                <div class="cover-content">
+                  <span class="cover-est">Est. 1987</span>
+                  <h3 class="cover-title">The Lighthouse</h3>
+                  <h4 class="cover-subtitle">Culinary Offerings</h4>
                 </div>
+              </div>
+              <div class="back page-inner">
+                <div class="page-content">
+                  <h3 class="page-category">Welcome</h3>
+                  <p class="welcome-text">Experience a journey of flavors, crafted with passion and the finest seasonal ingredients.</p>
+                </div>
+              </div>
+            </div>
 
-                <span class="food-tag veg">Veg</span>
+            <!-- Page 1: Breakfast / Lunch -->
+            <div class="page" data-page="1">
+              <div class="front page-inner">
+                <div class="page-content">
+                  <h3 class="page-category">Breakfast</h3>
+                  <div class="menu-items-book">
+                    <!-- Breakfast Items -->
+                    <div class="book-menu-item">
+                      <div class="book-item-header">
+                        <h4>Masala Dosa</h4>
+                        <span class="price">₹180</span>
+                      </div>
+                      <span class="food-tag veg">Veg</span>
+                      <p>Crispy dosa served with chutney and sambar</p>
+                    </div>
+                    <div class="book-menu-item">
+                      <div class="book-item-header">
+                        <h4>Idli Sambar</h4>
+                        <span class="price">₹120</span>
+                      </div>
+                      <span class="food-tag veg">Veg</span>
+                      <p>Soft steamed idlis served with hot sambar and coconut chutney</p>
+                    </div>
+                    <div class="book-menu-item">
+                      <div class="book-item-header">
+                        <h4>Chicken Keema Dosa</h4>
+                        <span class="price">₹240</span>
+                      </div>
+                      <span class="food-tag nonveg">Non-Veg</span>
+                      <p>Crispy dosa stuffed with spicy chicken keema masala</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="back page-inner">
+                <div class="page-content">
+                  <h3 class="page-category">Lunch</h3>
+                  <div class="menu-items-book">
+                    <!-- Lunch Items -->
+                    <div class="book-menu-item">
+                      <div class="book-item-header">
+                        <h4>Paneer Butter Masala</h4>
+                        <span class="price">₹280</span>
+                      </div>
+                      <span class="food-tag veg">Veg</span>
+                      <p>Rich creamy paneer curry served with butter naan</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
 
-                <p>Crispy dosa served with chutney and sambar</p>
+            <!-- Page 2: Dinner / Drinks -->
+            <div class="page" data-page="2">
+              <div class="front page-inner">
+                <div class="page-content">
+                  <h3 class="page-category">Dinner</h3>
+                  <div class="menu-items-book">
+                    <!-- Dinner Items -->
+                    <div class="book-menu-item">
+                      <div class="book-item-header">
+                        <h4>Hyderabadi Chicken Biryani</h4>
+                        <span class="price">₹320</span>
+                      </div>
+                      <span class="food-tag nonveg">Non-Veg</span>
+                      <p>Aromatic dum biryani layered with spicy chicken and basmati rice</p>
+                    </div>
+                    <div class="book-menu-item">
+                      <div class="book-item-header">
+                        <h4>Butter Chicken</h4>
+                        <span class="price">₹340</span>
+                      </div>
+                      <span class="food-tag nonveg">Non-Veg</span>
+                      <p>Creamy tomato-based chicken curry with naan</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="back page-inner">
+                <div class="page-content">
+                  <h3 class="page-category">Drinks</h3>
+                  <div class="menu-items-book">
+                    <!-- Drinks Items -->
+                    <div class="book-menu-item">
+                      <div class="book-item-header">
+                        <h4>Mango Lassi</h4>
+                        <span class="price">₹110</span>
+                      </div>
+                      <span class="food-tag veg">Veg</span>
+                      <p>Refreshing chilled yogurt drink blended with sweet mango pulp</p>
+                    </div>
+                    <div class="book-menu-item">
+                      <div class="book-item-header">
+                        <h4>Masala Chai</h4>
+                        <span class="price">₹70</span>
+                      </div>
+                      <span class="food-tag veg">Veg</span>
+                      <p>Traditional Indian tea brewed with aromatic spices and milk</p>
+                    </div>
+                    <div class="book-menu-item">
+                      <div class="book-item-header">
+                        <h4>Fresh Lime Soda</h4>
+                        <span class="price">₹90</span>
+                      </div>
+                      <span class="food-tag veg">Veg</span>
+                      <p>Fizzy lime soda served sweet, salted, or mixed style</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Page 3: Desserts / Back Cover -->
+            <div class="page" data-page="3">
+              <div class="front page-inner">
+                <div class="page-content">
+                  <h3 class="page-category">Desserts</h3>
+                  <div class="menu-items-book">
+                    <!-- Desserts Items -->
+                    <div class="book-menu-item">
+                      <div class="book-item-header">
+                        <h4>Gulab Jamun</h4>
+                        <span class="price">₹120</span>
+                      </div>
+                      <span class="food-tag veg">Veg</span>
+                      <p>Soft milk-solid dumplings soaked in warm sugar syrup</p>
+                    </div>
+                    <div class="book-menu-item">
+                      <div class="book-item-header">
+                        <h4>Rasmalai</h4>
+                        <span class="price">₹140</span>
+                      </div>
+                      <span class="food-tag veg">Veg</span>
+                      <p>Soft paneer discs soaked in creamy saffron-flavored milk</p>
+                    </div>
+                    <div class="book-menu-item">
+                      <div class="book-item-header">
+                        <h4>Kesar Pista Kulfi</h4>
+                        <span class="price">₹130</span>
+                      </div>
+                      <span class="food-tag veg">Veg</span>
+                      <p>Traditional Indian frozen dessert flavored with saffron and pistachios</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="back cover-back">
+                <div class="cover-content">
+                  <h3 class="cover-title">Bon Appétit</h3>
+                  <div class="ornament">✺</div>
+                </div>
               </div>
             </div>
           </div>
-          <div class="menu-item" data-category="breakfast">
-            <div class="food-card">
-              <img
-                src="./images/Idli_Sambar.jpg"
-                alt="Idli_Sambar"
-                class="food-image"
-              />
-
-              <div class="food-content">
-                <div class="menu-item-header">
-                  <h3>Idli Sambar</h3>
-                  <span class="menu-price">₹120</span>
-                </div>
-
-                <span class="food-tag veg">Veg</span>
-
-                <p>
-                  Soft steamed idlis served with hot sambar and coconut chutney
-                </p>
-              </div>
-            </div>
-          </div>
-
-          <div class="menu-item" data-category="breakfast">
-            <div class="food-card">
-              <img
-                src="./images/Chicken_Keema_Dosa.jpg"
-                alt="Chicken_Keema_Dosa"
-                class="food-image"
-              />
-
-              <div class="food-content">
-                <div class="menu-item-header">
-                  <h3>Chicken Keema Dosa</h3>
-                  <span class="menu-price">₹240</span>
-                </div>
-
-                <span class="food-tag nonveg">Non-Veg</span>
-
-                <p>Crispy dosa stuffed with spicy chicken keema masala</p>
-              </div>
-            </div>
-          </div>
-
-          <!-- lunch -->
-          <div class="menu-item" data-category="lunch">
-            <div class="food-card">
-              <img
-                src="./images/Paneer_Butter_Masala.jpg"
-                alt="Paneer_Butter_Masala"
-                class="food-image"
-              />
-
-              <div class="food-content">
-                <div class="menu-item-header">
-                  <h3>Paneer Butter Masala</h3>
-                  <span class="menu-price">₹280</span>
-                </div>
-
-                <span class="food-tag veg">Veg</span>
-
-                <p>Rich creamy paneer curry served with butter naan</p>
-              </div>
-            </div>
-          </div>
-
-          <!-- dinner -->
-          <div class="menu-item" data-category="dinner">
-            <div class="food-card">
-              <img
-                src="./images/Hyderabadi_Chicken_Biryani.jpg"
-                alt="Hyderabadi_Chicken_Biryani"
-                class="food-image"
-              />
-
-              <div class="food-content">
-                <div class="menu-item-header">
-                  <h3>Hyderabadi Chicken Biryani</h3>
-                  <span class="menu-price">₹320</span>
-                </div>
-
-                <span class="food-tag nonveg">Non-Veg</span>
-
-                <p>
-                  Aromatic dum biryani layered with spicy chicken and basmati
-                  rice
-                </p>
-              </div>
-            </div>
-          </div>
-
-          <div class="menu-item" data-category="dinner">
-            <div class="food-card">
-              <img
-                src="./images/Butter_Chicken.jpg"
-                alt="Butter_Chicken"
-                class="food-image"
-              />
-
-              <div class="food-content">
-                <div class="menu-item-header">
-                  <h3>Butter Chicken</h3>
-                  <span class="menu-price">₹340</span>
-                </div>
-
-                <span class="food-tag nonveg">Non-Veg</span>
-
-                <p>Creamy tomato-based chicken curry with naan</p>
-              </div>
-            </div>
-          </div>
-
-          <!-- Drinks -->
-          <div class="menu-item" data-category="drinks">
-            <div class="food-card">
-              <img
-                src="./images/Mango_Lassi.jpg"
-                alt="Mango Lassi"
-                class="food-image"
-              />
-
-              <div class="food-content">
-                <div class="menu-item-header">
-                  <h3>Mango Lassi</h3>
-                  <span class="menu-price">₹110</span>
-                </div>
-
-                <span class="food-tag veg">Veg</span>
-
-                <p>
-                  Refreshing chilled yogurt drink blended with sweet mango pulp
-                </p>
-              </div>
-            </div>
-          </div>
-          <div class="menu-item" data-category="drinks">
-            <div class="food-card">
-              <img
-                src="./images/Masala_Chai.jpg"
-                alt="Masala Chai"
-                class="food-image"
-              />
-
-              <div class="food-content">
-                <div class="menu-item-header">
-                  <h3>Masala Chai</h3>
-                  <span class="menu-price">₹70</span>
-                </div>
-
-                <span class="food-tag veg">Veg</span>
-
-                <p>
-                  Traditional Indian tea brewed with aromatic spices and milk
-                </p>
-              </div>
-            </div>
-          </div>
-          <div class="menu-item" data-category="drinks">
-            <div class="food-card">
-              <img
-                src="./images/Fresh_Lime_Soda.jpg"
-                alt="Fresh Lime Soda"
-                class="food-image"
-              />
-
-              <div class="food-content">
-                <div class="menu-item-header">
-                  <h3>Fresh Lime Soda</h3>
-                  <span class="menu-price">₹90</span>
-                </div>
-
-                <span class="food-tag veg">Veg</span>
-
-                <p>Fizzy lime soda served sweet, salted, or mixed style</p>
-              </div>
-            </div>
-          </div>
-          <!-- Desserts -->
-          <div class="menu-item" data-category="desserts">
-            <div class="food-card">
-              <img
-                src="./images/Gulab_Jamun.jpg"
-                alt="Gulab Jamun"
-                class="food-image"
-              />
-
-              <div class="food-content">
-                <div class="menu-item-header">
-                  <h3>Gulab Jamun</h3>
-                  <span class="menu-price">₹120</span>
-                </div>
-
-                <span class="food-tag veg">Veg</span>
-
-                <p>Soft milk-solid dumplings soaked in warm sugar syrup</p>
-              </div>
-            </div>
-          </div>
-          <div class="menu-item" data-category="desserts">
-            <div class="food-card">
-              <img
-                src="./images/Rasmalai.jpg"
-                alt="Rasmalai"
-                class="food-image"
-              />
-
-              <div class="food-content">
-                <div class="menu-item-header">
-                  <h3>Rasmalai</h3>
-                  <span class="menu-price">₹140</span>
-                </div>
-
-                <span class="food-tag veg">Veg</span>
-
-                <p>Soft paneer discs soaked in creamy saffron-flavored milk</p>
-              </div>
-            </div>
-          </div>
-          <div class="menu-item" data-category="desserts">
-            <div class="food-card">
-              <img src="./images/Kulfi.jpg" alt="Kulfi" class="food-image" />
-
-              <div class="food-content">
-                <div class="menu-item-header">
-                  <h3>Kesar Pista Kulfi</h3>
-                  <span class="menu-price">₹130</span>
-                </div>
-
-                <span class="food-tag veg">Veg</span>
-
-                <p>
-                  Traditional Indian frozen dessert flavored with saffron and
-                  pistachios
-                </p>
-              </div>
-            </div>
-          </div>
+          
+          <button class="book-nav next-page" id="nextPage" aria-label="Next Page">❯</button>
         </div>
       </div>
     </section>
@@ -761,6 +671,7 @@
             <a href="#reservation">Reservations</a>
             <a href="#reviews">Reviews</a>
             <a href="#location">Location</a>
+            <a href="/admin" class="admin-login-link"><span style="margin-right: 4px;">🔒</span> Admin Login</a>
           </div>
           <div class="footer-copy">
             <p>&copy; 2026 The Lighthouse. All rights reserved.</p>

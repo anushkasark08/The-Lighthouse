@@ -172,70 +172,90 @@ themeToggle.addEventListener("click", () => {
   }
 });
 
-// ── Menu Search and Filter ─────────────────────────
+// ── Flipbook Menu Logic ─────────────────────────
+const book = document.getElementById("flipbook");
+const pages = document.querySelectorAll(".page");
+const prevBtn = document.getElementById("prevPage");
+const nextBtn = document.getElementById("nextPage");
+const bookmarks = document.querySelectorAll("#book-bookmarks .filter-btn");
 
-const filterBtns = document.querySelectorAll(".filter-btn");
+let currentPage = 0;
+const totalPages = pages ? pages.length : 0;
 
-const menuSearch = document.getElementById("menu-search");
-
-function filterMenuItems(filter = "all", searchText = "") {
-  const menuItems = document.querySelectorAll(".menu-item");
-
-  let visibleCount = 0;
-
-  menuItems.forEach((item) => {
-    const itemName = item.querySelector("h3").textContent.toLowerCase();
-
-    const category = item.dataset.category;
-
-    const matchesSearch = itemName.includes(searchText.toLowerCase());
-
-    const matchesFilter = filter === "all" || category === filter;
-
-    if (matchesSearch && matchesFilter) {
-      item.classList.remove("hidden-item");
-
-      visibleCount++;
-    } else {
-      item.classList.add("hidden-item");
-    }
+function initFlipbook() {
+  if (!book) return;
+  pages.forEach((page, index) => {
+    page.style.zIndex = totalPages - index;
   });
-
-  let noResults = document.querySelector(".no-results");
-
-  if (!visibleCount) {
-    if (!noResults) {
-      noResults = document.createElement("p");
-
-      noResults.className = "no-results";
-
-      noResults.textContent = "No menu items found.";
-
-      document.querySelector(".menu-content").appendChild(noResults);
-    }
-  } else if (noResults) {
-    noResults.remove();
-  }
+  updateFlipbook();
 }
 
-// Filter buttons
-filterBtns.forEach((btn) => {
+function updateFlipbook() {
+  if (!book) return;
+  
+  pages.forEach((page, index) => {
+    if (index < currentPage) {
+      page.classList.add("flipped");
+      page.style.zIndex = index + 1;
+    } else {
+      page.classList.remove("flipped");
+      page.style.zIndex = totalPages - index;
+    }
+  });
+
+  if (currentPage === 0) {
+    book.classList.remove("open", "fully-flipped");
+  } else if (currentPage === totalPages) {
+    book.classList.add("fully-flipped");
+    book.classList.remove("open");
+  } else {
+    book.classList.add("open");
+    book.classList.remove("fully-flipped");
+  }
+
+  if(prevBtn) prevBtn.disabled = currentPage === 0;
+  if(nextBtn) nextBtn.disabled = currentPage === totalPages;
+
+  bookmarks.forEach((btn) => btn.classList.remove("active"));
+  
+  let activeBtn = null;
+  bookmarks.forEach((btn) => {
+    const targetFloor = Math.floor(parseFloat(btn.dataset.target));
+    // Simple matching: highlight the bookmark whose page matches the current page
+    if (targetFloor === currentPage) {
+      activeBtn = btn;
+    }
+  });
+  if (activeBtn) activeBtn.classList.add("active");
+}
+
+if (prevBtn) {
+  prevBtn.addEventListener("click", () => {
+    if (currentPage > 0) {
+      currentPage--;
+      updateFlipbook();
+    }
+  });
+}
+
+if (nextBtn) {
+  nextBtn.addEventListener("click", () => {
+    if (currentPage < totalPages) {
+      currentPage++;
+      updateFlipbook();
+    }
+  });
+}
+
+bookmarks.forEach((btn) => {
   btn.addEventListener("click", () => {
-    filterBtns.forEach((b) => b.classList.remove("active"));
-
-    btn.classList.add("active");
-
-    filterMenuItems(btn.dataset.filter, menuSearch.value);
+    const target = parseFloat(btn.dataset.target);
+    currentPage = Math.floor(target);
+    updateFlipbook();
   });
 });
 
-// Search
-menuSearch.addEventListener("input", () => {
-  const activeFilter =
-    document.querySelector(".filter-btn.active").dataset.filter;
-
-  filterMenuItems(activeFilter, menuSearch.value);
-});
+initFlipbook();
 
 // Smooth scroll for navigation links
 function smoothScroll(e) {

@@ -236,27 +236,52 @@ body.light-theme .nav {
   background: rgba(214, 184, 112, 0.15);
 }
 
-body.light-theme .nav-link {
+/* Make nav items dark ONLY when scrolled in light mode */
+body.light-theme .nav.scrolled .nav-link {
   color: #1a1714;
 }
 
-body.light-theme .nav-logo {
+body.light-theme .nav.scrolled .nav-logo {
   color: #8a6e2f;
 }
 
-body.light-theme .nav-link.active,
-body.light-theme .nav-link:hover {
+body.light-theme .nav.scrolled .nav-link.active,
+body.light-theme .nav.scrolled .nav-link:hover {
   color: #8a6e2f;
 }
 
-body.light-theme .nav-cta {
+body.light-theme .nav.scrolled .nav-cta {
   border-color: #8a6e2f;
   color: #8a6e2f;
 }
 
-body.light-theme .nav-cta:hover {
+body.light-theme .nav.scrolled .nav-cta:hover {
   background-color: #8a6e2f;
   color: #fff;
+}
+
+/* Force light text on transparent nav in light mode to contrast with dark hero */
+body.light-theme .nav:not(.scrolled) {
+  --color-text: #f5f2ed;
+  --color-border: rgba(245, 242, 237, 0.5);
+}
+body.light-theme .nav:not(.scrolled) .nav-link {
+  color: #f5f2ed;
+}
+body.light-theme .nav:not(.scrolled) .nav-logo {
+  color: #c9a962;
+}
+body.light-theme .nav:not(.scrolled) .nav-link.active,
+body.light-theme .nav:not(.scrolled) .nav-link:hover {
+  color: #c9a962;
+}
+body.light-theme .nav:not(.scrolled) .nav-cta {
+  border-color: #c9a962;
+  color: #c9a962;
+}
+body.light-theme .nav:not(.scrolled) .nav-cta:hover {
+  background-color: #c9a962;
+  color: #1a1714;
 }
 
 .theme-toggle {
@@ -412,6 +437,26 @@ body.light-theme .nav-cta:hover {
     transform: translateY(6px);
   }
 }
+
+/* Force light text on the hero section regardless of theme */
+body.light-theme .hero {
+  --color-text: #f5f2ed;
+  --color-text-muted: #9a958e;
+  color: var(--color-text);
+}
+body.light-theme .hero-subtitle,
+body.light-theme .hero-scroll span,
+body.light-theme .clicktoscroll {
+  color: var(--color-text-muted);
+}
+body.light-theme .btn-outline {
+  border-color: var(--color-text);
+  color: var(--color-text);
+}
+body.light-theme .btn-outline:hover {
+  background-color: var(--color-text);
+  color: var(--color-bg);
+}
 /* About Section */
 .about {
   padding: 120px 0;
@@ -511,94 +556,12 @@ body.light-theme .nav-cta:hover {
   }
 }
 
-.menu-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 60px;
-  align-items: start;
-}
-
-.menu-image {
-  border-radius: 4px;
-  overflow: hidden;
-  position: sticky;
-  top: 100px;
-}
-
-.menu-image img {
-  width: 100%;
-  height: 450px;
-  object-fit: cover;
-}
-
-.menu-items {
-  display: flex;
-  flex-direction: column;
-  gap: 32px;
-}
-
-.menu-item {
-  padding-bottom: 24px;
-  border-bottom: 1px solid var(--color-border);
-}
-
-.menu-item:last-child {
-  border-bottom: none;
-}
-
-.menu-item-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: baseline;
-  margin-bottom: 8px;
-}
-
-.menu-item h3 {
-  font-family: var(--font-serif);
-  font-size: 1.375rem;
-  font-weight: 500;
-}
-
-.menu-price {
-  font-size: 1.125rem;
-  color: var(--color-primary);
-  font-weight: 500;
-}
-
-.menu-item p {
-  color: var(--color-text-muted);
-  font-size: 0.9rem;
-}
-
-.menu-controls {
-  margin-bottom: 40px;
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
-  align-items: center;
-}
-
-.menu-search {
-  width: 100%;
-  max-width: 500px;
-  padding: 14px 18px;
-  border: 1px solid var(--color-border);
-  background-color: var(--color-bg-card);
-  color: var(--color-text);
-  border-radius: 4px;
-  font-size: 1rem;
-}
-
-.menu-search:focus {
-  outline: none;
-  border-color: var(--color-primary);
-}
-
 .menu-filters {
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
   gap: 12px;
+  margin-bottom: 30px;
 }
 
 .filter-btn {
@@ -617,19 +580,9 @@ body.light-theme .nav-cta:hover {
   border-color: var(--color-primary);
 }
 
-.hidden-item {
-  display: none !important;
-}
-
-.no-results {
-  text-align: center;
-  margin-top: 30px;
-  color: var(--color-text-muted);
-  font-style: italic;
-}
 .food-tag {
   display: inline-block;
-  margin-bottom: 10px;
+  margin-bottom: 5px;
   padding: 4px 10px;
   border-radius: 20px;
   font-size: 0.75rem;
@@ -645,30 +598,222 @@ body.light-theme .nav-cta:hover {
   background-color: rgba(201, 74, 74, 0.15);
   color: #ff7b7b;
 }
-.food-card {
+
+/* 3D Flipbook Container */
+.book-container {
   display: flex;
-  gap: 20px;
-  align-items: flex-start;
+  justify-content: center;
+  align-items: center;
+  perspective: 2000px;
+  position: relative;
+  width: 100%;
+  max-width: 1000px;
+  margin: 0 auto 60px;
+  min-height: 600px;
+}
+
+.book {
+  position: relative;
+  width: 50%; /* Pages are 50% of the book width */
+  height: 600px;
+  transform-style: preserve-3d;
+  transition: transform 0.8s cubic-bezier(0.645, 0.045, 0.355, 1);
+  transform: translateX(0); /* Closed book is centered */
+}
+
+/* When the book is open, shift the right pages right so the entire 2-page spread is centered */
+.book.open {
+  transform: translateX(50%);
+}
+
+/* When on the back cover, shift it fully right so the left pages are centered */
+.book.fully-flipped {
+  transform: translateX(100%);
+}
+
+.book-nav {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background: transparent;
+  border: none;
+  color: var(--color-primary);
+  font-size: 3rem;
+  cursor: pointer;
+  z-index: 100;
+  transition: opacity 0.3s;
+}
+
+.book-nav.prev-page { left: 0; }
+.book-nav.next-page { right: 0; }
+.book-nav:disabled { opacity: 0.2; cursor: default; }
+
+.page {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  transform-style: preserve-3d;
+  transform-origin: left center;
+  transition: transform 0.8s cubic-bezier(0.645, 0.045, 0.355, 1);
+  box-shadow: inset 0 0 10px rgba(0,0,0,0.1);
+}
+
+/* Front and back of each page */
+.page .front, .page .back {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
   background-color: var(--color-bg-card);
-  padding: 18px;
-  border-radius: 12px;
+  backface-visibility: hidden;
   border: 1px solid var(--color-border);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
 }
 
-.food-image {
-  width: 220px;
-  height: 160px;
-  object-fit: cover;
-  border-radius: 10px;
-  flex-shrink: 0;
+.page .back {
+  transform: rotateY(180deg);
 }
 
-.food-content {
+.page.flipped {
+  transform: rotateY(-180deg);
+}
+
+/* Inner page styling */
+.page-inner {
+  padding: 40px;
+}
+.page .front.page-inner {
+  box-shadow: inset 15px 0 20px -10px rgba(0,0,0,0.2); /* spine shadow on left */
+}
+.page .back.page-inner {
+  box-shadow: inset -15px 0 20px -10px rgba(0,0,0,0.2); /* spine shadow on right */
+}
+
+/* Cover Styling */
+.cover-front, .cover-back {
+  background-color: var(--color-bg);
+  background-image: linear-gradient(135deg, rgba(201, 169, 98, 0.1) 0%, transparent 100%);
+  border: 1px solid var(--color-primary) !important;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+}
+
+.cover-content {
+  padding: 40px;
+  border: 1px solid var(--color-primary);
+  margin: 15px;
+  width: calc(100% - 30px);
+  height: calc(100% - 30px);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.cover-title {
+  font-family: var(--font-serif);
+  font-size: 3rem;
+  color: var(--color-primary);
+  margin: 15px 0;
+}
+
+.cover-est {
+  font-family: var(--font-sans);
+  letter-spacing: 2px;
+  color: var(--color-text-muted);
+  text-transform: uppercase;
+  font-size: 0.8rem;
+}
+
+.page-category {
+  font-family: var(--font-serif);
+  font-size: 2.2rem;
+  color: var(--color-primary);
+  margin-bottom: 25px;
+  text-align: center;
+  border-bottom: 1px solid var(--color-border);
+  padding-bottom: 10px;
+}
+
+.welcome-text {
+  text-align: center;
+  font-size: 1.1rem;
+  line-height: 1.8;
+  color: var(--color-text-muted);
+  padding: 0 20px;
+}
+
+/* Book items */
+.menu-items-book {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
   flex: 1;
+  overflow-y: auto;
 }
 
-.food-content p {
-  margin-top: 10px;
+.book-menu-item p {
+  color: var(--color-text-muted);
+  font-size: 0.9rem;
+  margin-top: 5px;
+}
+
+.book-item-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  border-bottom: 1px dashed rgba(201, 169, 98, 0.3);
+  margin-bottom: 5px;
+  padding-bottom: 5px;
+}
+
+.book-item-header h4 {
+  font-family: var(--font-serif);
+  font-size: 1.15rem;
+  font-weight: 500;
+  margin: 0;
+}
+
+.price {
+  color: var(--color-primary);
+  font-weight: 600;
+}
+
+/* Responsive fallback */
+@media (max-width: 900px) {
+  .book-container {
+    perspective: none;
+    max-width: 100%;
+  }
+  .book {
+    width: 100%;
+    transform: none !important;
+    height: auto;
+  }
+  .page {
+    position: relative;
+    transform: none !important;
+    transition: none;
+    margin-bottom: 20px;
+    height: auto;
+  }
+  .page .front, .page .back {
+    position: relative;
+    transform: none !important;
+    backface-visibility: visible;
+    height: auto;
+    min-height: 400px;
+  }
+  .book-nav {
+    display: none;
+  }
 }
 
 /* Reservation Section */
@@ -744,6 +889,17 @@ body.light-theme .nav-cta:hover {
 .detail-item span {
   color: var(--color-text-muted);
   font-size: 0.9rem;
+}
+
+/* Force light text on the reservation info panel regardless of theme */
+body.light-theme .reservation-info {
+  --color-text: #f5f2ed;
+  --color-text-muted: #9a958e;
+  color: var(--color-text);
+}
+body.light-theme .reservation-info p,
+body.light-theme .detail-item span {
+  color: var(--color-text-muted);
 }
 
 /* Reservation Form */
