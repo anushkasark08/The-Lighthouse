@@ -254,43 +254,97 @@ function smoothScroll(e) {
   closeMobileMenu();
 }
 
-// Form submission handler (visual only)
-function handleFormSubmit(e) {
+// Form submission handler — sends data to the /api/reservations backend
+async function handleFormSubmit(e) {
   e.preventDefault();
 
-  // Get form data
-  const formData = new FormData(reservationForm);
-  const data = Object.fromEntries(formData.entries());
+  const submitBtn = reservationForm.querySelector('button[type="submit"]');
+  const formNote = reservationForm.querySelector(".form-note");
 
-  // Simple validation visual feedback
-  const inputs = reservationForm.querySelectorAll("input, select, textarea");
-  let isValid = true;
-
-  inputs.forEach((input) => {
-    if (input.required && !input.value) {
-      input.style.borderColor = "#c94a4a";
-      isValid = false;
-    } else {
-      input.style.borderColor = "";
-    }
+  // Reset any previous inline error highlights
+  reservationForm.querySelectorAll("input, select, textarea").forEach((el) => {
+    el.style.borderColor = "";
   });
 
-  if (isValid) {
-    // Show success message (visual only)
-    const submitBtn = reservationForm.querySelector('button[type="submit"]');
-    const originalText = submitBtn.textContent;
+  // Loading state
+  const originalText = submitBtn.textContent;
+  submitBtn.textContent = "Sending…";
+  submitBtn.disabled = true;
 
-    submitBtn.textContent = "Reservation Requested!";
-    submitBtn.style.backgroundColor = "#4a9c6a";
-    submitBtn.disabled = true;
+  // Collect form data
+  const formData = new FormData(reservationForm);
+  const payload = Object.fromEntries(formData.entries());
 
-    // Reset form after delay
-    setTimeout(() => {
+  try {
+    const response = await fetch("/api/reservations", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(payload),
+    });
+
+    const result = await response.json();
+
+    if (response.ok) {
+      // ── Success ──────────────────────────────────────────────────────────
+      submitBtn.textContent = "✓ Reservation Received!";
+      submitBtn.style.backgroundColor = "#4a9c6a";
+
+      const resId = result.reservation?.id || 'Confirmed';
+
+      formNote.textContent =
+        `Your reservation (ID #${resId}) has been received. ` +
+        `We will contact you at ${payload.email} to confirm your booking.`;
+      formNote.style.color = "#4a9c6a";
+      formNote.style.display = "block";
+
       reservationForm.reset();
+
+      // Restore button after delay
+      setTimeout(() => {
+        submitBtn.textContent = originalText;
+        submitBtn.style.backgroundColor = "";
+        submitBtn.disabled = false;
+        formNote.textContent = "You will receive a confirmation email within 24 hours.";
+        formNote.style.color = "";
+      }, 5000);
+
+    } else if (result.errors && Array.isArray(result.errors)) {
+      // ── Validation errors from server — highlight relevant fields ─────────
+      result.errors.forEach((err) => {
+        const field = reservationForm.querySelector(`[name="${err.path}"]`);
+        if (field) field.style.borderColor = "#c94a4a";
+      });
+
+      // Show the first error message below the form
+      formNote.textContent = result.errors[0].msg;
+      formNote.style.color = "#c94a4a";
+      formNote.style.display = "block";
+
       submitBtn.textContent = originalText;
       submitBtn.style.backgroundColor = "";
       submitBtn.disabled = false;
-    }, 3000);
+
+    } else {
+      // ── Generic server error ──────────────────────────────────────────────
+      formNote.textContent = result.error || "Something went wrong. Please try again.";
+      formNote.style.color = "#c94a4a";
+      formNote.style.display = "block";
+
+      submitBtn.textContent = originalText;
+      submitBtn.style.backgroundColor = "";
+      submitBtn.disabled = false;
+    }
+
+  } catch (_networkErr) {
+    // ── Network / server unreachable ─────────────────────────────────────
+    formNote.textContent =
+      "Unable to reach the server. Please check your connection or call us directly.";
+    formNote.style.color = "#c94a4a";
+    formNote.style.display = "block";
+
+    submitBtn.textContent = originalText;
+    submitBtn.style.backgroundColor = "";
+    submitBtn.disabled = false;
   }
 }
 

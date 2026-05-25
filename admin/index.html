@@ -1,0 +1,983 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Admin — The Lighthouse</title>
+    <meta name="robots" content="noindex, nofollow" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600&family=Inter:wght@400;500;600&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      /* ── Design Tokens ── */
+      :root {
+        --bg:          #1a1714;
+        --bg-lighter:  #252220;
+        --bg-card:     #2a2725;
+        --gold:        #c9a962;
+        --gold-dark:   #a88b4a;
+        --text:        #f5f2ed;
+        --muted:       #9a958e;
+        --border:      #3d3835;
+        --green:       #4a9c6a;
+        --red:         #c94a4a;
+        --font-serif:  "Cormorant Garamond", Georgia, serif;
+        --font-sans:   "Inter", -apple-system, sans-serif;
+        --radius:      6px;
+        --transition:  0.25s ease;
+      }
+
+      *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+      body {
+        font-family: var(--font-sans);
+        background: var(--bg);
+        color: var(--text);
+        line-height: 1.6;
+        min-height: 100vh;
+      }
+
+      a { color: inherit; text-decoration: none; }
+      button { font-family: var(--font-sans); cursor: pointer; }
+
+      /* ── Login Screen ── */
+      #login-screen {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        min-height: 100vh;
+        padding: 24px;
+        background: radial-gradient(ellipse at 50% 0%, rgba(201,169,98,0.08) 0%, transparent 70%);
+      }
+
+      .login-card {
+        background: var(--bg-card);
+        border: 1px solid var(--border);
+        border-radius: var(--radius);
+        padding: 48px 40px;
+        width: 100%;
+        max-width: 400px;
+        text-align: center;
+      }
+
+      .login-logo {
+        font-family: var(--font-serif);
+        font-size: 2rem;
+        color: var(--gold);
+        margin-bottom: 4px;
+      }
+
+      .login-subtitle {
+        font-size: 0.75rem;
+        text-transform: uppercase;
+        letter-spacing: 3px;
+        color: var(--muted);
+        margin-bottom: 36px;
+      }
+
+      .login-card label {
+        display: block;
+        font-size: 0.75rem;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        color: var(--muted);
+        margin-bottom: 8px;
+        text-align: left;
+      }
+
+      .login-card input {
+        width: 100%;
+        padding: 13px 16px;
+        background: var(--bg);
+        border: 1px solid var(--border);
+        border-radius: var(--radius);
+        color: var(--text);
+        font-family: var(--font-sans);
+        font-size: 1rem;
+        transition: border-color var(--transition);
+        margin-bottom: 20px;
+      }
+
+      .login-card input:focus {
+        outline: none;
+        border-color: var(--gold);
+      }
+
+      .btn-login {
+        width: 100%;
+        padding: 14px;
+        background: var(--gold);
+        color: var(--bg);
+        border: none;
+        border-radius: var(--radius);
+        font-size: 0.875rem;
+        font-weight: 600;
+        letter-spacing: 1px;
+        text-transform: uppercase;
+        transition: background var(--transition);
+        margin-top: 4px;
+      }
+
+      .btn-login:hover { background: var(--gold-dark); }
+      .btn-login:disabled { opacity: 0.6; cursor: not-allowed; }
+
+      .login-error {
+        color: var(--red);
+        font-size: 0.875rem;
+        margin-top: 14px;
+        min-height: 20px;
+      }
+
+      /* ── Dashboard Layout ── */
+      #dashboard { display: none; min-height: 100vh; flex-direction: column; }
+
+      /* Header */
+      .dash-header {
+        background: var(--bg-lighter);
+        border-bottom: 1px solid var(--border);
+        padding: 0 32px;
+        height: 64px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        position: sticky;
+        top: 0;
+        z-index: 100;
+      }
+
+      .dash-logo {
+        font-family: var(--font-serif);
+        font-size: 1.4rem;
+        color: var(--gold);
+      }
+
+      .dash-logo span {
+        font-family: var(--font-sans);
+        font-size: 0.75rem;
+        text-transform: uppercase;
+        letter-spacing: 2px;
+        color: var(--muted);
+        margin-left: 12px;
+        vertical-align: middle;
+      }
+
+      .btn-logout {
+        padding: 8px 20px;
+        background: transparent;
+        border: 1px solid var(--border);
+        color: var(--muted);
+        border-radius: var(--radius);
+        font-size: 0.8rem;
+        letter-spacing: 1px;
+        text-transform: uppercase;
+        transition: all var(--transition);
+      }
+
+      .btn-logout:hover {
+        border-color: var(--red);
+        color: var(--red);
+      }
+
+      /* Main content */
+      .dash-main {
+        flex: 1;
+        padding: 36px 32px;
+        max-width: 1300px;
+        width: 100%;
+        margin: 0 auto;
+      }
+
+      .dash-title {
+        font-family: var(--font-serif);
+        font-size: 2rem;
+        font-weight: 400;
+        margin-bottom: 28px;
+        color: var(--text);
+      }
+
+      /* ── Summary Cards ── */
+      .summary-cards {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 16px;
+        margin-bottom: 36px;
+      }
+
+      .summary-card {
+        background: var(--bg-card);
+        border: 1px solid var(--border);
+        border-radius: var(--radius);
+        padding: 20px 24px;
+        transition: border-color var(--transition);
+      }
+
+      .summary-card:hover { border-color: var(--gold); }
+
+      .summary-card .label {
+        font-size: 0.72rem;
+        text-transform: uppercase;
+        letter-spacing: 2px;
+        color: var(--muted);
+        margin-bottom: 10px;
+      }
+
+      .summary-card .value {
+        font-family: var(--font-serif);
+        font-size: 2.4rem;
+        line-height: 1;
+        color: var(--gold);
+      }
+
+      .summary-card.pending .value  { color: #e0b55a; }
+      .summary-card.confirmed .value { color: var(--green); }
+      .summary-card.cancelled .value { color: var(--red); }
+
+      /* ── Toolbar ── */
+      .toolbar {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        margin-bottom: 20px;
+        flex-wrap: wrap;
+      }
+
+      .filter-tabs {
+        display: flex;
+        gap: 4px;
+        background: var(--bg-card);
+        border: 1px solid var(--border);
+        border-radius: var(--radius);
+        padding: 4px;
+      }
+
+      .filter-tab {
+        padding: 7px 18px;
+        border: none;
+        border-radius: 4px;
+        background: transparent;
+        color: var(--muted);
+        font-size: 0.8rem;
+        font-weight: 500;
+        letter-spacing: 0.5px;
+        text-transform: uppercase;
+        transition: all var(--transition);
+      }
+
+      .filter-tab:hover { color: var(--text); }
+
+      .filter-tab.active {
+        background: var(--gold);
+        color: var(--bg);
+      }
+
+      .search-input {
+        flex: 1;
+        min-width: 200px;
+        max-width: 320px;
+        padding: 10px 16px;
+        background: var(--bg-card);
+        border: 1px solid var(--border);
+        border-radius: var(--radius);
+        color: var(--text);
+        font-family: var(--font-sans);
+        font-size: 0.875rem;
+        transition: border-color var(--transition);
+      }
+
+      .search-input:focus {
+        outline: none;
+        border-color: var(--gold);
+      }
+
+      .search-input::placeholder { color: var(--muted); }
+
+      .result-count {
+        margin-left: auto;
+        font-size: 0.8rem;
+        color: var(--muted);
+      }
+
+      /* ── Table ── */
+      .table-wrapper {
+        background: var(--bg-card);
+        border: 1px solid var(--border);
+        border-radius: var(--radius);
+        overflow: hidden;
+        overflow-x: auto;
+      }
+
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        min-width: 760px;
+      }
+
+      thead {
+        background: var(--bg-lighter);
+        border-bottom: 1px solid var(--border);
+      }
+
+      th {
+        padding: 14px 16px;
+        text-align: left;
+        font-size: 0.72rem;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 1.5px;
+        color: var(--muted);
+        white-space: nowrap;
+        user-select: none;
+      }
+
+      th.sortable { cursor: pointer; }
+      th.sortable:hover { color: var(--gold); }
+      th.sorted { color: var(--gold); }
+      th .sort-arrow { margin-left: 4px; opacity: 0.6; }
+
+      td {
+        padding: 14px 16px;
+        font-size: 0.875rem;
+        border-bottom: 1px solid var(--border);
+        vertical-align: middle;
+      }
+
+      tr:last-child td { border-bottom: none; }
+      tr:hover td { background: rgba(201,169,98,0.04); }
+
+      td.name { font-weight: 500; }
+      td.email { color: var(--muted); font-size: 0.8rem; }
+      td.date { font-family: var(--font-serif); font-size: 1rem; }
+
+      /* Status badges */
+      .badge {
+        display: inline-block;
+        padding: 3px 10px;
+        border-radius: 20px;
+        font-size: 0.72rem;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+      }
+
+      .badge-pending   { background: rgba(224,181,90,0.15); color: #e0b55a; }
+      .badge-confirmed { background: rgba(74,156,106,0.15); color: var(--green); }
+      .badge-cancelled { background: rgba(201,74,74,0.15);  color: var(--red); }
+
+      /* Action buttons */
+      .actions { display: flex; gap: 6px; }
+
+      .btn-action {
+        padding: 6px 12px;
+        border-radius: 4px;
+        font-size: 0.75rem;
+        font-weight: 500;
+        border: 1px solid transparent;
+        transition: all var(--transition);
+        white-space: nowrap;
+      }
+
+      .btn-confirm {
+        border-color: var(--green);
+        color: var(--green);
+        background: transparent;
+      }
+
+      .btn-confirm:hover { background: var(--green); color: #fff; }
+
+      .btn-cancel {
+        border-color: #e0b55a;
+        color: #e0b55a;
+        background: transparent;
+      }
+
+      .btn-cancel:hover { background: #e0b55a; color: var(--bg); }
+
+      .btn-delete {
+        border-color: var(--red);
+        color: var(--red);
+        background: transparent;
+      }
+
+      .btn-delete:hover { background: var(--red); color: #fff; }
+
+      .btn-action:disabled { opacity: 0.35; cursor: not-allowed; }
+
+      /* Empty / Loading states */
+      .empty-state {
+        text-align: center;
+        padding: 72px 24px;
+        color: var(--muted);
+      }
+
+      .empty-state svg {
+        width: 48px;
+        height: 48px;
+        margin: 0 auto 16px;
+        opacity: 0.4;
+      }
+
+      .empty-state p { font-size: 1rem; }
+      .empty-state span { font-size: 0.875rem; opacity: 0.7; display: block; margin-top: 6px; }
+
+      /* Toast notifications */
+      #toast-container {
+        position: fixed;
+        bottom: 28px;
+        right: 28px;
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+        z-index: 9999;
+      }
+
+      .toast {
+        padding: 14px 20px;
+        border-radius: var(--radius);
+        font-size: 0.875rem;
+        font-weight: 500;
+        box-shadow: 0 6px 24px rgba(0,0,0,0.4);
+        animation: slideInToast 0.3s ease;
+        max-width: 340px;
+      }
+
+      .toast-success { background: var(--green); color: #fff; }
+      .toast-error   { background: var(--red);   color: #fff; }
+
+      @keyframes slideInToast {
+        from { opacity: 0; transform: translateY(12px); }
+        to   { opacity: 1; transform: translateY(0); }
+      }
+
+      /* Confirm dialog overlay */
+      .overlay {
+        display: none;
+        position: fixed;
+        inset: 0;
+        background: rgba(0,0,0,0.65);
+        z-index: 500;
+        align-items: center;
+        justify-content: center;
+        padding: 24px;
+      }
+
+      .overlay.visible { display: flex; }
+
+      .dialog {
+        background: var(--bg-card);
+        border: 1px solid var(--border);
+        border-radius: var(--radius);
+        padding: 32px;
+        max-width: 420px;
+        width: 100%;
+        text-align: center;
+      }
+
+      .dialog h3 {
+        font-family: var(--font-serif);
+        font-size: 1.5rem;
+        margin-bottom: 12px;
+      }
+
+      .dialog p {
+        color: var(--muted);
+        font-size: 0.9rem;
+        margin-bottom: 28px;
+        line-height: 1.7;
+      }
+
+      .dialog-actions {
+        display: flex;
+        gap: 12px;
+        justify-content: center;
+      }
+
+      .btn-dialog {
+        padding: 10px 24px;
+        border-radius: var(--radius);
+        font-size: 0.875rem;
+        font-weight: 500;
+        border: 1px solid transparent;
+        transition: all var(--transition);
+      }
+
+      .btn-dialog-cancel {
+        background: transparent;
+        border-color: var(--border);
+        color: var(--muted);
+      }
+
+      .btn-dialog-cancel:hover { border-color: var(--text); color: var(--text); }
+
+      .btn-dialog-confirm {
+        background: var(--red);
+        color: #fff;
+      }
+
+      .btn-dialog-confirm:hover { background: #a83535; }
+
+      /* Responsive */
+      @media (max-width: 900px) {
+        .summary-cards { grid-template-columns: repeat(2, 1fr); }
+        .dash-main { padding: 24px 20px; }
+        .dash-header { padding: 0 20px; }
+      }
+
+      @media (max-width: 500px) {
+        .summary-cards { grid-template-columns: 1fr 1fr; }
+        .login-card { padding: 32px 24px; }
+      }
+    </style>
+  </head>
+
+  <body>
+
+    <!-- ── Login Screen ── -->
+    <div id="login-screen">
+      <div class="login-card">
+        <div class="login-logo">The Lighthouse</div>
+        <div class="login-subtitle">Admin Dashboard</div>
+
+        <form id="login-form" onsubmit="handleLogin(event)">
+          <label for="admin-user">Username</label>
+          <input type="text" id="admin-user" autocomplete="username" required placeholder="admin" />
+
+          <label for="admin-pass">Password</label>
+          <input type="password" id="admin-pass" autocomplete="current-password" required placeholder="••••••••••" />
+
+          <button type="submit" class="btn-login" id="login-btn">Sign In</button>
+        </form>
+
+        <div class="login-error" id="login-error"></div>
+      </div>
+    </div>
+
+    <!-- ── Dashboard ── -->
+    <div id="dashboard">
+
+      <header class="dash-header">
+        <div class="dash-logo">
+          The Lighthouse
+          <span>Reservations</span>
+        </div>
+        <button class="btn-logout" onclick="handleLogout()">Sign Out</button>
+      </header>
+
+      <main class="dash-main">
+        <h1 class="dash-title">Reservations</h1>
+
+        <!-- Summary Cards -->
+        <div class="summary-cards">
+          <div class="summary-card">
+            <div class="label">Total</div>
+            <div class="value" id="count-total">—</div>
+          </div>
+          <div class="summary-card pending">
+            <div class="label">Pending</div>
+            <div class="value" id="count-pending">—</div>
+          </div>
+          <div class="summary-card confirmed">
+            <div class="label">Confirmed</div>
+            <div class="value" id="count-confirmed">—</div>
+          </div>
+          <div class="summary-card cancelled">
+            <div class="label">Cancelled</div>
+            <div class="value" id="count-cancelled">—</div>
+          </div>
+        </div>
+
+        <!-- Toolbar -->
+        <div class="toolbar">
+          <div class="filter-tabs" id="filter-tabs">
+            <button class="filter-tab active" data-status="">All</button>
+            <button class="filter-tab" data-status="pending">Pending</button>
+            <button class="filter-tab" data-status="confirmed">Confirmed</button>
+            <button class="filter-tab" data-status="cancelled">Cancelled</button>
+          </div>
+          <input
+            type="text"
+            class="search-input"
+            id="search-input"
+            placeholder="Search by name or email…"
+            oninput="renderTable()"
+          />
+          <span class="result-count" id="result-count"></span>
+        </div>
+
+        <!-- Table -->
+        <div class="table-wrapper">
+          <table id="reservations-table">
+            <thead>
+              <tr>
+                <th class="sortable" data-col="name">Name <span class="sort-arrow">↕</span></th>
+                <th>Contact</th>
+                <th class="sortable" data-col="date">Date <span class="sort-arrow">↕</span></th>
+                <th>Time</th>
+                <th>Guests</th>
+                <th>Requests</th>
+                <th>Status</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="table-body"></tbody>
+          </table>
+        </div>
+
+      </main>
+    </div>
+
+    <!-- Delete confirm dialog -->
+    <div class="overlay" id="delete-overlay">
+      <div class="dialog">
+        <h3>Delete Reservation?</h3>
+        <p>
+          This will permanently remove the reservation for
+          <strong id="delete-name"></strong>.
+          This action cannot be undone.
+        </p>
+        <div class="dialog-actions">
+          <button class="btn-dialog btn-dialog-cancel" onclick="closeDeleteDialog()">Cancel</button>
+          <button class="btn-dialog btn-dialog-confirm" id="confirm-delete-btn">Delete</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Toast container -->
+    <div id="toast-container"></div>
+
+    <script>
+      // ── State ──────────────────────────────────────────────────────────────
+      let allReservations = [];
+      let activeStatusFilter = "";
+      let sortCol = "date";
+      let sortDir = 1; // 1 = asc, -1 = desc
+      let pendingDeleteId = null;
+
+      // ── Auth ───────────────────────────────────────────────────────────────
+
+      async function handleLogin(e) {
+        e.preventDefault();
+        const btn = document.getElementById("login-btn");
+        const errorEl = document.getElementById("login-error");
+        errorEl.textContent = "";
+        btn.disabled = true;
+        btn.textContent = "Signing in…";
+
+        try {
+          const res = await fetch("/admin/login", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              username: document.getElementById("admin-user").value,
+              password: document.getElementById("admin-pass").value,
+            }),
+          });
+
+          const data = await res.json();
+
+          if (!res.ok) {
+            errorEl.textContent = data.error || "Login failed.";
+            return;
+          }
+
+          showDashboard();
+        } catch {
+          errorEl.textContent = "Network error. Is the server running?";
+        } finally {
+          btn.disabled = false;
+          btn.textContent = "Sign In";
+        }
+      }
+
+      async function handleLogout() {
+        await fetch("/admin/logout", { method: "POST" });
+        location.reload();
+      }
+
+      function showDashboard() {
+        document.getElementById("login-screen").style.display = "none";
+        document.getElementById("dashboard").style.display = "flex";
+        fetchReservations();
+      }
+
+      // ── Data Fetching ──────────────────────────────────────────────────────
+
+      async function fetchReservations() {
+        try {
+          const params = activeStatusFilter ? `?status=${activeStatusFilter}` : "";
+          const res = await fetch(`/api/reservations${params}`);
+
+          if (res.status === 401) {
+            // Session expired — redirect to login
+            location.reload();
+            return;
+          }
+
+          const data = await res.json();
+          allReservations = data.reservations || [];
+
+          // Update summary counts
+          const c = data.counts || {};
+          const total = (c.pending || 0) + (c.confirmed || 0) + (c.cancelled || 0);
+          document.getElementById("count-total").textContent     = total;
+          document.getElementById("count-pending").textContent   = c.pending   || 0;
+          document.getElementById("count-confirmed").textContent = c.confirmed || 0;
+          document.getElementById("count-cancelled").textContent = c.cancelled || 0;
+
+          renderTable();
+        } catch (err) {
+          showToast("Failed to load reservations.", "error");
+        }
+      }
+
+      // ── Render ─────────────────────────────────────────────────────────────
+
+      function renderTable() {
+        const search = document.getElementById("search-input").value.toLowerCase().trim();
+        const tbody = document.getElementById("table-body");
+
+        let rows = [...allReservations];
+
+        // Search filter
+        if (search) {
+          rows = rows.filter(r =>
+            r.name.toLowerCase().includes(search) ||
+            r.email.toLowerCase().includes(search)
+          );
+        }
+
+        // Sort
+        rows.sort((a, b) => {
+          const av = (a[sortCol] || "").toString().toLowerCase();
+          const bv = (b[sortCol] || "").toString().toLowerCase();
+          return av < bv ? -sortDir : av > bv ? sortDir : 0;
+        });
+
+        document.getElementById("result-count").textContent =
+          rows.length === 1 ? "1 reservation" : `${rows.length} reservations`;
+
+        if (rows.length === 0) {
+          tbody.innerHTML = `
+            <tr>
+              <td colspan="8">
+                <div class="empty-state">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                    <path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2"/>
+                    <rect x="9" y="3" width="6" height="4" rx="1"/>
+                  </svg>
+                  <p>No reservations found</p>
+                  <span>Try adjusting your filters or search</span>
+                </div>
+              </td>
+            </tr>
+          `;
+          return;
+        }
+
+        tbody.innerHTML = rows.map(r => {
+          const dateFormatted = new Date(r.date + "T00:00:00").toLocaleDateString("en-IN", {
+            weekday: "short", day: "2-digit", month: "short", year: "numeric"
+          });
+
+          const timeFormatted = formatTime(r.time);
+
+          const isPending   = r.status === "pending";
+          const isConfirmed = r.status === "confirmed";
+          const isCancelled = r.status === "cancelled";
+
+          const truncatedRequests = r.requests
+            ? (r.requests.length > 60 ? r.requests.slice(0, 60) + "…" : r.requests)
+            : '<span style="opacity:0.4">—</span>';
+
+          return `
+            <tr id="row-${r.id}">
+              <td class="name">${escapeHtml(r.name)}</td>
+              <td>
+                <span class="email">${escapeHtml(r.email)}</span><br/>
+                <span style="font-size:0.78rem;color:var(--muted)">${escapeHtml(r.phone)}</span>
+              </td>
+              <td class="date">${dateFormatted}</td>
+              <td>${timeFormatted}</td>
+              <td style="text-align:center">${r.guests}</td>
+              <td style="font-size:0.8rem;color:var(--muted)" title="${escapeHtml(r.requests || '')}">${truncatedRequests}</td>
+              <td><span class="badge badge-${r.status}">${r.status}</span></td>
+              <td>
+                <div class="actions">
+                  <button
+                    class="btn-action btn-confirm"
+                    onclick="updateStatus(${r.id}, 'confirmed')"
+                    ${isConfirmed ? "disabled" : ""}
+                    title="Confirm"
+                  >✓ Confirm</button>
+                  <button
+                    class="btn-action btn-cancel"
+                    onclick="updateStatus(${r.id}, 'cancelled')"
+                    ${isCancelled ? "disabled" : ""}
+                    title="Cancel"
+                  >✗ Cancel</button>
+                  <button
+                    class="btn-action btn-delete"
+                    onclick="openDeleteDialog(${r.id}, '${escapeHtml(r.name)}')"
+                    title="Delete permanently"
+                  >🗑</button>
+                </div>
+              </td>
+            </tr>
+          `;
+        }).join("");
+
+        // Update sort arrows
+        document.querySelectorAll("th.sortable").forEach(th => {
+          th.classList.toggle("sorted", th.dataset.col === sortCol);
+          const arrow = th.querySelector(".sort-arrow");
+          if (th.dataset.col === sortCol) {
+            arrow.textContent = sortDir === 1 ? "↑" : "↓";
+          } else {
+            arrow.textContent = "↕";
+          }
+        });
+      }
+
+      // ── Actions ────────────────────────────────────────────────────────────
+
+      async function updateStatus(id, status) {
+        try {
+          const res = await fetch(`/api/reservations/${id}`, {
+            method: "PATCH",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ status }),
+          });
+
+          const data = await res.json();
+
+          if (!res.ok) {
+            showToast(data.error || "Failed to update status.", "error");
+            return;
+          }
+
+          // Update the local array so we don't re-fetch the whole list
+          const idx = allReservations.findIndex(r => r.id === id);
+          if (idx !== -1) allReservations[idx].status = status;
+
+          renderTable();
+          showToast(`Reservation ${status}.`, "success");
+        } catch {
+          showToast("Network error while updating.", "error");
+        }
+      }
+
+      function openDeleteDialog(id, name) {
+        pendingDeleteId = id;
+        document.getElementById("delete-name").textContent = name;
+        document.getElementById("delete-overlay").classList.add("visible");
+
+        document.getElementById("confirm-delete-btn").onclick = async () => {
+          closeDeleteDialog();
+          await deleteReservation(id);
+        };
+      }
+
+      function closeDeleteDialog() {
+        document.getElementById("delete-overlay").classList.remove("visible");
+        pendingDeleteId = null;
+      }
+
+      async function deleteReservation(id) {
+        try {
+          const res = await fetch(`/api/reservations/${id}`, { method: "DELETE" });
+          const data = await res.json();
+
+          if (!res.ok) {
+            showToast(data.error || "Failed to delete reservation.", "error");
+            return;
+          }
+
+          allReservations = allReservations.filter(r => r.id !== id);
+          renderTable();
+          showToast("Reservation deleted.", "success");
+        } catch {
+          showToast("Network error while deleting.", "error");
+        }
+      }
+
+      // ── Filter tabs ────────────────────────────────────────────────────────
+
+      document.getElementById("filter-tabs").addEventListener("click", (e) => {
+        const tab = e.target.closest(".filter-tab");
+        if (!tab) return;
+
+        document.querySelectorAll(".filter-tab").forEach(t => t.classList.remove("active"));
+        tab.classList.add("active");
+        activeStatusFilter = tab.dataset.status;
+        fetchReservations();
+      });
+
+      // ── Sort ───────────────────────────────────────────────────────────────
+
+      document.querySelectorAll("th.sortable").forEach(th => {
+        th.addEventListener("click", () => {
+          if (sortCol === th.dataset.col) {
+            sortDir *= -1;
+          } else {
+            sortCol = th.dataset.col;
+            sortDir = 1;
+          }
+          renderTable();
+        });
+      });
+
+      // ── Helpers ────────────────────────────────────────────────────────────
+
+      function formatTime(t) {
+        if (!t) return "—";
+        const [h, m] = t.split(":").map(Number);
+        const suffix = h >= 12 ? "PM" : "AM";
+        const h12 = h % 12 || 12;
+        return `${h12}:${String(m).padStart(2, "0")} ${suffix}`;
+      }
+
+      function escapeHtml(str) {
+        if (!str) return "";
+        return String(str)
+          .replace(/&/g, "&amp;")
+          .replace(/</g, "&lt;")
+          .replace(/>/g, "&gt;")
+          .replace(/"/g, "&quot;");
+      }
+
+      function showToast(message, type = "success") {
+        const container = document.getElementById("toast-container");
+        const toast = document.createElement("div");
+        toast.className = `toast toast-${type}`;
+        toast.textContent = message;
+        container.appendChild(toast);
+        setTimeout(() => toast.remove(), 3500);
+      }
+
+      // ── Close overlay on background click ─────────────────────────────────
+
+      document.getElementById("delete-overlay").addEventListener("click", (e) => {
+        if (e.target === e.currentTarget) closeDeleteDialog();
+      });
+
+      // ── Check session on load ──────────────────────────────────────────────
+      // Attempt to fetch reservations. If the server returns 401 we stay on the login screen.
+      (async () => {
+        const res = await fetch("/api/reservations").catch(() => null);
+        if (res && res.ok) {
+          const data = await res.json();
+          allReservations = data.reservations || [];
+          const c = data.counts || {};
+          const total = (c.pending || 0) + (c.confirmed || 0) + (c.cancelled || 0);
+          document.getElementById("count-total").textContent     = total;
+          document.getElementById("count-pending").textContent   = c.pending   || 0;
+          document.getElementById("count-confirmed").textContent = c.confirmed || 0;
+          document.getElementById("count-cancelled").textContent = c.cancelled || 0;
+          showDashboard();
+        }
+      })();
+    </script>
+  </body>
+</html>

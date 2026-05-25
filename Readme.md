@@ -59,12 +59,25 @@ Switch seamlessly between menu sections without page reloads.
 
 ---
 
-## 🗓️ Reservation Features
+## 🗓️ Reservation System
 
-- Interactive reservation form
-- Date validation
-- Prevents past-date booking
-- Success feedback animations
+- Interactive reservation form with live field validation
+- **Node.js + Express backend** with REST API
+- **SQLite database** (via sql.js — zero-config, no native compilation needed)
+- Server-side validation: date must be future, guests 1–8, valid time slots
+- Prevents past-date and past-time booking
+- Success feedback with reservation ID confirmation
+
+---
+
+## 🔐 Admin Dashboard
+
+- Session-based authentication with configurable credentials
+- Premium dark/gold themed management interface at `/admin`
+- View, confirm, cancel, and delete reservations
+- Sortable table with status filters (All / Pending / Confirmed / Cancelled)
+- Summary count cards and real-time search
+- Confirmation dialogs and toast notifications
 
 ---
 
@@ -119,7 +132,11 @@ Switch seamlessly between menu sections without page reloads.
 |------------|----------|
 | HTML5 | Semantic structure |
 | CSS3 | Styling, layouts & animations |
-| JavaScript (ES6+) | Dynamic interactions |
+| JavaScript (ES6+) | Frontend interactions |
+| Node.js + Express | Backend server & REST API |
+| SQLite (sql.js) | Reservation database (zero-config) |
+| express-session | Admin session authentication |
+| express-validator | Server-side input validation |
 | Google Fonts | Premium typography |
 | Intersection Observer API | Scroll animations |
 
@@ -130,22 +147,36 @@ Switch seamlessly between menu sections without page reloads.
 ```bash
 The-Lighthouse/
 │
-├── images/
+├── admin/
+│   └── index.html          # Admin dashboard (login + reservation management)
+│
+├── db/
+│   └── database.js         # SQLite database layer (sql.js / WASM)
+│
+├── images/                 # Menu item and hero images
 │   ├── breakfast.jpg
 │   ├── chef.jpg
 │   ├── dinner.jpg
 │   ├── drinks.jpg
 │   ├── hero-restaurant.jpg
-│   └── lunch.jpg
+│   ├── lunch.jpg
+│   └── ... (menu item images)
 │
+├── routes/
+│   ├── admin.js            # Admin auth endpoints (login / logout)
+│   └── reservations.js     # Reservation REST API (CRUD)
+│
+├── .gitignore              # Excludes node_modules, reservations.db, etc.
 ├── Favicon.ico
-├── index.html
+├── index.html              # Main restaurant website
 ├── LICENSE
-├── README.md
+├── package.json            # Node.js dependencies & scripts
+├── Readme.md
 ├── robots.txt
+├── script.js               # Frontend interactions (menu, forms, reviews)
+├── server.js               # Express application server
 ├── sitemap.xml
-├── script.js
-└── style.css
+└── style.css               # All styling, themes, responsive breakpoints
 ```
 
 ---
@@ -168,11 +199,56 @@ cd the-lighthouse-restaurant
 
 ---
 
-## 3️⃣ Run the Project
+## 3️⃣ Install Dependencies
 
-Open the `index.html` file directly in your browser.
+```bash
+npm install
+```
 
-OR use the VS Code **Live Server** extension for a better development experience.
+---
+
+## 4️⃣ Start the Server
+
+```bash
+npm start
+```
+
+This will launch the server. You'll see:
+
+```
+  🌊  The Lighthouse — Reservation Server
+  ─────────────────────────────────────────
+  Site:   http://localhost:3000
+  Admin:  http://localhost:3000/admin
+  API:    http://localhost:3000/api/reservations
+```
+
+Open `http://localhost:3000` in your browser to view the full site.
+
+> **Tip:** Use `npm run dev` during development — it auto-restarts the server on file changes.
+
+---
+
+## 5️⃣ Admin Dashboard
+
+Navigate to `http://localhost:3000/admin` and log in with:
+
+- **Username:** `admin`
+- **Password:** `lighthouse2026`
+
+To change credentials, set environment variables before starting:
+
+```bash
+# Linux / macOS
+export ADMIN_USER="myuser"
+export ADMIN_PASS="mysecretpassword"
+npm start
+
+# Windows PowerShell
+$env:ADMIN_USER="myuser"
+$env:ADMIN_PASS="mysecretpassword"
+npm start
+```
 
 ---
 
@@ -195,12 +271,16 @@ Modify colors inside `style.css`:
 
 # 🌟 Future Improvements
 
-- Dark/Light mode toggle
-- Online reservation backend
+- ~~Dark/Light mode toggle~~ ✅ Implemented
+- ~~Online reservation backend~~ ✅ Implemented
+- Email notifications (Nodemailer + SMTP / SendGrid)
+- OAuth 2.0 or JWT-based admin authentication
+- Rate limiting on login and reservation endpoints
 - Payment gateway integration
 - Food ordering functionality
 - Multi-language support
-- Accessibility improvements
+- Accessibility improvements (WCAG 2.1 AA)
+- Production hardening (helmet.js, CORS, compression, HTTPS)
 
 ---
 
