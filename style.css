@@ -43,7 +43,19 @@ body {
   line-height: 1.6;
   overflow-x: hidden;
 }
+body {
+  background-color: var(--color-bg);
+  color: var(--color-text);
+}
 
+h1,
+h2,
+h3,
+h4,
+.nav-link,
+.nav-logo {
+  color: var(--color-text);
+}
 img {
   max-width: 100%;
   height: auto;
@@ -84,6 +96,7 @@ h4 {
 .section-title {
   font-size: clamp(2rem, 5vw, 3.5rem);
   margin-bottom: 24px;
+  color: var(--color-text);
 }
 
 /* Buttons */
@@ -138,7 +151,7 @@ h4 {
 }
 
 .nav.scrolled {
-  background-color: rgba(26, 23, 20, 0.95);
+  background-color: var(--color-bg-card);
   backdrop-filter: blur(10px);
   padding: 12px 0;
 }
@@ -172,6 +185,7 @@ h4 {
   color: var(--color-text);
   position: relative;
   padding: 4px 0;
+  transition: color var(--transition);
 }
 
 .nav-link::after {
@@ -331,7 +345,8 @@ body.light-theme .nav-cta:hover {
   font-size: clamp(3rem, 10vw, 7rem);
   font-weight: 300;
   margin-bottom: 16px;
-  text-shadow: 0 2px 40px rgba(0, 0, 0, 0.3);
+  color: var(--color-text);
+  text-shadow: 0 2px 40px rgba(0, 0, 0, 0.5);
 }
 
 .hero-subtitle {
@@ -1166,7 +1181,7 @@ body.light-theme .nav-cta:hover {
     width: 80%;
     max-width: 320px;
     height: 100vh;
-    background-color: var(--color-bg);
+    background-color: var(--color-bg-card);
     flex-direction: column;
     justify-content: center;
     align-items: center;
