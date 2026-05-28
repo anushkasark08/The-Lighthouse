@@ -259,6 +259,25 @@ body.light-theme .nav-cta:hover {
   color: #fff;
 }
 
+/* Light Theme Overrides for Hero and Reservation Sections */
+body.light-theme .hero-overlay {
+  background: linear-gradient(
+    to bottom,
+    rgba(247, 242, 233, 0.45) 0%,
+    rgba(247, 242, 233, 0.7) 50%,
+    var(--color-bg) 100%
+  );
+}
+
+body.light-theme .hero-title {
+  text-shadow: 0 2px 30px rgba(255, 255, 255, 0.6);
+}
+
+body.light-theme .reservation-overlay {
+  background: rgba(247, 242, 233, 0.9);
+}
+
+
 .theme-toggle {
   background: transparent;
   border: 1px solid var(--color-border);
