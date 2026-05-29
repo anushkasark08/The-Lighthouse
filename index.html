@@ -50,10 +50,16 @@
             >
           </li>
         </ul>
-        <button id="themeToggle" class="theme-toggle" aria-label="Toggle Theme">
-          🌙
-        </button>
-        <a href="#reservation" class="nav-cta">Book a Table</a>
+        <div class="nav-right">
+          <button id="cartToggle" class="cart-btn" aria-label="Toggle Cart">
+            🛒
+            <span class="cart-badge" id="cartBadge">0</span>
+          </button>
+          <button id="themeToggle" class="theme-toggle" aria-label="Toggle Theme">
+            🌙
+          </button>
+          <a href="#reservation" class="nav-cta">Book a Table</a>
+        </div>
       </div>
     </nav>
 
@@ -170,6 +176,10 @@
                 <span class="food-tag veg">Veg</span>
 
                 <p>Crispy dosa served with chutney and sambar</p>
+                <div class="btn-group">
+                  <button class="btn-add-to-cart" data-id="1" data-name="Masala Dosa" data-price="180">Add to Cart</button>
+                  <button class="btn-buy-now" data-id="1" data-name="Masala Dosa" data-price="180">Buy Now</button>
+                </div>
               </div>
             </div>
           </div>
@@ -192,6 +202,10 @@
                 <p>
                   Soft steamed idlis served with hot sambar and coconut chutney
                 </p>
+                <div class="btn-group">
+                  <button class="btn-add-to-cart" data-id="2" data-name="Idli Sambar" data-price="120">Add to Cart</button>
+                  <button class="btn-buy-now" data-id="2" data-name="Idli Sambar" data-price="120">Buy Now</button>
+                </div>
               </div>
             </div>
           </div>
@@ -213,6 +227,10 @@
                 <span class="food-tag nonveg">Non-Veg</span>
 
                 <p>Crispy dosa stuffed with spicy chicken keema masala</p>
+                <div class="btn-group">
+                  <button class="btn-add-to-cart" data-id="3" data-name="Chicken Keema Dosa" data-price="240">Add to Cart</button>
+                  <button class="btn-buy-now" data-id="3" data-name="Chicken Keema Dosa" data-price="240">Buy Now</button>
+                </div>
               </div>
             </div>
           </div>
@@ -232,9 +250,13 @@
                   <span class="menu-price">₹280</span>
                 </div>
 
-                <span class="food-tag veg">Veg</span>
+                <div class="btn-group">
+                  <button class="btn-add-to-cart" data-id="4" data-name="Paneer Butter Masala" data-price="280">Add to Cart</button>
+                  <button class="btn-buy-now" data-id="4" data-name="Paneer Butter Masala" data-price="280">Buy Now</button>
+                </div
 
                 <p>Rich creamy paneer curry served with butter naan</p>
+                <button class="btn-add-to-cart" data-id="4" data-name="Paneer Butter Masala" data-price="280">Add to Cart</button>
               </div>
             </div>
           </div>
@@ -257,9 +279,13 @@
                 <span class="food-tag nonveg">Non-Veg</span>
 
                 <p>
-                  Aromatic dum biryani layered with spicy chicken and basmati
+                 div class="btn-group">
+                  <button class="btn-add-to-cart" data-id="5" data-name="Hyderabadi Chicken Biryani" data-price="320">Add to Cart</button>
+                  <button class="btn-buy-now" data-id="5" data-name="Hyderabadi Chicken Biryani" data-price="320">Buy Now</button>
+                </div
                   rice
                 </p>
+                <button class="btn-add-to-cart" data-id="5" data-name="Hyderabadi Chicken Biryani" data-price="320">Add to Cart</button>
               </div>
             </div>
           </div>
@@ -278,9 +304,13 @@
                   <span class="menu-price">₹340</span>
                 </div>
 
-                <span class="food-tag nonveg">Non-Veg</span>
+                <div class="btn-group">
+                  <button class="btn-add-to-cart" data-id="6" data-name="Butter Chicken" data-price="340">Add to Cart</button>
+                  <button class="btn-buy-now" data-id="6" data-name="Butter Chicken" data-price="340">Buy Now</button>
+                </div
 
                 <p>Creamy tomato-based chicken curry with naan</p>
+                <button class="btn-add-to-cart" data-id="6" data-name="Butter Chicken" data-price="340">Add to Cart</button>
               </div>
             </div>
           </div>
@@ -299,12 +329,16 @@
                   <h3>Mango Lassi</h3>
                   <span class="menu-price">₹110</span>
                 </div>
-
+div class="btn-group">
+                  <button class="btn-add-to-cart" data-id="7" data-name="Mango Lassi" data-price="110">Add to Cart</button>
+                  <button class="btn-buy-now" data-id="7" data-name="Mango Lassi" data-price="110">Buy Now</button>
+                </div
                 <span class="food-tag veg">Veg</span>
 
                 <p>
                   Refreshing chilled yogurt drink blended with sweet mango pulp
                 </p>
+                <button class="btn-add-to-cart" data-id="7" data-name="Mango Lassi" data-price="110">Add to Cart</button>
               </div>
             </div>
           </div>
@@ -321,12 +355,16 @@
                   <h3>Masala Chai</h3>
                   <span class="menu-price">₹70</span>
                 </div>
-
+div class="btn-group">
+                  <button class="btn-add-to-cart" data-id="8" data-name="Masala Chai" data-price="70">Add to Cart</button>
+                  <button class="btn-buy-now" data-id="8" data-name="Masala Chai" data-price="70">Buy Now</button>
+                </div
                 <span class="food-tag veg">Veg</span>
 
                 <p>
                   Traditional Indian tea brewed with aromatic spices and milk
                 </p>
+                <button class="btn-add-to-cart" data-id="8" data-name="Masala Chai" data-price="70">Add to Cart</button>
               </div>
             </div>
           </div>
@@ -341,12 +379,16 @@
               <div class="food-content">
                 <div class="menu-item-header">
                   <h3>Fresh Lime Soda</h3>
-                  <span class="menu-price">₹90</span>
+                 div class="btn-group">
+                  <button class="btn-add-to-cart" data-id="9" data-name="Fresh Lime Soda" data-price="90">Add to Cart</button>
+                  <button class="btn-buy-now" data-id="9" data-name="Fresh Lime Soda" data-price="90">Buy Now</button>
+                </div
                 </div>
 
                 <span class="food-tag veg">Veg</span>
 
                 <p>Fizzy lime soda served sweet, salted, or mixed style</p>
+                <button class="btn-add-to-cart" data-id="9" data-name="Fresh Lime Soda" data-price="90">Add to Cart</button>
               </div>
             </div>
           </div>
@@ -359,7 +401,10 @@
                 class="food-image"
               />
 
-              <div class="food-content">
+              <didiv class="btn-group">
+                  <button class="btn-add-to-cart" data-id="10" data-name="Gulab Jamun" data-price="120">Add to Cart</button>
+                  <button class="btn-buy-now" data-id="10" data-name="Gulab Jamun" data-price="120">Buy Now</button>
+                </div
                 <div class="menu-item-header">
                   <h3>Gulab Jamun</h3>
                   <span class="menu-price">₹120</span>
@@ -368,6 +413,7 @@
                 <span class="food-tag veg">Veg</span>
 
                 <p>Soft milk-solid dumplings soaked in warm sugar syrup</p>
+                <button class="btn-add-to-cart" data-id="10" data-name="Gulab Jamun" data-price="120">Add to Cart</button>
               </div>
             </div>
           </div>
@@ -379,7 +425,10 @@
                 class="food-image"
               />
 
-              <div class="food-content">
+              <didiv class="btn-group">
+                  <button class="btn-add-to-cart" data-id="11" data-name="Rasmalai" data-price="140">Add to Cart</button>
+                  <button class="btn-buy-now" data-id="11" data-name="Rasmalai" data-price="140">Buy Now</button>
+                </div
                 <div class="menu-item-header">
                   <h3>Rasmalai</h3>
                   <span class="menu-price">₹140</span>
@@ -388,6 +437,7 @@
                 <span class="food-tag veg">Veg</span>
 
                 <p>Soft paneer discs soaked in creamy saffron-flavored milk</p>
+                <button class="btn-add-to-cart" data-id="11" data-name="Rasmalai" data-price="140">Add to Cart</button>
               </div>
             </div>
           </div>
@@ -398,7 +448,10 @@
               <div class="food-content">
                 <div class="menu-item-header">
                   <h3>Kesar Pista Kulfi</h3>
-                  <span class="menu-price">₹130</span>
+                 div class="btn-group">
+                  <button class="btn-add-to-cart" data-id="12" data-name="Kesar Pista Kulfi" data-price="130">Add to Cart</button>
+                  <button class="btn-buy-now" data-id="12" data-name="Kesar Pista Kulfi" data-price="130">Buy Now</button>
+                </div
                 </div>
 
                 <span class="food-tag veg">Veg</span>
@@ -407,6 +460,7 @@
                   Traditional Indian frozen dessert flavored with saffron and
                   pistachios
                 </p>
+                <button class="btn-add-to-cart" data-id="12" data-name="Kesar Pista Kulfi" data-price="130">Add to Cart</button>
               </div>
             </div>
           </div>
@@ -768,6 +822,121 @@
         </div>
       </div>
     </footer>
+
+    <!-- Cart Sidebar -->
+    <aside class="cart-sidebar" id="cartSidebar">
+      <div class="cart-header">
+        <h2>Your Cart</h2>
+        <button class="cart-close" id="cartClose" aria-label="Close Cart">✕</button>
+      </div>
+      
+      <div class="cart-items" id="cartItems">
+        <p class="cart-empty">Your cart is empty</p>
+      </div>
+      
+      <div class="cart-summary" id="cartSummary" style="display: none;">
+        <div class="summary-row">
+          <span>Subtotal:</span>
+          <span id="subtotal">₹0</span>
+        </div>
+        <div class="summary-row">
+          <span>GST (18%):</span>
+          <span id="gst">₹0</span>
+        </div>
+        <div class="summary-row total">
+          <span>Total:</span>
+          <span id="total">₹0</span>
+        </div>
+      </div>
+      
+      <button class="btn btn-primary btn-confirm" id="confirmOrderBtn" style="display: none;">
+        Confirm Order
+      </button>
+    </aside>
+    
+    <!-- Cart Overlay -->
+    <div class="cart-overlay" id="cartOverlay"></div>
+    
+    <!-- Order Confirmation Modal -->
+    <div class="modal" id="orderModal">
+      <div class="modal-content">
+        <button class="modal-close" id="modalClose" aria-label="Close Modal">✕</button>
+        <div class="modal-body">
+          <h2 class="modal-title">Order Summary</h2>
+          <div class="modal-summary" id="modalSummary">
+            <!-- Summary will be populated here -->
+          </div>
+          <button class="btn btn-primary btn-full" id="successBtn">
+            Place Order
+          </button>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Success Modal -->
+    <div class="modal" id="successModal">
+      <div class="modal-content modal-success">
+        <div class="success-icon">✓</div>
+        <h2 class="modal-title">Order Confirmed!</h2>
+        <p class="success-message">Your order has been successfully placed.</p>
+        <p class="success-submessage">Thank you for dining with us!</p>
+        <button class="btn btn-primary btn-full" id="closeSuccessBtn">
+          Continue Shopping
+        </button>
+      </div>
+    </div>
+
+    <!-- Quick Order Modal (Buy Now) -->
+    <div class="modal" id="quickOrderModal">
+      <div class="modal-content modal-quick-order">
+        <button class="modal-close" id="quickOrderClose" aria-label="Close Modal">✕</button>
+        <div class="modal-body">
+          <h2 class="modal-title" id="quickOrderTitle">Item Name</h2>
+          <div class="quick-order-container">
+            <div class="quick-order-details">
+              <div class="item-price-display">
+                <span class="item-price-label">Price per Item:</span>
+                <span class="item-price" id="quickOrderPrice">₹0</span>
+              </div>
+              
+              <div class="quantity-selector">
+                <label for="quickOrderQty">Quantity:</label>
+                <div class="qty-control">
+                  <button class="qty-btn" id="qtyDecrease">−</button>
+                  <input type="number" id="quickOrderQty" min="1" value="1" />
+                  <button class="qty-btn" id="qtyIncrease">+</button>
+                </div>
+              </div>
+            </div>
+            
+            <div class="quick-order-bill">
+              <h3>Order Bill</h3>
+              <div class="bill-item">
+                <span id="billItemName">Item Name</span>
+                <span id="billItemSubtotal" class="bill-value">₹0</span>
+              </div>
+              <div class="bill-separator"></div>
+              <div class="bill-row">
+                <span>Subtotal:</span>
+                <span id="billSubtotal" class="bill-value">₹0</span>
+              </div>
+              <div class="bill-row">
+                <span>GST (18%):</span>
+                <span id="billGst" class="bill-value">₹0</span>
+              </div>
+              <div class="bill-row bill-total">
+                <span>Total:</span>
+                <span id="billTotal" class="bill-value">₹0</span>
+              </div>
+            </div>
+          </div>
+          
+          <button class="btn btn-primary btn-full" id="placeQuickOrder">
+            Place Order
+          </button>
+        </div>
+      </div>
+    </div>
 
     <button id="backToTop">BACK TO TOP ▲</button>
 

@@ -608,3 +608,518 @@ backToTopBtn.addEventListener("click", () => {
     behavior: "smooth",
   });
 });
+
+/* ──────────────────────────────────────────────────────
+   CART SYSTEM - COMPLETE IMPLEMENTATION
+   ────────────────────────────────────────────────────── */
+
+// Cart State Management
+const CART_STORAGE_KEY = "lighthouse_cart";
+let cart = [];
+
+// Load cart from localStorage
+function loadCart() {
+  try {
+    const stored = localStorage.getItem(CART_STORAGE_KEY);
+    cart = stored ? JSON.parse(stored) : [];
+  } catch (error) {
+    console.error("Error loading cart:", error);
+    cart = [];
+  }
+}
+
+// Save cart to localStorage
+function saveCart() {
+  try {
+    localStorage.setItem(CART_STORAGE_KEY, JSON.stringify(cart));
+  } catch (error) {
+    console.error("Error saving cart:", error);
+  }
+}
+
+// Get DOM elements
+const cartBtn = document.getElementById("cartBtn");
+const cartToggle = document.getElementById("cartToggle");
+const cartClose = document.getElementById("cartClose");
+const cartSidebar = document.getElementById("cartSidebar");
+const cartOverlay = document.getElementById("cartOverlay");
+const cartItemsContainer = document.getElementById("cartItems");
+const cartBadge = document.getElementById("cartBadge");
+const cartSummary = document.getElementById("cartSummary");
+const confirmOrderBtn = document.getElementById("confirmOrderBtn");
+const orderModal = document.getElementById("orderModal");
+const successModal = document.getElementById("successModal");
+const modalClose = document.getElementById("modalClose");
+const successBtn = document.getElementById("successBtn");
+const closeSuccessBtn = document.getElementById("closeSuccessBtn");
+
+// Add to cart button functionality
+document.addEventListener("click", (e) => {
+  if (e.target.classList.contains("btn-add-to-cart")) {
+    const itemId = e.target.dataset.id;
+    const itemName = e.target.dataset.name;
+    const itemPrice = parseFloat(e.target.dataset.price);
+
+    addToCart(itemId, itemName, itemPrice);
+    
+    // Visual feedback
+    const originalText = e.target.textContent;
+    e.target.textContent = "✓ Added";
+    e.target.style.backgroundColor = "var(--color-primary-dark)";
+    setTimeout(() => {
+      e.target.textContent = originalText;
+      e.target.style.backgroundColor = "";
+    }, 1500);
+  }
+});
+
+// Add item to cart
+function addToCart(id, name, price) {
+  const existingItem = cart.find((item) => item.id === id);
+
+  if (existingItem) {
+    existingItem.quantity += 1;
+  } else {
+    cart.push({
+      id,
+      name,
+      price,
+      quantity: 1,
+    });
+  }
+
+  saveCart();
+  updateCartUI();
+}
+
+// Remove item from cart
+function removeFromCart(id) {
+  cart = cart.filter((item) => item.id !== id);
+  saveCart();
+  updateCartUI();
+}
+
+// Update item quantity
+function updateQuantity(id, newQuantity) {
+  if (newQuantity <= 0) {
+    removeFromCart(id);
+    return;
+  }
+
+  const item = cart.find((item) => item.id === id);
+  if (item) {
+    item.quantity = newQuantity;
+    saveCart();
+    updateCartUI();
+  }
+}
+
+// Calculate totals
+function calculateTotals() {
+  const subtotal = cart.reduce(
+    (sum, item) => sum + item.price * item.quantity,
+    0
+  );
+  const gst = subtotal * 0.18; // 18% GST
+  const total = subtotal + gst;
+
+  return {
+    subtotal: subtotal.toFixed(2),
+    gst: gst.toFixed(2),
+    total: total.toFixed(2),
+  };
+}
+
+// Update cart UI
+function updateCartUI() {
+  updateCartBadge();
+  renderCartItems();
+  updateCartSummary();
+}
+
+// Update cart badge count
+function updateCartBadge() {
+  const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
+  cartBadge.textContent = totalItems;
+}
+
+// Render cart items
+function renderCartItems() {
+  if (cart.length === 0) {
+    cartItemsContainer.innerHTML = '<p class="cart-empty">Your cart is empty</p>';
+    cartSummary.style.display = "none";
+    confirmOrderBtn.style.display = "none";
+    return;
+  }
+
+  cartItemsContainer.innerHTML = cart
+    .map(
+      (item) => `
+    <div class="cart-item" data-id="${item.id}">
+      <div class="cart-item-header">
+        <span class="cart-item-name">${item.name}</span>
+        <button class="cart-item-remove" data-id="${item.id}" aria-label="Remove item">×</button>
+      </div>
+      <div class="cart-item-quantity">
+        <button class="qty-btn decrease-btn" data-id="${item.id}">−</button>
+        <span class="qty-display">${item.quantity}</span>
+        <button class="qty-btn increase-btn" data-id="${item.id}">+</button>
+      </div>
+      <div class="cart-item-price">
+        ₹${item.price}
+      </div>
+      <div class="cart-item-subtotal">
+        Subtotal: ₹${(item.price * item.quantity).toFixed(2)}
+      </div>
+    </div>
+  `
+    )
+    .join("");
+
+  // Add event listeners to quantity buttons
+  document.querySelectorAll(".increase-btn").forEach((btn) => {
+    btn.addEventListener("click", () => {
+      const id = btn.dataset.id;
+      const item = cart.find((item) => item.id === id);
+      if (item) updateQuantity(id, item.quantity + 1);
+    });
+  });
+
+  document.querySelectorAll(".decrease-btn").forEach((btn) => {
+    btn.addEventListener("click", () => {
+      const id = btn.dataset.id;
+      const item = cart.find((item) => item.id === id);
+      if (item) updateQuantity(id, item.quantity - 1);
+    });
+  });
+
+  document.querySelectorAll(".cart-item-remove").forEach((btn) => {
+    btn.addEventListener("click", () => {
+      removeFromCart(btn.dataset.id);
+    });
+  });
+
+  cartSummary.style.display = "block";
+  confirmOrderBtn.style.display = "block";
+}
+
+// Update cart summary
+function updateCartSummary() {
+  const totals = calculateTotals();
+
+  document.getElementById("subtotal").textContent = `₹${totals.subtotal}`;
+  document.getElementById("gst").textContent = `₹${totals.gst}`;
+  document.getElementById("total").textContent = `₹${totals.total}`;
+}
+
+// Toggle cart sidebar
+function toggleCartSidebar() {
+  cartSidebar.classList.toggle("active");
+  cartOverlay.classList.toggle("active");
+}
+
+// Close cart sidebar
+function closeCartSidebar() {
+  cartSidebar.classList.remove("active");
+  cartOverlay.classList.remove("active");
+}
+
+// Cart event listeners
+cartToggle.addEventListener("click", toggleCartSidebar);
+cartClose.addEventListener("click", closeCartSidebar);
+cartOverlay.addEventListener("click", closeCartSidebar);
+
+// Close sidebar when clicking outside
+document.addEventListener("click", (e) => {
+  if (
+    !e.target.closest(".cart-sidebar") &&
+    !e.target.closest(".cart-btn")
+  ) {
+    if (cartSidebar.classList.contains("active")) {
+      closeCartSidebar();
+    }
+  }
+});
+
+// Order confirmation modal
+function showOrderConfirmation() {
+  if (cart.length === 0) return;
+
+  const totals = calculateTotals();
+  const modalSummary = document.getElementById("modalSummary");
+
+  let summaryHTML = '<div class="modal-summary">';
+  cart.forEach((item) => {
+    summaryHTML += `
+      <div class="modal-summary-item">
+        <div class="modal-summary-item-name">
+          <span>${item.name}</span>
+          <span class="modal-summary-item-qty">Qty: ${item.quantity}</span>
+        </div>
+        <span class="modal-summary-item-price">₹${(item.price * item.quantity).toFixed(2)}</span>
+      </div>
+    `;
+  });
+  summaryHTML += "</div>";
+
+  summaryHTML += `
+    <div class="modal-totals">
+      <div class="modal-total-row">
+        <span>Subtotal:</span>
+        <span>₹${totals.subtotal}</span>
+      </div>
+      <div class="modal-total-row">
+        <span>GST (18%):</span>
+        <span>₹${totals.gst}</span>
+      </div>
+      <div class="modal-total-row">
+        <span>Total:</span>
+        <span>₹${totals.total}</span>
+      </div>
+    </div>
+  `;
+
+  modalSummary.innerHTML = summaryHTML;
+  orderModal.classList.add("active");
+}
+
+function closeOrderModal() {
+  orderModal.classList.remove("active");
+}
+
+function showSuccessModal() {
+  closeOrderModal();
+  successModal.classList.add("active");
+}
+
+function closeSuccessModal() {
+  successModal.classList.remove("active");
+  // Clear cart
+  cart = [];
+  saveCart();
+  updateCartUI();
+  closeCartSidebar();
+}
+
+// Modal event listeners
+confirmOrderBtn.addEventListener("click", showOrderConfirmation);
+modalClose.addEventListener("click", closeOrderModal);
+successBtn.addEventListener("click", showSuccessModal);
+closeSuccessBtn.addEventListener("click", closeSuccessModal);
+
+// Close modal on overlay click
+orderModal.addEventListener("click", (e) => {
+  if (e.target === orderModal) {
+    closeOrderModal();
+  }
+});
+
+successModal.addEventListener("click", (e) => {
+  if (e.target === successModal) {
+    closeSuccessModal();
+  }
+});
+
+// Close modals on Escape key
+document.addEventListener("keydown", (e) => {
+  if (e.key === "Escape") {
+    closeOrderModal();
+    closeSuccessModal();
+    closeCartSidebar();
+  }
+});
+
+// Initialize cart on page load
+document.addEventListener("DOMContentLoaded", () => {
+  loadCart();
+  updateCartUI();
+});
+
+/* ──────────────────────────────────────────────────────
+   QUICK ORDER SYSTEM (BUY NOW FUNCTIONALITY)
+   ────────────────────────────────────────────────────── */
+
+// Quick Order Modal Elements
+const quickOrderModal = document.getElementById("quickOrderModal");
+const quickOrderClose = document.getElementById("quickOrderClose");
+const quickOrderTitle = document.getElementById("quickOrderTitle");
+const quickOrderPrice = document.getElementById("quickOrderPrice");
+const quickOrderQty = document.getElementById("quickOrderQty");
+const qtyIncrease = document.getElementById("qtyIncrease");
+const qtyDecrease = document.getElementById("qtyDecrease");
+const placeQuickOrder = document.getElementById("placeQuickOrder");
+
+// Bill display elements
+const billItemName = document.getElementById("billItemName");
+const billItemSubtotal = document.getElementById("billItemSubtotal");
+const billSubtotal = document.getElementById("billSubtotal");
+const billGst = document.getElementById("billGst");
+const billTotal = document.getElementById("billTotal");
+
+// Current quick order item
+let currentQuickOrderItem = null;
+
+// Buy Now button click handler
+document.addEventListener("click", (e) => {
+  if (e.target.classList.contains("btn-buy-now")) {
+    const itemId = e.target.dataset.id;
+    const itemName = e.target.dataset.name;
+    const itemPrice = parseFloat(e.target.dataset.price);
+
+    openQuickOrder(itemId, itemName, itemPrice);
+  }
+});
+
+// Open Quick Order Modal
+function openQuickOrder(id, name, price) {
+  currentQuickOrderItem = { id, name, price, quantity: 1 };
+
+  // Update modal content
+  quickOrderTitle.textContent = name;
+  quickOrderPrice.textContent = `₹${price}`;
+  billItemName.textContent = name;
+  quickOrderQty.value = 1;
+
+  // Update bill
+  updateQuickOrderBill();
+
+  // Show modal
+  quickOrderModal.classList.add("active");
+}
+
+// Update bill display in quick order modal
+function updateQuickOrderBill() {
+  if (!currentQuickOrderItem) return;
+
+  const { price, quantity } = currentQuickOrderItem;
+  const subtotal = price * quantity;
+  const gst = subtotal * 0.18;
+  const total = subtotal + gst;
+
+  billItemSubtotal.textContent = `₹${subtotal.toFixed(2)}`;
+  billSubtotal.textContent = `₹${subtotal.toFixed(2)}`;
+  billGst.textContent = `₹${gst.toFixed(2)}`;
+  billTotal.textContent = `₹${total.toFixed(2)}`;
+}
+
+// Quantity controls in Quick Order Modal
+qtyIncrease.addEventListener("click", () => {
+  if (currentQuickOrderItem) {
+    currentQuickOrderItem.quantity += 1;
+    quickOrderQty.value = currentQuickOrderItem.quantity;
+    updateQuickOrderBill();
+  }
+});
+
+qtyDecrease.addEventListener("click", () => {
+  if (currentQuickOrderItem && currentQuickOrderItem.quantity > 1) {
+    currentQuickOrderItem.quantity -= 1;
+    quickOrderQty.value = currentQuickOrderItem.quantity;
+    updateQuickOrderBill();
+  }
+});
+
+// Manual quantity input
+quickOrderQty.addEventListener("input", (e) => {
+  let value = parseInt(e.target.value) || 1;
+  if (value < 1) value = 1;
+  if (currentQuickOrderItem) {
+    currentQuickOrderItem.quantity = value;
+    updateQuickOrderBill();
+  }
+});
+
+// Close Quick Order Modal
+function closeQuickOrderModal() {
+  quickOrderModal.classList.remove("active");
+  currentQuickOrderItem = null;
+}
+
+quickOrderClose.addEventListener("click", closeQuickOrderModal);
+
+// Close modal when clicking on overlay
+quickOrderModal.addEventListener("click", (e) => {
+  if (e.target === quickOrderModal) {
+    closeQuickOrderModal();
+  }
+});
+
+// Place Quick Order
+placeQuickOrder.addEventListener("click", () => {
+  if (currentQuickOrderItem) {
+    // Create temporary cart with just this item
+    const tempCart = [currentQuickOrderItem];
+    
+    // Show order summary for quick order
+    const totals = calculateQuickOrderTotals(tempCart);
+    showQuickOrderSummary(tempCart, totals);
+    
+    // Close quick order modal
+    closeQuickOrderModal();
+  }
+});
+
+// Calculate totals for quick order
+function calculateQuickOrderTotals(orderItems) {
+  const subtotal = orderItems.reduce(
+    (sum, item) => sum + item.price * item.quantity,
+    0
+  );
+  const gst = subtotal * 0.18;
+  const total = subtotal + gst;
+
+  return {
+    subtotal: subtotal.toFixed(2),
+    gst: gst.toFixed(2),
+    total: total.toFixed(2),
+  };
+}
+
+// Show order summary for quick order
+function showQuickOrderSummary(orderItems, totals) {
+  const modalSummary = document.getElementById("modalSummary");
+
+  let summaryHTML = '<div class="modal-summary">';
+  orderItems.forEach((item) => {
+    summaryHTML += `
+      <div class="modal-summary-item">
+        <div class="modal-summary-item-name">
+          <span>${item.name}</span>
+          <span class="modal-summary-item-qty">Qty: ${item.quantity}</span>
+        </div>
+        <span class="modal-summary-item-price">₹${(item.price * item.quantity).toFixed(2)}</span>
+      </div>
+    `;
+  });
+  summaryHTML += "</div>";
+
+  summaryHTML += `
+    <div class="modal-totals">
+      <div class="modal-total-row">
+        <span>Subtotal:</span>
+        <span>₹${totals.subtotal}</span>
+      </div>
+      <div class="modal-total-row">
+        <span>GST (18%):</span>
+        <span>₹${totals.gst}</span>
+      </div>
+      <div class="modal-total-row">
+        <span>Total:</span>
+        <span>₹${totals.total}</span>
+      </div>
+    </div>
+  `;
+
+  modalSummary.innerHTML = summaryHTML;
+  orderModal.classList.add("active");
+}
+
+// Close modals on Escape key
+document.addEventListener("keydown", (e) => {
+  if (e.key === "Escape") {
+    closeOrderModal();
+    closeSuccessModal();
+    closeCartSidebar();
+    closeQuickOrderModal();
+  }
+});
