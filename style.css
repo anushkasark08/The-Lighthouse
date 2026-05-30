@@ -1323,3 +1323,32 @@ body.light-theme .nav-cta:hover {
   opacity: 1;
   visibility: visible;
 }
+
+.cart-section {
+  margin-top: 2rem;
+  padding: 1rem;
+  border-radius: 10px;
+  background: #fff;
+}
+
+.cart-summary {
+  margin-top: 1rem;
+}
+
+.add-cart-btn,
+.confirm-order-btn {
+  padding: 10px 16px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+@media (max-width: 768px) {
+  .cart-section {
+    width: 100%;
+  }
+
+  .menu-item {
+    flex-direction: column;
+  }
+}

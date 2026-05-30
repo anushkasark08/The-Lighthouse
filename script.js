@@ -608,3 +608,147 @@ backToTopBtn.addEventListener("click", () => {
     behavior: "smooth",
   });
 });
+
+<div className="menu-item">
+  <h3>{item.name}</h3>
+  <p>₹{item.price}</p>
+
+  <button
+    onClick={() => addToCart(item)}
+    className="add-cart-btn"
+  >
+    Add to Cart
+  </button>
+</div>
+
+const addToCart = (item) => {
+  const existing = cart.find(
+    (cartItem) => cartItem.id === item.id
+  );
+
+  if (existing) {
+    setCart(
+      cart.map((cartItem) =>
+        cartItem.id === item.id
+          ? {
+              ...cartItem,
+              quantity: cartItem.quantity + 1,
+            }
+          : cartItem
+      )
+    );
+  } else {
+    setCart([
+      ...cart,
+      {
+        ...item,
+        quantity: 1,
+      },
+    ]);
+  }
+};
+
+<div className="cart-section">
+  <h2>Your Cart</h2>
+
+  {cart.length === 0 ? (
+    <p>No items selected.</p>
+  ) : (
+    cart.map((item) => (
+      <div key={item.id}>
+        <span>{item.name}</span>
+
+        <button
+          onClick={() =>
+            updateQuantity(item.id, -1)
+          }
+        >
+          -
+        </button>
+
+        <span>{item.quantity}</span>
+
+        <button
+          onClick={() =>
+            updateQuantity(item.id, 1)
+          }
+        >
+          +
+        </button>
+
+        <span>
+          ₹{item.price * item.quantity}
+        </span>
+      </div>
+    ))
+  )}
+</div>
+
+const updateQuantity = (id, change) => {
+  setCart(
+    cart
+      .map((item) =>
+        item.id === id
+          ? {
+              ...item,
+              quantity: item.quantity + change,
+            }
+          : item
+      )
+      .filter((item) => item.quantity > 0)
+  );
+};
+
+const subtotal = cart.reduce(
+  (acc, item) =>
+    acc + item.price * item.quantity,
+  0
+);
+
+const gst = subtotal * 0.18;
+
+const total = subtotal + gst;
+
+<div className="cart-summary">
+  <p>Subtotal: ₹{subtotal.toFixed(2)}</p>
+
+  <p>GST (18%): ₹{gst.toFixed(2)}</p>
+
+  <h3>Total: ₹{total.toFixed(2)}</h3>
+</div>
+
+const confirmOrder = () => {
+  alert(
+    `Order Confirmed!\nTotal: ₹${total.toFixed(
+      2
+    )}`
+  );
+
+  setCart([]);
+};
+
+<button
+  className="confirm-order-btn"
+  onClick={confirmOrder}
+>
+  Confirm Order
+</button>
+
+const [showSummary, setShowSummary] =
+  useState(false);
+
+  setShowSummary(true);
+
+  {showSummary && (
+  <div className="order-summary">
+    <h2>Order Summary</h2>
+
+    {cart.map((item) => (
+      <p key={item.id}>
+        {item.name} × {item.quantity}
+      </p>
+    ))}
+
+    <h3>Total: ₹{total.toFixed(2)}</h3>
+  </div>
+)}
