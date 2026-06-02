@@ -175,26 +175,31 @@ themeToggle.addEventListener("click", () => {
 // ── Menu Search and Filter ─────────────────────────
 
 const filterBtns = document.querySelectorAll(".filter-btn");
-
+const typeFilterBtns = document.querySelectorAll(".type-filter-btn");
 const menuSearch = document.getElementById("menu-search");
 
-function filterMenuItems(filter = "all", searchText = "") {
-  const menuItems = document.querySelectorAll(".menu-item");
+function filterMenuItems() {
+  const activeCategoryBtn = document.querySelector(".filter-btn.active");
+  const activeTypeBtn = document.querySelector(".type-filter-btn.active");
+  const searchText = menuSearch ? menuSearch.value.trim().toLowerCase() : "";
 
+  const categoryFilter = activeCategoryBtn ? activeCategoryBtn.dataset.filter : "all";
+  const typeFilter = activeTypeBtn ? activeTypeBtn.dataset.type : "all";
+
+  const menuItems = document.querySelectorAll(".menu-item");
   let visibleCount = 0;
 
   menuItems.forEach((item) => {
     const itemName = item.querySelector("h3").textContent.toLowerCase();
-
     const category = item.dataset.category;
+    const type = item.dataset.type;
 
-    const matchesSearch = itemName.includes(searchText.toLowerCase());
+    const matchesSearch = itemName.includes(searchText);
+    const matchesCategory = categoryFilter === "all" || category === categoryFilter;
+    const matchesType = typeFilter === "all" || type === typeFilter;
 
-    const matchesFilter = filter === "all" || category === filter;
-
-    if (matchesSearch && matchesFilter) {
+    if (matchesSearch && matchesCategory && matchesType) {
       item.classList.remove("hidden-item");
-
       visibleCount++;
     } else {
       item.classList.add("hidden-item");
@@ -202,15 +207,11 @@ function filterMenuItems(filter = "all", searchText = "") {
   });
 
   let noResults = document.querySelector(".no-results");
-
   if (!visibleCount) {
     if (!noResults) {
       noResults = document.createElement("p");
-
       noResults.className = "no-results";
-
       noResults.textContent = "No menu items found.";
-
       document.querySelector(".menu-content").appendChild(noResults);
     }
   } else if (noResults) {
@@ -222,20 +223,24 @@ function filterMenuItems(filter = "all", searchText = "") {
 filterBtns.forEach((btn) => {
   btn.addEventListener("click", () => {
     filterBtns.forEach((b) => b.classList.remove("active"));
-
     btn.classList.add("active");
+    filterMenuItems();
+  });
+});
 
-    filterMenuItems(btn.dataset.filter, menuSearch.value);
+// Type filter buttons
+typeFilterBtns.forEach((btn) => {
+  btn.addEventListener("click", () => {
+    typeFilterBtns.forEach((b) => b.classList.remove("active"));
+    btn.classList.add("active");
+    filterMenuItems();
   });
 });
 
 // Search
-menuSearch.addEventListener("input", () => {
-  const activeFilter =
-    document.querySelector(".filter-btn.active").dataset.filter;
-
-  filterMenuItems(activeFilter, menuSearch.value);
-});
+if (menuSearch) {
+  menuSearch.addEventListener("input", filterMenuItems);
+}
 
 // Smooth scroll for navigation links
 function smoothScroll(e) {

@@ -617,6 +617,68 @@ body.light-theme .nav-cta:hover {
   border-color: var(--color-primary);
 }
 
+.menu-type-filters {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  background-color: var(--color-bg-card);
+  border: 1px solid var(--color-border);
+  border-radius: 30px;
+  padding: 4px;
+  gap: 4px;
+  margin-top: 10px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.type-filter-btn {
+  padding: 10px 22px;
+  border: none;
+  background-color: transparent;
+  color: var(--color-text-muted);
+  cursor: pointer;
+  transition: all var(--transition);
+  border-radius: 25px;
+  font-size: 0.875rem;
+  font-family: var(--font-sans);
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  letter-spacing: 0.5px;
+}
+
+.type-filter-btn:hover {
+  color: var(--color-text);
+}
+
+.type-filter-btn.active {
+  background-color: var(--color-primary);
+  color: var(--color-bg);
+}
+
+.type-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  display: inline-block;
+}
+
+.type-dot.veg {
+  background-color: #48bb78;
+}
+
+.type-dot.nonveg {
+  background-color: #e53e3e;
+}
+
+.type-filter-btn.active .type-dot.veg {
+  background-color: var(--color-bg);
+}
+
+.type-filter-btn.active .type-dot.nonveg {
+  background-color: var(--color-bg);
+}
+
 .hidden-item {
   display: none !important;
 }
