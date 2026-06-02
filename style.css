@@ -1323,3 +1323,14 @@ body.light-theme .nav-cta:hover {
   opacity: 1;
   visibility: visible;
 }
+
+/* Cursor Particle System */
+.cursor-canvas {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  pointer-events: none;
+  z-index: 1001; /* Safe overlay above nav (1000) */
+}

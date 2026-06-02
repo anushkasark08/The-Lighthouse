@@ -608,3 +608,119 @@ backToTopBtn.addEventListener("click", () => {
     behavior: "smooth",
   });
 });
+
+// ── Interactive Cursor Particle Effect ─────────────────────────────────────
+class CursorParticles {
+  constructor() {
+    this.init();
+  }
+
+  init() {
+    // 1. Accessibility & Mobile Safeguards
+    const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
+    const isTouchDevice = window.matchMedia("(hover: none) and (pointer: coarse)");
+
+    if (prefersReducedMotion.matches || isTouchDevice.matches) {
+      return; // Disable effect
+    }
+
+    // 2. Setup Canvas
+    this.canvas = document.createElement("canvas");
+    this.canvas.className = "cursor-canvas";
+    document.body.appendChild(this.canvas);
+    this.ctx = this.canvas.getContext("2d");
+
+    this.particles = [];
+    this.maxParticles = 80;
+    this.animationFrameId = null;
+    this.primaryColor = getComputedStyle(document.documentElement).getPropertyValue("--color-primary").trim() || "#c9a962";
+
+    this.resize();
+    this.bindEvents();
+    this.animate();
+  }
+
+  resize() {
+    this.canvas.width = window.innerWidth;
+    this.canvas.height = window.innerHeight;
+  }
+
+  bindEvents() {
+    window.addEventListener("resize", () => this.resize());
+    
+    // Update primary color if theme changes (assuming --color-primary might change)
+    themeToggle?.addEventListener("click", () => {
+      // Need a slight delay to allow CSS variable to apply
+      setTimeout(() => {
+        this.primaryColor = getComputedStyle(document.documentElement).getPropertyValue("--color-primary").trim() || "#c9a962";
+      }, 50);
+    });
+
+    window.addEventListener("mousemove", (e) => {
+      this.spawnParticle(e.clientX, e.clientY);
+    });
+
+    // Pause animation when document is hidden
+    document.addEventListener("visibilitychange", () => {
+      if (document.hidden) {
+        if (this.animationFrameId) {
+          cancelAnimationFrame(this.animationFrameId);
+          this.animationFrameId = null;
+        }
+      } else {
+        this.animate();
+      }
+    });
+  }
+
+  spawnParticle(x, y) {
+    const particle = {
+      x,
+      y,
+      size: Math.random() * 3 + 1, // 1px to 4px
+      speedX: Math.random() * 2 - 1, // -1 to 1
+      speedY: Math.random() * -1.5 - 0.5, // -0.5 to -2 (drift upwards)
+      life: 1.0, // Opacity
+      decay: Math.random() * 0.02 + 0.02, // 0.02 to 0.04
+    };
+
+    this.particles.push(particle);
+
+    // Limit active particles to max allowed
+    if (this.particles.length > this.maxParticles) {
+      this.particles.shift(); // Remove oldest
+    }
+  }
+
+  animate() {
+    this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+
+    for (let i = this.particles.length - 1; i >= 0; i--) {
+      const p = this.particles[i];
+      
+      p.x += p.speedX;
+      p.y += p.speedY;
+      p.life -= p.decay;
+
+      if (p.life <= 0) {
+        this.particles.splice(i, 1);
+        continue;
+      }
+
+      this.ctx.beginPath();
+      this.ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+      this.ctx.fillStyle = this.primaryColor;
+      this.ctx.globalAlpha = p.life;
+      this.ctx.fill();
+    }
+    
+    this.ctx.globalAlpha = 1.0; // Reset alpha
+
+    this.animationFrameId = requestAnimationFrame(() => this.animate());
+  }
+}
+
+// Initialize when DOM is ready
+document.addEventListener("DOMContentLoaded", () => {
+  new CursorParticles();
+});
