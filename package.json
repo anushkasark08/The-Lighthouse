@@ -1,0 +1,25 @@
+{
+  "name": "the-lighthouse-kajal",
+  "version": "1.0.0",
+  "description": "<div align=\"center\">",
+  "main": "script.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "serve ."
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/KajalAhir23/The-Lighthouse-kajal.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/KajalAhir23/The-Lighthouse-kajal/issues"
+  },
+  "homepage": "https://github.com/KajalAhir23/The-Lighthouse-kajal#readme",
+  "devDependencies": {
+    "serve": "^14.2.6"
+  }
+}

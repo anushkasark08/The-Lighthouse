@@ -1323,3 +1323,376 @@ body.light-theme .nav-cta:hover {
   opacity: 1;
   visibility: visible;
 }
+
+/* ═══════════════════════════════════════════════════
+   LIGHT THEME — COMPLETE PROFESSIONAL FINAL VERSION
+═══════════════════════════════════════════════════ */
+
+/* ── Navbar base reset ──────────────────────────── */
+body.light-theme .nav,
+body.light-theme .nav *,
+body.light-theme .nav-container {
+  background: transparent !important;
+}
+
+/* ── Navbar ─────────────────────────────────────── */
+body.light-theme .nav {
+  background: rgba(254, 248, 225, 0.97) !important;
+  backdrop-filter: blur(14px);
+  border-bottom: 1px solid rgba(201, 169, 98, 0.30);
+  box-shadow: 0 2px 24px rgba(120, 85, 20, 0.10);
+}
+
+body.light-theme .nav.scrolled {
+  background: rgba(254, 248, 225, 0.99) !important;
+  backdrop-filter: blur(18px);
+  border-bottom: 1px solid rgba(201, 169, 98, 0.40);
+  box-shadow: 0 4px 28px rgba(120, 85, 20, 0.14);
+}
+
+body.light-theme .nav-link {
+  color: #3a2a10 !important;
+  font-weight: 500;
+  letter-spacing: 1.5px;
+  background: transparent !important;
+}
+
+body.light-theme .nav-link.active,
+body.light-theme .nav-link:hover {
+  color: #c9a962 !important;
+  background: transparent !important;
+}
+
+body.light-theme .nav-logo {
+  color: #c9a962 !important;
+  letter-spacing: 1px;
+  background: transparent !important;
+}
+
+body.light-theme .nav-menu {
+  background: transparent !important;
+}
+
+body.light-theme .nav-cta {
+  border: 1.5px solid #c9a962 !important;
+  color: #c9a962 !important;
+  font-weight: 600;
+  letter-spacing: 1.5px;
+  background: transparent !important;
+  border-radius: 2px;
+}
+
+body.light-theme .nav-cta:hover {
+  background-color: #c9a962 !important;
+  color: #ffffff !important;
+  box-shadow: 0 4px 14px rgba(201, 169, 98, 0.40);
+}
+
+body.light-theme .theme-toggle {
+  border: 1.5px solid rgba(201, 169, 98, 0.55) !important;
+  color: #3a2a10 !important;
+  background: rgba(201, 169, 98, 0.10) !important;
+  border-radius: 50%;
+}
+
+body.light-theme .theme-toggle:hover {
+  border-color: #c9a962 !important;
+  background: rgba(201, 169, 98, 0.22) !important;
+}
+
+body.light-theme .nav-toggle span {
+  background-color: #3a2a10 !important;
+}
+
+@media (max-width: 768px) {
+  body.light-theme .nav-menu {
+    background-color: #fef9eb !important;
+  }
+}
+
+/* ── Hero Section ───────────────────────────────── */
+body.light-theme .hero-overlay {
+  background: linear-gradient(
+    160deg,
+    rgba(20, 14, 5,  0.10) 0%,
+    rgba(30, 20, 8,  0.25) 40%,
+    rgba(15, 10, 3,  0.55) 100%
+  );
+}
+
+body.light-theme .hero-title {
+  color: #fef6e4;
+  text-shadow:
+    0 2px 12px rgba(0, 0, 0, 0.50),
+    0 4px 40px rgba(0, 0, 0, 0.25);
+  letter-spacing: -1px;
+}
+
+body.light-theme .hero-tagline {
+  color: #c9a962;
+  letter-spacing: 5px;
+  font-weight: 600;
+}
+
+body.light-theme .hero-subtitle {
+  color: #efe6d5;
+  font-size: 1.15rem;
+  letter-spacing: 0.5px;
+}
+
+body.light-theme .hero-scroll span {
+  color: #c9b47a;
+  letter-spacing: 3px;
+}
+
+body.light-theme .clicktoscroll {
+  color: #c9b47a;
+}
+
+/* ── Buttons ────────────────────────────────────── */
+body.light-theme .btn-primary {
+  background-color: #c9a962;
+  color: #1a1208;
+  font-weight: 700;
+  letter-spacing: 2px;
+  box-shadow: 0 4px 18px rgba(201, 169, 98, 0.40);
+  border: none;
+}
+
+body.light-theme .btn-primary:hover {
+  background-color: #b8963f;
+  box-shadow: 0 6px 24px rgba(201, 169, 98, 0.55);
+  transform: translateY(-2px);
+}
+
+body.light-theme .btn-outline {
+  border: 1.5px solid rgba(254, 246, 228, 0.85);
+  color: #fef6e4;
+  font-weight: 600;
+  letter-spacing: 2px;
+  backdrop-filter: blur(4px);
+  background: rgba(255, 255, 255, 0.08);
+}
+
+body.light-theme .btn-outline:hover {
+  background-color: rgba(254, 246, 228, 0.95);
+  color: #1a1208;
+  box-shadow: 0 4px 18px rgba(0, 0, 0, 0.20);
+  transform: translateY(-2px);
+}
+
+/* ── About Section ──────────────────────────────── */
+body.light-theme .about {
+  background-color: var(--color-bg);
+}
+
+body.light-theme .about-text {
+  color: #5f5b55;
+}
+
+/* ── Menu Section ───────────────────────────────── */
+body.light-theme .menu-section {
+  background-color: var(--color-bg-lighter);
+}
+
+body.light-theme .menu-tab.active {
+  color: #ffffff;
+  box-shadow: 0 2px 10px rgba(201, 169, 98, 0.35);
+}
+
+body.light-theme .filter-btn:hover,
+body.light-theme .filter-btn.active {
+  color: #ffffff;
+}
+
+body.light-theme .menu-search {
+  background-color: #ffffff;
+  color: #1a1714;
+  border-color: #d6d1ca;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+body.light-theme .menu-search::placeholder {
+  color: #9a958e;
+}
+
+/* ── Reservation Section ────────────────────────── */
+body.light-theme .reservation-overlay {
+  background: rgba(254, 248, 230, 0.88) !important;
+}
+
+body.light-theme .reservation-info .section-title,
+body.light-theme .reservation-info h2 {
+  color: #2c1f0e !important;
+}
+
+body.light-theme .reservation-info p {
+  color: #5f5b55 !important;
+}
+
+body.light-theme .reservation-info .section-label {
+  color: #c9a962 !important;
+}
+
+body.light-theme .detail-item strong {
+  color: #2c1f0e !important;
+}
+
+body.light-theme .detail-item span {
+  color: #7a6a55 !important;
+}
+
+body.light-theme .detail-icon {
+  color: #c9a962 !important;
+}
+
+body.light-theme .reservation-form {
+  background-color: #ffffff !important;
+  box-shadow: 0 8px 40px rgba(120, 85, 20, 0.14);
+  border: 1px solid rgba(201, 169, 98, 0.20);
+  border-radius: 6px;
+}
+
+body.light-theme .form-group label {
+  color: #5f5b55;
+  font-weight: 600;
+  letter-spacing: 1px;
+}
+
+body.light-theme .form-group input,
+body.light-theme .form-group select,
+body.light-theme .form-group textarea {
+  background-color: #faf7f2;
+  color: #1a1714;
+  border-color: #d6d1ca;
+  border-radius: 4px;
+}
+
+body.light-theme .form-group input:focus,
+body.light-theme .form-group select:focus,
+body.light-theme .form-group textarea:focus {
+  border-color: #c9a962;
+  box-shadow: 0 0 0 3px rgba(201, 169, 98, 0.15);
+}
+
+body.light-theme .form-group input::placeholder,
+body.light-theme .form-group textarea::placeholder {
+  color: #b0aa9e;
+}
+
+body.light-theme .form-note {
+  color: #9a958e !important;
+}
+
+body.light-theme .reservation-form .btn-primary {
+  background-color: #c9a962 !important;
+  color: #1a1208 !important;
+  font-weight: 700;
+  letter-spacing: 2px;
+  box-shadow: 0 4px 18px rgba(201, 169, 98, 0.40);
+  border: none;
+  border-radius: 4px;
+}
+
+body.light-theme .reservation-form .btn-primary:hover {
+  background-color: #b8963f !important;
+  box-shadow: 0 6px 24px rgba(201, 169, 98, 0.55);
+  transform: translateY(-2px);
+}
+
+/* ── Reviews Section ────────────────────────────── */
+body.light-theme .reviews-section {
+  background-color: var(--color-bg-lighter);
+}
+
+body.light-theme .review-card {
+  background-color: #ffffff;
+  border-color: #e8e2d9;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.06);
+  transition: box-shadow 0.3s ease, transform 0.3s ease;
+}
+
+body.light-theme .review-card:hover {
+  box-shadow: 0 8px 28px rgba(0, 0, 0, 0.10);
+  transform: translateY(-3px);
+}
+
+body.light-theme .review-avatar {
+  color: #ffffff;
+}
+
+body.light-theme .review-name {
+  color: #1a1714;
+  font-weight: 600;
+}
+
+body.light-theme .star-btn {
+  color: #d6d1ca;
+}
+
+body.light-theme .review-form-wrapper {
+  background-color: #ffffff;
+  border-color: #e8e2d9;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
+}
+
+body.light-theme .review-form-heading {
+  color: #2c1f0e;
+}
+
+/* ── Location Section ───────────────────────────── */
+body.light-theme .location {
+  background-color: var(--color-bg);
+}
+
+body.light-theme .location-hours h3,
+body.light-theme .location-contact h3 {
+  color: #c9a962;
+}
+
+body.light-theme .hours-item span:first-child {
+  color: #2c1f0e;
+}
+
+body.light-theme .hours-item span:last-child {
+  color: #7a6a55;
+}
+
+body.light-theme .location-contact strong {
+  color: #2c1f0e;
+}
+
+body.light-theme .location-contact p {
+  color: #7a6a55;
+}
+
+/* ── Footer ─────────────────────────────────────── */
+body.light-theme .footer {
+  background-color: var(--color-bg-lighter);
+  border-top: 1px solid #e0d9ce;
+}
+
+body.light-theme .footer-links a {
+  color: #7a746c;
+}
+
+body.light-theme .footer-links a:hover {
+  color: var(--color-primary);
+}
+
+body.light-theme .footer-copy {
+  color: #9a958e;
+}
+
+/* ── Social Links ───────────────────────────────── */
+body.light-theme .social-link {
+  border-color: #d6d1ca;
+  color: #3a2a10;
+  transition: all 0.3s ease;
+}
+
+body.light-theme .social-link:hover {
+  border-color: var(--color-primary);
+  color: var(--color-primary);
+  box-shadow: 0 2px 10px rgba(201, 169, 98, 0.25);
+}
