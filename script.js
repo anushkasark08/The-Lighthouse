@@ -373,6 +373,15 @@ if (heroScroll) {
   },
 );
 
+
+function sanitizeText(str) {
+  return String(str)
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#039;");
+}
 // Event Listeners
 window.addEventListener("scroll", handleScroll);
 navToggle.addEventListener("click", toggleMobileMenu);
@@ -438,27 +447,51 @@ function renderReviews() {
   if (!grid) return;
 
   const userReviews = getReviews();
-
-  // Pinned review always at top, user reviews below
   const allReviews = [pinnedReview, ...userReviews];
 
-  grid.innerHTML = allReviews
-    .map(
-      (r) => `
-    <div class="review-card">
-      <div class="review-stars">${"★".repeat(r.rating)}${"☆".repeat(5 - r.rating)}</div>
-      <p class="review-text">${r.text}</p>
-      <div class="review-author">
-        <div class="review-avatar">${r.name.slice(0, 2).toUpperCase()}</div>
-        <div>
-          <span class="review-name">${r.name}</span>
-          <span class="review-date">${r.date}</span>
-        </div>
-      </div>
-    </div>
-  `,
-    )
-    .join("");
+  grid.innerHTML = "";
+
+  allReviews.forEach((r) => {
+    const card = document.createElement("div");
+    card.className = "review-card";
+
+    const stars = document.createElement("div");
+    stars.className = "review-stars";
+    stars.textContent = "★".repeat(r.rating) + "☆".repeat(5 - r.rating);
+
+    const reviewText = document.createElement("p");
+    reviewText.className = "review-text";
+    reviewText.textContent = r.text;
+
+    const author = document.createElement("div");
+    author.className = "review-author";
+
+    const avatar = document.createElement("div");
+    avatar.className = "review-avatar";
+    avatar.textContent = r.name.slice(0, 2).toUpperCase();
+
+    const info = document.createElement("div");
+
+    const name = document.createElement("span");
+    name.className = "review-name";
+    name.textContent = r.name;
+
+    const date = document.createElement("span");
+    date.className = "review-date";
+    date.textContent = r.date;
+
+    info.appendChild(name);
+    info.appendChild(date);
+
+    author.appendChild(avatar);
+    author.appendChild(info);
+
+    card.appendChild(stars);
+    card.appendChild(reviewText);
+    card.appendChild(author);
+
+    grid.appendChild(card);
+  });
 }
 
 // Star rating widget
@@ -550,9 +583,9 @@ if (reviewForm) {
 
     const newReview = {
       id: Date.now(),
-      name,
+      name: sanitizeText(name),
       rating: selectedRating,
-      text: reviewText,
+      text: sanitizeText(reviewText),
       date: dateStr,
     };
 
