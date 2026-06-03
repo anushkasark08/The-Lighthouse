@@ -19,14 +19,33 @@ if (dateInput) {
 }
 
 // Update available time slots based on current time
+// 1. Run this setup when the page loads to restrict the HTML calendar picker
+function initReservationCalendar() {
+  if (!dateInput) return;
+  
+  const now = new Date();
+  // Calculate exactly 24 hours into the future
+  const minAllowedDateTime = new Date(now.getTime() + 24 * 60 * 60 * 1000);
+  const minDateString = minAllowedDateTime.toISOString().split("T")[0];
+
+  // Restrict the HTML calendar so users cannot select today or past dates
+  dateInput.min = minDateString;
+}
+initReservationCalendar(); // Call this immediately on script load
+
+
+// 2. Your updated function to handle the time slots dynamically
 function updateAvailableTimes() {
   if (!dateInput || !timeSelect) return;
 
   const selectedDate = dateInput.value;
-  const today = new Date().toISOString().split("T")[0];
   const now = new Date();
-  const currentHours = now.getHours();
-  const currentMinutes = now.getMinutes();
+  
+  // Calculate the exact cutoff point (24 hours from this exact millisecond)
+  const minAllowedDateTime = new Date(now.getTime() + 24 * 60 * 60 * 1000);
+  const minDateString = minAllowedDateTime.toISOString().split("T")[0];
+  const targetHours = minAllowedDateTime.getHours();
+  const targetMinutes = minAllowedDateTime.getMinutes();
 
   const options = timeSelect.querySelectorAll("option");
 
@@ -35,20 +54,22 @@ function updateAvailableTimes() {
 
     const [optionHours, optionMinutes] = option.value.split(":").map(Number);
 
-    if (selectedDate === today) {
-      // Disable if time is in the past (with a 30 min buffer)
+    // If the user selected the earliest possible day allowed
+    if (selectedDate === minDateString) {
+      // Disable time slots that fall within the 24-hour confirmation window
       if (
-        optionHours < currentHours ||
-        (optionHours === currentHours && optionMinutes <= currentMinutes + 30)
+        optionHours < targetHours ||
+        (optionHours === targetHours && optionMinutes <= targetMinutes)
       ) {
         option.disabled = true;
         if (option.selected) {
-          timeSelect.value = "";
+          timeSelect.value = ""; // Reset choice if it's now disabled
         }
       } else {
         option.disabled = false;
       }
     } else {
+      // Any date further out in the future is 100% available
       option.disabled = false;
     }
   });
@@ -397,6 +418,7 @@ if (reservationForm) {
 document.addEventListener("DOMContentLoaded", () => {
   handleScroll();
   setupIntersectionObserver();
+  initReservationCalendar();
   updateAvailableTimes();
 });
 
