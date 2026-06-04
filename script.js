@@ -608,3 +608,14 @@ backToTopBtn.addEventListener("click", () => {
     behavior: "smooth",
   });
 });
+
+
+// Restrict reservation dates to today and future dates
+document.addEventListener("DOMContentLoaded", () => {
+  const dateInput = document.getElementById("date");
+
+  if (dateInput) {
+    const today = new Date().toISOString().split("T")[0];
+    dateInput.min = today;
+  }
+});

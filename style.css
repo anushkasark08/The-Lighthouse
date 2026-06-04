@@ -1323,3 +1323,9 @@ body.light-theme .nav-cta:hover {
   opacity: 1;
   visibility: visible;
 }
+input[type="date"] {
+  cursor: pointer;
+}
+input[type="date"]::-webkit-calendar-picker-indicator {
+  cursor: pointer;
+}
