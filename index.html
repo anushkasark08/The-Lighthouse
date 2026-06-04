@@ -20,7 +20,7 @@
     <!-- Navigation -->
     <nav class="nav" id="nav">
       <div class="nav-container">
-        <a href="#home" class="nav-logo">The Lighthouse</a>
+        <a href="#home" class="nav-logo" id="site-logo">The Lighthouse</a>
         <button class="nav-toggle" id="navToggle" aria-label="Toggle menu">
           <span></span>
           <span></span>
@@ -28,32 +28,35 @@
         </button>
         <ul class="nav-menu" id="navMenu">
           <li>
-            <a href="#home" class="nav-link active" data-section="home">Home</a>
+            <a href="#home" class="nav-link active" data-section="home" id="nav-home">Home</a>
           </li>
           <li>
-            <a href="#about" class="nav-link" data-section="about">About</a>
+            <a href="#about" class="nav-link" data-section="about" id="nav-about">About</a>
           </li>
-          <li><a href="#menu" class="nav-link" data-section="menu">Menu</a></li>
+          <li><a href="#menu" class="nav-link" data-section="menu" id="nav-menu">Menu</a></li>
           <li>
-            <a href="#reservation" class="nav-link" data-section="reservation"
+            <a href="#reservation" class="nav-link" data-section="reservation" id="nav-reservation"
               >Reservations</a
             >
           </li>
           <li>
-            <a href="#reviews" class="nav-link" data-section="reviews"
+            <a href="#reviews" class="nav-link" data-section="reviews" id="nav-reviews"
               >Reviews</a
             >
           </li>
           <li>
-            <a href="#location" class="nav-link" data-section="location"
+            <a href="#location" class="nav-link" data-section="location" id="nav-location"
               >Location</a
             >
           </li>
         </ul>
+        <button id="langToggle" class="lang-btn" aria-label="Change Language">
+          🌐 हिंदी
+        </button>
         <button id="themeToggle" class="theme-toggle" aria-label="Toggle Theme">
           🌙
         </button>
-        <a href="#reservation" class="nav-cta">Book a Table</a>
+        <a href="#reservation" class="nav-cta" id="book-table">Book a Table</a>
       </div>
     </nav>
 
@@ -67,18 +70,30 @@
       </div>
       <div class="hero-overlay"></div>
       <div class="hero-content">
-        <span class="hero-tagline">Est. 1987</span>
-        <h1 class="hero-title">The Lighthouse</h1>
-        <p class="hero-subtitle">
+        <span class="hero-tagline" id="hero-tagline">
+          Est. 1987
+        </span>
+        <h1 class="hero-title" id="hero-title">
+          The Lighthouse
+        </h1>
+        <p class="hero-subtitle" id="hero-subtitle">
           Where culinary artistry meets timeless elegance
         </p>
         <div class="hero-buttons">
-          <a href="#menu" class="btn btn-primary">Explore Menu</a>
-          <a href="#reservation" class="btn btn-outline">Reserve Table</a>
+          <a href="#menu" class="btn btn-primary" id="explore-menu">
+            Explore Menu
+          </a>
+          <a href="#reservation" class="btn btn-outline" id="reserve-table">
+            Reserve Table
+          </a>
         </div>
         <div class="hero-scroll">
-          <span>Scroll To Discover</span>
-          <span class="clicktoscroll">Click To Scroll</span>
+          <span id="scroll-discover">
+            Scroll To Discover
+          </span>
+          <span class="clicktoscroll" id="click-scroll">
+            Click To Scroll
+          </span>
           <div class="scroll-indicator"></div>
           <svg
             class="scroll-arrow"
@@ -104,18 +119,17 @@
             <img src="./images/chef.jpg" alt="Our Chef at Work" />
           </div>
           <div class="about-content">
-            <span class="section-label">Our Story</span>
-            <h2 class="section-title">A Legacy of Flavor</h2>
-            <p class="about-text">
-              For over three decades, The Lighthouse has been a beacon of
-              culinary excellence. Our chef combines classical techniques with
-              modern innovation, sourcing only the finest seasonal ingredients
-              from local farms and trusted suppliers.
+            <span class="section-label" id="about-label">
+              Our Story
+            </span>
+            <h2 class="section-title" id="about-title">
+              A Legacy of Flavor
+            </h2>
+            <p class="about-text" id="about-text-1">
+              For over three decades, The Lighthouse has been a beacon of culinary excellence. Our chef combines classical techniques with modern innovation, sourcing only the finest seasonal ingredients from local farms and trusted suppliers.
             </p>
-            <p class="about-text">
-              Every dish tells a story, every meal creates a memory. We invite
-              you to experience the art of fine dining in an atmosphere of
-              warmth and sophistication.
+            <p class="about-text" id="about-text-2">
+              Every dish tells a story, every meal creates a memory. We invite you to experience the art of fine dining in an atmosphere of warmth and sophistication.
             </p>
           </div>
         </div>
@@ -126,8 +140,12 @@
     <section class="menu-section" id="menu">
       <div class="container">
         <div class="section-header">
-          <span class="section-label">Culinary Offerings</span>
-          <h2 class="section-title">Our Menu</h2>
+          <span class="section-label" id="menu-label">
+            Culinary Offerings
+          </span>
+          <h2 class="section-title" id="menu-title">
+            Our Menu
+          </h2>
         </div>
         <!-- Menu Search + Filters -->
         <div class="menu-controls">
@@ -139,14 +157,24 @@
           />
 
           <div class="menu-filters">
-            <button class="filter-btn active" data-filter="all">All</button>
-            <button class="filter-btn" data-filter="breakfast">
+            <button class="filter-btn active" data-filter="all" id="filter-all">
+              All
+            </button>
+            <button class="filter-btn" data-filter="breakfast" id="filter-breakfast">
               Breakfast
             </button>
-            <button class="filter-btn" data-filter="lunch">Lunch</button>
-            <button class="filter-btn" data-filter="dinner">Dinner</button>
-            <button class="filter-btn" data-filter="desserts">Desserts</button>
-            <button class="filter-btn" data-filter="drinks">Drinks</button>
+            <button class="filter-btn" data-filter="lunch" id="filter-lunch">
+              Lunch
+            </button>
+            <button class="filter-btn" data-filter="dinner" id="filter-dinner">
+              Dinner
+            </button>
+            <button class="filter-btn" data-filter="desserts" id="filter-desserts">
+              Desserts
+            </button>
+            <button class="filter-btn" data-filter="drinks" id="filter-drinks">
+              Drinks
+            </button>
           </div>
         </div>
 
@@ -163,13 +191,13 @@
 
               <div class="food-content">
                 <div class="menu-item-header">
-                  <h3>Masala Dosa</h3>
+                  <h3 id="masala-dosa-name">Masala Dosa</h3>
                   <span class="menu-price">₹180</span>
                 </div>
 
-                <span class="food-tag veg">Veg</span>
+                <span class="food-tag veg" id="masala-dosa-tag">Veg</span>
 
-                <p>Crispy dosa served with chutney and sambar</p>
+                <p id="masala-dosa-desc">Crispy dosa served with chutney and sambar</p>
               </div>
             </div>
           </div>
@@ -183,13 +211,13 @@
 
               <div class="food-content">
                 <div class="menu-item-header">
-                  <h3>Idli Sambar</h3>
+                  <h3 id="idli-name">Idli Sambar</h3>
                   <span class="menu-price">₹120</span>
                 </div>
 
-                <span class="food-tag veg">Veg</span>
+                <span class="food-tag veg" id="idli-tag">Veg</span>
 
-                <p>
+                <p id="idli-desc">
                   Soft steamed idlis served with hot sambar and coconut chutney
                 </p>
               </div>
@@ -206,13 +234,13 @@
 
               <div class="food-content">
                 <div class="menu-item-header">
-                  <h3>Chicken Keema Dosa</h3>
+                  <h3 id="keema-name">Chicken Keema Dosa</h3>
                   <span class="menu-price">₹240</span>
                 </div>
 
-                <span class="food-tag nonveg">Non-Veg</span>
+                <span class="food-tag nonveg" id="keema-tag">Non-Veg</span>
 
-                <p>Crispy dosa stuffed with spicy chicken keema masala</p>
+                <p id="keema-desc">Crispy dosa stuffed with spicy chicken keema masala</p>
               </div>
             </div>
           </div>
@@ -228,13 +256,13 @@
 
               <div class="food-content">
                 <div class="menu-item-header">
-                  <h3>Paneer Butter Masala</h3>
+                  <h3 id="paneer-name">Paneer Butter Masala</h3>
                   <span class="menu-price">₹280</span>
                 </div>
 
-                <span class="food-tag veg">Veg</span>
+                <span class="food-tag veg" id="paneer-tag">Veg</span>
 
-                <p>Rich creamy paneer curry served with butter naan</p>
+                <p id="paneer-desc">Rich creamy paneer curry served with butter naan</p>
               </div>
             </div>
           </div>
@@ -250,13 +278,13 @@
 
               <div class="food-content">
                 <div class="menu-item-header">
-                  <h3>Hyderabadi Chicken Biryani</h3>
+                  <h3 id="biryani-name">Hyderabadi Chicken Biryani</h3>
                   <span class="menu-price">₹320</span>
                 </div>
 
-                <span class="food-tag nonveg">Non-Veg</span>
+                <span class="food-tag nonveg" id="biryani-tag">Non-Veg</span>
 
-                <p>
+                <p id="biryani-desc">
                   Aromatic dum biryani layered with spicy chicken and basmati
                   rice
                 </p>
@@ -274,13 +302,13 @@
 
               <div class="food-content">
                 <div class="menu-item-header">
-                  <h3>Butter Chicken</h3>
+                  <h3 id="butter-name">Butter Chicken</h3>
                   <span class="menu-price">₹340</span>
                 </div>
 
-                <span class="food-tag nonveg">Non-Veg</span>
+                <span class="food-tag nonveg" id="butter-tag">Non-Veg</span>
 
-                <p>Creamy tomato-based chicken curry with naan</p>
+                <p id="butter-desc">Creamy tomato-based chicken curry with naan</p>
               </div>
             </div>
           </div>
@@ -296,13 +324,13 @@
 
               <div class="food-content">
                 <div class="menu-item-header">
-                  <h3>Mango Lassi</h3>
+                  <h3 id="lassi-name">Mango Lassi</h3>
                   <span class="menu-price">₹110</span>
                 </div>
 
-                <span class="food-tag veg">Veg</span>
+                <span class="food-tag veg" id="lassi-tag">Veg</span>
 
-                <p>
+                <p id="lassi-desc">
                   Refreshing chilled yogurt drink blended with sweet mango pulp
                 </p>
               </div>
@@ -318,13 +346,13 @@
 
               <div class="food-content">
                 <div class="menu-item-header">
-                  <h3>Masala Chai</h3>
+                  <h3 id="chai-name">Masala Chai</h3>
                   <span class="menu-price">₹70</span>
                 </div>
 
-                <span class="food-tag veg">Veg</span>
+                <span class="food-tag veg" id="chai-tag">Veg</span>
 
-                <p>
+                <p id="chai-desc">
                   Traditional Indian tea brewed with aromatic spices and milk
                 </p>
               </div>
@@ -340,13 +368,13 @@
 
               <div class="food-content">
                 <div class="menu-item-header">
-                  <h3>Fresh Lime Soda</h3>
+                  <h3 id="soda-name">Fresh Lime Soda</h3>
                   <span class="menu-price">₹90</span>
                 </div>
 
-                <span class="food-tag veg">Veg</span>
+                <span class="food-tag veg" id="soda-tag">Veg</span>
 
-                <p>Fizzy lime soda served sweet, salted, or mixed style</p>
+                <p id="soda-desc">Fizzy lime soda served sweet, salted, or mixed style</p>
               </div>
             </div>
           </div>
@@ -361,13 +389,13 @@
 
               <div class="food-content">
                 <div class="menu-item-header">
-                  <h3>Gulab Jamun</h3>
+                  <h3 id="gulab-name">Gulab Jamun</h3>
                   <span class="menu-price">₹120</span>
                 </div>
 
-                <span class="food-tag veg">Veg</span>
+                <span class="food-tag veg" id="gulab-tag">Veg</span>
 
-                <p>Soft milk-solid dumplings soaked in warm sugar syrup</p>
+                <p id="gulab-desc">Soft milk-solid dumplings soaked in warm sugar syrup</p>
               </div>
             </div>
           </div>
@@ -381,13 +409,13 @@
 
               <div class="food-content">
                 <div class="menu-item-header">
-                  <h3>Rasmalai</h3>
+                  <h3 id="rasmalai-name">Rasmalai</h3>
                   <span class="menu-price">₹140</span>
                 </div>
 
-                <span class="food-tag veg">Veg</span>
+                <span class="food-tag veg" id="rasmalai-tag">Veg</span>
 
-                <p>Soft paneer discs soaked in creamy saffron-flavored milk</p>
+                <p id="rasmalai-desc">Soft paneer discs soaked in creamy saffron-flavored milk</p>
               </div>
             </div>
           </div>
@@ -397,13 +425,13 @@
 
               <div class="food-content">
                 <div class="menu-item-header">
-                  <h3>Kesar Pista Kulfi</h3>
+                  <h3 id="kulfi-name">Kesar Pista Kulfi</h3>
                   <span class="menu-price">₹130</span>
                 </div>
 
-                <span class="food-tag veg">Veg</span>
+                <span class="food-tag veg" id="kulfi-tag">Veg</span>
 
-                <p>
+                <p id="kulfi-desc">
                   Traditional Indian frozen dessert flavored with saffron and
                   pistachios
                 </p>
@@ -423,9 +451,13 @@
       <div class="container">
         <div class="reservation-content">
           <div class="reservation-info">
-            <span class="section-label">Join Us</span>
-            <h2 class="section-title">Make a Reservation</h2>
-            <p>
+            <span class="section-label" id="reservation-label">
+              Join Us
+            </span>
+            <h2 class="section-title" id="reservation-title">
+              Make a Reservation
+            </h2>
+            <p id="reservation-text">
               Reserve your table and experience an unforgettable evening of
               culinary excellence. For parties larger than 8, please call us
               directly.
@@ -443,7 +475,7 @@
                   <path d="M12 6v6l4 2" />
                 </svg>
                 <div>
-                  <strong>Hours</strong>
+                  <strong id="hours-title">Hours</strong>
                   <span>Mon-Sun: 7AM - 11PM</span>
                 </div>
               </div>
@@ -460,7 +492,7 @@
                   />
                 </svg>
                 <div>
-                  <strong>Call Us</strong>
+                  <strong id="call-title">Call Us</strong>
                   <span>(555) 123-4567</span>
                 </div>
               </div>
@@ -469,7 +501,9 @@
           <form class="reservation-form" id="reservationForm">
             <div class="form-row">
               <div class="form-group">
-                <label for="name">Full Name</label>
+                <label for="name" id="label-name">
+                  Full Name
+                </label>
                 <input
                   type="text"
                   id="name"
@@ -479,7 +513,9 @@
                 />
               </div>
               <div class="form-group">
-                <label for="email">Email</label>
+                <label for="email" id="label-email">
+                  Email
+                </label>
                 <input
                   type="email"
                   id="email"
@@ -491,7 +527,9 @@
             </div>
             <div class="form-row">
               <div class="form-group">
-                <label for="phone">Phone</label>
+                <label for="phone" id="label-phone">
+                  Phone
+                </label>
                 <input
                   type="tel"
                   id="phone"
@@ -501,9 +539,13 @@
                 />
               </div>
               <div class="form-group">
-                <label for="guests">Guests</label>
+                <label for="guests" id="label-guests">
+                  Guests
+                </label>
                 <select id="guests" name="guests" required>
-                  <option value="">Select guests</option>
+                  <option value="" id="select-guests">
+                    Select guests
+                  </option>
                   <option value="1">1 Guest</option>
                   <option value="2">2 Guests</option>
                   <option value="3">3 Guests</option>
@@ -517,13 +559,19 @@
             </div>
             <div class="form-row">
               <div class="form-group">
-                <label for="date">Date</label>
+                <label for="date" id="label-date">
+                  Date
+                </label>
                 <input type="date" id="date" name="date" required />
               </div>
               <div class="form-group">
-                <label for="time">Time</label>
+                <label for="time" id="label-time">
+                  Time
+                </label>
                 <select id="time" name="time" required>
-                  <option value="">Select time</option>
+                  <option value="" id="select-time">
+                    Select time
+                  </option>
                   <option value="07:00">7:00 AM</option>
                   <option value="08:00">8:00 AM</option>
                   <option value="09:00">9:00 AM</option>
@@ -543,7 +591,9 @@
               </div>
             </div>
             <div class="form-group full-width">
-              <label for="requests">Special Requests</label>
+              <label for="requests" id="label-requests">
+                Special Requests
+              </label>
               <textarea
                 id="requests"
                 name="requests"
@@ -551,10 +601,14 @@
                 placeholder="Dietary restrictions, special occasions, seating preferences..."
               ></textarea>
             </div>
-            <button type="submit" class="btn btn-primary btn-full">
+            <button
+              type="submit"
+              class="btn btn-primary btn-full"
+              id="reservation-btn"
+            >
               Request Reservation
             </button>
-            <p class="form-note">
+            <p class="form-note" id="reservation-note">
               You will receive a confirmation email within 24 hours.
             </p>
           </form>
@@ -566,8 +620,12 @@
     <section class="reviews-section" id="reviews">
       <div class="container">
         <div class="section-header">
-          <span class="section-label">Guest Experiences</span>
-          <h2 class="section-title">Customer Reviews</h2>
+          <span class="section-label" id="reviews-label">
+            Guest Experiences
+          </span>
+          <h2 class="section-title" id="reviews-title">
+            Customer Reviews
+          </h2>
         </div>
 
         <!-- Reviews display -->
@@ -575,11 +633,15 @@
 
         <!-- Submit form -->
         <div class="review-form-wrapper">
-          <h3 class="review-form-heading">Share Your Experience</h3>
+          <h3 class="review-form-heading" id="share-experience">
+            Share Your Experience
+          </h3>
           <form id="review-form">
             <div class="form-row">
               <div class="form-group">
-                <label for="review-name">Your Name</label>
+                <label for="review-name" id="review-name-label">
+                  Your Name
+                </label>
                 <input
                   type="text"
                   id="review-name"
@@ -588,7 +650,7 @@
                 />
               </div>
               <div class="form-group">
-                <label>Rating</label>
+                <label id="rating-label">Rating</label>
                 <div class="star-input" id="star-input">
                   <button type="button" class="star-btn" data-value="1">
                     &#9733;
@@ -610,7 +672,9 @@
               </div>
             </div>
             <div class="form-group full-width">
-              <label for="review-text">Your Review</label>
+              <label for="review-text" id="review-text-label">
+                Your Review
+              </label>
               <textarea
                 id="review-text"
                 rows="4"
@@ -618,7 +682,11 @@
                 required
               ></textarea>
             </div>
-            <button type="submit" class="btn btn-primary btn-full">
+            <button
+              type="submit"
+              class="btn btn-primary btn-full"
+              id="submit-review-btn"
+            >
               Submit Review
             </button>
             <p id="review-msg" class="form-note" style="display: none"></p>
@@ -632,8 +700,12 @@
       <div class="container">
         <div class="location-grid">
           <div class="location-info">
-            <span class="section-label">Find Us</span>
-            <h2 class="section-title">Our Location</h2>
+            <span class="section-label" id="location-label">
+              Find Us
+            </span>
+            <h2 class="section-title" id="location-title">
+              Our Location
+            </h2>
             <div class="location-address">
               <svg
                 class="location-icon"
@@ -651,30 +723,48 @@
               </div>
             </div>
             <div class="location-hours">
-              <h3>Opening Hours</h3>
+              <h3 id="opening-hours">
+                Opening Hours
+              </h3>
               <div class="hours-grid">
                 <div class="hours-item">
-                  <span>Breakfast</span>
+                  <span id="hours-breakfast">
+                    Breakfast
+                  </span>
                   <span>7:00 AM - 11:00 AM</span>
                 </div>
                 <div class="hours-item">
-                  <span>Lunch</span>
+                  <span id="hours-lunch">
+                    Lunch
+                  </span>
                   <span>11:30 AM - 3:00 PM</span>
                 </div>
                 <div class="hours-item">
-                  <span>Dinner</span>
+                  <span id="hours-dinner">
+                    Dinner
+                  </span>
                   <span>5:00 PM - 11:00 PM</span>
                 </div>
                 <div class="hours-item">
-                  <span>Bar</span>
+                  <span id="hours-bar">
+                    Bar
+                  </span>
                   <span>11:00 AM - Midnight</span>
                 </div>
               </div>
             </div>
             <div class="location-contact">
-              <h3>Contact</h3>
-              <p><strong>Phone:</strong> (555) 123-4567</p>
-              <p><strong>Email:</strong> reservations@thelighthouse.com</p>
+              <h3 id="contact-title">
+                Contact
+              </h3>
+              <p>
+                <strong id="phone-label">Phone:</strong>
+                (555) 123-4567
+              </p>
+              <p>
+                <strong id="email-label">Email:</strong>
+                reservations@thelighthouse.com
+              </p>
             </div>
             <div class="social-links">
               <a
@@ -752,18 +842,30 @@
       <div class="container">
         <div class="footer-content">
           <div class="footer-brand">
-            <h3>The Lighthouse</h3>
-            <p>Fine Dining Since 1987</p>
+            <h3 id="footer-brand">
+              The Lighthouse
+            </h3>
+            <p id="footer-tagline">
+              Fine Dining Since 1987
+            </p>
           </div>
           <div class="footer-links">
-            <a href="#home">Home</a>
-            <a href="#menu">Menu</a>
-            <a href="#reservation">Reservations</a>
-            <a href="#reviews">Reviews</a>
-            <a href="#location">Location</a>
+            <a href="#home" id="footer-home">Home</a>
+            <a href="#menu" id="footer-menu">Menu</a>
+            <a href="#reservation" id="footer-reservation">
+              Reservations
+            </a>
+            <a href="#reviews" id="footer-reviews">
+              Reviews
+            </a>
+            <a href="#location" id="footer-location">
+              Location
+            </a>
           </div>
           <div class="footer-copy">
-            <p>&copy; 2026 The Lighthouse. All rights reserved.</p>
+            <p id="footer-copy">
+              &copy; 2026 The Lighthouse. All rights reserved.
+            </p>
           </div>
         </div>
       </div>
