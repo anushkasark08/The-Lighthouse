@@ -58,7 +58,7 @@ function updateAvailableTimes() {
 let lastScroll = 0;
 
 function handleScroll() {
-  const currentScroll = window.pageYOffset;
+  const currentScroll = window.scrollY;
 
   // Add scrolled class for background
   if (currentScroll > 50) {
@@ -91,7 +91,7 @@ function handleScroll() {
 // Update active navigation link based on scroll position
 function updateActiveNavLink() {
   const sections = document.querySelectorAll("section[id]");
-  const scrollPosition = window.pageYOffset + 150;
+  const scrollPosition = window.scrollY + 150;
 
   sections.forEach((section) => {
     const sectionTop = section.offsetTop;
