@@ -15,6 +15,7 @@
       rel="stylesheet"
     />
     <link rel="stylesheet" href="style.css" />
+    <link rel="icon" type="image/x-icon" href="./images/favicon.ico" />
   </head>
   <body>
     <!-- Navigation -->
@@ -101,7 +102,11 @@
       <div class="container">
         <div class="about-grid">
           <div class="about-image">
-            <img src="./images/chef.jpg" alt="Our Chef at Work" />
+            <img
+              src="./images/chef.jpg"
+              alt="Head chef preparing a gourmet meal"
+              loading="lazy"
+            />
           </div>
           <div class="about-content">
             <span class="section-label">Our Story</span>
@@ -132,11 +137,12 @@
         <!-- Menu Search + Filters -->
         <div class="menu-controls">
           <input
-            type="text"
-            id="menu-search"
-            placeholder="Search dishes..."
-            class="menu-search"
-          />
+         type="text"
+        id="menu-search"
+        placeholder="Search dishes..."
+      class="menu-search"
+      aria-label="Search menu items"
+/>
 
           <div class="menu-filters">
             <button class="filter-btn active" data-filter="all">All</button>
@@ -157,8 +163,9 @@
             <div class="food-card">
               <img
                 src="./images/MasalaDosa.jpg"
-                alt="Masala Dosa"
+                alt="Masala Dosa served with chutney and sambar"
                 class="food-image"
+                loading="lazy"
               />
 
               <div class="food-content">
@@ -680,6 +687,7 @@
               <a
                 href="https://www.instagram.com"
                 target="_blank"
+                rel="noopener noreferrer"
                 class="social-link"
                 aria-label="Instagram"
               >
