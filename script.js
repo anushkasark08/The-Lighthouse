@@ -245,9 +245,13 @@ function smoothScroll(e) {
 
   if (targetSection) {
     const offsetTop = targetSection.offsetTop - 80;
+    const prefersReducedMotion = window.matchMedia(
+      "(prefers-reduced-motion: reduce)"
+    ).matches;
+
     window.scrollTo({
       top: offsetTop,
-      behavior: "smooth",
+      behavior: prefersReducedMotion ? "auto" : "smooth",
     });
   }
 
@@ -373,15 +377,6 @@ if (heroScroll) {
   },
 );
 
-
-function sanitizeText(str) {
-  return String(str)
-    .replace(/&/g, "&amp;")
-    .replace(/</g, "&lt;")
-    .replace(/>/g, "&gt;")
-    .replace(/"/g, "&quot;")
-    .replace(/'/g, "&#039;");
-}
 // Event Listeners
 window.addEventListener("scroll", handleScroll);
 navToggle.addEventListener("click", toggleMobileMenu);
@@ -447,51 +442,27 @@ function renderReviews() {
   if (!grid) return;
 
   const userReviews = getReviews();
+
+  // Pinned review always at top, user reviews below
   const allReviews = [pinnedReview, ...userReviews];
 
-  grid.innerHTML = "";
-
-  allReviews.forEach((r) => {
-    const card = document.createElement("div");
-    card.className = "review-card";
-
-    const stars = document.createElement("div");
-    stars.className = "review-stars";
-    stars.textContent = "★".repeat(r.rating) + "☆".repeat(5 - r.rating);
-
-    const reviewText = document.createElement("p");
-    reviewText.className = "review-text";
-    reviewText.textContent = r.text;
-
-    const author = document.createElement("div");
-    author.className = "review-author";
-
-    const avatar = document.createElement("div");
-    avatar.className = "review-avatar";
-    avatar.textContent = r.name.slice(0, 2).toUpperCase();
-
-    const info = document.createElement("div");
-
-    const name = document.createElement("span");
-    name.className = "review-name";
-    name.textContent = r.name;
-
-    const date = document.createElement("span");
-    date.className = "review-date";
-    date.textContent = r.date;
-
-    info.appendChild(name);
-    info.appendChild(date);
-
-    author.appendChild(avatar);
-    author.appendChild(info);
-
-    card.appendChild(stars);
-    card.appendChild(reviewText);
-    card.appendChild(author);
-
-    grid.appendChild(card);
-  });
+  grid.innerHTML = allReviews
+    .map(
+      (r) => `
+    <div class="review-card">
+      <div class="review-stars">${"★".repeat(r.rating)}${"☆".repeat(5 - r.rating)}</div>
+      <p class="review-text">${r.text}</p>
+      <div class="review-author">
+        <div class="review-avatar">${r.name.slice(0, 2).toUpperCase()}</div>
+        <div>
+          <span class="review-name">${r.name}</span>
+          <span class="review-date">${r.date}</span>
+        </div>
+      </div>
+    </div>
+  `,
+    )
+    .join("");
 }
 
 // Star rating widget
@@ -583,9 +554,9 @@ if (reviewForm) {
 
     const newReview = {
       id: Date.now(),
-      name: sanitizeText(name),
+      name,
       rating: selectedRating,
-      text: sanitizeText(reviewText),
+      text: reviewText,
       date: dateStr,
     };
 
@@ -636,8 +607,12 @@ window.addEventListener("scroll", () => {
 
 // Scroll to top on click
 backToTopBtn.addEventListener("click", () => {
+  const prefersReducedMotion = window.matchMedia(
+    "(prefers-reduced-motion: reduce)"
+  ).matches;
+
   window.scrollTo({
     top: 0,
-    behavior: "smooth",
+    behavior: prefersReducedMotion ? "auto" : "smooth",
   });
 });
