@@ -42,6 +42,7 @@ body {
   color: var(--color-text);
   line-height: 1.6;
   overflow-x: hidden;
+  cursor: none;
 }
 
 img {
@@ -1322,4 +1323,15 @@ body.light-theme .nav-cta:hover {
 #backToTop.visible {
   opacity: 1;
   visibility: visible;
+}
+
+.spoon-cursor {
+  position: fixed;
+  top: 0;
+  left: 0;
+  font-size: 24px;
+  color: var(--color-primary);
+  pointer-events: none;
+  z-index: 9999;
+  transform: translate(-50%, -50%) rotate(45deg);
 }

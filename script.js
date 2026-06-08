@@ -608,3 +608,10 @@ backToTopBtn.addEventListener("click", () => {
     behavior: "smooth",
   });
 });
+
+const spoonCursor = document.querySelector(".spoon-cursor");
+
+document.addEventListener("mousemove", (e) => {
+  spoonCursor.style.left = e.clientX + "px";
+  spoonCursor.style.top = e.clientY + "px";
+});
