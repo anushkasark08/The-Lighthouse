@@ -608,3 +608,391 @@ backToTopBtn.addEventListener("click", () => {
     behavior: "smooth",
   });
 });
+
+// ── Food Item Ratings & Reviews ──────────────────────────────────────────
+
+const FOOD_RATING_KEY = "lighthouse_food_ratings";
+
+const initialFoodRatings = {
+  "Masala Dosa": {
+    rating: 4.6,
+    count: 182,
+    reviews: [
+      { name: "Aarav Sharma", rating: 5, text: "Extremely crispy and delicious dosa. The sambar was fresh and perfect!", date: "02 Jun 2026" },
+      { name: "Pooja Patel", rating: 4, text: "Really liked the coconut chutney. Dosa was good.", date: "28 May 2026" }
+    ]
+  },
+  "Idli Sambar": {
+    rating: 4.4,
+    count: 95,
+    reviews: [
+      { name: "Rohan Gupta", rating: 5, text: "Very soft idlis, like clouds. Sambar is flavorful.", date: "05 Jun 2026" },
+      { name: "Ananya Roy", rating: 4, text: "Good breakfast, simple and clean.", date: "01 Jun 2026" }
+    ]
+  },
+  "Chicken Keema Dosa": {
+    rating: 4.5,
+    count: 64,
+    reviews: [
+      { name: "Kabir Khan", rating: 5, text: "Wow, unique fusion! Spicy keema filling inside crispy dosa.", date: "04 Jun 2026" },
+      { name: "Sid Malhotra", rating: 4, text: "Keema was very flavorful. A bit oily but tasty.", date: "25 May 2026" }
+    ]
+  },
+  "Paneer Butter Masala": {
+    rating: 4.7,
+    count: 215,
+    reviews: [
+      { name: "Meera Nair", rating: 5, text: "Super rich, buttery and creamy. The paneer was incredibly soft.", date: "03 Jun 2026" },
+      { name: "Vikram Sen", rating: 4, text: "Sweet and savory, perfect with butter naan.", date: "30 May 2026" }
+    ]
+  },
+  "Hyderabadi Chicken Biryani": {
+    rating: 4.8,
+    count: 340,
+    reviews: [
+      { name: "Zaid Shaikh", rating: 5, text: "Hands down the best dum biryani in town! Highly aromatic and chicken was juicy.", date: "06 Jun 2026" },
+      { name: "Nisha Rao", rating: 4, text: "Spicy and delicious, portion size is very generous.", date: "02 Jun 2026" }
+    ]
+  },
+  "Butter Chicken": {
+    rating: 4.6,
+    count: 278,
+    reviews: [
+      { name: "Rithvik S.", rating: 5, text: "Absolutely phenomenal butter chicken. Creamy and perfectly spiced.", date: "05 Jun 2026" },
+      { name: "Sanya G.", rating: 4, text: "Very creamy tomato gravy, chicken pieces were tender.", date: "29 May 2026" }
+    ]
+  },
+  "Mango Lassi": {
+    rating: 4.5,
+    count: 112,
+    reviews: [
+      { name: "John Doe", rating: 5, text: "Thick, creamy, and loaded with fresh mango flavor. Must-try!", date: "06 Jun 2026" },
+      { name: "Lisa Ray", rating: 4, text: "Very refreshing on a warm day.", date: "03 Jun 2026" }
+    ]
+  },
+  "Masala Chai": {
+    rating: 4.7,
+    count: 189,
+    reviews: [
+      { name: "Suresh Kumar", rating: 5, text: "Authentic tapri-style masala chai. Ginger and cardamom flavors are amazing.", date: "06 Jun 2026" },
+      { name: "Aditi Joshi", rating: 4, text: "Great tea, perfect sweetness.", date: "04 Jun 2026" }
+    ]
+  },
+  "Fresh Lime Soda": {
+    rating: 4.2,
+    count: 78,
+    reviews: [
+      { name: "David M.", rating: 4, text: "Nice lime soda, went for the sweet and salted mix.", date: "01 Jun 2026" }
+    ]
+  },
+  "Gulab Jamun": {
+    rating: 4.8,
+    count: 145,
+    reviews: [
+      { name: "Tina Sharma", rating: 5, text: "Melt in the mouth gulab jamuns. Served warm and fresh.", date: "05 Jun 2026" }
+    ]
+  },
+  "Rasmalai": {
+    rating: 4.6,
+    count: 123,
+    reviews: [
+      { name: "Ritu Verma", rating: 5, text: "Perfect saffron-flavored milk. Rasmalai discs were soft and juicy.", date: "04 Jun 2026" }
+    ]
+  },
+  "Kesar Pista Kulfi": {
+    rating: 4.5,
+    count: 88,
+    reviews: [
+      { name: "Gaurav D.", rating: 5, text: "Rich kesar pista flavor. Reminds me of traditional street kulfi.", date: "03 Jun 2026" }
+    ]
+  }
+};
+
+function getFoodRatings() {
+  const stored = localStorage.getItem(FOOD_RATING_KEY);
+  if (stored) return JSON.parse(stored);
+  localStorage.setItem(FOOD_RATING_KEY, JSON.stringify(initialFoodRatings));
+  return initialFoodRatings;
+}
+
+function saveFoodRatings(data) {
+  localStorage.setItem(FOOD_RATING_KEY, JSON.stringify(data));
+}
+
+function injectFoodRatingPlaceholders() {
+  const foodCards = document.querySelectorAll(".food-card");
+  foodCards.forEach(card => {
+    const h3 = card.querySelector("h3");
+    if (!h3) return;
+    const name = h3.textContent.trim();
+    
+    const tag = card.querySelector(".food-tag");
+    if (!tag) return;
+    
+    // Check if placeholder already exists to prevent duplicates
+    if (card.querySelector(".food-card-rating")) return;
+    
+    const ratingDiv = document.createElement("div");
+    ratingDiv.className = "food-card-rating";
+    ratingDiv.setAttribute("data-dish", name);
+    
+    // Insert rating after the veg/non-veg tag
+    tag.parentNode.insertBefore(ratingDiv, tag.nextSibling);
+  });
+}
+
+function renderFoodRatings() {
+  const ratings = getFoodRatings();
+  const placeholders = document.querySelectorAll(".food-card-rating");
+  
+  placeholders.forEach(el => {
+    const dishName = el.getAttribute("data-dish");
+    const data = ratings[dishName] || { rating: 0.0, count: 0 };
+    
+    const avg = data.rating.toFixed(1);
+    const filledCount = Math.round(data.rating);
+    
+    const starsHtml = `<span class="rating-stars">${"★".repeat(filledCount)}<span class="empty-star">${"☆".repeat(5 - filledCount)}</span></span>`;
+    el.innerHTML = `${starsHtml} <span class="rating-number">${avg}</span> <span class="rating-count">(${data.count} rating${data.count === 1 ? '' : 's'})</span>`;
+  });
+}
+
+function injectDishModalMarkup() {
+  if (document.getElementById("dishModal")) return;
+  const modalDiv = document.createElement("div");
+  modalDiv.id = "dishModal";
+  modalDiv.className = "dish-modal";
+  modalDiv.style.display = "none";
+  modalDiv.innerHTML = `
+    <div class="dish-modal-overlay" onclick="closeDishModal()"></div>
+    <div class="dish-modal-container">
+      <button class="dish-modal-close" onclick="closeDishModal()">&times;</button>
+      <div class="dish-modal-content">
+        <div class="dish-modal-left">
+          <img id="modalDishImg" src="" alt="Dish Image" class="modal-dish-image" />
+          <div class="modal-dish-info">
+            <h2 id="modalDishName" class="modal-dish-name"></h2>
+            <div class="modal-dish-meta">
+              <span id="modalDishTag" class="food-tag"></span>
+              <span id="modalDishPrice" class="modal-dish-price"></span>
+            </div>
+            <p id="modalDishDesc" class="modal-dish-desc"></p>
+          </div>
+        </div>
+        <div class="dish-modal-right">
+          <h3 class="modal-section-title">Reviews & Feedback</h3>
+          <div class="modal-rating-summary">
+            <span id="modalAverageRating" class="modal-avg-number">0.0</span>
+            <div class="modal-stars-container">
+              <div id="modalSummaryStars" class="stars-row"></div>
+              <span id="modalTotalRatings" class="modal-ratings-count">0 reviews</span>
+            </div>
+          </div>
+          
+          <div id="modalReviewsList" class="modal-reviews-list"></div>
+
+          <form id="dish-review-form" class="modal-review-form" onsubmit="submitDishReview(event)">
+            <h4>Add Your Review</h4>
+            <div class="form-group" style="margin-bottom: 12px;">
+              <input type="text" id="dish-review-name" placeholder="Your Name" required 
+                     style="padding: 10px 12px; font-size: 0.9rem; border: 1px solid var(--color-border); border-radius: 4px; background: var(--color-bg); color: var(--color-text); width: 100%;" />
+            </div>
+            <div class="form-group" style="margin-bottom: 12px;">
+              <div class="star-rating-select">
+                <span class="star-label">Your Rating:</span>
+                <div class="star-selector" id="dish-star-selector">
+                  <span class="star-select-btn" data-val="5">&#9733;</span>
+                  <span class="star-select-btn" data-val="4">&#9733;</span>
+                  <span class="star-select-btn" data-val="3">&#9733;</span>
+                  <span class="star-select-btn" data-val="2">&#9733;</span>
+                  <span class="star-select-btn" data-val="1">&#9733;</span>
+                </div>
+                <input type="hidden" id="dish-review-rating" value="0" />
+              </div>
+            </div>
+            <div class="form-group" style="margin-bottom: 12px;">
+              <textarea id="dish-review-text" rows="3" placeholder="Write your feedback (min 15 characters)..." required
+                        style="padding: 10px 12px; font-size: 0.9rem; border: 1px solid var(--color-border); border-radius: 4px; background: var(--color-bg); color: var(--color-text); width: 100%; font-family: var(--font-sans); resize: none;"></textarea>
+            </div>
+            <button type="submit" class="btn btn-primary btn-full" style="padding: 12px 24px; font-size: 0.8rem;">Submit Feedback</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  `;
+  document.body.appendChild(modalDiv);
+}
+
+let currentModalDish = "";
+let selectedDishRating = 0;
+
+window.openDishModal = function(name, imgSrc, price, desc, tagHtml) {
+  currentModalDish = name;
+  const modal = document.getElementById("dishModal");
+  if (!modal) return;
+  
+  document.getElementById("modalDishImg").src = imgSrc;
+  document.getElementById("modalDishName").textContent = name;
+  document.getElementById("modalDishPrice").textContent = price;
+  document.getElementById("modalDishDesc").textContent = desc;
+  document.getElementById("modalDishTag").innerHTML = tagHtml;
+  
+  const ratings = getFoodRatings();
+  const data = ratings[name] || { rating: 0.0, count: 0, reviews: [] };
+  const avg = data.rating.toFixed(1);
+  const filledCount = Math.round(data.rating);
+  
+  document.getElementById("modalAverageRating").textContent = avg;
+  document.getElementById("modalTotalRatings").textContent = `${data.count} review${data.count === 1 ? '' : 's'}`;
+  
+  const starsContainer = document.getElementById("modalSummaryStars");
+  starsContainer.innerHTML = `${"★".repeat(filledCount)}<span class="empty-star">${"☆".repeat(5 - filledCount)}</span>`;
+  
+  const reviewsList = document.getElementById("modalReviewsList");
+  if (reviewsList) {
+    if (data.reviews && data.reviews.length > 0) {
+      reviewsList.innerHTML = data.reviews.map(r => `
+        <div class="dish-review-item">
+          <div class="dish-review-header">
+            <span class="dish-review-author">${r.name}</span>
+            <span class="dish-review-stars">${"★".repeat(r.rating)}${"☆".repeat(5 - r.rating)}</span>
+          </div>
+          <p class="dish-review-text">${r.text}</p>
+          <div class="dish-review-date">${r.date}</div>
+        </div>
+      `).join("");
+    } else {
+      reviewsList.innerHTML = `<p class="no-results" style="margin: 0; padding: 20px 0; font-size: 0.85rem;">No reviews for this dish yet. Be the first to leave one!</p>`;
+    }
+  }
+  
+  const form = document.getElementById("dish-review-form");
+  if (form) form.reset();
+  
+  selectedDishRating = 0;
+  const selectorStars = document.querySelectorAll("#dish-star-selector .star-select-btn");
+  selectorStars.forEach(s => s.classList.remove("active"));
+  document.getElementById("dish-review-rating").value = 0;
+  
+  modal.style.display = "flex";
+  document.body.style.overflow = "hidden";
+};
+
+window.closeDishModal = function() {
+  const modal = document.getElementById("dishModal");
+  if (modal) modal.style.display = "none";
+  document.body.style.overflow = "";
+};
+
+window.submitDishReview = function(event) {
+  event.preventDefault();
+  if (!currentModalDish) return;
+  
+  const name = document.getElementById("dish-review-name").value.trim();
+  const text = document.getElementById("dish-review-text").value.trim();
+  const ratingVal = +document.getElementById("dish-review-rating").value;
+  
+  if (!ratingVal) {
+    alert("Please select a star rating!");
+    return;
+  }
+  
+  if (name.length < 3) {
+    alert("Name should contain at least 3 characters.");
+    return;
+  }
+  
+  if (text.length < 15) {
+    alert("Feedback must be at least 15 characters long.");
+    return;
+  }
+  
+  const today = new Date();
+  const dateStr = today.toLocaleDateString("en-IN", {
+    day: "2-digit",
+    month: "short",
+    year: "numeric"
+  });
+  
+  const newReview = { name, rating: ratingVal, text, date: dateStr };
+  
+  const ratingsData = getFoodRatings();
+  if (!ratingsData[currentModalDish]) {
+    ratingsData[currentModalDish] = { rating: 0, count: 0, reviews: [] };
+  }
+  
+  const dish = ratingsData[currentModalDish];
+  dish.reviews = dish.reviews || [];
+  dish.reviews.unshift(newReview);
+  
+  const totalRatingSum = dish.reviews.reduce((sum, r) => sum + r.rating, 0);
+  dish.count = dish.reviews.length;
+  dish.rating = totalRatingSum / dish.count;
+  
+  saveFoodRatings(ratingsData);
+  renderFoodRatings();
+  
+  openDishModal(currentModalDish, 
+                document.getElementById("modalDishImg").src, 
+                document.getElementById("modalDishPrice").textContent, 
+                document.getElementById("modalDishDesc").textContent, 
+                document.getElementById("modalDishTag").innerHTML);
+                
+  alert("Thank you! Your feedback has been submitted.");
+};
+
+function initFoodRatings() {
+  injectDishModalMarkup();
+  injectFoodRatingPlaceholders();
+  renderFoodRatings();
+  
+  const foodCards = document.querySelectorAll(".food-card");
+  foodCards.forEach(card => {
+    card.addEventListener("click", () => {
+      const name = card.querySelector("h3").textContent.trim();
+      const imgSrc = card.querySelector("img").src;
+      const price = card.querySelector(".menu-price").textContent.trim();
+      const desc = card.querySelector("p").textContent.trim();
+      const tagEl = card.querySelector(".food-tag");
+      const tagHtml = tagEl ? tagEl.outerHTML : "";
+      
+      openDishModal(name, imgSrc, price, desc, tagHtml);
+    });
+  });
+
+  const selectorStars = document.querySelectorAll("#dish-star-selector .star-select-btn");
+  selectorStars.forEach(star => {
+    star.addEventListener("click", () => {
+      const val = +star.dataset.val;
+      selectedDishRating = val;
+      document.getElementById("dish-review-rating").value = val;
+      
+      selectorStars.forEach(s => {
+        if (+s.dataset.val <= val) {
+          s.classList.add("active");
+        } else {
+          s.classList.remove("active");
+        }
+      });
+    });
+
+    star.addEventListener("mouseenter", () => {
+      const val = +star.dataset.val;
+      selectorStars.forEach(s => {
+        if (+s.dataset.val <= val) {
+          s.classList.add("hover");
+        } else {
+          s.classList.remove("hover");
+        }
+      });
+    });
+
+    star.addEventListener("mouseleave", () => {
+      selectorStars.forEach(s => s.classList.remove("hover"));
+    });
+  });
+}
+
+document.addEventListener("DOMContentLoaded", () => {
+  initFoodRatings();
+});

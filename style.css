@@ -1323,3 +1323,326 @@ body.light-theme .nav-cta:hover {
   opacity: 1;
   visibility: visible;
 }
+
+/* Food Item Card Hover & Ratings */
+.food-card {
+  cursor: pointer;
+  transition: transform var(--transition), border-color var(--transition), box-shadow var(--transition);
+}
+
+.food-card:hover {
+  transform: translateY(-4px);
+  border-color: var(--color-primary);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
+}
+
+.food-card-rating {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 10px 0;
+  font-size: 0.9rem;
+}
+
+.rating-stars {
+  color: var(--color-primary);
+  letter-spacing: 2px;
+}
+
+.rating-stars .empty-star {
+  color: var(--color-border);
+}
+
+.rating-number {
+  font-weight: 600;
+  color: var(--color-text);
+}
+
+.rating-count {
+  color: var(--color-text-muted);
+  font-size: 0.8rem;
+}
+
+/* Dish Detail & Review Modal */
+.dish-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 2000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+}
+
+.dish-modal-overlay {
+  position: absolute;
+  inset: 0;
+  background-color: rgba(0, 0, 0, 0.7);
+  backdrop-filter: blur(5px);
+}
+
+.dish-modal-container {
+  position: relative;
+  background-color: var(--color-bg-card);
+  border: 1px solid var(--color-border);
+  border-radius: 16px;
+  width: 100%;
+  max-width: 900px;
+  max-height: calc(100vh - 48px);
+  overflow-y: auto;
+  z-index: 10;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+  animation: modalFadeIn 0.3s ease-out;
+}
+
+@keyframes modalFadeIn {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.dish-modal-close {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  background: transparent;
+  border: none;
+  font-size: 2rem;
+  line-height: 1;
+  color: var(--color-text-muted);
+  cursor: pointer;
+  z-index: 11;
+  transition: color var(--transition);
+}
+
+.dish-modal-close:hover {
+  color: var(--color-primary);
+}
+
+.dish-modal-content {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  min-height: 500px;
+}
+
+@media (max-width: 768px) {
+  .dish-modal-content {
+    grid-template-columns: 1fr;
+  }
+}
+
+.dish-modal-left {
+  border-right: 1px solid var(--color-border);
+  display: flex;
+  flex-direction: column;
+}
+
+@media (max-width: 768px) {
+  .dish-modal-left {
+    border-right: none;
+    border-bottom: 1px solid var(--color-border);
+  }
+}
+
+.modal-dish-image {
+  width: 100%;
+  height: 280px;
+  object-fit: cover;
+}
+
+.modal-dish-info {
+  padding: 24px;
+  flex: 1;
+}
+
+.modal-dish-name {
+  font-family: var(--font-serif);
+  font-size: 2.25rem;
+  color: var(--color-text);
+  margin-bottom: 12px;
+}
+
+.modal-dish-meta {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 16px;
+}
+
+.modal-dish-price {
+  font-size: 1.25rem;
+  color: var(--color-primary);
+  font-weight: 600;
+}
+
+.modal-dish-desc {
+  color: var(--color-text-muted);
+  font-size: 0.95rem;
+  line-height: 1.6;
+}
+
+.dish-modal-right {
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  max-height: 600px;
+  overflow-y: auto;
+}
+
+@media (max-width: 768px) {
+  .dish-modal-right {
+    max-height: none;
+  }
+}
+
+.modal-section-title {
+  font-family: var(--font-serif);
+  font-size: 1.5rem;
+  margin-bottom: 16px;
+}
+
+.modal-rating-summary {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  background-color: var(--color-bg-lighter);
+  padding: 16px;
+  border-radius: 8px;
+  border: 1px solid var(--color-border);
+  margin-bottom: 20px;
+}
+
+.modal-avg-number {
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: var(--color-text);
+  line-height: 1;
+}
+
+.modal-stars-container {
+  display: flex;
+  flex-direction: column;
+}
+
+.stars-row {
+  color: var(--color-primary);
+  font-size: 1.2rem;
+  letter-spacing: 2px;
+}
+
+.stars-row .empty-star {
+  color: var(--color-border);
+}
+
+.modal-ratings-count {
+  font-size: 0.8rem;
+  color: var(--color-text-muted);
+}
+
+.modal-reviews-list {
+  flex: 1;
+  overflow-y: auto;
+  margin-bottom: 20px;
+  max-height: 220px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding-right: 8px;
+}
+
+/* Scrollbars for modal reviews */
+.modal-reviews-list::-webkit-scrollbar {
+  width: 4px;
+}
+.modal-reviews-list::-webkit-scrollbar-track {
+  background: transparent;
+}
+.modal-reviews-list::-webkit-scrollbar-thumb {
+  background: var(--color-border);
+  border-radius: 4px;
+}
+
+.dish-review-item {
+  background-color: var(--color-bg-lighter);
+  border: 1px solid var(--color-border);
+  border-radius: 8px;
+  padding: 12px;
+}
+
+.dish-review-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 6px;
+}
+
+.dish-review-author {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--color-text);
+}
+
+.dish-review-stars {
+  color: var(--color-primary);
+  font-size: 0.8rem;
+  letter-spacing: 1px;
+}
+
+.dish-review-text {
+  font-size: 0.85rem;
+  color: var(--color-text-muted);
+  line-height: 1.4;
+}
+
+.dish-review-date {
+  font-size: 0.75rem;
+  color: var(--color-text-muted);
+  text-align: right;
+  margin-top: 4px;
+}
+
+.modal-review-form {
+  border-top: 1px solid var(--color-border);
+  padding-top: 16px;
+}
+
+.modal-review-form h4 {
+  font-family: var(--font-serif);
+  font-size: 1.25rem;
+  margin-bottom: 12px;
+}
+
+.star-rating-select {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 12px;
+}
+
+.star-label {
+  font-size: 0.8rem;
+  color: var(--color-text-muted);
+  text-transform: uppercase;
+}
+
+.star-selector {
+  display: flex;
+  gap: 4px;
+}
+
+.star-select-btn {
+  font-size: 1.5rem;
+  color: var(--color-border);
+  cursor: pointer;
+  transition: color 0.15s ease;
+}
+
+.star-select-btn.active,
+.star-select-btn.hover {
+  color: var(--color-primary);
+}
