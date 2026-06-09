@@ -20,7 +20,7 @@
     <!-- Navigation -->
     <nav class="nav" id="nav">
       <div class="nav-container">
-        <a href="#home" class="nav-logo">The Lighthouse</a>
+        <a href="#home" class="nav-logo" id="siteLogo">The Lighthouse</a>
         <button class="nav-toggle" id="navToggle" aria-label="Toggle menu">
           <span></span>
           <span></span>
@@ -35,25 +35,53 @@
           </li>
           <li><a href="#menu" class="nav-link" data-section="menu">Menu</a></li>
           <li>
-            <a href="#reservation" class="nav-link" data-section="reservation"
-              >Reservations</a
-            >
+            <a href="#reservation" class="nav-link" data-section="reservation">Reservations</a>
           </li>
           <li>
-            <a href="#reviews" class="nav-link" data-section="reviews"
-              >Reviews</a
-            >
+            <a href="#reviews" class="nav-link" data-section="reviews">Reviews</a>
           </li>
           <li>
-            <a href="#location" class="nav-link" data-section="location"
-              >Location</a
-            >
+            <a href="#location" class="nav-link" data-section="location">Location</a>
           </li>
         </ul>
-        <button id="themeToggle" class="theme-toggle" aria-label="Toggle Theme">
-          🌙
-        </button>
-        <a href="#reservation" class="nav-cta">Book a Table</a>
+<button id="themeToggle" class="theme-toggle" aria-label="Toggle Theme">
+  🌙
+</button>
+
+<!--settings panel-->
+<button id="settingsToggle" class="settings-btn" aria-label="Open Settings">
+  ⚙
+</button>
+
+<div class="settings-panel hidden" id="settingsPanel">
+  <h4>Accessibility Settings</h4>
+
+  <div class="setting-group">
+    <label for="fontSizeSelect">Font Size</label>
+    <select id="fontSizeSelect">
+      <option value="small">Small</option>
+      <option value="medium" selected>Medium</option>
+      <option value="large">Large</option>
+    </select>
+  </div>
+
+  <div class="setting-group">
+    <label>
+      <input type="checkbox" id="contrastToggle" />
+      High Contrast Mode
+    </label>
+  </div>
+
+  <div class="setting-group">
+    <label for="languageSelect">Language</label>
+    <select id="languageSelect">
+      <option value="en">English</option>
+      <option value="hi">Hindi</option>
+    </select>
+  </div>
+</div>
+
+<a href="#reservation" class="nav-cta" id="bookTable">Book a Table</a>
       </div>
     </nav>
 
@@ -67,18 +95,18 @@
       </div>
       <div class="hero-overlay"></div>
       <div class="hero-content">
-        <span class="hero-tagline">Est. 1987</span>
-        <h1 class="hero-title">The Lighthouse</h1>
-        <p class="hero-subtitle">
+        <span class="hero-tagline" id="estbyear">Est. 1987</span>
+        <h1 class="hero-title" id="sitename">The Lighthouse</h1>
+        <p class="hero-subtitle" id="heroTagline">
           Where culinary artistry meets timeless elegance
         </p>
         <div class="hero-buttons">
-          <a href="#menu" class="btn btn-primary">Explore Menu</a>
-          <a href="#reservation" class="btn btn-outline">Reserve Table</a>
+          <a href="#menu" class="btn btn-primary" id="exploreMenu">Explore Menu</a>
+          <a href="#reservation" class="btn btn-outline" id="reserveTable">Reserve Table</a>
         </div>
         <div class="hero-scroll">
-          <span>Scroll To Discover</span>
-          <span class="clicktoscroll">Click To Scroll</span>
+          <span id="scrollDiscover">Scroll To Discover</span>
+          <span class="clicktoscroll" id="clickScroll">Click To Scroll</span>
           <div class="scroll-indicator"></div>
           <svg
             class="scroll-arrow"
@@ -104,15 +132,15 @@
             <img src="./images/chef.jpg" alt="Our Chef at Work" />
           </div>
           <div class="about-content">
-            <span class="section-label">Our Story</span>
-            <h2 class="section-title">A Legacy of Flavor</h2>
-            <p class="about-text">
+            <span class="section-label" id="ourStory">Our Story</span>
+            <h2 class="section-title" id="legacyFlavor">A Legacy of Flavor</h2>
+            <p class="about-text" id="aboutText1">
               For over three decades, The Lighthouse has been a beacon of
               culinary excellence. Our chef combines classical techniques with
               modern innovation, sourcing only the finest seasonal ingredients
               from local farms and trusted suppliers.
             </p>
-            <p class="about-text">
+            <p class="about-text" id="aboutText2">
               Every dish tells a story, every meal creates a memory. We invite
               you to experience the art of fine dining in an atmosphere of
               warmth and sophistication.
@@ -423,9 +451,9 @@
       <div class="container">
         <div class="reservation-content">
           <div class="reservation-info">
-            <span class="section-label">Join Us</span>
-            <h2 class="section-title">Make a Reservation</h2>
-            <p>
+            <span class="section-label" id="reservJoinUs">Join Us</span>
+            <h2 class="section-title" id="reservTitle">Make a Reservation</h2>
+            <p id="reservDesc">
               Reserve your table and experience an unforgettable evening of
               culinary excellence. For parties larger than 8, please call us
               directly.
@@ -443,8 +471,8 @@
                   <path d="M12 6v6l4 2" />
                 </svg>
                 <div>
-                  <strong>Hours</strong>
-                  <span>Mon-Sun: 7AM - 11PM</span>
+                  <strong id="reservHoursLabel">Hours</strong>
+                  <span id="reservHoursValue">Mon-Sun: 7AM - 11PM</span>
                 </div>
               </div>
               <div class="detail-item">
@@ -460,7 +488,7 @@
                   />
                 </svg>
                 <div>
-                  <strong>Call Us</strong>
+                  <strong id="reservCallUs">Call Us</strong>
                   <span>(555) 123-4567</span>
                 </div>
               </div>
@@ -469,7 +497,7 @@
           <form class="reservation-form" id="reservationForm">
             <div class="form-row">
               <div class="form-group">
-                <label for="name">Full Name</label>
+                <label for="name" id="labelName">Full Name</label>
                 <input
                   type="text"
                   id="name"
@@ -479,7 +507,7 @@
                 />
               </div>
               <div class="form-group">
-                <label for="email">Email</label>
+                <label for="email" id="labelEmail">Email</label>
                 <input
                   type="email"
                   id="email"
@@ -491,7 +519,7 @@
             </div>
             <div class="form-row">
               <div class="form-group">
-                <label for="phone">Phone</label>
+                <label for="phone" id="labelPhone">Phone</label>
                 <input
                   type="tel"
                   id="phone"
@@ -501,7 +529,7 @@
                 />
               </div>
               <div class="form-group">
-                <label for="guests">Guests</label>
+                <label for="guests" id="labelGuests">Guests</label>
                 <select id="guests" name="guests" required>
                   <option value="">Select guests</option>
                   <option value="1">1 Guest</option>
@@ -517,11 +545,11 @@
             </div>
             <div class="form-row">
               <div class="form-group">
-                <label for="date">Date</label>
+                <label for="date" id="labelDate">Date</label>
                 <input type="date" id="date" name="date" required />
               </div>
               <div class="form-group">
-                <label for="time">Time</label>
+                <label for="time" id="labelTime">Time</label>
                 <select id="time" name="time" required>
                   <option value="">Select time</option>
                   <option value="07:00">7:00 AM</option>
@@ -543,7 +571,7 @@
               </div>
             </div>
             <div class="form-group full-width">
-              <label for="requests">Special Requests</label>
+              <label for="requests" id="labelRequests">Special Requests</label>
               <textarea
                 id="requests"
                 name="requests"
@@ -551,10 +579,10 @@
                 placeholder="Dietary restrictions, special occasions, seating preferences..."
               ></textarea>
             </div>
-            <button type="submit" class="btn btn-primary btn-full">
+            <button type="submit" class="btn btn-primary btn-full" id="btnReserve">
               Request Reservation
             </button>
-            <p class="form-note">
+            <p class="form-note" id="reservFormNote">
               You will receive a confirmation email within 24 hours.
             </p>
           </form>
@@ -566,8 +594,8 @@
     <section class="reviews-section" id="reviews">
       <div class="container">
         <div class="section-header">
-          <span class="section-label">Guest Experiences</span>
-          <h2 class="section-title">Customer Reviews</h2>
+          <span class="section-label" id="reviewsLabel">Guest Experiences</span>
+          <h2 class="section-title" id="reviewsTitle">Customer Reviews</h2>
         </div>
 
         <!-- Reviews display -->
@@ -575,11 +603,11 @@
 
         <!-- Submit form -->
         <div class="review-form-wrapper">
-          <h3 class="review-form-heading">Share Your Experience</h3>
+          <h3 class="review-form-heading" id="reviewFormHeading">Share Your Experience</h3>
           <form id="review-form">
             <div class="form-row">
               <div class="form-group">
-                <label for="review-name">Your Name</label>
+                <label for="review-name" id="labelReviewName">Your Name</label>
                 <input
                   type="text"
                   id="review-name"
@@ -588,7 +616,7 @@
                 />
               </div>
               <div class="form-group">
-                <label>Rating</label>
+                <label id="labelReviewRating">Rating</label>
                 <div class="star-input" id="star-input">
                   <button type="button" class="star-btn" data-value="1">
                     &#9733;
@@ -610,7 +638,7 @@
               </div>
             </div>
             <div class="form-group full-width">
-              <label for="review-text">Your Review</label>
+              <label for="review-text" id="labelReviewText">Your Review</label>
               <textarea
                 id="review-text"
                 rows="4"
@@ -618,7 +646,7 @@
                 required
               ></textarea>
             </div>
-            <button type="submit" class="btn btn-primary btn-full">
+            <button type="submit" class="btn btn-primary btn-full"  id="btnSubmitReview">
               Submit Review
             </button>
             <p id="review-msg" class="form-note" style="display: none"></p>
@@ -632,8 +660,8 @@
       <div class="container">
         <div class="location-grid">
           <div class="location-info">
-            <span class="section-label">Find Us</span>
-            <h2 class="section-title">Our Location</h2>
+            <span class="section-label" id="locationLabel">Find Us</span>
+            <h2 class="section-title" id="locationTitle">Our Location</h2>
             <div class="location-address">
               <svg
                 class="location-icon"
@@ -654,25 +682,25 @@
               <h3>Opening Hours</h3>
               <div class="hours-grid">
                 <div class="hours-item">
-                  <span>Breakfast</span>
+                  <span id="hoursBreakfast">Breakfast</span>
                   <span>7:00 AM - 11:00 AM</span>
                 </div>
                 <div class="hours-item">
-                  <span>Lunch</span>
+                  <span id="hoursLunch">Lunch</span>
                   <span>11:30 AM - 3:00 PM</span>
                 </div>
                 <div class="hours-item">
-                  <span>Dinner</span>
+                  <span id="hoursDinner">Dinner</span>
                   <span>5:00 PM - 11:00 PM</span>
                 </div>
                 <div class="hours-item">
-                  <span>Bar</span>
+                  <span id="hoursBar">Bar</span>
                   <span>11:00 AM - Midnight</span>
                 </div>
               </div>
             </div>
             <div class="location-contact">
-              <h3>Contact</h3>
+              <h3 id="locationContact">Contact</h3>
               <p><strong>Phone:</strong> (555) 123-4567</p>
               <p><strong>Email:</strong> reservations@thelighthouse.com</p>
             </div>
@@ -753,7 +781,7 @@
         <div class="footer-content">
           <div class="footer-brand">
             <h3>The Lighthouse</h3>
-            <p>Fine Dining Since 1987</p>
+            <p id="footerTagline">Fine Dining Since 1987</p>
           </div>
           <div class="footer-links">
             <a href="#home">Home</a>
@@ -763,7 +791,7 @@
             <a href="#location">Location</a>
           </div>
           <div class="footer-copy">
-            <p>&copy; 2026 The Lighthouse. All rights reserved.</p>
+            <p id="footerCopy">&copy; 2026 The Lighthouse. All rights reserved.</p>
           </div>
         </div>
       </div>

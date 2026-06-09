@@ -1323,3 +1323,89 @@ body.light-theme .nav-cta:hover {
   opacity: 1;
   visibility: visible;
 }
+
+
+/* SETTINGS PANEL */
+
+.settings-btn {
+  background: transparent;
+  border: none;
+  color: white;
+  font-size: 18px;
+  cursor: pointer;
+  margin-left: 10px;
+}
+
+.settings-panel {
+  position: absolute;
+  top: 80px;
+  right: 120px;
+  background: rgba(20, 20, 20, 0.95);
+  padding: 16px;
+  border-radius: 10px;
+  width: 220px;
+  z-index: 999;
+  color: white;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+}
+
+.settings-panel.hidden {
+  display: none;
+}
+
+.setting-group {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.setting-group select {
+  padding: 6px;
+  border-radius: 6px;
+  border: none;
+}
+/* HIGH CONTRAST MODE */
+
+.high-contrast {
+  background: black !important;
+  color: yellow !important;
+}
+
+.high-contrast * {
+  background-color: black !important;
+  color: yellow !important;
+  border-color: yellow !important;
+}
+
+/* Font Size Accessibility */
+body.font-small  { font-size: 14px; }
+body.font-large  { font-size: 20px; }
+
+body.font-small  p, body.font-small li, body.font-small span,
+body.font-small label, body.font-small input, body.font-small textarea,
+body.font-small select, body.font-small .about-text, body.font-small .menu-item p,
+body.font-small .detail-item span, body.font-small .hours-item span,
+body.font-small .location-contact p, body.font-small .review-text,
+body.font-small .form-note, body.font-small .footer-brand p,
+body.font-small .footer-links a, body.font-small .footer-copy p {
+  font-size: 0.875rem;
+}
+
+body.font-large  p, body.font-large li, body.font-large span,
+body.font-large label, body.font-large input, body.font-large textarea,
+body.font-large select, body.font-large .about-text, body.font-large .menu-item p,
+body.font-large .detail-item span, body.font-large .hours-item span,
+body.font-large .location-contact p, body.font-large .review-text,
+body.font-large .form-note, body.font-large .footer-brand p,
+body.font-large .footer-links a, body.font-large .footer-copy p {
+  font-size: 1.2rem;
+}
+
+body.font-small .menu-item h3  { font-size: 1.1rem; }
+body.font-large  .menu-item h3  { font-size: 1.6rem; }
+
+body.font-small .nav-link, body.font-small .nav-cta { font-size: 0.75rem; }
+body.font-large  .nav-link, body.font-large  .nav-cta { font-size: 1rem;   }

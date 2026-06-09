@@ -1,4 +1,4 @@
-// DOM Elements
+// DOM ElementsaboutText1
 const nav = document.getElementById("nav");
 const navToggle = document.getElementById("navToggle");
 const navMenu = document.getElementById("navMenu");
@@ -147,7 +147,7 @@ function switchMenuTab(e) {
   });
 }
 
-//
+
 // Theme Toggle
 const savedTheme = localStorage.getItem("theme");
 
@@ -172,6 +172,200 @@ themeToggle.addEventListener("click", () => {
   }
 });
 
+//settigs panel
+const settingsToggle = document.getElementById("settingsToggle");
+const settingsPanel = document.getElementById("settingsPanel");
+
+settingsToggle.addEventListener("click", () => {
+  settingsPanel.classList.toggle("hidden");
+});
+
+//contrast
+const contrastToggle = document.getElementById("contrastToggle");
+
+contrastToggle.addEventListener("change", () => {
+  document.body.classList.toggle("high-contrast");
+});
+
+//font size
+// Font size
+const fontSizeSelect = document.getElementById("fontSizeSelect");
+
+// Restore saved preference
+const savedFont = localStorage.getItem("fontSize") || "medium";
+fontSizeSelect.value = savedFont;
+applyFontSize(savedFont);
+
+fontSizeSelect.addEventListener("change", () => {
+  applyFontSize(fontSizeSelect.value);
+  localStorage.setItem("fontSize", fontSizeSelect.value);
+});
+
+function applyFontSize(size) {
+  document.body.classList.remove("font-small", "font-large");
+  if (size === "small") document.body.classList.add("font-small");
+  if (size === "large") document.body.classList.add("font-large");
+}
+
+//language toggle
+const languageSelect = document.getElementById("languageSelect");
+
+languageSelect.addEventListener("change", () => {
+
+  const selectedLang = languageSelect.value;
+
+  const translations = {
+  en: {
+    // Navbar
+    home: "HOME", about: "ABOUT", menu: "MENU",
+    reservation: "RESERVATIONS", reviews: "REVIEWS", location: "LOCATION",
+    bookTable: "BOOK A TABLE",
+    // Hero
+    name: "The Lighthouse", sitename: "The Lighthouse", estb: "Est. 1987",
+    heroTagline: "Where culinary artistry meets timeless elegance",
+    exploreMenu: "Explore Menu", reserveTable: "Reserve Table",
+    scrollDiscover: "Scroll To Discover", clickScroll: "Click To Scroll",
+    // About
+    ourStory: "Our Story", legacyFlavor: "A Legacy of Flavor",
+    aboutText1: "For over three decades, The Lighthouse has been a beacon of culinary excellence. Our chef combines classical techniques with modern innovation, sourcing only the finest seasonal ingredients from local farms and trusted suppliers.",
+    aboutText2: "Every dish tells a story, every meal creates a memory. We invite you to experience the art of fine dining in an atmosphere of warmth and sophistication.",
+    // Reservation section
+    joinUs: "Join Us", makeReservation: "Make a Reservation",
+    reservationDesc: "Reserve your table and experience an unforgettable evening of culinary excellence. For parties larger than 8, please call us directly.",
+    hoursLabel: "Hours", hoursValue: "Mon-Sun: 7AM - 11PM",
+    callUs: "Call Us",
+    // Reservation form labels
+    labelName: "Full Name", labelEmail: "Email", labelPhone: "Phone",
+    labelGuests: "Guests", labelDate: "Date", labelTime: "Time",
+    labelRequests: "Special Requests",
+    placeholderRequests: "Dietary restrictions, special occasions, seating preferences...",
+    btnReserve: "Request Reservation",
+    formNote: "You will receive a confirmation email within 24 hours.",
+    // Reviews
+    guestExp: "Guest Experiences", customerReviews: "Customer Reviews",
+    shareExp: "Share Your Experience",
+    labelYourName: "Your Name", labelRating: "Rating", labelYourReview: "Your Review",
+    btnSubmitReview: "Submit Review",
+    // Location
+    findUs: "Find Us", ourLocation: "Our Location",
+    contactTitle: "Contact",
+    breakfastHours: "Breakfast", lunchHours: "Lunch",
+    dinnerHours: "Dinner", barHours: "Bar",
+    // Footer
+    footerTagline: "Fine Dining Since 1987",
+    footerCopy: "© 2026 The Lighthouse. All rights reserved."
+  },
+
+  hi: {
+    // Navbar
+    home: "होम", about: "परिचय", menu: "मेन्यू",
+    reservation: "आरक्षण", reviews: "समीक्षाएँ", location: "स्थान",
+    bookTable: "टेबल बुक करें",
+    // Hero
+    name: "द लाइटहाऊस", sitename: "द लाइटहाऊस", estb: "स्थापना १९८७",
+    heroTagline: "जहाँ पाक कला कालातीत सुंदरता से मिलती है",
+    exploreMenu: "मेन्यू देखें", reserveTable: "टेबल आरक्षित करें",
+    scrollDiscover: "स्क्रॉल करें", clickScroll: "स्क्रॉल करने के लिए क्लिक करें",
+    // About
+    ourStory: "हमारी कहानी", legacyFlavor: "स्वाद की विरासत",
+    aboutText1: "तीन दशकों से अधिक समय से, द लाइटहाऊस उत्कृष्ट पाक कला का प्रतीक रहा है। हमारे शेफ पारंपरिक तकनीकों को आधुनिक नवाचार के साथ जोड़ते हैं और स्थानीय खेतों तथा विश्वसनीय आपूर्तिकर्ताओं से केवल सर्वोत्तम मौसमी सामग्री चुनते हैं।",
+    aboutText2: "हर व्यंजन एक कहानी कहता है, और हर भोजन एक याद बनाता है। हम आपको गर्मजोशी और सुरुचिपूर्ण वातावरण में उत्कृष्ट भोजन कला का अनुभव करने के लिए आमंत्रित करते हैं।",
+    // Reservation section
+    joinUs: "हमसे जुड़ें", makeReservation: "आरक्षण करें",
+    reservationDesc: "अपनी टेबल बुक करें और पाक उत्कृष्टता की एक अविस्मरणीय शाम का अनुभव करें। 8 से अधिक लोगों के लिए सीधे हमें कॉल करें।",
+    hoursLabel: "समय", hoursValue: "सोम-रवि: सुबह 7 - रात 11",
+    callUs: "हमें कॉल करें",
+    // Reservation form labels
+    labelName: "पूरा नाम", labelEmail: "ईमेल", labelPhone: "फ़ोन",
+    labelGuests: "मेहमान", labelDate: "तारीख", labelTime: "समय",
+    labelRequests: "विशेष अनुरोध",
+    placeholderRequests: "खान-पान की पाबंदी, विशेष अवसर, बैठने की प्राथमिकता...",
+    btnReserve: "आरक्षण अनुरोध करें",
+    formNote: "आपको 24 घंटों के भीतर एक पुष्टिकरण ईमेल प्राप्त होगा।",
+    // Reviews
+    guestExp: "अतिथि अनुभव", customerReviews: "ग्राहक समीक्षाएँ",
+    shareExp: "अपना अनुभव साझा करें",
+    labelYourName: "आपका नाम", labelRating: "रेटिंग", labelYourReview: "आपकी समीक्षा",
+    btnSubmitReview: "समीक्षा सबमिट करें",
+    // Location
+    findUs: "हमें खोजें", ourLocation: "हमारा स्थान",
+    contactTitle: "संपर्क",
+    breakfastHours: "नाश्ता", lunchHours: "दोपहर का भोजन",
+    dinnerHours: "रात का खाना", barHours: "बार",
+    // Footer
+    footerTagline: "१९८७ से उत्कृष्ट भोजन",
+    footerCopy: "© २०२६ द लाइटहाऊस। सर्वाधिकार सुरक्षित।"
+  }
+};
+const t = translations[selectedLang];
+
+// Navbar
+document.querySelector('.nav-link[data-section="home"]').textContent    = t.home;
+document.querySelector('.nav-link[data-section="about"]').textContent   = t.about;
+document.querySelector('.nav-link[data-section="menu"]').textContent    = t.menu;
+document.querySelector('.nav-link[data-section="reservation"]').textContent = t.reservation;
+document.querySelector('.nav-link[data-section="reviews"]').textContent = t.reviews;
+document.querySelector('.nav-link[data-section="location"]').textContent = t.location;
+document.getElementById("bookTable").textContent  = t.bookTable;
+document.getElementById("siteLogo").textContent   = t.name;
+
+// Hero
+document.getElementById("sitename").textContent   = t.sitename;
+document.getElementById("estbyear").textContent   = t.estb;
+document.getElementById("heroTagline").textContent = t.heroTagline;
+document.getElementById("exploreMenu").textContent = t.exploreMenu;
+document.getElementById("reserveTable").textContent = t.reserveTable;
+document.getElementById("scrollDiscover").textContent = t.scrollDiscover;
+document.getElementById("clickScroll").textContent = t.clickScroll;
+
+// About
+document.getElementById("ourStory").textContent   = t.ourStory;
+document.getElementById("legacyFlavor").textContent = t.legacyFlavor;
+document.getElementById("aboutText1").textContent  = t.aboutText1;
+document.getElementById("aboutText2").textContent  = t.aboutText2;
+
+// Reservation section — info side
+document.getElementById("reservJoinUs").textContent      = t.joinUs;
+document.getElementById("reservTitle").textContent       = t.makeReservation;
+document.getElementById("reservDesc").textContent        = t.reservationDesc;
+document.getElementById("reservHoursLabel").textContent  = t.hoursLabel;
+document.getElementById("reservHoursValue").textContent  = t.hoursValue;
+document.getElementById("reservCallUs").textContent      = t.callUs;
+
+// Reservation form labels
+document.getElementById("labelName").textContent     = t.labelName;
+document.getElementById("labelEmail").textContent    = t.labelEmail;
+document.getElementById("labelPhone").textContent    = t.labelPhone;
+document.getElementById("labelGuests").textContent   = t.labelGuests;
+document.getElementById("labelDate").textContent     = t.labelDate;
+document.getElementById("labelTime").textContent     = t.labelTime;
+document.getElementById("labelRequests").textContent = t.labelRequests;
+document.getElementById("requests").placeholder      = t.placeholderRequests;
+document.getElementById("btnReserve").textContent    = t.btnReserve;
+document.getElementById("reservFormNote").textContent = t.formNote;
+
+// Reviews section
+document.getElementById("reviewsLabel").textContent  = t.guestExp;
+document.getElementById("reviewsTitle").textContent  = t.customerReviews;
+document.getElementById("reviewFormHeading").textContent = t.shareExp;
+document.getElementById("labelReviewName").textContent  = t.labelYourName;
+document.getElementById("labelReviewRating").textContent = t.labelRating;
+document.getElementById("labelReviewText").textContent  = t.labelYourReview;
+document.getElementById("btnSubmitReview").textContent  = t.btnSubmitReview;
+
+// Location section
+document.getElementById("locationLabel").textContent  = t.findUs;
+document.getElementById("locationTitle").textContent  = t.ourLocation;
+document.getElementById("locationContact").textContent = t.contactTitle;
+document.getElementById("hoursBreakfast").textContent = t.breakfastHours;
+document.getElementById("hoursLunch").textContent     = t.lunchHours;
+document.getElementById("hoursDinner").textContent    = t.dinnerHours;
+document.getElementById("hoursBar").textContent       = t.barHours;
+
+// Footer
+document.getElementById("footerTagline").textContent = t.footerTagline;
+document.getElementById("footerCopy").textContent    = t.footerCopy;
+})
 // ── Menu Search and Filter ─────────────────────────
 
 const filterBtns = document.querySelectorAll(".filter-btn");
