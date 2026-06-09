@@ -8,8 +8,8 @@
   --color-text: #f5f2ed;
   --color-text-muted: #9a958e;
   --color-border: #3d3835;
-  --font-serif: "Cormorant Garamond", Georgia, serif;
-  --font-sans: "Inter", -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-serif: Didot, Georgia, serif;
+  --font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
   --transition: 0.3s ease;
 }
 body.light-theme {
@@ -242,6 +242,7 @@ body.light-theme .nav-link {
 
 body.light-theme .nav-logo {
   color: #8a6e2f;
+  text-shadow: none;
 }
 
 body.light-theme .nav-link.active,
@@ -275,6 +276,29 @@ body.light-theme .nav-cta:hover {
   border-color: var(--color-primary);
   color: var(--color-primary);
   transform: rotate(10deg);
+}
+
+/* Dark mode: subtle white glow behind the brand for contrast */
+body:not(.light-theme) .nav-logo {
+  color: var(--color-primary);
+  text-shadow: 0 0 10px rgba(255,255,255,0.85);
+  transition: text-shadow var(--transition), color var(--transition);
+}
+
+/* Center hero title glow in dark mode */
+body:not(.light-theme) .hero-title {
+  text-shadow: 0 0 18px rgba(255,255,255,0.92);
+  transition: text-shadow var(--transition), color var(--transition);
+}
+
+/* Light mode: subtle white + warm-yellow glow behind hero text */
+body.light-theme .hero-title,
+body.light-theme .hero-subtitle {
+  text-shadow:
+    0 2px 8px rgba(255,255,255,0.95),
+    0 8px 24px rgba(201,169,98,0.18);
+  color: #0d0d0d;
+  transition: text-shadow var(--transition), color var(--transition);
 }
 
 /* Hero Section */
@@ -349,15 +373,14 @@ body.light-theme .nav-cta:hover {
 }
 
 .hero-scroll {
-  position: absolute;
-  bottom: 40px;
-  left: 50%;
-  transform: translateX(-50%);
+  position: static;
+  margin-top: 24px;
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: 12px;
   cursor: pointer;
+  justify-content: center;
 }
 
 .hero-scroll span {
@@ -1322,4 +1345,49 @@ body.light-theme .nav-cta:hover {
 #backToTop.visible {
   opacity: 1;
   visibility: visible;
+}
+
+/* Dark-mode: improve hero heading contrast with a subtle overlay and stronger shadow */
+body:not(.light-theme) .hero-overlay {
+  background: linear-gradient(
+    to bottom,
+    rgba(0, 0, 0, 0.48) 0%,
+    rgba(0, 0, 0, 0.66) 50%,
+    rgba(0, 0, 0, 0.92) 100%
+  );
+  transition: background 0.25s ease;
+}
+
+/* Ensure hero content sits above the overlay and add a subtle text-shadow for better legibility */
+.hero-content {
+  position: relative;
+  z-index: 1;
+}
+
+body:not(.light-theme) .hero-title {
+  /* stronger but still subtle shadow to separate the text from busy background,
+     plus a soft warm highlight/glow for subtle brightness */
+  text-shadow:
+    0 6px 28px rgba(0, 0, 0, 0.75),
+    0 2px 6px rgba(0, 0, 0, 0.6),
+    0 0 14px rgba(255, 245, 200, 0.18);
+}
+
+/* Also cover users who prefer dark scheme via OS settings */
+@media (prefers-color-scheme: dark) {
+  .hero-overlay {
+    background: linear-gradient(
+      to bottom,
+      rgba(0, 0, 0, 0.48) 0%,
+      rgba(0, 0, 0, 0.66) 50%,
+      rgba(0, 0, 0, 0.92) 100%
+    );
+  }
+
+  .hero-title {
+    text-shadow:
+      0 6px 28px rgba(0, 0, 0, 0.75),
+      0 2px 6px rgba(0, 0, 0, 0.6),
+      0 0 14px rgba(255, 245, 200, 0.18);
+  }
 }
