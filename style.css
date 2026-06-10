@@ -1163,6 +1163,7 @@ body.light-theme .nav-cta:hover {
     top: 0;
     right: -100%;
     opacity: 0;
+    visibility: hidden;
     width: 80%;
     max-width: 320px;
     height: 100vh;
@@ -1173,12 +1174,14 @@ body.light-theme .nav-cta:hover {
     gap: 32px;
     transition:
       right 0.4s ease,
-      opacity 0.4s ease;
+      opacity 0.4s ease,
+      visibility 0.4s ease;
   }
 
   .nav-menu.active {
     right: 0;
     opacity: 1;
+    visibility: visible;
   }
   .nav-menu.active .nav-link {
     animation: slideIn 0.3s ease forwards;
@@ -1323,3 +1326,46 @@ body.light-theme .nav-cta:hover {
   opacity: 1;
   visibility: visible;
 }
+
+/* Accessibility & Focus States */
+:focus-visible {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 4px;
+}
+
+.menu-search:focus-visible,
+.form-group input:focus-visible,
+.form-group select:focus-visible,
+.form-group textarea:focus-visible {
+  outline: none;
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 3px rgba(201, 169, 98, 0.35);
+}
+
+.theme-toggle:focus-visible,
+.social-link:focus-visible,
+.star-btn:focus-visible {
+  outline-offset: 4px;
+  border-radius: 50%;
+}
+
+.filter-btn:focus-visible {
+  outline-offset: 2px;
+  border-radius: 30px;
+}
+
+#backToTop:focus-visible {
+  outline-offset: 2px;
+  border-radius: 30px;
+}
+
+.hero-scroll:focus-visible {
+  outline-offset: 8px;
+  border-radius: 4px;
+}
+
+.nav-toggle:focus-visible {
+  outline-offset: 4px;
+  border-radius: 4px;
+}
+

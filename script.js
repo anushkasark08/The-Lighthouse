@@ -116,6 +116,10 @@ function updateActiveNavLink() {
 function toggleMobileMenu() {
   navToggle.classList.toggle("active");
   navMenu.classList.toggle("active");
+  
+  const isExpanded = navToggle.classList.contains("active");
+  navToggle.setAttribute("aria-expanded", isExpanded ? "true" : "false");
+
   document.body.style.overflow = navMenu.classList.contains("active")
     ? "hidden"
     : "";
@@ -125,6 +129,7 @@ function toggleMobileMenu() {
 function closeMobileMenu() {
   navToggle.classList.remove("active");
   navMenu.classList.remove("active");
+  navToggle.setAttribute("aria-expanded", "false");
   document.body.style.overflow = "";
 }
 
@@ -147,15 +152,20 @@ function switchMenuTab(e) {
   });
 }
 
-//
 // Theme Toggle
 const savedTheme = localStorage.getItem("theme");
 
 if (savedTheme === "light") {
   document.body.classList.add("light-theme");
   themeToggle.textContent = "☀️";
+  if (themeToggle) {
+    themeToggle.setAttribute("aria-label", "Switch to dark theme");
+  }
 } else {
   themeToggle.textContent = "🌙";
+  if (themeToggle) {
+    themeToggle.setAttribute("aria-label", "Switch to light theme");
+  }
 }
 
 themeToggle.addEventListener("click", () => {
@@ -166,9 +176,11 @@ themeToggle.addEventListener("click", () => {
   if (isLight) {
     localStorage.setItem("theme", "light");
     themeToggle.textContent = "☀️";
+    themeToggle.setAttribute("aria-label", "Switch to dark theme");
   } else {
     localStorage.setItem("theme", "dark");
     themeToggle.textContent = "🌙";
+    themeToggle.setAttribute("aria-label", "Switch to light theme");
   }
 });
 
@@ -221,9 +233,13 @@ function filterMenuItems(filter = "all", searchText = "") {
 // Filter buttons
 filterBtns.forEach((btn) => {
   btn.addEventListener("click", () => {
-    filterBtns.forEach((b) => b.classList.remove("active"));
+    filterBtns.forEach((b) => {
+      b.classList.remove("active");
+      b.setAttribute("aria-selected", "false");
+    });
 
     btn.classList.add("active");
+    btn.setAttribute("aria-selected", "true");
 
     filterMenuItems(btn.dataset.filter, menuSearch.value);
   });
@@ -360,16 +376,32 @@ function stopAutoScroll() {
 if (heroScroll) {
   heroScroll.style.cursor = "pointer";
 
-  // Toggle scroll on click — click once to start, click again to stop
-  heroScroll.addEventListener("click", () => {
+  const toggleScroll = () => {
     autoScrollInterval ? stopAutoScroll() : startAutoScroll();
+  };
+
+  // Toggle scroll on click — click once to start, click again to stop
+  heroScroll.addEventListener("click", toggleScroll);
+
+  // Keyboard support for Enter and Space keys
+  heroScroll.addEventListener("keydown", (e) => {
+    if (e.key === "Enter" || e.key === " ") {
+      e.preventDefault();
+      toggleScroll();
+    }
   });
 }
 
 // Stop scrolling on any user interaction
 ["mousemove", "touchstart", "keydown", "wheel", "pointerdown"].forEach(
   (event) => {
-    window.addEventListener(event, stopAutoScroll);
+    window.addEventListener(event, (e) => {
+      // Don't stop auto-scroll if the key pressed was Enter or Space on the heroScroll button itself
+      if (event === "keydown" && e.target === heroScroll && (e.key === "Enter" || e.key === " ")) {
+        return;
+      }
+      stopAutoScroll();
+    });
   },
 );
 
@@ -473,6 +505,17 @@ starBtns.forEach((btn) => {
     );
   });
   btn.addEventListener("mouseleave", () => {
+    starBtns.forEach((s) =>
+      s.classList.toggle("active", +s.dataset.value <= selectedRating),
+    );
+  });
+  btn.addEventListener("focus", () => {
+    const val = +btn.dataset.value;
+    starBtns.forEach((s) =>
+      s.classList.toggle("active", +s.dataset.value <= val),
+    );
+  });
+  btn.addEventListener("blur", () => {
     starBtns.forEach((s) =>
       s.classList.toggle("active", +s.dataset.value <= selectedRating),
     );

@@ -21,7 +21,7 @@
     <nav class="nav" id="nav">
       <div class="nav-container">
         <a href="#home" class="nav-logo">The Lighthouse</a>
-        <button class="nav-toggle" id="navToggle" aria-label="Toggle menu">
+        <button class="nav-toggle" id="navToggle" aria-label="Toggle menu" aria-expanded="false" aria-controls="navMenu">
           <span></span>
           <span></span>
           <span></span>
@@ -76,7 +76,7 @@
           <a href="#menu" class="btn btn-primary">Explore Menu</a>
           <a href="#reservation" class="btn btn-outline">Reserve Table</a>
         </div>
-        <div class="hero-scroll">
+        <div class="hero-scroll" role="button" tabindex="0" aria-label="Toggle auto scroll">
           <span>Scroll To Discover</span>
           <span class="clicktoscroll">Click To Scroll</span>
           <div class="scroll-indicator"></div>
@@ -89,6 +89,7 @@
             fill="none"
             stroke="currentColor"
             stroke-width="1.5"
+            aria-hidden="true"
           >
             <path d="M12 5v14M5 12l7 7 7-7" />
           </svg>
@@ -136,22 +137,23 @@
             id="menu-search"
             placeholder="Search dishes..."
             class="menu-search"
+            aria-label="Search dishes"
           />
 
-          <div class="menu-filters">
-            <button class="filter-btn active" data-filter="all">All</button>
-            <button class="filter-btn" data-filter="breakfast">
+          <div class="menu-filters" role="tablist" aria-label="Menu categories">
+            <button class="filter-btn active" data-filter="all" role="tab" aria-selected="true" aria-controls="menu-content">All</button>
+            <button class="filter-btn" data-filter="breakfast" role="tab" aria-selected="false" aria-controls="menu-content">
               Breakfast
             </button>
-            <button class="filter-btn" data-filter="lunch">Lunch</button>
-            <button class="filter-btn" data-filter="dinner">Dinner</button>
-            <button class="filter-btn" data-filter="desserts">Desserts</button>
-            <button class="filter-btn" data-filter="drinks">Drinks</button>
+            <button class="filter-btn" data-filter="lunch" role="tab" aria-selected="false" aria-controls="menu-content">Lunch</button>
+            <button class="filter-btn" data-filter="dinner" role="tab" aria-selected="false" aria-controls="menu-content">Dinner</button>
+            <button class="filter-btn" data-filter="desserts" role="tab" aria-selected="false" aria-controls="menu-content">Desserts</button>
+            <button class="filter-btn" data-filter="drinks" role="tab" aria-selected="false" aria-controls="menu-content">Drinks</button>
           </div>
         </div>
 
         <!-- Menu Content -->
-        <div class="menu-content">
+        <div class="menu-content" id="menu-content" role="region" aria-live="polite" aria-label="Menu Items">
           <!-- breakfast -->
           <div class="menu-item" data-category="breakfast">
             <div class="food-card">
@@ -438,6 +440,7 @@
                   fill="none"
                   stroke="currentColor"
                   stroke-width="2"
+                  aria-hidden="true"
                 >
                   <circle cx="12" cy="12" r="10" />
                   <path d="M12 6v6l4 2" />
@@ -454,6 +457,7 @@
                   fill="none"
                   stroke="currentColor"
                   stroke-width="2"
+                  aria-hidden="true"
                 >
                   <path
                     d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07 19.5 19.5 0 01-6-6 19.79 19.79 0 01-3.07-8.67A2 2 0 014.11 2h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L8.09 9.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z"
@@ -588,21 +592,21 @@
                 />
               </div>
               <div class="form-group">
-                <label>Rating</label>
-                <div class="star-input" id="star-input">
-                  <button type="button" class="star-btn" data-value="1">
+                <label id="rating-label">Rating</label>
+                <div class="star-input" id="star-input" role="group" aria-labelledby="rating-label">
+                  <button type="button" class="star-btn" data-value="1" aria-label="Rate 1 Star out of 5">
                     &#9733;
                   </button>
-                  <button type="button" class="star-btn" data-value="2">
+                  <button type="button" class="star-btn" data-value="2" aria-label="Rate 2 Stars out of 5">
                     &#9733;
                   </button>
-                  <button type="button" class="star-btn" data-value="3">
+                  <button type="button" class="star-btn" data-value="3" aria-label="Rate 3 Stars out of 5">
                     &#9733;
                   </button>
-                  <button type="button" class="star-btn" data-value="4">
+                  <button type="button" class="star-btn" data-value="4" aria-label="Rate 4 Stars out of 5">
                     &#9733;
                   </button>
-                  <button type="button" class="star-btn" data-value="5">
+                  <button type="button" class="star-btn" data-value="5" aria-label="Rate 5 Stars out of 5">
                     &#9733;
                   </button>
                 </div>
@@ -621,7 +625,7 @@
             <button type="submit" class="btn btn-primary btn-full">
               Submit Review
             </button>
-            <p id="review-msg" class="form-note" style="display: none"></p>
+            <p id="review-msg" class="form-note" style="display: none" aria-live="polite"></p>
           </form>
         </div>
       </div>
@@ -641,6 +645,7 @@
                 fill="none"
                 stroke="currentColor"
                 stroke-width="2"
+                aria-hidden="true"
               >
                 <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z" />
                 <circle cx="12" cy="10" r="3" />
@@ -688,6 +693,7 @@
                   fill="none"
                   stroke="currentColor"
                   stroke-width="2"
+                  aria-hidden="true"
                 >
                   <rect x="2" y="2" width="20" height="20" rx="5" />
                   <path d="M16 11.37A4 4 0 1112.63 8 4 4 0 0116 11.37z" />
@@ -705,6 +711,7 @@
                   fill="none"
                   stroke="currentColor"
                   stroke-width="2"
+                  aria-hidden="true"
                 >
                   <path
                     d="M18 2h-3a5 5 0 00-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 011-1h3z"
@@ -722,6 +729,7 @@
                   fill="none"
                   stroke="currentColor"
                   stroke-width="2"
+                  aria-hidden="true"
                 >
                   <path
                     d="M23 3a10.9 10.9 0 01-3.14 1.53 4.48 4.48 0 00-7.86 3v1A10.66 10.66 0 013 4s-4 9 5 13a11.64 11.64 0 01-7 2c9 5 20 0 20-11.5a4.5 4.5 0 00-.08-.83A7.72 7.72 0 0023 3z"
