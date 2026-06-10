@@ -608,3 +608,59 @@ backToTopBtn.addEventListener("click", () => {
     behavior: "smooth",
   });
 });
+
+// ── Lightbox Modal Feature ───────────────────────────────────────────────
+const lightbox = document.getElementById("lightbox");
+const lightboxImg = document.getElementById("lightbox-img");
+const lightboxCaption = document.getElementById("lightbox-caption");
+const lightboxClose = lightbox ? lightbox.querySelector(".lightbox-close") : null;
+
+function openLightbox(e) {
+  const imgSrc = e.target.src;
+  const imgAlt = e.target.alt;
+
+  if (lightbox && lightboxImg && lightboxCaption) {
+    lightboxImg.src = imgSrc;
+    lightboxImg.alt = imgAlt;
+    lightboxCaption.textContent = imgAlt;
+    lightbox.classList.add("active");
+    lightbox.setAttribute("aria-hidden", "false");
+    document.body.style.overflow = "hidden";
+  }
+}
+
+function closeLightbox() {
+  if (lightbox) {
+    lightbox.classList.remove("active");
+    lightbox.setAttribute("aria-hidden", "true");
+    document.body.style.overflow = "";
+  }
+}
+
+// Attach event listeners to restaurant (about) and menu (food) images
+const lightboxImages = document.querySelectorAll(".about-image img, .food-image");
+lightboxImages.forEach((img) => {
+  img.addEventListener("click", openLightbox);
+});
+
+// Close button event listener
+if (lightboxClose) {
+  lightboxClose.addEventListener("click", closeLightbox);
+}
+
+// Close when clicking on the backdrop overlay
+if (lightbox) {
+  lightbox.addEventListener("click", (e) => {
+    if (e.target === lightbox) {
+      closeLightbox();
+    }
+  });
+}
+
+// Close on ESC key press
+window.addEventListener("keydown", (e) => {
+  if (e.key === "Escape" && lightbox && lightbox.classList.contains("active")) {
+    closeLightbox();
+  }
+});
+

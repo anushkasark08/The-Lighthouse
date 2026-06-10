@@ -1323,3 +1323,118 @@ body.light-theme .nav-cta:hover {
   opacity: 1;
   visibility: visible;
 }
+
+/* Lightbox Modal */
+.lightbox {
+  position: fixed;
+  inset: 0;
+  z-index: 2000;
+  background-color: rgba(26, 23, 20, 0.95);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.4s ease, visibility 0.4s ease;
+}
+
+.lightbox.active {
+  opacity: 1;
+  visibility: visible;
+}
+
+.lightbox-content {
+  position: relative;
+  max-width: 90%;
+  max-height: 85vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  transform: scale(0.9);
+  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.lightbox.active .lightbox-content {
+  transform: scale(1);
+}
+
+.lightbox-content img {
+  max-width: 100%;
+  max-height: 75vh;
+  object-fit: contain;
+  border: 1px solid var(--color-border);
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6);
+  border-radius: 4px;
+}
+
+.lightbox-caption {
+  margin-top: 16px;
+  color: var(--color-text);
+  font-family: var(--font-serif);
+  font-size: 1.5rem;
+  letter-spacing: 1px;
+  text-align: center;
+  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+}
+
+.lightbox-close {
+  position: absolute;
+  top: 40px;
+  right: 40px;
+  background: none;
+  border: none;
+  color: var(--color-text-muted);
+  font-size: 3.5rem;
+  cursor: pointer;
+  line-height: 1;
+  transition: color var(--transition), transform var(--transition);
+  z-index: 2001;
+}
+
+.lightbox-close:hover {
+  color: var(--color-primary);
+  transform: rotate(90deg);
+}
+
+/* Make triggers look interactive */
+.about-image img,
+.food-image {
+  cursor: pointer;
+  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), filter var(--transition), box-shadow 0.4s ease;
+}
+
+.about-image img:hover,
+.food-image:hover {
+  transform: scale(1.03);
+  filter: brightness(1.1);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+}
+
+/* Light Theme overrides for Lightbox */
+body.light-theme .lightbox {
+  background-color: rgba(247, 242, 233, 0.95);
+}
+body.light-theme .lightbox-caption {
+  color: var(--color-text);
+}
+body.light-theme .lightbox-close {
+  color: var(--color-text-muted);
+}
+body.light-theme .lightbox-close:hover {
+  color: var(--color-primary);
+}
+
+@media (max-width: 768px) {
+  .lightbox-close {
+    top: 24px;
+    right: 24px;
+    font-size: 3rem;
+  }
+  .lightbox-caption {
+    font-size: 1.25rem;
+    margin-top: 12px;
+  }
+}
+
