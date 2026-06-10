@@ -629,3 +629,140 @@ backToTopBtn.addEventListener("click", () => {
     behavior: "smooth",
   });
 });
+
+const FOOD_RATINGS_KEY = "lighthouse_food_ratings";
+ 
+const seedRatings = {
+  "masala-dosa":         { average: 4.5, count: 128 },
+  "idli-sambar":         { average: 4.2, count: 96  },
+  "chicken-keema-dosa":  { average: 4.6, count: 74  },
+  "paneer-butter-masala":{ average: 4.7, count: 203 },
+  "hyderabadi-biryani":  { average: 4.8, count: 312 },
+  "butter-chicken":      { average: 4.6, count: 287 },
+  "mango-lassi":         { average: 4.3, count: 156 },
+  "masala-chai":         { average: 4.4, count: 201 },
+  "fresh-lime-soda":     { average: 4.1, count: 89  },
+  "gulab-jamun":         { average: 4.9, count: 341 },
+  "rasmalai":            { average: 4.7, count: 178 },
+  "kesar-pista-kulfi":   { average: 4.5, count: 143 },
+};
+ 
+
+function loadFoodRatings() {
+  try {
+    const stored = localStorage.getItem(FOOD_RATINGS_KEY);
+    return stored ? { ...seedRatings, ...JSON.parse(stored) } : { ...seedRatings };
+  } catch {
+    return { ...seedRatings };
+  }
+}
+ 
+/** Persist only the items the user has actually rated */
+function saveFoodRating(itemId, data) {
+  try {
+    const stored = JSON.parse(localStorage.getItem(FOOD_RATINGS_KEY) || "{}");
+    stored[itemId] = data;
+    localStorage.setItem(FOOD_RATINGS_KEY, JSON.stringify(stored));
+  } catch {}
+}
+ 
+
+function buildStarHTML(average) {
+  let html = "";
+  for (let i = 1; i <= 5; i++) {
+    if (average >= i) {
+      html += `<span class="star-filled" aria-hidden="true">★</span>`;
+    } else if (average >= i - 0.5) {
+      html += `<span class="star-half"   aria-hidden="true">★</span>`;
+    } else {
+      html += `<span class="star-empty"  aria-hidden="true">★</span>`;
+    }
+  }
+  return html;
+}
+ 
+
+function refreshDisplay(container, itemId, ratings) {
+  const data      = ratings[itemId];
+  const starsEl   = container.querySelector(".food-stars");
+  const valueEl   = container.querySelector(".food-rating-value");
+  const countEl   = container.querySelector(".food-rating-count");
+ 
+  if (!starsEl || !valueEl || !countEl) return;
+ 
+  starsEl.innerHTML = buildStarHTML(data.average);
+  starsEl.setAttribute("aria-label", `${data.average.toFixed(1)} out of 5 stars`);
+  valueEl.textContent = data.average.toFixed(1);
+  countEl.textContent = `(${data.count.toLocaleString()} ratings)`;
+}
+
+function initFoodRating(container) {
+  const itemId      = container.dataset.itemId;
+  const ratings     = loadFoodRatings();
+  const interStars  = container.querySelectorAll(".food-star-interactive");
+  const thanksEl    = container.querySelector(".food-rating-thanks");
+ 
+  
+  refreshDisplay(container, itemId, ratings);
+ 
+  interStars.forEach(star => {
+    star.addEventListener("mouseenter", () => {
+      const val = +star.dataset.value;
+      interStars.forEach(s => s.classList.toggle("hovered", +s.dataset.value <= val));
+    });
+    star.addEventListener("mouseleave", () => {
+      interStars.forEach(s => s.classList.remove("hovered"));
+    });
+ 
+
+    star.addEventListener("click", () => {
+      const value   = +star.dataset.value;
+      const current = loadFoodRatings()[itemId] || { average: 0, count: 0 };
+ 
+      
+      const newCount   = current.count + 1;
+      const newAverage = parseFloat(
+        ((current.average * current.count + value) / newCount).toFixed(1)
+      );
+      const updated = { average: newAverage, count: newCount };
+ 
+      saveFoodRating(itemId, updated);
+ 
+    
+      const freshRatings = loadFoodRatings();
+      refreshDisplay(container, itemId, freshRatings);
+ 
+   
+      interStars.forEach(s => {
+        s.classList.remove("hovered");
+        s.classList.toggle("rated", +s.dataset.value <= value);
+      });
+ 
+      
+      if (thanksEl) {
+        thanksEl.classList.add("show");
+        setTimeout(() => thanksEl.classList.remove("show"), 2500);
+      }
+    });
+ 
+   
+    star.addEventListener("keydown", e => {
+      if (e.key === "Enter" || e.key === " ") {
+        e.preventDefault();
+        star.click();
+      }
+    });
+  });
+}
+ 
+/** Initialise all rating widgets on the page */
+function initAllFoodRatings() {
+  document.querySelectorAll(".food-rating[data-item-id]").forEach(initFoodRating);
+}
+ 
+
+if (document.readyState === "loading") {
+  document.addEventListener("DOMContentLoaded", initAllFoodRatings);
+} else {
+  initAllFoodRatings();
+}

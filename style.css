@@ -1346,3 +1346,120 @@ body.light-theme .nav-cta:hover {
   opacity: 1;
   visibility: visible;
 }
+/* STAR RATING COMPONENT */
+
+.food-rating {
+  margin-top: 10px;
+  padding-top: 10px;
+  border-top: 1px solid var(--color-border);
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+ 
+/* ── Static display row: ★★★★☆ 4.5 (128 ratings) ─────── */
+.food-rating-display {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+ 
+.food-stars {
+  font-size: 0.9rem;
+  letter-spacing: 1px;
+  line-height: 1;
+}
+ 
+/* filled star */
+.food-stars .star-filled {
+  color: var(--color-primary);
+}
+ 
+/* half star — inline clip trick, no pseudo-element needed */
+.food-stars .star-half {
+  position: relative;
+  display: inline-block;
+  color: var(--color-border);
+}
+.food-stars .star-half::before {
+  content: "★";
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 50%;
+  overflow: hidden;
+  color: var(--color-primary);
+}
+ 
+/* empty star */
+.food-stars .star-empty {
+  color: var(--color-border);
+}
+ 
+.food-rating-value {
+  font-family: var(--font-serif);
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--color-text);
+}
+ 
+.food-rating-count {
+  font-size: 0.75rem;
+  color: var(--color-text-muted);
+}
+ 
+/* ── Interactive "Rate:" row ─────────────────────────── */
+.food-rating-input {
+  display: flex;
+  align-items: center;
+  gap: 3px;
+}
+ 
+.food-rate-label {
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--color-text-muted);
+  margin-right: 2px;
+}
+ 
+.food-star-interactive {
+  font-size: 1rem;
+  color: var(--color-border);
+  cursor: pointer;
+  transition: color 0.15s ease, transform 0.15s ease;
+  user-select: none;
+  line-height: 1;
+}
+ 
+.food-star-interactive:hover,
+.food-star-interactive.hovered,
+.food-star-interactive.rated {
+  color: var(--color-primary);
+  transform: scale(1.2);
+}
+ 
+/* thank-you flash */
+.food-rating-thanks {
+  font-size: 0.72rem;
+  font-style: italic;
+  color: var(--color-primary);
+  font-family: var(--font-serif);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  height: 0;
+  overflow: hidden;
+}
+.food-rating-thanks.show {
+  opacity: 1;
+  height: auto;
+}
+ 
+/* ── Responsive ──────────────────────────────────────── */
+@media (max-width: 480px) {
+  .food-stars,
+  .food-star-interactive { font-size: 0.85rem; }
+  .food-rating-display   { gap: 4px; }
+}
+ 
