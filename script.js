@@ -12,8 +12,13 @@ const dateInput = document.getElementById("date");
 const timeSelect = document.getElementById("time");
 const themeToggle = document.getElementById("themeToggle");
 if (dateInput) {
-  const today = new Date().toISOString().split("T")[0];
-  dateInput.setAttribute("min", today);
+  const tomorrow = new Date();
+    tomorrow.setDate(tomorrow.getDate() + 1);
+
+    dateInput.setAttribute(
+    "min",
+    tomorrow.toISOString().split("T")[0]
+);
 
   dateInput.addEventListener("change", updateAvailableTimes);
 }
