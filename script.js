@@ -267,7 +267,7 @@ function handleFormSubmit(e) {
   let isValid = true;
 
   inputs.forEach((input) => {
-    if (input.required && !input.value) {
+    if ((input.required && !input.value) || (input.id === "name" && !isValidName(input.value))) {
       input.style.borderColor = "#c94a4a";
       isValid = false;
     } else {
