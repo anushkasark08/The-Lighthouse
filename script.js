@@ -433,6 +433,11 @@ const pinnedReview = {
   date: "14 May 2026",
 };
 
+function sanitize(str) {
+  const div = document.createElement('div');
+  div.appendChild(document.createTextNode(str));
+  return div.innerHTML;
+}
 function renderReviews() {
   const grid = document.getElementById("reviews-grid");
   if (!grid) return;
@@ -447,12 +452,12 @@ function renderReviews() {
       (r) => `
     <div class="review-card">
       <div class="review-stars">${"★".repeat(r.rating)}${"☆".repeat(5 - r.rating)}</div>
-      <p class="review-text">${r.text}</p>
+      <p class="review-text">${sanitize(r.text)}</p>
       <div class="review-author">
-        <div class="review-avatar">${r.name.slice(0, 2).toUpperCase()}</div>
+        <div class="review-avatar">${sanitize(r.name).slice(0, 2).toUpperCase()}</div>
         <div>
-          <span class="review-name">${r.name}</span>
-          <span class="review-date">${r.date}</span>
+          <span class="review-name">${sanitize(r.name)}</span>
+          <span class="review-date">${sanitize(r.date)}</span>
         </div>
       </div>
     </div>
