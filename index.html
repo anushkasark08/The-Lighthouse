@@ -140,6 +140,9 @@
 
           <div class="menu-filters">
             <button class="filter-btn active" data-filter="all">All</button>
+
+            <button class="filter-btn" data-filter="favorites">Favorites ❤️</button>
+            
             <button class="filter-btn" data-filter="breakfast">
               Breakfast
             </button>
@@ -153,7 +156,7 @@
         <!-- Menu Content -->
         <div class="menu-content">
           <!-- breakfast -->
-          <div class="menu-item" data-category="breakfast">
+          <div class="menu-item" data-category="breakfast" data-id="masala-dosa">
             <div class="food-card">
               <img
                 src="./images/MasalaDosa.jpg"
@@ -163,8 +166,12 @@
 
               <div class="food-content">
                 <div class="menu-item-header">
-                  <h3>Masala Dosa</h3>
-                  <span class="menu-price">₹180</span>
+                <h3>Masala Dosa</h3>
+
+                <div class="menu-actions">
+                <span class="menu-price">₹180</span>
+                <button class="favorite-btn">♡</button>
+                </div>
                 </div>
 
                 <span class="food-tag veg">Veg</span>
@@ -173,7 +180,7 @@
               </div>
             </div>
           </div>
-          <div class="menu-item" data-category="breakfast">
+          <div class="menu-item" data-category="breakfast" data-id="idli-sambar">
             <div class="food-card">
               <img
                 src="./images/Idli_Sambar.jpg"
@@ -184,7 +191,11 @@
               <div class="food-content">
                 <div class="menu-item-header">
                   <h3>Idli Sambar</h3>
+
+                  <div class="menu-actions">
                   <span class="menu-price">₹120</span>
+                  <button class="favorite-btn">♡</button>
+                  </div>
                 </div>
 
                 <span class="food-tag veg">Veg</span>
@@ -196,7 +207,7 @@
             </div>
           </div>
 
-          <div class="menu-item" data-category="breakfast">
+          <div class="menu-item" data-category="breakfast" data-id="chicken-keema-dosa">
             <div class="food-card">
               <img
                 src="./images/Chicken_Keema_Dosa.jpg"
@@ -207,7 +218,11 @@
               <div class="food-content">
                 <div class="menu-item-header">
                   <h3>Chicken Keema Dosa</h3>
+
+                  <div class="menu-actions">
                   <span class="menu-price">₹240</span>
+                  <button class="favorite-btn">♡</button>
+                  </div>
                 </div>
 
                 <span class="food-tag nonveg">Non-Veg</span>
@@ -218,7 +233,7 @@
           </div>
 
           <!-- lunch -->
-          <div class="menu-item" data-category="lunch">
+          <div class="menu-item" data-category="lunch" data-id="paneer-butter-masala">
             <div class="food-card">
               <img
                 src="./images/Paneer_Butter_Masala.jpg"
@@ -229,7 +244,11 @@
               <div class="food-content">
                 <div class="menu-item-header">
                   <h3>Paneer Butter Masala</h3>
+
+                  <div class="menu-actions">
                   <span class="menu-price">₹280</span>
+                  <button class="favorite-btn">♡</button>
+                  </div>
                 </div>
 
                 <span class="food-tag veg">Veg</span>
@@ -240,7 +259,7 @@
           </div>
 
           <!-- dinner -->
-          <div class="menu-item" data-category="dinner">
+          <div class="menu-item" data-category="dinner" data-id="hyderabadi-chicken-biryani">
             <div class="food-card">
               <img
                 src="./images/Hyderabadi_Chicken_Biryani.jpg"
@@ -251,7 +270,11 @@
               <div class="food-content">
                 <div class="menu-item-header">
                   <h3>Hyderabadi Chicken Biryani</h3>
+
+                  <div class="menu-actions">
                   <span class="menu-price">₹320</span>
+                  <button class="favorite-btn">♡</button>
+                  </div>
                 </div>
 
                 <span class="food-tag nonveg">Non-Veg</span>
@@ -264,7 +287,7 @@
             </div>
           </div>
 
-          <div class="menu-item" data-category="dinner">
+          <div class="menu-item" data-category="dinner" data-id="butter-chicken">
             <div class="food-card">
               <img
                 src="./images/Butter_Chicken.jpg"
@@ -275,7 +298,11 @@
               <div class="food-content">
                 <div class="menu-item-header">
                   <h3>Butter Chicken</h3>
+
+                  <div class="menu-actions">
                   <span class="menu-price">₹340</span>
+                  <button class="favorite-btn">♡</button>
+                  </div>
                 </div>
 
                 <span class="food-tag nonveg">Non-Veg</span>
@@ -286,7 +313,7 @@
           </div>
 
           <!-- Drinks -->
-          <div class="menu-item" data-category="drinks">
+          <div class="menu-item" data-category="drinks" data-id="mango-lassi">
             <div class="food-card">
               <img
                 src="./images/Mango_Lassi.jpg"
@@ -297,7 +324,11 @@
               <div class="food-content">
                 <div class="menu-item-header">
                   <h3>Mango Lassi</h3>
+
+                  <div class="menu-actions">
                   <span class="menu-price">₹110</span>
+                  <button class="favorite-btn">♡</button>
+                  </div>
                 </div>
 
                 <span class="food-tag veg">Veg</span>
@@ -308,7 +339,7 @@
               </div>
             </div>
           </div>
-          <div class="menu-item" data-category="drinks">
+          <div class="menu-item" data-category="drinks" data-id="masala-chai">
             <div class="food-card">
               <img
                 src="./images/Masala_Chai.jpg"
@@ -319,7 +350,11 @@
               <div class="food-content">
                 <div class="menu-item-header">
                   <h3>Masala Chai</h3>
+
+                  <div class="menu-actions">
                   <span class="menu-price">₹70</span>
+                  <button class="favorite-btn">♡</button>
+                  </div>
                 </div>
 
                 <span class="food-tag veg">Veg</span>
@@ -330,7 +365,7 @@
               </div>
             </div>
           </div>
-          <div class="menu-item" data-category="drinks">
+          <div class="menu-item" data-category="drinks" data-id="fresh-lime-soda">
             <div class="food-card">
               <img
                 src="./images/Fresh_Lime_Soda.jpg"
@@ -341,7 +376,11 @@
               <div class="food-content">
                 <div class="menu-item-header">
                   <h3>Fresh Lime Soda</h3>
+
+                  <div class="menu-actions">
                   <span class="menu-price">₹90</span>
+                  <button class="favorite-btn">♡</button>
+                  </div>
                 </div>
 
                 <span class="food-tag veg">Veg</span>
@@ -351,7 +390,7 @@
             </div>
           </div>
           <!-- Desserts -->
-          <div class="menu-item" data-category="desserts">
+          <div class="menu-item" data-category="desserts" data-id="gulab-jamun">
             <div class="food-card">
               <img
                 src="./images/Gulab_Jamun.jpg"
@@ -362,7 +401,11 @@
               <div class="food-content">
                 <div class="menu-item-header">
                   <h3>Gulab Jamun</h3>
+
+                  <div class="menu-actions">
                   <span class="menu-price">₹120</span>
+                  <button class="favorite-btn">♡</button>
+                  </div>
                 </div>
 
                 <span class="food-tag veg">Veg</span>
@@ -371,7 +414,7 @@
               </div>
             </div>
           </div>
-          <div class="menu-item" data-category="desserts">
+          <div class="menu-item" data-category="desserts" data-id="rasmalai">
             <div class="food-card">
               <img
                 src="./images/Rasmalai.jpg"
@@ -382,7 +425,11 @@
               <div class="food-content">
                 <div class="menu-item-header">
                   <h3>Rasmalai</h3>
+
+                  <div class="menu-actions">
                   <span class="menu-price">₹140</span>
+                  <button class="favorite-btn">♡</button>
+                  </div>
                 </div>
 
                 <span class="food-tag veg">Veg</span>
@@ -391,14 +438,18 @@
               </div>
             </div>
           </div>
-          <div class="menu-item" data-category="desserts">
+          <div class="menu-item" data-category="desserts" data-id="kesar-pista-kulfi">
             <div class="food-card">
               <img src="./images/Kulfi.jpg" alt="Kulfi" class="food-image" />
 
               <div class="food-content">
                 <div class="menu-item-header">
                   <h3>Kesar Pista Kulfi</h3>
+
+                  <div class="menu-actions">
                   <span class="menu-price">₹130</span>
+                  <button class="favorite-btn">♡</button>
+                  </div>
                 </div>
 
                 <span class="food-tag veg">Veg</span>

@@ -190,7 +190,15 @@ function filterMenuItems(filter = "all", searchText = "") {
 
     const matchesSearch = itemName.includes(searchText.toLowerCase());
 
-    const matchesFilter = filter === "all" || category === filter;
+    let matchesFilter;
+
+    if (filter === "all") {
+    matchesFilter = true;
+    } else if (filter === "favorites") {
+      matchesFilter = favorites.includes(item.dataset.id);
+    } else {
+    matchesFilter = category === filter;
+    }
 
     if (matchesSearch && matchesFilter) {
       item.classList.remove("hidden-item");
@@ -606,5 +614,38 @@ backToTopBtn.addEventListener("click", () => {
   window.scrollTo({
     top: 0,
     behavior: "smooth",
+  });
+});
+
+const favoriteButtons = document.querySelectorAll(".favorite-btn");
+
+let favorites = JSON.parse(localStorage.getItem("favorites")) || [];
+
+favoriteButtons.forEach((button) => {
+  const menuItem = button.closest(".menu-item");
+  const itemId = menuItem.dataset.id;
+
+  // Restore favorites after refresh
+  if (favorites.includes(itemId)) {
+    button.classList.add("active");
+    button.textContent = "♥";
+  }
+
+  button.addEventListener("click", () => {
+    button.classList.toggle("active");
+
+    if (button.classList.contains("active")) {
+      button.textContent = "♥";
+
+      if (!favorites.includes(itemId)) {
+        favorites.push(itemId);
+      }
+    } else {
+      button.textContent = "♡";
+
+      favorites = favorites.filter((id) => id !== itemId);
+    }
+
+    localStorage.setItem("favorites", JSON.stringify(favorites));
   });
 });

@@ -549,8 +549,7 @@ body.light-theme .nav-cta:hover {
 .menu-item-header {
   display: flex;
   justify-content: space-between;
-  align-items: baseline;
-  margin-bottom: 8px;
+  align-items: center;
 }
 
 .menu-item h3 {
@@ -563,6 +562,32 @@ body.light-theme .nav-cta:hover {
   font-size: 1.125rem;
   color: var(--color-primary);
   font-weight: 500;
+}
+
+/* Favorite Button */
+.menu-actions {
+  display: flex;
+  align-items: center;
+  gap: 4px; /* controls distance between price and heart */
+}
+
+.favorite-btn {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  font-size: 1.2rem;
+  color: var(--color-text-muted);
+  padding: 0;
+  margin: 0;
+}
+
+.favorite-btn:hover {
+  color: #ff5c5c;
+  transform: scale(1.15);
+}
+
+.favorite-btn.active {
+  color: #ff5c5c;
 }
 
 .menu-item p {
