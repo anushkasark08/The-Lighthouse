@@ -393,11 +393,125 @@ if (reservationForm) {
   reservationForm.addEventListener("submit", handleFormSubmit);
 }
 
+// Dynamic "Today's Special" Generator
+function initTodaysSpecial() {
+  const container = document.getElementById("todays-special-container");
+  if (!container) return;
+
+  const menuItems = Array.from(document.querySelectorAll(".menu-item"));
+  if (menuItems.length === 0) return;
+
+  // Map elements to structured objects
+  const dishes = menuItems.map((item, index) => {
+    const titleEl = item.querySelector("h3");
+    const priceEl = item.querySelector(".menu-price");
+    const imageEl = item.querySelector(".food-image");
+    const tagEl = item.querySelector(".food-tag");
+    const descEl = item.querySelector(".food-content p") || item.querySelector("p");
+
+    return {
+      title: titleEl ? titleEl.textContent.trim() : "Chef's Special",
+      price: priceEl ? priceEl.textContent.trim() : "",
+      imageSrc: imageEl ? imageEl.getAttribute("src") : "",
+      imageAlt: imageEl ? imageEl.getAttribute("alt") : "Special Dish",
+      category: item.getAttribute("data-category") || "special",
+      isVeg: tagEl ? tagEl.classList.contains("veg") : true,
+      tagText: tagEl ? tagEl.textContent.trim() : "Veg",
+      description: descEl ? descEl.textContent.trim() : "",
+      element: item,
+      index: index
+    };
+  });
+
+  // Calculate daily deterministic index
+  const today = new Date();
+  const dateStr = `${today.getFullYear()}-${today.getMonth() + 1}-${today.getDate()}`;
+  let hash = 0;
+  for (let i = 0; i < dateStr.length; i++) {
+    hash = dateStr.charCodeAt(i) + ((hash << 5) - hash);
+  }
+  const specialIndex = Math.abs(hash) % dishes.length;
+  const specialDish = dishes[specialIndex];
+
+  // Render Today's Special spotlight banner
+  const vegNonVegClass = specialDish.isVeg ? "veg" : "nonveg";
+  
+  container.innerHTML = `
+    <div class="special-card">
+      <div class="special-image-container">
+        <img class="special-image" src="${specialDish.imageSrc}" alt="${specialDish.imageAlt}">
+      </div>
+      <div class="special-content">
+        <span class="special-badge">⭐ Today's Special</span>
+        <div class="special-meta">
+          <h3 class="special-title">${specialDish.title}</h3>
+          <span class="special-price-tag">${specialDish.price}</span>
+        </div>
+        <div class="special-tags">
+          <span class="food-tag ${vegNonVegClass}">${specialDish.tagText}</span>
+          <span class="special-category-tag">${specialDish.category}</span>
+        </div>
+        <p class="special-desc">${specialDish.description}</p>
+        <button class="btn btn-primary special-cta-btn" id="special-cta-btn">
+          Book Table to Try This
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="5" y1="12" x2="19" y2="12"></line>
+            <polyline points="12 5 19 12 12 19"></polyline>
+          </svg>
+        </button>
+      </div>
+    </div>
+  `;
+
+  // Trigger entrance transition after a tiny frame delay
+  requestAnimationFrame(() => {
+    container.classList.add("visible");
+  });
+
+  // Add badge to the selected menu item card in the main grid
+  const mainGridCard = specialDish.element.querySelector(".food-card");
+  if (mainGridCard) {
+    const badge = document.createElement("span");
+    badge.className = "menu-item-special-badge";
+    badge.innerHTML = "⭐ Today's Special";
+    mainGridCard.appendChild(badge);
+  }
+
+  // CTA button event listener: smooth scroll to reservations and pre-fill text
+  const ctaBtn = document.getElementById("special-cta-btn");
+  if (ctaBtn) {
+    ctaBtn.addEventListener("click", () => {
+      const reservationSection = document.getElementById("reservation");
+      if (reservationSection) {
+        const offsetTop = reservationSection.offsetTop - 80;
+        window.scrollTo({
+          top: offsetTop,
+          behavior: "smooth"
+        });
+
+        // Pre-fill special request field
+        const requestField = document.getElementById("requests");
+        if (requestField) {
+          requestField.value = `I would love to reserve a table to try today's special: ${specialDish.title}!`;
+          
+          // Add a subtle highlight transition to the requests box
+          requestField.focus();
+          requestField.style.borderColor = "var(--color-primary)";
+          setTimeout(() => {
+            requestField.style.borderColor = "";
+          }, 2000);
+        }
+      }
+    });
+  }
+}
+
 // Initialize
 document.addEventListener("DOMContentLoaded", () => {
   handleScroll();
   setupIntersectionObserver();
   updateAvailableTimes();
+  initTodaysSpecial();
 });
 
 // Close mobile menu on window resize
