@@ -15,6 +15,11 @@ if (dateInput) {
   const today = new Date().toISOString().split("T")[0];
   dateInput.setAttribute("min", today);
 
+  // Restrict bookings to a reasonable future window (90 days ahead)
+  const maxBookingDate = new Date();
+  maxBookingDate.setDate(maxBookingDate.getDate() + 90);
+  dateInput.setAttribute("max", maxBookingDate.toISOString().split("T")[0]);
+
   dateInput.addEventListener("change", updateAvailableTimes);
 }
 
@@ -274,6 +279,18 @@ function handleFormSubmit(e) {
       input.style.borderColor = "";
     }
   });
+
+  // Extra safety check: enforce date range even if min/max attributes are bypassed
+  if (dateInput && dateInput.value) {
+    const selected = new Date(dateInput.value);
+    const min = new Date(dateInput.getAttribute("min"));
+    const max = new Date(dateInput.getAttribute("max"));
+
+    if (selected < min || selected > max) {
+      dateInput.style.borderColor = "#c94a4a";
+      isValid = false;
+    }
+  }
 
   if (isValid) {
     // Show success message (visual only)
