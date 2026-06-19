@@ -20,10 +20,10 @@ Designed with elegant dark aesthetics, immersive visuals, smooth animations, and
   - [📱 Fully Responsive Design](#-fully-responsive-design)
   - [⚡ Smooth User Experience](#-smooth-user-experience)
   - [✨ Advanced UI Interactions](#-advanced-ui-interactions)
-  - [🗓️ Reservation Features](#️-reservation-features)
+  - [🗓️ Reservation Features](#%EF%B8%8F-reservation-features)
   - [📍 Google Maps Integration](#-google-maps-integration)
   - [📸 Website Assets](#-website-assets)
-- [🛠️ Tech Stack](#️-tech-stack)
+- [🛠️ Tech Stack](#️%EF%B8%8F-tech-stack)
 - [📂 Project Structure](#-project-structure)
 - [🚀 Getting Started](#-getting-started)
 - [🎨 Customization](#-customization)
@@ -33,6 +33,8 @@ Designed with elegant dark aesthetics, immersive visuals, smooth animations, and
 - [💖 Acknowledgements](#-acknowledgements)
 - [⭐ Support](#-support)
 - [🔗 Repository](#-repository)
+
+---
 
 # ✨ Features
 
