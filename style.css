@@ -12,6 +12,7 @@
   --font-sans: "Inter", -apple-system, BlinkMacSystemFont, sans-serif;
   --transition: 0.3s ease;
 }
+
 body.light-theme {
   --color-bg: #f7f2e9;
   --color-bg-lighter: #fffaf2;
@@ -166,8 +167,9 @@ h4 {
 }
 
 .nav-link {
-  font-size: 0.875rem;
-  letter-spacing: 1px;
+  font-size: 0.8rem;
+  letter-spacing: 2px;
+  font-weight: 500;
   text-transform: uppercase;
   color: var(--color-text);
   position: relative;
@@ -226,37 +228,6 @@ h4 {
   height: 2px;
   background-color: var(--color-text);
   transition: all var(--transition);
-}
-body.light-theme .nav.scrolled {
-  background: rgba(214, 184, 112, 0.95);
-  backdrop-filter: blur(10px);
-}
-
-body.light-theme .nav {
-  background: rgba(214, 184, 112, 0.15);
-}
-
-body.light-theme .nav-link {
-  color: #1a1714;
-}
-
-body.light-theme .nav-logo {
-  color: #8a6e2f;
-}
-
-body.light-theme .nav-link.active,
-body.light-theme .nav-link:hover {
-  color: #8a6e2f;
-}
-
-body.light-theme .nav-cta {
-  border-color: #8a6e2f;
-  color: #8a6e2f;
-}
-
-body.light-theme .nav-cta:hover {
-  background-color: #8a6e2f;
-  color: #fff;
 }
 
 .theme-toggle {
@@ -329,7 +300,9 @@ body.light-theme .nav-cta:hover {
 
 .hero-title {
   font-family: var(--font-serif);
-  font-size: clamp(3rem, 10vw, 7rem);
+  font-size: clamp(3rem, 8vw, 6rem);
+  line-height: 0.95;
+  letter-spacing: -0.02em;
   font-weight: 300;
   margin-bottom: 16px;
   text-shadow: 0 2px 40px rgba(0, 0, 0, 0.3);
@@ -374,10 +347,12 @@ body.light-theme .nav-cta:hover {
   background: linear-gradient(to bottom, var(--color-primary), transparent);
   animation: scrollPulse 2s infinite;
 }
+
 .hero-scroll:hover span {
   color: var(--color-primary);
   transition: color var(--transition);
 }
+
 .clicktoscroll {
   font-family: "Palatino Linotype", Palatino, "Book Antiqua", serif;
   font-style: italic;
@@ -387,6 +362,7 @@ body.light-theme .nav-cta:hover {
   color: var(--color-text-muted);
   text-transform: none !important;
 }
+
 @keyframes scrollPulse {
   0%,
   100% {
@@ -413,7 +389,7 @@ body.light-theme .nav-cta:hover {
     transform: translateY(6px);
   }
 }
-/* About Section */
+
 .about {
   padding: 120px 0;
   background-color: var(--color-bg);
@@ -611,6 +587,7 @@ body.light-theme .nav-cta:hover {
   transition: all 0.3s ease;
   border-radius: 30px;
 }
+
 .filter-btn:hover,
 .filter-btn.active {
   background-color: var(--color-primary);
@@ -628,6 +605,7 @@ body.light-theme .nav-cta:hover {
   color: var(--color-text-muted);
   font-style: italic;
 }
+
 .food-tag {
   display: inline-block;
   margin-bottom: 10px;
@@ -646,6 +624,7 @@ body.light-theme .nav-cta:hover {
   background-color: rgba(201, 74, 74, 0.15);
   color: #ff7b7b;
 }
+
 .food-card {
   display: flex;
   gap: 20px;
@@ -657,6 +636,7 @@ body.light-theme .nav-cta:hover {
   position: relative;
   transition: border-color 0.3s ease, transform 0.3s ease; 
 }
+
 .food-card::before {
   content: '';
   position: absolute;
@@ -682,13 +662,16 @@ body.light-theme .nav-cta:hover {
 .food-card:hover::before {
   opacity: 1;
 }
+
 .food-card:hover {
   transform: scale(1.02);
 }
+
 .food-card > * {
   position: relative;
   z-index: 2;
 }
+
 .food-image {
   width: 220px;
   height: 160px;
@@ -710,7 +693,6 @@ body.light-theme .nav-cta:hover {
   position: relative;
   padding: 120px 0;
   overflow: hidden;
-  
 }
 
 .reservation-bg {
@@ -978,7 +960,6 @@ body.light-theme .nav-cta:hover {
   height: 100%;
   border: 0;
   filter: none;
-
 }
 
 /* ── Reviews Section ─────────────────────────────────── */
@@ -1028,6 +1009,7 @@ body.light-theme .nav-cta:hover {
   flex: 1;
   word-break: break-word;
 }
+
 .review-author {
   display: flex;
   align-items: center;
@@ -1104,21 +1086,6 @@ body.light-theme .nav-cta:hover {
   transform: scale(1.1);
 }
 
-@media (max-width: 1024px) {
-  .reviews-grid {
-    grid-template-columns: repeat(2, 1fr);
-  }
-}
-
-@media (max-width: 768px) {
-  .reviews-grid {
-    grid-template-columns: 1fr;
-  }
-  .review-form-wrapper {
-    padding: 24px 20px;
-  }
-}
-
 /* Footer */
 .footer {
   padding: 60px 0;
@@ -1170,153 +1137,6 @@ body.light-theme .nav-cta:hover {
   font-size: 0.875rem;
 }
 
-/* Responsive Design */
-@media (max-width: 1024px) {
-  .about-grid,
-  .menu-grid,
-  .reservation-content,
-  .location-grid {
-    grid-template-columns: 1fr;
-    gap: 40px;
-  }
-
-  .about-image img {
-    height: 400px;
-  }
-
-  .menu-image {
-    position: static;
-  }
-
-  .menu-image img {
-    height: 350px;
-  }
-}
-
-@media (max-width: 768px) {
-  .nav-menu {
-    position: fixed;
-    top: 0;
-    right: -100%;
-    opacity: 0;
-    width: 80%;
-    max-width: 320px;
-    height: 100vh;
-    background-color: var(--color-bg);
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    gap: 32px;
-    transition:
-      right 0.4s ease,
-      opacity 0.4s ease;
-  }
-
-  .nav-menu.active {
-    right: 0;
-    opacity: 1;
-  }
-  .nav-menu.active .nav-link {
-    animation: slideIn 0.3s ease forwards;
-  }
-
-  .nav-menu.active li:nth-child(1) {
-    animation-delay: 0.1s;
-  }
-  .nav-menu.active li:nth-child(2) {
-    animation-delay: 0.2s;
-  }
-  .nav-menu.active li:nth-child(3) {
-    animation-delay: 0.3s;
-  }
-  .nav-menu.active li:nth-child(4) {
-    animation-delay: 0.4s;
-  }
-  .nav-menu.active li:nth-child(5) {
-    animation-delay: 0.5s;
-  }
-
-  .nav-toggle {
-    display: flex;
-    z-index: 1001;
-  }
-
-  .nav-toggle.active span:nth-child(1) {
-    transform: rotate(45deg) translate(5px, 5px);
-  }
-
-  .nav-toggle.active span:nth-child(2) {
-    opacity: 0;
-  }
-
-  .nav-toggle.active span:nth-child(3) {
-    transform: rotate(-45deg) translate(5px, -5px);
-  }
-
-  .nav-cta {
-    display: none;
-  }
-
-  .hero-buttons {
-    flex-direction: column;
-    align-items: center;
-  }
-
-  .btn {
-    width: 100%;
-    max-width: 280px;
-  }
-
-  .form-row {
-    grid-template-columns: 1fr;
-  }
-
-  .menu-tabs {
-    gap: 4px;
-  }
-
-  .menu-tab {
-    padding: 10px 20px;
-    font-size: 0.75rem;
-  }
-
-  .reservation-form {
-    padding: 24px;
-  }
-
-  .location-map {
-    height: 350px;
-  }
-}
-@keyframes slideIn {
-  from {
-    opacity: 0;
-    transform: translateX(20px);
-  }
-  to {
-    opacity: 1;
-    transform: translateX(0);
-  }
-}
-@media (max-width: 480px) {
-  .section-title {
-    font-size: 2rem;
-  }
-
-  .hero-title {
-    font-size: 2.5rem;
-  }
-
-  .menu-item-header {
-    flex-direction: column;
-    gap: 4px;
-  }
-
-  .hours-item {
-    flex-direction: column;
-    gap: 4px;
-  }
-}
 #backToTop {
   position: fixed;
   bottom: 32px;
@@ -1426,4 +1246,348 @@ body.light-theme .nav-cta:hover {
 
 .diet-no-results.visible {
   display: block;
+}
+
+body.light-theme .nav {
+  background: transparent;
+  border-bottom: none;
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+}
+
+/* Restore the solid white panel ONLY when the user scrolls down */
+body.light-theme .nav.scrolled {
+  background: rgba(255, 255, 255, 0.96);
+  border-bottom: 1px solid rgba(138, 110, 47, 0.12);
+}
+
+body.light-theme .nav:not(.scrolled) .nav-link,
+body.light-theme .nav:not(.scrolled) .nav-logo {
+  text-shadow: 
+    0 1px 2px rgba(255, 255, 255, 1),
+    0 0 10px rgba(255, 255, 255, 1), 
+    0 0 25px rgba(255, 255, 255, 0.8);
+}
+
+
+body.light-theme .nav-link {
+  color: #1a1714;
+  font-weight: 700; 
+}
+
+
+body.light-theme .nav-logo {
+  color: #1a1714; 
+  font-weight: 600;
+}
+
+body.light-theme .nav-link.active,
+body.light-theme .nav-link:hover {
+  color: #1a1714;
+}
+
+body.light-theme .nav-link::after {
+  background-color: #1a1714;
+  height: 2px;
+}
+
+body.light-theme .nav-cta {
+  border-color: #8a6e2f;
+  color: #8a6e2f;
+}
+
+body.light-theme .nav-cta:hover {
+  background-color: #8a6e2f;
+  color: #fff;
+}
+
+body.light-theme .nav:not(.scrolled) .nav-cta {
+  background: rgba(255, 255, 255, 0.15);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(47, 29, 18, 0.6);
+  color: #2f1d12;
+  font-weight: 600;
+  text-shadow: 0 0 10px rgba(255, 255, 255, 0.8);
+  box-shadow: none;
+}
+
+body.light-theme .nav:not(.scrolled) .nav-cta:hover {
+  background: #2f1d12;
+  color: #ffffff;
+  border-color: #2f1d12;
+  text-shadow: none;
+}
+
+/* Light-theme hero overlay to suit daytime image */
+body.light-theme .hero-overlay {
+  background: radial-gradient(
+    circle at center,
+    rgba(255,255,255,0) 35%,
+    rgba(0,0,0,0.12) 100%
+  );
+  z-index: -1;
+}
+
+body.light-theme .hero-content {
+  padding: 3rem;
+  max-width: 900px;
+}
+
+body.light-theme .hero-title {
+  color: #2f1d12;
+  text-shadow:
+    0 2px 8px rgba(255,255,255,0.7),
+    0 0 25px rgba(255,255,255,0.4);
+}
+
+body.light-theme .hero-subtitle {
+  color: #1a1714;
+  font-weight: 400;
+  letter-spacing: 1px;
+  text-shadow: 
+    0 0 10px rgba(255, 255, 255, 1), 
+    0 0 25px rgba(255, 255, 255, 0.9);
+}
+
+
+body.light-theme .hero-tagline {
+  color: #1a1714;
+  font-weight: 400;
+  letter-spacing: 4px;
+  background: transparent;
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+  padding: 0;
+  border: none;
+  margin-bottom: 16px;
+  text-shadow: 
+    0 0 10px rgba(255, 255, 255, 1), 
+    0 0 25px rgba(255, 255, 255, 0.9);
+  display: block;
+}
+
+/* Scroll Section: Soft radial backdrop so elements never get lost */
+body.light-theme .hero-scroll {
+  background: radial-gradient(ellipse at center, rgba(255,255,255,0.75) 0%, rgba(255,255,255,0) 65%);
+  padding: 20px 40px;
+  border-radius: 50%;
+}
+
+body.light-theme .hero-scroll span,
+body.light-theme .clicktoscroll {
+  color: #1a1714;
+  font-weight: 700;
+  text-shadow: none;
+}
+
+body.light-theme .scroll-indicator {
+  background: linear-gradient(to bottom, #1a1714, transparent);
+  width: 2px;
+  box-shadow: none;
+}
+
+body.light-theme .scroll-arrow {
+  color: #1a1714;
+  filter: drop-shadow(0 1px 2px rgba(255, 255, 255, 0.9));
+}
+
+body.light-theme .hero-buttons .btn-primary {
+  background-color: #2f1d12;
+  color: #ffffff;
+  border: 1px solid #2f1d12;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
+}
+
+body.light-theme .hero-buttons .btn-primary:hover {
+  background-color: #4a3728;
+  border-color: #4a3728;
+}
+
+body.light-theme .btn-outline {
+  background: rgba(255, 255, 255, 0.8);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  color: #2f1d12;
+  border: 1px solid #2f1d12;
+  font-weight: 600;
+  text-shadow: none;
+}
+
+body.light-theme .btn-outline:hover {
+  background: #2f1d12;
+  color: #ffffff;
+}
+
+@media (max-width: 1024px) {
+  .about-grid,
+  .menu-grid,
+  .reservation-content,
+  .location-grid {
+    grid-template-columns: 1fr;
+    gap: 40px;
+  }
+
+  .about-image img {
+    height: 400px;
+  }
+
+  .menu-image {
+    position: static;
+  }
+
+  .menu-image img {
+    height: 350px;
+  }
+
+  .reviews-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 768px) {
+  .nav-menu {
+    position: fixed;
+    top: 0;
+    right: -100%;
+    opacity: 0;
+    width: 80%;
+    max-width: 320px;
+    height: 100vh;
+    background-color: var(--color-bg);
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 32px;
+    transition: right 0.4s ease, opacity 0.4s ease;
+  }
+
+  .nav-menu.active {
+    right: 0;
+    opacity: 1;
+  }
+
+  .nav-menu.active .nav-link {
+    animation: slideIn 0.3s ease forwards;
+  }
+
+  .nav-menu.active li:nth-child(1) {
+    animation-delay: 0.1s;
+  }
+
+  .nav-menu.active li:nth-child(2) {
+    animation-delay: 0.2s;
+  }
+
+  .nav-menu.active li:nth-child(3) {
+    animation-delay: 0.3s;
+  }
+
+  .nav-menu.active li:nth-child(4) {
+    animation-delay: 0.4s;
+  }
+
+  .nav-menu.active li:nth-child(5) {
+    animation-delay: 0.5s;
+  }
+
+  .nav-toggle {
+    display: flex;
+    z-index: 1001;
+  }
+
+  .nav-toggle.active span:nth-child(1) {
+    transform: rotate(45deg) translate(5px, 5px);
+  }
+
+  .nav-toggle.active span:nth-child(2) {
+    opacity: 0;
+  }
+
+  .nav-toggle.active span:nth-child(3) {
+    transform: rotate(-45deg) translate(5px, -5px);
+  }
+
+  .nav-cta {
+    display: none;
+  }
+
+  .hero-buttons {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .btn {
+    width: 100%;
+    max-width: 280px;
+  }
+
+  .form-row {
+    grid-template-columns: 1fr;
+  }
+
+  .menu-tabs {
+    gap: 4px;
+  }
+
+  .menu-tab {
+    padding: 10px 20px;
+    font-size: 0.75rem;
+  }
+
+  .reservation-form {
+    padding: 24px;
+  }
+
+  .location-map {
+    height: 350px;
+  }
+
+  .reviews-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .review-form-wrapper {
+    padding: 24px 20px;
+  }
+
+  body.light-theme .hero-content {
+    padding: 2rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .section-title {
+    font-size: 2rem;
+  }
+
+  .hero-title {
+    font-size: 2.5rem;
+  }
+
+  .menu-item-header {
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  .hours-item {
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  body.light-theme .hero-content {
+    padding: 1.5rem;
+    border-radius: 18px;
+  }
+}
+
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateX(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
 }

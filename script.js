@@ -74,11 +74,25 @@ if (savedTheme === 'light') {
   themeToggle.textContent = '🌙';
 }
 
+// Update hero image according to current theme
+function updateHeroImage() {
+  const heroImage = document.querySelector('#heroBg img');
+  if (!heroImage) return;
+
+  heroImage.src = document.body.classList.contains('light-theme')
+    ? './images/hero-restaurant-daytime.png'
+    : './images/hero-restaurant.jpg';
+}
+
+// Ensure hero image reflects saved theme immediately
+updateHeroImage();
+
 themeToggle.addEventListener('click', () => {
   document.body.classList.toggle('light-theme');
   const isLight = document.body.classList.contains('light-theme');
   localStorage.setItem('theme', isLight ? 'light' : 'dark');
   themeToggle.textContent = isLight ? '☀️' : '🌙';
+  updateHeroImage();
 });
 
 // ── Navigation scroll effect ──
@@ -482,6 +496,7 @@ if (reviewForm) {
 
 // ── Initialise ───
 document.addEventListener('DOMContentLoaded', () => {
+  updateHeroImage();
   handleScroll();
   setupIntersectionObserver();
   updateAvailableTimes();
