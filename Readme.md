@@ -12,6 +12,28 @@ Designed with elegant dark aesthetics, immersive visuals, smooth animations, and
 
 ---
 
+## 📑 Table of Contents
+
+- [✨ Features](#-features)
+  - [🎨 Premium UI & Branding](#-premium-ui--branding)
+  - [📋 Dynamic Menu System](#-dynamic-menu-system)
+  - [📱 Fully Responsive Design](#-fully-responsive-design)
+  - [⚡ Smooth User Experience](#-smooth-user-experience)
+  - [✨ Advanced UI Interactions](#-advanced-ui-interactions)
+  - [🗓️ Reservation Features](#️-reservation-features)
+  - [📍 Google Maps Integration](#-google-maps-integration)
+  - [📸 Website Assets](#-website-assets)
+- [🛠️ Tech Stack](#️-tech-stack)
+- [📂 Project Structure](#-project-structure)
+- [🚀 Getting Started](#-getting-started)
+- [🎨 Customization](#-customization)
+- [🌟 Future Improvements](#-future-improvements)
+- [🤝 Contributing](#-contributing)
+- [📜 License](#-license)
+- [💖 Acknowledgements](#-acknowledgements)
+- [⭐ Support](#-support)
+- [🔗 Repository](#-repository)
+
 # ✨ Features
 
 ## 🎨 Premium UI & Branding

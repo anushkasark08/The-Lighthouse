@@ -248,6 +248,18 @@ body.light-theme .nav-cta:hover { background-color: #8a6e2f; color: #fff; }
 
 .hero-bg { position: absolute; inset: 0; z-index: -2; }
 .hero-bg img { width: 100%; height: 100%; object-fit: cover; }
+.hero-bg {
+  position: absolute;
+  inset: 0;
+  z-index: -2;
+  will-change: transform;
+}
+
+.hero-bg img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
 
 .hero-overlay {
   position: absolute; inset: 0;
@@ -454,8 +466,41 @@ body.light-theme .nav-cta:hover { background-color: #8a6e2f; color: #fff; }
 .food-card:hover {
   transform: translateY(-6px);
   box-shadow: 0 12px 28px rgba(0,0,0,0.3);
+  position: relative;
+  transition: border-color 0.3s ease, transform 0.3s ease; 
+}
+.food-card::before {
+  content: '';
+  position: absolute;
+  inset: -2px;
+  border-radius: 14px; 
+  background: linear-gradient(135deg, #c9a227, #ffe082, #a67c00, #ffd54f, #c9a227);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  z-index: 0;
+  pointer-events: none;
 }
 
+.food-card::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: 12px;
+  background-color: var(--color-bg-card); 
+  z-index: 1;
+  pointer-events: none;
+}
+
+.food-card:hover::before {
+  opacity: 1;
+}
+.food-card:hover {
+  transform: scale(1.02);
+}
+.food-card > * {
+  position: relative;
+  z-index: 2;
+}
 .food-image {
   width: 160px;
   height: 140px;
@@ -558,10 +603,23 @@ body.light-theme .nav-cta:hover { background-color: #8a6e2f; color: #fff; }
   position: relative;
   padding: 120px 0;
   overflow: hidden;
+  
 }
 
 .reservation-bg { position: absolute; inset: 0; z-index: -2; }
 .reservation-bg img { width: 100%; height: 100%; object-fit: cover; }
+.reservation-bg {
+  position: absolute;
+  inset: 0;
+  z-index: -2;
+  will-change: transform;
+}
+
+.reservation-bg img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
 
 .reservation-overlay {
   position: absolute; inset: 0;
@@ -901,4 +959,76 @@ body.light-theme .nav-cta:hover { background-color: #8a6e2f; color: #fff; }
   .menu-item-header { flex-direction: column; gap: 4px; }
   .hours-item     { flex-direction: column; gap: 4px; }
   .food-image     { height: 170px; }
+}
+#backToTop.visible {
+  opacity: 1;
+  visibility: visible;
+}
+
+/* =============================================
+   Veg / Non-Veg Diet Filter
+   ============================================= */
+.diet-filter {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+  margin: 1.5rem 0 2rem;
+  flex-wrap: wrap;
+}
+
+.diet-btn {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 10px 22px;
+  border: 1px solid var(--color-border);
+  background-color: transparent;
+  color: var(--color-text-muted);
+  cursor: pointer;
+  transition: all 0.3s ease;
+  border-radius: 30px;
+}
+
+.diet-btn:hover,
+.diet-btn.active {
+  background-color: var(--color-primary);
+  color: var(--color-bg);
+  border-color: var(--color-primary);
+}
+
+.diet-dot {
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.veg-dot {
+  background: #4caf50;
+  border: 1.5px solid #388e3c;
+}
+
+.non-veg-dot {
+  background: #e53935;
+  border: 1.5px solid #b71c1c;
+}
+
+/* Hidden menu items during filter */
+.menu-item.diet-hidden {
+  display: none;
+}
+
+/* No results message */
+.diet-no-results {
+  text-align: center;
+  color: var(--color-primary, #c9a962);
+  font-style: italic;
+  padding: 2rem 0;
+  font-size: 1rem;
+  display: none;
+}
+
+.diet-no-results.visible {
+  display: block;
 }
