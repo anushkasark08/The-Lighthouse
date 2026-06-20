@@ -12,14 +12,13 @@ const dateInput      = document.getElementById('date');
 const timeSelect     = document.getElementById('time');
 const themeToggle    = document.getElementById('themeToggle');
 
-<<<<<<< HEAD
-  // Restrict bookings to a reasonable future window (90 days ahead)
-  const maxBookingDate = new Date();
-  maxBookingDate.setDate(maxBookingDate.getDate() + 90);
-  dateInput.setAttribute("max", maxBookingDate.toISOString().split("T")[0]);
+// Restrict bookings to a reasonable future window (90 days ahead)
+const maxBookingDate = new Date();
+maxBookingDate.setDate(maxBookingDate.getDate() + 90);
+dateInput.setAttribute("max", maxBookingDate.toISOString().split("T")[0]);
 
-  dateInput.addEventListener("change", updateAvailableTimes);
-=======
+dateInput.addEventListener("change", updateAvailableTimes);
+
 // ── FIX #9 — show correct scroll hint based on input type ────────
 const scrollHintMouse = document.querySelector('.scroll-hint-mouse');
 const scrollHintTouch = document.querySelector('.scroll-hint-touch');
@@ -27,8 +26,8 @@ const scrollHintTouch = document.querySelector('.scroll-hint-touch');
 if (scrollHintMouse && scrollHintTouch) {
   scrollHintMouse.style.display = isTouchDevice ? 'none' : '';
   scrollHintTouch.style.display = isTouchDevice ? '' : 'none';
->>>>>>> upstream/main
 }
+
 
 // ── FIX #13 — Date validation: min = tomorrow, max = 90 days out ─────
 if (dateInput) {
