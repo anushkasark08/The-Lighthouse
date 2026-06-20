@@ -12,6 +12,30 @@ Designed with elegant dark aesthetics, immersive visuals, smooth animations, and
 
 ---
 
+## 📑 Table of Contents
+
+- [✨ Features](#-features)
+  - [🎨 Premium UI & Branding](#-premium-ui--branding)
+  - [📋 Dynamic Menu System](#-dynamic-menu-system)
+  - [📱 Fully Responsive Design](#-fully-responsive-design)
+  - [⚡ Smooth User Experience](#-smooth-user-experience)
+  - [✨ Advanced UI Interactions](#-advanced-ui-interactions)
+  - [🗓️ Reservation Features](#%EF%B8%8F-reservation-features)
+  - [📍 Google Maps Integration](#-google-maps-integration)
+  - [📸 Website Assets](#-website-assets)
+- [🛠️ Tech Stack](#️%EF%B8%8F-tech-stack)
+- [📂 Project Structure](#-project-structure)
+- [🚀 Getting Started](#-getting-started)
+- [🎨 Customization](#-customization)
+- [🌟 Future Improvements](#-future-improvements)
+- [🤝 Contributing](#-contributing)
+- [📜 License](#-license)
+- [💖 Acknowledgements](#-acknowledgements)
+- [⭐ Support](#-support)
+- [🔗 Repository](#-repository)
+
+---
+
 # ✨ Features
 
 ## 🎨 Premium UI & Branding
@@ -175,7 +199,65 @@ Open the `index.html` file directly in your browser.
 OR use the VS Code **Live Server** extension for a better development experience.
 
 ---
+## 4️⃣ Browser Compatibility
 
+This website is tested and supported on:
+
+- Google Chrome
+- Mozilla Firefox
+- Microsoft Edge
+- Brave Browser
+- Opera
+
+For the best experience, use the latest browser version.
+---
+## 5️⃣ Deployment Guide
+
+### Deploy on GitHub Pages
+
+1. Fork the repository
+2. Open repository Settings
+3. Navigate to Pages
+4. Select the main branch
+5. Save changes
+
+Your website will be deployed automatically.
+
+### Deploy on Netlify
+
+1. Visit Netlify
+2. Drag and drop the project folder
+3. Deployment will start automatically
+
+### Deploy on Vercel
+
+1. Import the GitHub repository
+2. Click Deploy
+3. Vercel will build and host the project
+---
+## 6️⃣ Accessibility Features
+
+- Semantic HTML structure
+- Mobile responsive layout
+- Keyboard-friendly navigation
+- Smooth scrolling support
+- Readable typography and contrast
+- Accessible navigation menu
+---
+## 🛠️ Troubleshooting
+
+### Images not loading?
+
+Make sure all images are inside the `images/` folder with correct file names.
+
+### JavaScript interactions not working?
+
+Ensure JavaScript is enabled in your browser.
+
+### Layout looks broken?
+
+Clear browser cache or use the latest browser version.
+---
 # 🎨 Customization
 
 This project uses **CSS Variables** for easy theme customization.
@@ -265,23 +347,3 @@ If you like this project:
 
 GitHub Repository:  
 https://github.com/Anushka-Sarkar/the-lighthouse-restaurant
----
-
-# 🎨 Asset Attribution & External Resources
-
-## 🖼️ Images
-All images used in this project are sourced from [Unsplash](https://unsplash.com) and [Pexels](https://pexels.com) — free to use under their respective licenses.
-
-## ✍️ Fonts
-This project uses the following fonts from [Google Fonts](https://fonts.google.com):
-- **Cormorant Garamond** — [View Font](https://fonts.google.com/specimen/Cormorant+Garamond)
-- **Inter** — [View Font](https://fonts.google.com/specimen/Inter)
-
-## 🗺️ Google Maps
-The location section uses [Google Maps Embed API](https://developers.google.com/maps/documentation/embed/get-started) for the interactive map display.
-
-## 🎨 Icons
-SVG icons used in the project are inline and custom-designed for this project.
-
-## 📦 External Libraries
-No external JavaScript libraries or CSS frameworks are used. This project is built with pure HTML, CSS, and JavaScript.

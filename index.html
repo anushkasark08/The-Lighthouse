@@ -33,6 +33,9 @@
           <li>
             <a href="#about" class="nav-link" data-section="about">About</a>
           </li>
+          <li>
+            <a href="#chef" class="nav-link" data-section="chef">Chef's Picks </a>
+          </li>
           <li><a href="#menu" class="nav-link" data-section="menu">Menu</a></li>
           <li>
             <a href="#reservation" class="nav-link" data-section="reservation"
@@ -63,6 +66,7 @@
         <img
           src="./images/hero-restaurant.jpg"
           alt="The Lighthouse Restaurant Interior"
+          loading="lazy"
         />
       </div>
       <div class="hero-overlay"></div>
@@ -101,7 +105,7 @@
       <div class="container">
         <div class="about-grid">
           <div class="about-image">
-            <img src="./images/chef.jpg" alt="Our Chef at Work" />
+            <img src="./images/chef.jpg" alt="Our Chef at Work" loading="lazy"/>
           </div>
           <div class="about-content">
             <span class="section-label">Our Story</span>
@@ -121,6 +125,62 @@
         </div>
       </div>
     </section>
+    <section class="chef-section" id="chef">
+    <div class="container">
+        <div class="section-header">
+          <span class="section-label">Chef's recommendations</span>
+        </div>
+        <div class="chef-grid">
+          <div class="menu-item" data-category="breakfast">
+            <div class="food-card">
+              <img
+                src="./images/Chicken_Keema_Dosa.jpg"
+                alt="Chicken_Keema_Dosa"
+                class="food-image"
+              />
+
+              <div class="food-content">
+                <div class="menu-item-header">
+                  <h3>Chicken Keema Dosa</h3>
+                  <span class="menu-price">₹240</span>
+                </div>
+
+                <span class="food-tag nonveg">Non-Veg</span>
+
+                <p>Crispy dosa stuffed with spicy chicken keema masala</p>
+              </div>
+            </div>
+          </div>
+           <div class="menu-item" data-category="lunch">
+            <div class="food-card">
+              <img
+                src="./images/Paneer_Butter_Masala.jpg"
+                alt="Paneer_Butter_Masala"
+                class="food-image"
+              />
+
+              <div class="food-content">
+                <div class="menu-item-header">
+                  <h3>Paneer Butter Masala</h3>
+                  <span class="menu-price">₹280</span>
+                </div>
+
+                <span class="food-tag veg">Veg</span>
+
+                <p>Rich creamy paneer curry served with butter naan</p>
+              </div>
+            </div>
+          </div>
+
+        
+          
+          
+
+           
+
+        </div>
+    </div>
+</section>
 
     <!-- Menu Section -->
     <section class="menu-section" id="menu">
@@ -150,15 +210,28 @@
           </div>
         </div>
 
+        <!-- Veg / Non-Veg Filter Toggle -->
+        <div class="diet-filter" id="dietFilter">
+          <button class="diet-btn active" data-diet="all">All Items</button>
+          <button class="diet-btn veg" data-diet="veg">
+            <span class="diet-dot veg-dot"></span> Veg
+          </button>
+          <button class="diet-btn non-veg" data-diet="non-veg">
+            <span class="diet-dot non-veg-dot"></span> Non-Veg
+          </button>
+        </div>
+
         <!-- Menu Content -->
-        <div class="menu-content">
+        <div class="menu-content menu-panel active">
+          <div class="menu-items">
           <!-- breakfast -->
-          <div class="menu-item" data-category="breakfast">
+          <div class="menu-item" data-category="breakfast" data-diet="veg">
             <div class="food-card">
               <img
                 src="./images/MasalaDosa.jpg"
                 alt="Masala Dosa"
                 class="food-image"
+                loading="lazy"
               />
 
               <div class="food-content">
@@ -173,12 +246,13 @@
               </div>
             </div>
           </div>
-          <div class="menu-item" data-category="breakfast">
+          <div class="menu-item" data-category="breakfast" data-diet="veg">
             <div class="food-card">
               <img
                 src="./images/Idli_Sambar.jpg"
-                alt="Idli_Sambar"
+                alt="Idli Sambar"
                 class="food-image"
+                loading="lazy"
               />
 
               <div class="food-content">
@@ -196,12 +270,13 @@
             </div>
           </div>
 
-          <div class="menu-item" data-category="breakfast">
+          <div class="menu-item" data-category="breakfast" data-diet="non-veg">
             <div class="food-card">
               <img
                 src="./images/Chicken_Keema_Dosa.jpg"
-                alt="Chicken_Keema_Dosa"
+                alt="Chicken Keema Dosa"
                 class="food-image"
+                loading="lazy"
               />
 
               <div class="food-content">
@@ -218,12 +293,13 @@
           </div>
 
           <!-- lunch -->
-          <div class="menu-item" data-category="lunch">
+          <div class="menu-item" data-category="lunch" data-diet="veg">
             <div class="food-card">
               <img
                 src="./images/Paneer_Butter_Masala.jpg"
-                alt="Paneer_Butter_Masala"
+                alt="Paneer Butter Masala"
                 class="food-image"
+                loading="lazy"
               />
 
               <div class="food-content">
@@ -240,12 +316,13 @@
           </div>
 
           <!-- dinner -->
-          <div class="menu-item" data-category="dinner">
+          <div class="menu-item" data-category="dinner" data-diet="non-veg">
             <div class="food-card">
               <img
                 src="./images/Hyderabadi_Chicken_Biryani.jpg"
-                alt="Hyderabadi_Chicken_Biryani"
+                alt="Hyderabadi Chicken Biryani"
                 class="food-image"
+                loading="lazy"
               />
 
               <div class="food-content">
@@ -264,12 +341,13 @@
             </div>
           </div>
 
-          <div class="menu-item" data-category="dinner">
+          <div class="menu-item" data-category="dinner" data-diet="non-veg">
             <div class="food-card">
               <img
                 src="./images/Butter_Chicken.jpg"
-                alt="Butter_Chicken"
+                alt="Butter Chicken"
                 class="food-image"
+                loading="lazy"
               />
 
               <div class="food-content">
@@ -286,12 +364,13 @@
           </div>
 
           <!-- Drinks -->
-          <div class="menu-item" data-category="drinks">
+          <div class="menu-item" data-category="drinks" data-diet="veg">
             <div class="food-card">
               <img
                 src="./images/Mango_Lassi.jpg"
                 alt="Mango Lassi"
                 class="food-image"
+                loading="lazy"
               />
 
               <div class="food-content">
@@ -308,12 +387,13 @@
               </div>
             </div>
           </div>
-          <div class="menu-item" data-category="drinks">
+          <div class="menu-item" data-category="drinks" data-diet="veg">
             <div class="food-card">
               <img
                 src="./images/Masala_Chai.jpg"
                 alt="Masala Chai"
                 class="food-image"
+                loading="lazy"
               />
 
               <div class="food-content">
@@ -330,12 +410,13 @@
               </div>
             </div>
           </div>
-          <div class="menu-item" data-category="drinks">
+          <div class="menu-item" data-category="drinks" data-diet="veg">
             <div class="food-card">
               <img
                 src="./images/Fresh_Lime_Soda.jpg"
                 alt="Fresh Lime Soda"
                 class="food-image"
+                loading="lazy"
               />
 
               <div class="food-content">
@@ -351,12 +432,13 @@
             </div>
           </div>
           <!-- Desserts -->
-          <div class="menu-item" data-category="desserts">
+          <div class="menu-item" data-category="desserts" data-diet="veg">
             <div class="food-card">
               <img
                 src="./images/Gulab_Jamun.jpg"
                 alt="Gulab Jamun"
                 class="food-image"
+                loading="lazy"
               />
 
               <div class="food-content">
@@ -371,12 +453,13 @@
               </div>
             </div>
           </div>
-          <div class="menu-item" data-category="desserts">
+          <div class="menu-item" data-category="desserts" data-diet="veg">
             <div class="food-card">
               <img
                 src="./images/Rasmalai.jpg"
                 alt="Rasmalai"
                 class="food-image"
+                loading="lazy"
               />
 
               <div class="food-content">
@@ -391,9 +474,9 @@
               </div>
             </div>
           </div>
-          <div class="menu-item" data-category="desserts">
+          <div class="menu-item" data-category="desserts" data-diet="veg">
             <div class="food-card">
-              <img src="./images/Kulfi.jpg" alt="Kulfi" class="food-image" />
+              <img src="./images/Kulfi.jpg" alt="Kulfi" class="food-image" loading="lazy"/>
 
               <div class="food-content">
                 <div class="menu-item-header">
@@ -410,6 +493,7 @@
               </div>
             </div>
           </div>
+          </div>
         </div>
       </div>
     </section>
@@ -417,7 +501,7 @@
     <!-- Reservation Section -->
     <section class="reservation" id="reservation">
       <div class="reservation-bg" id="reservationBg">
-        <img src="./images/hero-restaurant.jpg" alt="Restaurant Ambiance" />
+        <img src="./images/hero-restaurant.jpg" alt="Restaurant Ambiance" loading="lazy"/>
       </div>
       <div class="reservation-overlay"></div>
       <div class="container">
@@ -539,6 +623,8 @@
                   <option value="19:00">7:00 PM</option>
                   <option value="20:00">8:00 PM</option>
                   <option value="21:00">9:00 PM</option>
+                  <option value="22:00">10:00 PM</option>
+                  <option value="23:00">11:00 PM</option>
                 </select>
               </div>
             </div>
@@ -680,6 +766,7 @@
               <a
                 href="https://www.instagram.com"
                 target="_blank"
+                rel="noopener noreferrer"
                 class="social-link"
                 aria-label="Instagram"
               >
@@ -697,6 +784,7 @@
               <a
                 href="https://www.facebook.com"
                 target="_blank"
+                rel="noopener noreferrer"
                 class="social-link"
                 aria-label="Facebook"
               >
@@ -714,6 +802,7 @@
               <a
                 href="https://x.com"
                 target="_blank"
+                rel="noopener noreferrer"
                 class="social-link"
                 aria-label="Twitter"
               >
@@ -767,10 +856,111 @@
           </div>
         </div>
       </div>
-    </footer>
+    </div>
+  </section>
+
+
+
+
+  <!-- Footer -->
+ <footer class="footer">
+  <div class="container">
+    
+    <div class="footer-top">
+
+      <!-- Brand -->
+      <div class="footer-brand">
+        <h2>The Lighthouse</h2>
+        <p>
+          Experience timeless fine dining with handcrafted dishes,
+          luxury ambiance, and unforgettable moments.
+        </p>
+
+        <div class="footer-socials">
+          <a href="https://www.instagram.com" target="_blank" rel="noopener noreferrer" aria-label="Instagram">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <rect x="2" y="2" width="20" height="20" rx="5"/>
+              <path d="M16 11.37A4 4 0 1112.63 8 4 4 0 0116 11.37z"/>
+              <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/>
+            </svg>
+          </a>
+
+          <a href="https://www.facebook.com" target="_blank" rel="noopener noreferrer" aria-label="Facebook">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M18 2h-3a5 5 0 00-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 011-1h3z"/>
+            </svg>
+          </a>
+
+          <a href="https://x.com" target="_blank" rel="noopener noreferrer" aria-label="Twitter">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M23 3a10.9 10.9 0 01-3.14 1.53 4.48 4.48 0 00-7.86 3v1A10.66 10.66 0 013 4s-4 9 5 13a11.64 11.64 0 01-7 2c9 5 20 0 20-11.5a4.5 4.5 0 00-.08-.83A7.72 7.72 0 0023 3z"/>
+            </svg>
+          </a>
+        </div>
+      </div>
+
+      <!-- Quick Links -->
+      <div class="footer-column">
+        <h3>Quick Links</h3>
+
+        <a href="#home">Home</a>
+        <a href="#about">About</a>
+        <a href="#menu">Menu</a>
+        <a href="#reservation">Reservations</a>
+        <a href="#reviews">Reviews</a>
+      </div>
+
+      <!-- Contact -->
+      <div class="footer-column">
+        <h3>Contact</h3>
+
+        <p>123 Harbor View Drive</p>
+        <p>Coastal City, CA 90210</p>
+
+        <a href="tel:+15551234567">(555) 123-4567</a>
+        <a href="mailto:reservations@thelighthouse.com">
+          reservations@thelighthouse.com
+        </a>
+      </div>
+
+      <!-- Newsletter -->
+      <div class="footer-column newsletter">
+        <h3>Newsletter</h3>
+
+        <p>Get updates about seasonal menus and exclusive dining events.</p>
+
+        <form class="newsletter-form">
+          <input type="email" placeholder="Your Email Address">
+          <button type="submit">Subscribe</button>
+        </form>
+      </div>
+
+    </div>
+
+    <!-- Bottom -->
+    <div class="footer-bottom">
+      <p>© 2026 The Lighthouse. Crafted with elegance.</p>
+
+      <div class="footer-bottom-links">
+        <a href="#">Privacy Policy</a>
+        <a href="#">Terms</a>
+      </div>
+    </div>
+
+  </div>
+</footer>
+
+
+
+
+
+
+<button id="backToTop">BACK TO TOP ▲</button>
+   
+  <script src="script.js"></script> 
 
     <button id="backToTop">BACK TO TOP ▲</button>
 
-    <script src="script.js"></script>
+    <script src="script.js" defer></script>
   </body>
 </html>
