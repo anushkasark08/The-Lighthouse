@@ -437,7 +437,7 @@ function isMeaningfulReview(text) {
 }
 
 function isValidName(name) {
-  return /^[A-Za-z\s]{3,30}$/.test(name.trim());
+  return /^[A-Za-z\s'\-]{3,30}$/.test(name.trim());
 }
 
 const reviewForm = document.getElementById('review-form');
