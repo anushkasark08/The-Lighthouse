@@ -21,12 +21,18 @@
     <nav class="nav" id="nav">
       <div class="nav-container">
         <a href="#home" class="nav-logo">The Lighthouse</a>
-        <button class="nav-toggle" id="navToggle" aria-label="Toggle menu">
+        <button
+          class="nav-toggle"
+          id="navToggle"
+          aria-label="Toggle menu"
+          aria-controls="navMenu"
+          aria-expanded="false"
+        >
           <span></span>
           <span></span>
           <span></span>
         </button>
-        <ul class="nav-menu" id="navMenu">
+        <ul class="nav-menu" id="navMenu" aria-label="Primary navigation">
           <li>
             <a href="#home" class="nav-link active" data-section="home">Home</a>
           </li>

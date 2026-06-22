@@ -17,6 +17,7 @@ const themeToggle    = document.getElementById('themeToggle');
 // ── FIX #9 — show correct scroll hint based on input type ────────
 const scrollHintMouse = document.querySelector('.scroll-hint-mouse');
 const scrollHintTouch = document.querySelector('.scroll-hint-touch');
+let previousFocus = null;
 
 if (scrollHintMouse && scrollHintTouch) {
   scrollHintMouse.style.display = isTouchDevice ? 'none' : '';
@@ -130,15 +131,53 @@ function updateActiveNavLink() {
 
 // ── Mobile menu ───
 function toggleMobileMenu() {
-  navToggle.classList.toggle('active');
-  navMenu.classList.toggle('active');
-  document.body.style.overflow = navMenu.classList.contains('active') ? 'hidden' : '';
+  const isOpening = !navMenu.classList.contains('active');
+
+  navToggle.classList.toggle('active', isOpening);
+  navMenu.classList.toggle('active', isOpening);
+  navToggle.setAttribute('aria-expanded', String(isOpening));
+  document.body.style.overflow = isOpening ? 'hidden' : '';
+
+  if (isOpening) {
+    previousFocus = document.activeElement;
+    navMenu.querySelector('a')?.focus();
+  } else {
+    previousFocus?.focus();
+  }
 }
 
 function closeMobileMenu() {
   navToggle.classList.remove('active');
   navMenu.classList.remove('active');
+  navToggle.setAttribute('aria-expanded', 'false');
   document.body.style.overflow = '';
+}
+
+function handleMobileMenuKeydown(e) {
+  if (!navMenu.classList.contains('active')) return;
+
+  if (e.key === 'Escape') {
+    e.preventDefault();
+    closeMobileMenu();
+    navToggle.focus();
+    return;
+  }
+
+  if (e.key !== 'Tab') return;
+
+  const focusable = Array.from(navMenu.querySelectorAll('a[href], button:not([disabled])'));
+  if (!focusable.length) return;
+
+  const first = focusable[0];
+  const last = focusable[focusable.length - 1];
+
+  if (e.shiftKey && document.activeElement === first) {
+    e.preventDefault();
+    last.focus();
+  } else if (!e.shiftKey && document.activeElement === last) {
+    e.preventDefault();
+    first.focus();
+  }
 }
 
 // ── Menu search & filter ────
@@ -374,6 +413,7 @@ if (backToTopBtn) {
 // ── Event Listeners ──
 window.addEventListener('scroll', handleScroll);
 navToggle.addEventListener('click', toggleMobileMenu);
+document.addEventListener('keydown', handleMobileMenuKeydown);
 
 navLinks.forEach((link) => link.addEventListener('click', smoothScroll));
 
