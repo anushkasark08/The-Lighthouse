@@ -490,15 +490,13 @@ starBtns.forEach((btn) => {
 const reviewForm = document.getElementById("review-form");
 const reviewMsg = document.getElementById("review-msg");
 function isMeaningfulReview(text) {
-  // At least 3 real words
-  const words = text.trim().split(/\s+/);
+  const trimmed = text.trim();
+  const words = trimmed.split(/\s+/);
 
-  // Reject repeated and random characters
-  const randomPattern = /^(.)\1+$|^[a-zA-Z]{1,6}$/;
+  // Reject single repeated characters like "aaaa"
+  if (/^(.)\1+$/.test(trimmed)) return false;
 
-  if (randomPattern.test(text.trim())) return false;
-
-  return words.length >= 3;
+  return words.length >= 3 && trimmed.length >= 10;
 }
 
 function isValidName(name) {
