@@ -502,7 +502,8 @@ function isMeaningfulReview(text) {
 }
 
 function isValidName(name) {
-  return /^[A-Za-z\s]{3,30}$/.test(name.trim());
+  const trimmed = name.trim();
+  return trimmed.length >= 2 && trimmed.length <= 50 && !/[<>{}]/.test(trimmed);
 }
 
 if (reviewForm) {
