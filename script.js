@@ -427,6 +427,7 @@ function saveReviews(reviews) {
 
 // Permanent review — always shows first, cannot be removed
 const pinnedReview = {
+  id: "pinned",
   name: "Rasshi Srivastav",
   rating: 5,
   text: "Absolutely loved the food and ambience! Every dish was crafted with such care and the atmosphere was warm and elegant. A truly memorable dining experience — will definitely be coming back!",
