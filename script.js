@@ -644,3 +644,57 @@ if (backToTopBtn) {
   });
 })();
 
+const chatbotToggle = document.getElementById('chatbotToggle');
+const chatbotPanel = document.getElementById('chatbotPanel');
+const chatbotClose = document.getElementById('chatbotClose');
+const chatbotForm = document.getElementById('chatbotForm');
+const chatbotInput = document.getElementById('chatbotInput');
+const chatbotMessages = document.getElementById('chatbotMessages');
+
+function addChatbotMessage(text, type) {
+  const message = document.createElement('p');
+  message.className = `chatbot-message ${type}`;
+  message.textContent = text;
+  chatbotMessages.appendChild(message);
+  chatbotMessages.scrollTop = chatbotMessages.scrollHeight;
+}
+
+function getChatbotReply(question) {
+  const text = question.toLowerCase();
+  if (text.includes('reserve') || text.includes('book') || text.includes('table')) {
+    return 'Use the reservation form to request a table. We accept dates up to 90 days ahead.';
+  }
+  if (text.includes('menu') || text.includes('dish') || text.includes('food')) {
+    return 'Our menu includes breakfast, lunch, dinner, desserts, and drinks with veg and non-veg filters.';
+  }
+  if (text.includes('hour') || text.includes('open') || text.includes('time')) {
+    return 'We are open daily from 7:00 AM to 11:00 PM, with bar service until midnight.';
+  }
+  if (text.includes('phone') || text.includes('contact') || text.includes('email')) {
+    return 'You can call (555) 123-4567 or email reservations@thelighthouse.com.';
+  }
+  return 'I can help with reservations, menu details, opening hours, and contact information.';
+}
+
+chatbotToggle?.addEventListener('click', () => {
+  const isOpen = chatbotPanel.classList.toggle('open');
+  chatbotToggle.setAttribute('aria-expanded', String(isOpen));
+  if (isOpen) chatbotInput.focus();
+});
+
+chatbotClose?.addEventListener('click', () => {
+  chatbotPanel.classList.remove('open');
+  chatbotToggle.setAttribute('aria-expanded', 'false');
+  chatbotToggle.focus();
+});
+
+chatbotForm?.addEventListener('submit', (event) => {
+  event.preventDefault();
+  const question = chatbotInput.value.trim();
+  if (!question) return;
+
+  addChatbotMessage(question, 'user');
+  chatbotInput.value = '';
+  setTimeout(() => addChatbotMessage(getChatbotReply(question), 'bot'), 200);
+});
+

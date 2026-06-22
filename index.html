@@ -1010,6 +1010,30 @@
 
     <button id="backToTop">BACK TO TOP ▲</button>
 
+    <button
+      class="chatbot-toggle"
+      id="chatbotToggle"
+      type="button"
+      aria-controls="chatbotPanel"
+      aria-expanded="false"
+      aria-label="Open restaurant chat"
+    >
+      Chat
+    </button>
+    <section class="chatbot-panel" id="chatbotPanel" aria-label="Restaurant chat assistant">
+      <div class="chatbot-header">
+        <h2>Ask The Lighthouse</h2>
+        <button type="button" id="chatbotClose" aria-label="Close chat">×</button>
+      </div>
+      <div class="chatbot-messages" id="chatbotMessages">
+        <p class="chatbot-message bot">Hi! Ask me about reservations, menu items, hours, or contact details.</p>
+      </div>
+      <form class="chatbot-form" id="chatbotForm">
+        <input id="chatbotInput" type="text" placeholder="Type your question..." autocomplete="off" />
+        <button type="submit">Send</button>
+      </form>
+    </section>
+
     <script src="script.js" defer></script>
   </body>
 </html>
