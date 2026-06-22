@@ -749,6 +749,11 @@ body.light-theme .btn-outline:hover {
   position: relative;
   transition: border-color 0.3s ease, transform 0.3s ease; 
 }
+
+.food-card.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
 .food-card::before {
   content: '';
   position: absolute;

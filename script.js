@@ -285,7 +285,7 @@ function setupIntersectionObserver() {
   const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
   const animatedElements = document.querySelectorAll(
-    '.about-content, .menu-panel, .reservation-form, .location-info'
+    '.about-content, .food-card, .special-card, .reservation-form, .location-info'
   );
 
   if (prefersReduced) {
@@ -305,7 +305,7 @@ function setupIntersectionObserver() {
         }
       });
     },
-    { root: null, rootMargin: '0px', threshold: 0.1 }
+    { root: null, rootMargin: '0px 0px -12% 0px', threshold: 0.05 }
   );
 
   animatedElements.forEach((el) => {
