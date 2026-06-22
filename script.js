@@ -1,21 +1,5 @@
 // DOM Elements
-const nav = document.getElementById("nav");
-const navToggle = document.getElementById("navToggle");
-const navMenu = document.getElementById("navMenu");
-const navLinks = document.querySelectorAll(".nav-link");
 // Menu tabs/panels removed — menu uses filter buttons and data-category items
-const heroBg = document.getElementById("heroBg");
-const reservationBg = document.getElementById("reservationBg");
-const reservationForm = document.getElementById("reservationForm");
-const dateInput = document.getElementById("reservation-date");
-const timeSelect = document.getElementById("time");
-const themeToggle = document.getElementById("themeToggle");
-if (dateInput) {
-  const tomorrow = new Date(Date.now() + 86400000);
-  const maxDate  = new Date(Date.now() + 90 * 86400000);
-
-  dateInput.setAttribute("min", tomorrow.toISOString().split("T")[0]);
-  dateInput.setAttribute("max", maxDate.toISOString().split("T")[0]);
 // ── Device detection (used by FIX #9 and FIX #14) ───
 const isTouchDevice = window.matchMedia('(hover: none) and (pointer: coarse)').matches;
 //DOM ELEMENT
@@ -26,7 +10,7 @@ const navLinks       = document.querySelectorAll('.nav-link');
 const heroBg         = document.getElementById('heroBg');
 const reservationBg  = document.getElementById('reservationBg');
 const reservationForm= document.getElementById('reservationForm');
-const dateInput      = document.getElementById('date');
+const dateInput      = document.getElementById('reservation-date');
 const timeSelect     = document.getElementById('time');
 const themeToggle    = document.getElementById('themeToggle');
 
@@ -210,26 +194,19 @@ if (menuSearch) {
 // ── Smooth scroll ──
 function smoothScroll(e) {
   e.preventDefault();
-  const targetId      = this.getAttribute('href');
+  const targetId = this.getAttribute('href');
   const targetSection = document.querySelector(targetId);
 
   if (targetSection) {
     const prefersReduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    const offsetTop = targetSection.offsetTop - 80;
-    window.scrollTo({
-      top: offsetTop,
-      behavior: prefersReduced ? "auto" : "smooth",
-    // FIX #15 partial — respect reduced motion in smooth scroll too
-    const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     window.scrollTo({
       top: targetSection.offsetTop - 80,
-      behavior: prefersReduced ? 'auto' : 'smooth',
+      behavior: prefersReduced ? "auto" : "smooth",
     });
   }
   closeMobileMenu();
 }
 
-// ── Reservation form submission ──
 function handleFormSubmit(e) {
   e.preventDefault();
 
@@ -347,7 +324,6 @@ document.head.appendChild(style);
 // Scroll to Discover - Auto slow scroll
 const heroScroll = document.querySelector(".hero-scroll");
 // ── Auto-scroll on hero "Scroll To Discover" click ───
-const heroScroll = document.querySelector('.hero-scroll');
 let autoScrollInterval = null;
 
 function startAutoScroll() {
@@ -667,3 +643,15 @@ if (backToTopBtn) {
     });
   });
 })();
+
+// Broken menu images keep their card size and show a branded fallback.
+const imageFallback =
+  "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 640 420'%3E%3Crect width='640' height='420' fill='%23252220'/%3E%3Cpath d='M90 300h460' stroke='%23c9a962' stroke-width='8' stroke-linecap='round'/%3E%3Cpath d='M320 105v160' stroke='%23c9a962' stroke-width='10' stroke-linecap='round'/%3E%3Cpath d='M235 180h170' stroke='%23c9a962' stroke-width='10' stroke-linecap='round'/%3E%3Ccircle cx='320' cy='95' r='28' fill='%23c9a962'/%3E%3Ctext x='320' y='350' fill='%23f5f2ed' font-family='Arial' font-size='30' text-anchor='middle'%3EThe Lighthouse%3C/text%3E%3C/svg%3E";
+
+document.querySelectorAll(".food-image, .special-card img").forEach((image) => {
+  image.addEventListener("error", () => {
+    image.src = imageFallback;
+    image.classList.add("image-fallback");
+    if (!image.alt) image.alt = "The Lighthouse menu placeholder";
+  });
+});

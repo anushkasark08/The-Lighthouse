@@ -787,6 +787,13 @@ body.light-theme .btn-outline:hover {
   object-fit: cover;
   border-radius: 10px;
   flex-shrink: 0;
+  background-color: var(--color-bg-lighter);
+}
+
+.image-fallback {
+  object-fit: contain;
+  padding: 18px;
+  border: 1px dashed var(--color-border);
 }
 
 .food-content {
