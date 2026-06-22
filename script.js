@@ -191,6 +191,34 @@ if (menuSearch) {
   });
 }
 
+const servingInfo = {
+  "Masala Dosa": "1 large dosa with chutney and sambar",
+  "Idli Sambar": "3 idlis with one bowl of sambar",
+  "Chicken Keema Dosa": "1 stuffed dosa, serves 1",
+  "Paneer Butter Masala": "1 bowl curry with 2 butter naan",
+  "Hyderabadi Chicken Biryani": "Single portion, serves 1-2",
+  "Butter Chicken": "1 bowl curry with naan",
+  "Mango Lassi": "300 ml glass",
+  "Masala Chai": "180 ml cup",
+  "Fresh Lime Soda": "300 ml glass",
+  "Gulab Jamun": "2 pieces",
+  "Rasmalai": "2 pieces",
+  "Kesar Pista Kulfi": "1 kulfi stick",
+};
+
+document.querySelectorAll('#menu .menu-item').forEach((item) => {
+  const title = item.querySelector('h3')?.textContent.trim();
+  const description = servingInfo[title];
+  const content = item.querySelector('.food-content');
+
+  if (description && content && !content.querySelector('.serving-size')) {
+    const serving = document.createElement('span');
+    serving.className = 'serving-size';
+    serving.textContent = `Serving: ${description}`;
+    content.insertBefore(serving, content.querySelector('p'));
+  }
+});
+
 // ── Smooth scroll ──
 function smoothScroll(e) {
   e.preventDefault();

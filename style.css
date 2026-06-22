@@ -738,6 +738,15 @@ body.light-theme .btn-outline:hover {
   background-color: rgba(201, 74, 74, 0.15);
   color: #ff7b7b;
 }
+
+.serving-size {
+  display: block;
+  margin-bottom: 10px;
+  color: var(--color-primary);
+  font-size: 0.82rem;
+  font-weight: 600;
+}
+
 .food-card {
   display: flex;
   gap: 20px;
