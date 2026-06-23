@@ -208,8 +208,8 @@ body.light-theme .reservation .detail-item span {
   transition: width var(--transition);
 }
 
-.nav-link:hover::after{
-   color: var(--color-primary);
+.nav-link:hover::after {
+  width: 100%;
   transform: translateY(-2px);
 }
 .nav-link.active::after {
