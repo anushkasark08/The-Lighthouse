@@ -223,11 +223,6 @@ function smoothScroll(e) {
     window.scrollTo({
       top: offsetTop,
       behavior: prefersReduced ? "auto" : "smooth",
-    // FIX #15 partial — respect reduced motion in smooth scroll too
-    const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    window.scrollTo({
-      top: targetSection.offsetTop - 80,
-      behavior: prefersReduced ? 'auto' : 'smooth',
     });
   }
   closeMobileMenu();
@@ -349,8 +344,6 @@ const style = document.createElement('style');
 style.textContent = `.visible { opacity: 1 !important; transform: translateY(0) !important; }`;
 document.head.appendChild(style);
 
-// Scroll to Discover - Auto slow scroll
-const heroScroll = document.querySelector(".hero-scroll");
 // ── Auto-scroll on hero "Scroll To Discover" click ───
 const heroScroll = document.querySelector('.hero-scroll');
 let autoScrollInterval = null;
