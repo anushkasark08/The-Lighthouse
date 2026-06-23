@@ -484,22 +484,6 @@ function renderReviews() {
 
     grid.appendChild(card);
   });
-  grid.innerHTML = allReviews
-    .map(
-      (r) => `
-      <div class="review-card">
-        <div class="review-stars">${'★'.repeat(r.rating)}${'☆'.repeat(5 - r.rating)}</div>
-        <p class="review-text">${r.text}</p>
-        <div class="review-author">
-          <div class="review-avatar">${r.name.slice(0, 2).toUpperCase()}</div>
-          <div>
-            <span class="review-name">${r.name}</span>
-            <span class="review-date">${r.date}</span>
-          </div>
-        </div>
-      </div>`
-    )
-    .join('');
 }
 
 // Star rating widget
