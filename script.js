@@ -149,7 +149,8 @@ function filterMenuItems(filter = 'all', searchText = '') {
   let visibleCount = 0;
 
   menuItems.forEach((item) => {
-    const itemName      = item.querySelector('h3').textContent.toLowerCase();
+    const h3El          = item.querySelector('h3');
+    const itemName      = h3El ? h3El.textContent.toLowerCase() : '';
     const category      = item.dataset.category;
     const matchesSearch = itemName.includes(searchText.toLowerCase());
 
