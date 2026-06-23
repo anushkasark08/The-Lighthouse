@@ -270,13 +270,13 @@ if (emailInput && !emailRegex.test(emailInput.value.trim())) {
 if (phoneInput) {
   const phoneValue = phoneInput.value.replace(/\D/g, '');
 
-  if (phoneValue.length !== 10) {
+  if (phoneValue.length < 7 || phoneValue.length > 15) {
     phoneInput.style.borderColor = '#c94a4a';
 
     const phoneError = document.createElement('small');
     phoneError.className = 'error-message';
     phoneError.style.color = '#c94a4a';
-    phoneError.textContent = 'Phone number must contain exactly 10 digits.';
+    phoneError.textContent = 'Phone number must contain between 7 and 15 digits.';
 
     phoneInput.parentElement.appendChild(phoneError);
 
