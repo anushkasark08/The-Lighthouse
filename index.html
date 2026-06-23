@@ -304,6 +304,8 @@
 
               <div class="food-content">
                 <div class="menu-item-header">
+                  <h3>Truffle Burger</h3>
+                  <span class="menu-price">Rs.26</span>
                   <h3>Paneer Butter Masala</h3>
                   <span class="menu-price">₹280</span>
                 </div>
@@ -498,6 +500,51 @@
       </div>
     </section>
 
+    <!-- Chef's Specials Section -->
+<section class="specials" id="specials">
+  <div class="container">
+    <div class="section-header">
+      <span class="section-label">Chef Recommendations</span>
+      <h2 class="section-title">Today's Specials</h2>
+      <p>Handpicked signature dishes prepared by our chef.</p>
+    </div>
+
+    <div class="specials-grid">
+
+      <div class="special-card">
+        <img src="./images/Hyderabadi_Chicken_Biryani.jpg" alt="Royal Biryani">
+        <div class="special-content">
+          <span class="special-badge">🔥 Best Seller</span>
+          <h3>Hyderabadi Chicken Biryani</h3>
+          <p>Slow-cooked dum biryani with aromatic spices.</p>
+          <span class="price">₹399</span>
+        </div>
+      </div>
+
+      <div class="special-card">
+        <img src="./images/Paneer_Butter_Masala.jpg" alt="Paneer Delight">
+        <div class="special-content">
+          <span class="special-badge">👨‍🍳 Chef's Choice</span>
+          <h3>Paneer Delight</h3>
+          <p>Rich creamy paneer cooked with exotic herbs.</p>
+          <span class="price">₹349</span>
+        </div>
+      </div>
+
+      <div class="special-card">
+        <img src="./images/Rasmalai.jpg" alt="Special Dessert">
+        <div class="special-content">
+          <span class="special-badge">⭐ New Arrival</span>
+          <h3>Saffron Rasmalai</h3>
+          <p>Soft cottage cheese dumplings in saffron milk.</p>
+          <span class="price">₹199</span>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
     <!-- Reservation Section -->
     <section class="reservation" id="reservation">
       <div class="reservation-bg" id="reservationBg">
@@ -563,14 +610,16 @@
                 />
               </div>
               <div class="form-group">
-                <label for="email">Email</label>
+               <label for="email">Email</label>
                 <input
                   type="email"
                   id="email"
                   name="email"
                   placeholder="john@example.com"
+                  pattern="^[^\s@]+@[^\s@]+\.[^\s@]{2,}$"
+                  title="Please enter a valid email address"
                   required
-                />
+                  />
               </div>
             </div>
             <div class="form-row">
@@ -602,7 +651,7 @@
             <div class="form-row">
               <div class="form-group">
                 <label for="date">Date</label>
-                <input type="date" id="date" name="date" required />
+                <input type="date" id="reservation-date" name="date" required />
               </div>
               <div class="form-group">
                 <label for="time">Time</label>

@@ -99,23 +99,21 @@ h4 {
   text-transform: uppercase;
   border: 1px solid transparent;
   cursor: pointer;
-  transition: all var(--transition);
-}
 
-.btn-primary {
-  background-color: var(--color-primary);
-  color: var(--color-bg);
+  transition:
+    transform 0.3s ease,
+    box-shadow 0.3s ease,
+    background-color 0.3s ease,
+    color 0.3s ease;
 }
 
 .btn-primary:hover {
   background-color: var(--color-primary-dark);
+  transform: translateY(-3px) scale(1.05);
+  box-shadow: 0 8px 20px rgba(212, 175, 55, 0.35);
 }
 
-.btn-outline {
-  background-color: transparent;
-  border-color: var(--color-text);
-  color: var(--color-text);
-}
+
 
 body.light-theme .hero .btn-outline {
   color: #f5f2ed;
@@ -140,7 +138,11 @@ body.light-theme .reservation .detail-item span {
 .btn-outline:hover {
   background-color: var(--color-text);
   color: var(--color-bg);
+  transform: translateY(-3px) scale(1.05);
+  box-shadow: 0 8px 20px rgba(255, 255, 255, 0.2);
 }
+
+
 
 .btn-full {
   width: 100%;
@@ -791,8 +793,92 @@ body.light-theme .btn-outline:hover {
   flex: 1;
 }
 
-.food-content p {
-  margin-top: 10px;
+.specials {
+  padding: 100px 0;
+  background-color: var(--color-bg);
+}
+
+.specials-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 2rem;
+  margin-top: 3rem;
+}
+
+/* Dark Mode (default) */
+.special-card {
+  background: #000;
+  color: #fff;
+  border-radius: 16px;
+  overflow: hidden;
+  border: 1px solid var(--color-border);
+  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.35);
+  transition:
+    transform 0.3s ease,
+    box-shadow 0.3s ease;
+}
+
+.special-card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 10px 28px rgba(0, 0, 0, 0.45);
+}
+
+.special-card img {
+  width: 100%;
+  height: 220px;
+  object-fit: cover;
+}
+
+.special-content {
+  padding: 1.5rem;
+}
+
+.special-content h3 {
+  color: #fff;
+  margin-bottom: 0.75rem;
+}
+
+.special-content p {
+  color: rgba(255, 255, 255, 0.8);
+  line-height: 1.7;
+}
+
+.special-badge {
+  display: inline-block;
+  padding: 6px 12px;
+  background: #d4a017;
+  color: #fff;
+  border-radius: 20px;
+  font-size: 0.8rem;
+  margin-bottom: 10px;
+  font-weight: 600;
+}
+
+.price {
+  display: block;
+  margin-top: 12px;
+  color: #fff;
+  font-weight: 700;
+  font-size: 1.2rem;
+}
+
+/* Light Theme */
+body.light-theme .special-card {
+  background: #fff;
+  color: #1a1714;
+  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+}
+
+body.light-theme .special-content h3 {
+  color: #1a1714;
+}
+
+body.light-theme .special-content p {
+  color: #5f5b55;
+}
+
+body.light-theme .price {
+  color: #1a1714;
 }
 
 /* Reservation Section */
@@ -1692,6 +1778,36 @@ input[type="date"]::-webkit-calendar-picker-indicator:hover {
   opacity: 1;
   visibility: visible;
 }
+/* Mobile menu card fix */
+@media (max-width: 768px) {
+  .food-card {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .food-image {
+  width: 100%;
+  height: 220px;
+  object-fit: cover;
+}
+
+  .food-content {
+    width: 100%;
+  }
+
+  .menu-item-header {
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  #backToTop {
+    right: 16px;
+    bottom: 16px;
+    padding: 10px 14px;
+    font-size: 12px;
+  }
+}
 
 /* =============================================
    Veg / Non-Veg Diet Filter
@@ -1759,11 +1875,6 @@ input[type="date"]::-webkit-calendar-picker-indicator:hover {
 
 .diet-no-results.visible {
   display: block;
-}
-
-/* =========================
-   CHATBOT STYLES
-========================= */
 
 .hidden {
   display: none;
