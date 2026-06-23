@@ -349,9 +349,13 @@ const heroScroll = document.querySelector('.hero-scroll');
 let autoScrollInterval = null;
 
 function startAutoScroll() {
+  const aboutSection = document.getElementById('about');
   autoScrollInterval = setInterval(() => {
     window.scrollBy({ top: 2, behavior: 'instant' });
-    if (window.scrollY + window.innerHeight >= document.body.scrollHeight) {
+    
+    // Stop if bottom of page is reached or about section is reached
+    const reachedAbout = aboutSection && window.scrollY >= aboutSection.offsetTop - 100;
+    if (window.scrollY + window.innerHeight >= document.body.scrollHeight || reachedAbout) {
       stopAutoScroll();
     }
   }, 15);
