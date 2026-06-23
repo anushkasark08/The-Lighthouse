@@ -24,10 +24,10 @@ if (scrollHintMouse && scrollHintTouch) {
 
 // ── FIX #13 — Date validation: min = tomorrow, max = 90 days out ─────
 if (dateInput) {
-  const tomorrow = new Date(Date.now() + 86400000);
+  const today = new Date();
   const maxDate  = new Date(Date.now() + 90 * 86400000);
 
-  dateInput.setAttribute('min', tomorrow.toISOString().split('T')[0]);
+  dateInput.setAttribute('min', today.toISOString().split('T')[0]);
   dateInput.setAttribute('max', maxDate.toISOString().split('T')[0]);
 
   dateInput.addEventListener('change', updateAvailableTimes);
