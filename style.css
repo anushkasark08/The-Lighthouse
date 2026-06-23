@@ -1009,6 +1009,16 @@ input[type="date"]::-webkit-calendar-picker-indicator:hover {
   opacity: 1;
   filter: invert(1) brightness(1.2);
 }
+
+body.light-theme input[type="date"]::-webkit-calendar-picker-indicator {
+  filter: none;
+  opacity: 0.6;
+}
+
+body.light-theme input[type="date"]::-webkit-calendar-picker-indicator:hover {
+  filter: none;
+  opacity: 0.9;
+}
 .form-group input:focus,
 .form-group select:focus,
 .form-group textarea:focus {
