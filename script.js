@@ -293,7 +293,6 @@ if (phoneInput) {
 
     setTimeout(() => {
       reservationForm.reset();
-      updateAvailableTimes();
       submitBtn.textContent = originalText;
       submitBtn.style.backgroundColor = '';
       submitBtn.disabled = false;
