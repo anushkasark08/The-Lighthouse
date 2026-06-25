@@ -9,7 +9,7 @@ const navLinks = document.querySelectorAll(".nav-link");
 const heroBg = document.getElementById("heroBg");
 const reservationBg = document.getElementById("reservationBg");
 const reservationForm = document.getElementById("reservationForm");
-const dateInput = document.getElementById("reservation-date");
+const dateInput = document.getElementById("reservation-date") || document.getElementById("date");
 const timeSelect = document.getElementById("time");
 const themeToggle = document.getElementById("themeToggle");
 const filterBtns = document.querySelectorAll(".filter-btn");
@@ -20,19 +20,9 @@ if (dateInput) {
 
   dateInput.setAttribute("min", tomorrow.toISOString().split("T")[0]);
   dateInput.setAttribute("max", maxDate.toISOString().split("T")[0]);
+}
 // ── Device detection (used by FIX #9 and FIX #14) ───
 const isTouchDevice = window.matchMedia('(hover: none) and (pointer: coarse)').matches;
-//DOM ELEMENT
-const nav            = document.getElementById('nav');
-const navToggle      = document.getElementById('navToggle');
-const navMenu        = document.getElementById('navMenu');
-const navLinks       = document.querySelectorAll('.nav-link');
-const heroBg         = document.getElementById('heroBg');
-const reservationBg  = document.getElementById('reservationBg');
-const reservationForm= document.getElementById('reservationForm');
-const dateInput      = document.getElementById('date');
-const timeSelect     = document.getElementById('time');
-const themeToggle    = document.getElementById('themeToggle');
 
 // ── FIX #9 — show correct scroll hint based on input type ────────
 const scrollHintMouse = document.querySelector('.scroll-hint-mouse');
@@ -151,23 +141,73 @@ function switchMenuTab(e) {
   const targetTab = e.target.dataset.tab;
 
   // Update tab buttons
-  menuTabs.forEach((tab) => {
-    tab.classList.remove("active");
-  });
+  if (typeof menuTabs !== 'undefined') {
+    menuTabs.forEach((tab) => {
+      tab.classList.remove("active");
+    });
+  }
   e.target.classList.add("active");
 
   // Update panels
-  menuPanels.forEach((panel) => {
-    panel.classList.remove("active");
-    if (panel.id === targetTab) {
-      panel.classList.add("active");
-    }
-  });
+  if (typeof menuPanels !== 'undefined') {
+    menuPanels.forEach((panel) => {
+      panel.classList.remove("active");
+      if (panel.id === targetTab) {
+        panel.classList.add("active");
+      }
+    });
+  }
 }
 
 //
 // Theme Toggle
 const savedTheme = localStorage.getItem("theme");
+
+// Store the original dark-mode image paths
+let originalHeroSrc = '';
+let originalHeroBg = '';
+const heroImage = document.querySelector('#heroBg img');
+
+let originalResSrc = '';
+let originalResBg = '';
+const resImage = document.querySelector('#reservationBg img');
+
+if (heroImage) {
+  originalHeroSrc = heroImage.getAttribute('src') || heroImage.src;
+} else if (heroBg) {
+  originalHeroBg = heroBg.style.backgroundImage || window.getComputedStyle(heroBg).backgroundImage;
+}
+
+if (resImage) {
+  originalResSrc = resImage.getAttribute('src') || resImage.src;
+} else if (reservationBg) {
+  originalResBg = reservationBg.style.backgroundImage || window.getComputedStyle(reservationBg).backgroundImage;
+}
+
+function updateThemeImages() {
+  const isLight = document.body.classList.contains('light-theme');
+  const daytimeImg = 'images/hero-restaurant-daytime.png';
+
+  if (heroImage) {
+    heroImage.src = isLight ? daytimeImg : originalHeroSrc;
+  } else if (heroBg) {
+    if (isLight) {
+      heroBg.style.backgroundImage = `url('${daytimeImg}')`;
+    } else {
+      heroBg.style.backgroundImage = (originalHeroBg && originalHeroBg !== 'none') ? originalHeroBg : '';
+    }
+  }
+
+  if (resImage) {
+    resImage.src = isLight ? daytimeImg : originalResSrc;
+  } else if (reservationBg) {
+    if (isLight) {
+      reservationBg.style.backgroundImage = `url('${daytimeImg}')`;
+    } else {
+      reservationBg.style.backgroundImage = (originalResBg && originalResBg !== 'none') ? originalResBg : '';
+    }
+  }
+}
 
 if (savedTheme === "light") {
   document.body.classList.add("light-theme");
@@ -175,6 +215,8 @@ if (savedTheme === "light") {
 } else {
   themeToggle.textContent = "🌙";
 }
+
+updateThemeImages();
 
 themeToggle.addEventListener("click", () => {
   document.body.classList.toggle("light-theme");
@@ -188,6 +230,8 @@ themeToggle.addEventListener("click", () => {
     localStorage.setItem("theme", "dark");
     themeToggle.textContent = "🌙";
   }
+  
+  updateThemeImages();
 });
 
 // ── Menu Search and Filter ─────────────────────────
@@ -281,11 +325,11 @@ function smoothScroll(e) {
       top: offsetTop,
       behavior: prefersReduced ? "auto" : "smooth",
     // FIX #15 partial — respect reduced motion in smooth scroll too
-   
-  })
+    });
+  }
   closeMobileMenu();
 }
-}
+
 // ── Reservation form submission ──
 function handleFormSubmit(e) {
   e.preventDefault();
@@ -543,22 +587,6 @@ function renderReviews() {
 
     grid.appendChild(card);
   });
-  grid.innerHTML = allReviews
-    .map(
-      (r) => `
-      <div class="review-card">
-        <div class="review-stars">${'★'.repeat(r.rating)}${'☆'.repeat(5 - r.rating)}</div>
-        <p class="review-text">${r.text}</p>
-        <div class="review-author">
-          <div class="review-avatar">${r.name.slice(0, 2).toUpperCase()}</div>
-          <div>
-            <span class="review-name">${r.name}</span>
-            <span class="review-date">${r.date}</span>
-          </div>
-        </div>
-      </div>`
-    )
-    .join('');
 }
 
 // Star rating widget
@@ -731,37 +759,34 @@ function createCardSkeleton() {
 
 function attachSkeletonToCard(card) {
   if (card.__skeletonAttached) return;
-  const wrapper = document.createElement('div');
-  wrapper.className = 'skeleton-wrapper';
-
-  // Move existing children into wrapper
-  while (card.firstChild) {
-    wrapper.appendChild(card.firstChild);
-  }
-
-  card.appendChild(wrapper);
 
   const skeleton = createCardSkeleton();
-  wrapper.appendChild(skeleton);
 
-  // Hide native images inside the card while loading
-  const imgs = wrapper.querySelectorAll('img');
+  // 1. Style the skeleton to act as an absolute overlay
+  // This avoids DOM wrapping and preserves your Flexbox layout
+  skeleton.style.position = 'absolute';
+  skeleton.style.inset = '0';
+  skeleton.style.zIndex = '10'; // Sits safely above the food-content
+  skeleton.style.backgroundColor = 'var(--color-bg-card)'; // Hides the real text underneath
+  skeleton.style.borderRadius = getComputedStyle(card).borderRadius || '12px';
+
+  // 2. Simply append the overlay to the card
+  card.appendChild(skeleton);
+
+  // 3. Hide native images inside the card while loading
+  const imgs = card.querySelectorAll('img');
   imgs.forEach((img) => {
     img.classList.add('image-hidden');
-    // lazy-load optimization: set loading attribute where supported
     try { if (!img.hasAttribute('loading')) img.setAttribute('loading', 'lazy'); } catch (e) {}
 
     if (img.complete && img.naturalWidth > 0) {
-      // Already loaded from cache - reveal immediately
       img.classList.add('image-loaded');
       img.classList.remove('image-hidden');
       skeleton.remove();
     } else {
-      // Wait for load or error
       img.addEventListener('load', function onLoad() {
         img.classList.add('image-loaded');
         img.classList.remove('image-hidden');
-        // fade out skeleton then remove
         skeleton.style.transition = 'opacity 0.45s ease';
         skeleton.style.opacity = '0';
         setTimeout(() => skeleton.remove(), 500);
@@ -769,7 +794,6 @@ function attachSkeletonToCard(card) {
       });
 
       img.addEventListener('error', function onError() {
-        // remove skeleton even if image fails to avoid permanent overlays
         skeleton.style.transition = 'opacity 0.25s ease';
         skeleton.style.opacity = '0';
         setTimeout(() => skeleton.remove(), 300);
@@ -916,4 +940,4 @@ document.addEventListener('DOMContentLoaded', () => {
   // existing DOMContentLoaded handlers already call init functions earlier,
   // but ensure skeletons are attached after render
   initSkeletonLoaders();
-})}
+});

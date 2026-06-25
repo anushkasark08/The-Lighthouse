@@ -113,8 +113,6 @@ h4 {
   box-shadow: 0 8px 20px rgba(212, 175, 55, 0.35);
 }
 
-
-
 body.light-theme .hero .btn-outline {
   color: #f5f2ed;
   border-color: #f5f2ed;
@@ -127,7 +125,6 @@ body.light-theme .hero .btn-outline:hover {
 }
 
 /* Improve reservation section readability in light mode */
-
 body.light-theme .reservation .section-title,
 body.light-theme .reservation .reservation-info p,
 body.light-theme .reservation .detail-item strong,
@@ -141,8 +138,6 @@ body.light-theme .reservation .detail-item span {
   transform: translateY(-3px) scale(1.05);
   box-shadow: 0 8px 20px rgba(255, 255, 255, 0.2);
 }
-
-
 
 .btn-full {
   width: 100%;
@@ -178,7 +173,7 @@ body.light-theme .reservation .detail-item span {
   font-family: var(--font-serif);
   font-size: 1.5rem;
   font-weight: 500;
-  color: #c9a962; /* Golden accent color for dark mode */
+  color: #c9a962; 
 }
 
 .nav-menu {
@@ -253,10 +248,12 @@ body.light-theme .reservation .detail-item span {
   background-color: var(--color-text);
   transition: all var(--transition);
 }
+
 body.light-theme .nav.scrolled {
   background: rgba(214, 184, 112, 0.95);
   backdrop-filter: blur(10px);
 }
+
 /* Update the active/hover underline color for light theme */
 body.light-theme .nav-link::after {
   background-color: white;
@@ -264,25 +261,20 @@ body.light-theme .nav-link::after {
 body.light-theme .nav {
   background: transparent;
 }
-
 body.light-theme .nav-link {
   color: white;
 }
-
 body.light-theme .nav-logo {
   color: white;
 }
-
 body.light-theme .nav-link.active,
 body.light-theme .nav-link:hover {
   color: white;
 }
-
 body.light-theme .nav-cta {
   border-color: white;
   color: white;
 }
-
 body.light-theme .nav-cta:hover {
   background-color: #8a6e2f;
   color: #fff;
@@ -365,7 +357,7 @@ body.light-theme .reservation-overlay {
 .hero-content {
   text-align: center;
   padding: 0 24px 50px 24px;
-  color: #f5f2ed; /* Enforce light text over the dark background overlay across all themes */
+  color: #f5f2ed; 
 }
 
 .hero-tagline {
@@ -383,13 +375,13 @@ body.light-theme .reservation-overlay {
   font-size: clamp(3rem, 10vw, 7rem);
   font-weight: 300;
   margin-bottom: 16px;
-  color: #f5f2ed; /* Light color for dark mode */
+  color: #f5f2ed;
   text-shadow: 0 4px 18px rgba(0, 0, 0, 0.7), 0 2px 40px rgba(0, 0, 0, 0.4);
 }
 
 .hero-subtitle {
   font-size: 1.125rem;
-  color: #9a958e; /* Enforce light muted color over the dark background overlay across all themes */
+  color: #9a958e;
   margin-bottom: 40px;
   font-style: italic;
   text-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
@@ -401,19 +393,12 @@ body.light-theme .reservation-overlay {
   justify-content: center;
   flex-wrap: wrap;
 }
+
 /* Fix homepage text visibility in light mode */
-body.light-theme .hero-title {
-  color: #f8f5ef;
-}
-
-body.light-theme .hero-subtitle {
-  color: #e5ddd0;
-}
-
+body.light-theme .hero-title { color: #f8f5ef; }
+body.light-theme .hero-subtitle { color: #e5ddd0; }
 body.light-theme .hero-scroll span,
-body.light-theme .clicktoscroll {
-  color: #e5ddd0;
-}
+body.light-theme .clicktoscroll { color: #e5ddd0; }
 
 body.light-theme .hero-overlay {
   background: linear-gradient(
@@ -423,6 +408,7 @@ body.light-theme .hero-overlay {
     rgba(26, 23, 20, 0.55) 100%
   );
 }
+
 body.light-theme .btn-outline {
   color: #f8f5ef;
   border-color: #f8f5ef;
@@ -432,6 +418,7 @@ body.light-theme .btn-outline:hover {
   background-color: #f8f5ef;
   color: #1a1714;
 }
+
 .hero-scroll {
   position: absolute;
   bottom: 10px;
@@ -457,10 +444,12 @@ body.light-theme .btn-outline:hover {
   background: linear-gradient(to bottom, var(--color-primary), transparent);
   animation: scrollPulse 2s infinite;
 }
+
 .hero-scroll:hover span {
   color: var(--color-primary);
   transition: color var(--transition);
 }
+
 .clicktoscroll {
   font-family: "Palatino Linotype", Palatino, "Book Antiqua", serif;
   font-style: italic;
@@ -470,6 +459,7 @@ body.light-theme .btn-outline:hover {
   color: var(--color-text-muted);
   text-transform: none !important;
 }
+
 @keyframes scrollPulse {
   0%,
   100% {
@@ -496,6 +486,7 @@ body.light-theme .btn-outline:hover {
     transform: translateY(6px);
   }
 }
+
 /* About Section */
 .about {
   padding: 120px 0;
@@ -694,6 +685,7 @@ body.light-theme .btn-outline:hover {
   transition: all 0.3s ease;
   border-radius: 30px;
 }
+
 .filter-btn:hover,
 .filter-btn.active {
   background-color: var(--color-primary);
@@ -711,6 +703,7 @@ body.light-theme .btn-outline:hover {
   color: var(--color-text-muted);
   font-style: italic;
 }
+
 .food-tag {
   display: inline-block;
   margin-bottom: 10px;
@@ -729,6 +722,7 @@ body.light-theme .btn-outline:hover {
   background-color: rgba(201, 74, 74, 0.15);
   color: #ff7b7b;
 }
+
 .food-card {
   display: flex;
   gap: 20px;
@@ -740,6 +734,7 @@ body.light-theme .btn-outline:hover {
   position: relative;
   transition: border-color 0.3s ease, transform 0.3s ease; 
 }
+
 .food-card::before {
   content: '';
   position: absolute;
@@ -761,23 +756,28 @@ body.light-theme .btn-outline:hover {
   z-index: 1;
   pointer-events: none;
 }
-@media (max-width: 768px) {
 
+@media (max-width: 768px) {
   .food-card {
     flex-direction: column;
     align-items: center;
     text-align: center;
   }
+} /* Fixed Unclosed Bracket Error From Upstream Here */
+
 .food-card:hover::before {
   opacity: 1;
 }
+
 .food-card:hover {
   transform: scale(1.02);
 }
+
 .food-card > * {
   position: relative;
   z-index: 2;
 }
+
 .food-image {
   width: 220px;
   height: 160px;
@@ -883,7 +883,6 @@ body.light-theme .price {
   position: relative;
   padding: 120px 0;
   overflow: hidden;
-  
 }
 
 .reservation-bg {
@@ -998,6 +997,7 @@ body.light-theme .price {
   font-size: 1rem;
   transition: border-color var(--transition);
 }
+
 /* Dark theme calendar icon fix */
 input[type="date"]::-webkit-calendar-picker-indicator {
   filter: invert(1);
@@ -1009,6 +1009,7 @@ input[type="date"]::-webkit-calendar-picker-indicator:hover {
   opacity: 1;
   filter: invert(1) brightness(1.2);
 }
+
 .form-group input:focus,
 .form-group select:focus,
 .form-group textarea:focus {
@@ -1161,7 +1162,6 @@ input[type="date"]::-webkit-calendar-picker-indicator:hover {
   height: 100%;
   border: 0;
   filter: none;
-
 }
 
 /* ── Reviews Section ─────────────────────────────────── */
@@ -1211,6 +1211,7 @@ input[type="date"]::-webkit-calendar-picker-indicator:hover {
   flex: 1;
   word-break: break-word;
 }
+
 .review-author {
   display: flex;
   align-items: center;
@@ -1286,35 +1287,8 @@ input[type="date"]::-webkit-calendar-picker-indicator:hover {
   color: var(--color-primary);
   transform: scale(1.1);
 }
-}
-@media (max-width: 1024px) {
-  .reviews-grid {
-    grid-template-columns: repeat(2, 1fr);
-  }
-}
-
-@media (max-width: 768px) {
-  .reviews-grid {
-    grid-template-columns: 1fr;
-  }
-  .review-form-wrapper {
-    padding: 24px 20px;
-  }
-}
-
-
-
-
-
-
-
-
-
-
-
 
 /* Footer */
-
 .footer {
   background:
     linear-gradient(
@@ -1349,7 +1323,6 @@ input[type="date"]::-webkit-calendar-picker-indicator:hover {
 }
 
 /* BRAND */
-
 .footer-brand h2 {
   font-family: var(--font-serif);
   font-size: 2.2rem;
@@ -1365,7 +1338,6 @@ input[type="date"]::-webkit-calendar-picker-indicator:hover {
 }
 
 /* SOCIALS */
-
 .footer-socials {
   display: flex;
   gap: 14px;
@@ -1377,11 +1349,9 @@ input[type="date"]::-webkit-calendar-picker-indicator:hover {
   height: 46px;
   border-radius: 50%;
   border: 1px solid var(--color-border);
-
   display: flex;
   align-items: center;
   justify-content: center;
-
   transition: all 0.35s ease;
   position: relative;
   overflow: hidden;
@@ -1392,7 +1362,6 @@ input[type="date"]::-webkit-calendar-picker-indicator:hover {
   position: absolute;
   inset: 0;
   background: var(--color-primary);
-
   transform: scale(0);
   transition: transform 0.35s ease;
   border-radius: inherit;
@@ -1420,7 +1389,6 @@ input[type="date"]::-webkit-calendar-picker-indicator:hover {
 }
 
 /* COLUMNS */
-
 .footer-column h3 {
   font-size: 1rem;
   text-transform: uppercase;
@@ -1448,7 +1416,6 @@ input[type="date"]::-webkit-calendar-picker-indicator:hover {
 }
 
 /* NEWSLETTER */
-
 .newsletter-form {
   display: flex;
   flex-direction: column;
@@ -1474,15 +1441,12 @@ input[type="date"]::-webkit-calendar-picker-indicator:hover {
 .newsletter-form button {
   background: var(--color-primary);
   color: #161311;
-
   border: none;
   padding: 14px 18px;
   border-radius: 40px;
-
   cursor: pointer;
   font-weight: 600;
   letter-spacing: 1px;
-
   transition: all 0.3s ease;
 }
 
@@ -1492,7 +1456,6 @@ input[type="date"]::-webkit-calendar-picker-indicator:hover {
 }
 
 /* BOTTOM */
-
 .footer-bottom {
   padding: 28px 0;
   display: flex;
@@ -1522,16 +1485,38 @@ input[type="date"]::-webkit-calendar-picker-indicator:hover {
 }
 
 /* RESPONSIVE */
-
 @media (max-width: 1024px) {
   .footer-top {
     grid-template-columns: 1fr 1fr;
     gap: 50px;
   }
+
+  .about-grid,
+  .menu-grid,
+  .reservation-content,
+  .location-grid {
+    grid-template-columns: 1fr;
+    gap: 40px;
+  }
+
+  .about-image img {
+    height: 400px;
+  }
+
+  .menu-image {
+    position: static;
+  }
+
+  .menu-image img {
+    height: 350px;
+  }
+
+  .reviews-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
 }
 
 @media (max-width: 768px) {
-
   .footer {
     padding-top: 70px;
   }
@@ -1558,58 +1543,7 @@ input[type="date"]::-webkit-calendar-picker-indicator:hover {
   .newsletter-form {
     width: 100%;
   }
-}
 
-@media (max-width: 480px) {
-
-  .footer {
-    padding-top: 60px;
-  }
-
-  .footer-top {
-    padding-bottom: 50px;
-  }
-
-  .footer-brand h2 {
-    font-size: 1.7rem;
-  }
-
-  .footer-socials a {
-    width: 42px;
-    height: 42px;
-  }
-
-  .footer-bottom {
-    padding: 24px 0;
-  }
-}
-
-
-
-/* Responsive Design */
-@media (max-width: 1024px) {
-  .about-grid,
-  .menu-grid,
-  .reservation-content,
-  .location-grid {
-    grid-template-columns: 1fr;
-    gap: 40px;
-  }
-
-  .about-image img {
-    height: 400px;
-  }
-
-  .menu-image {
-    position: static;
-  }
-
-  .menu-image img {
-    height: 350px;
-  }
-}
-
-@media (max-width: 768px) {
   .nav-menu {
     position: fixed;
     top: 0;
@@ -1632,25 +1566,16 @@ input[type="date"]::-webkit-calendar-picker-indicator:hover {
     right: 0;
     opacity: 1;
   }
+
   .nav-menu.active .nav-link {
     animation: slideIn 0.3s ease forwards;
   }
 
-  .nav-menu.active li:nth-child(1) {
-    animation-delay: 0.1s;
-  }
-  .nav-menu.active li:nth-child(2) {
-    animation-delay: 0.2s;
-  }
-  .nav-menu.active li:nth-child(3) {
-    animation-delay: 0.3s;
-  }
-  .nav-menu.active li:nth-child(4) {
-    animation-delay: 0.4s;
-  }
-  .nav-menu.active li:nth-child(5) {
-    animation-delay: 0.5s;
-  }
+  .nav-menu.active li:nth-child(1) { animation-delay: 0.1s; }
+  .nav-menu.active li:nth-child(2) { animation-delay: 0.2s; }
+  .nav-menu.active li:nth-child(3) { animation-delay: 0.3s; }
+  .nav-menu.active li:nth-child(4) { animation-delay: 0.4s; }
+  .nav-menu.active li:nth-child(5) { animation-delay: 0.5s; }
 
   .nav-toggle {
     display: flex;
@@ -1703,7 +1628,16 @@ input[type="date"]::-webkit-calendar-picker-indicator:hover {
   .location-map {
     height: 350px;
   }
+
+  .reviews-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .review-form-wrapper {
+    padding: 24px 20px;
+  }
 }
+
 @keyframes slideIn {
   from {
     opacity: 0;
@@ -1714,15 +1648,11 @@ input[type="date"]::-webkit-calendar-picker-indicator:hover {
     transform: translateX(0);
   }
 }
+
 @media (max-width: 480px) {
-  .section-title {
-    font-size: 2rem;
-  }
-
-  .hero-title {
-    font-size: 2.5rem;
-  }
-
+  .section-title { font-size: 2rem; }
+  .hero-title { font-size: 2.5rem; }
+  
   .menu-item-header {
     flex-direction: column;
     gap: 4px;
@@ -1732,7 +1662,19 @@ input[type="date"]::-webkit-calendar-picker-indicator:hover {
     flex-direction: column;
     gap: 4px;
   }
+
+  .footer { padding-top: 60px; }
+  .footer-top { padding-bottom: 50px; }
+  .footer-brand h2 { font-size: 1.7rem; }
+  
+  .footer-socials a {
+    width: 42px;
+    height: 42px;
+  }
+
+  .footer-bottom { padding: 24px 0; }
 }
+
 #backToTop {
   position: fixed;
   bottom: 32px;
@@ -1775,6 +1717,7 @@ input[type="date"]::-webkit-calendar-picker-indicator:hover {
   opacity: 1;
   visibility: visible;
 }
+
 /* Mobile menu card fix */
 @media (max-width: 768px) {
   .food-card {
@@ -1783,10 +1726,10 @@ input[type="date"]::-webkit-calendar-picker-indicator:hover {
   }
 
   .food-image {
-  width: 100%;
-  height: 220px;
-  object-fit: cover;
-}
+    width: 100%;
+    height: 220px;
+    object-fit: cover;
+  }
 
   .food-content {
     width: 100%;
@@ -1812,6 +1755,7 @@ input[type="date"]::-webkit-calendar-picker-indicator:hover {
   --skeleton-base: rgba(255,255,255,0.02);
   --skeleton-highlight: rgba(255,255,255,0.06);
 }
+
 body.light-theme {
   --skeleton-base: rgba(0,0,0,0.04);
   --skeleton-highlight: rgba(0,0,0,0.06);
@@ -1875,7 +1819,7 @@ body.light-theme {
   align-items: flex-start;
   padding: 18px;
   border-radius: 12px;
-  background-color: transparent; /* base color comes from .skeleton */
+  background-color: transparent; 
   border: 1px solid transparent;
 }
 
@@ -1922,6 +1866,7 @@ body.light-theme {
 .skeleton-wrapper {
   position: relative;
 }
+
 .skeleton-overlay {
   position: absolute;
   top: 0; left: 0; right: 0; bottom: 0;
@@ -1956,6 +1901,7 @@ body.light-theme .skeleton-block {
 @media (max-width: 1024px) {
   .skeleton-card .skeleton-img { width: 180px; height: 140px; }
 }
+
 @media (max-width: 768px) {
   .skeleton-card { flex-direction: column; }
   .skeleton-card .skeleton-img { width: 100%; height: 200px; }
@@ -1963,18 +1909,130 @@ body.light-theme .skeleton-block {
 }
 
 /* =============================================
-   Veg / Non-Veg Diet Filter
+   Veg / Non-Veg Diet Filter & Cuisine Dropdown
    ============================================= */
 .diet-filter {
   display: flex;
-  gap: 10px;
-  margin-bottom: 1rem;
+  justify-content: center;
+  gap: 12px;
+  margin: 1.5rem 0 2rem;
+  flex-wrap: wrap;
 }
 
 .cuisine-dropdown {
   padding: 10px;
   border-radius: 5px;
   border: 1px solid #ccc;
-  background-color: var(--bg-color);
+  background-color: var(--color-bg); /* Fixed variable reference */
   color: goldenrod;
+}
+
+.diet-btn {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 10px 22px;
+  border: 1px solid var(--color-border);
+  background-color: transparent;
+  color: var(--color-text-muted);
+  cursor: pointer;
+  transition: all 0.3s ease;
+  border-radius: 30px;
+}
+
+.diet-btn:hover,
+.diet-btn.active {
+  background-color: var(--color-primary);
+  color: var(--color-bg);
+  border-color: var(--color-primary);
+}
+
+.diet-dot {
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.veg-dot {
+  background: #4caf50;
+  border: 1.5px solid #388e3c;
+}
+
+.non-veg-dot {
+  background: #e53935;
+  border: 1.5px solid #b71c1c;
+}
+
+/* Hidden menu items during filter */
+.menu-item.diet-hidden {
+  display: none;
+}
+
+/* No results message */
+.diet-no-results {
+  text-align: center;
+  color: var(--color-primary, #c9a962);
+  font-style: italic;
+  padding: 2rem 0;
+  font-size: 1rem;
+  display: none;
+}
+
+.diet-no-results.visible {
+  display: block;
+}
+
+/* --- Light Mode Visibility Fixes --- */
+
+body.light-theme .hero-tagline {
+  color: #f8f5ef;
+  font-weight: 600;
+  text-shadow: 0 4px 12px rgba(0, 0, 0, 0.9), 0 1px 4px rgba(0, 0, 0, 0.7);
+}
+
+body.light-theme .scroll-indicator {
+  background: linear-gradient(to bottom, #e5ddd0, transparent);
+}
+
+body.light-theme .scroll-arrow {
+  color: #f1f1ef;
+  filter: drop-shadow(0 2px 6px rgba(0, 0, 0, 0.8));
+}
+
+/* --- Light Mode Reservation Readability Fixes --- */
+
+body.light-theme .reservation .section-title,
+body.light-theme .reservation .reservation-info p,
+body.light-theme .reservation .detail-item strong,
+body.light-theme .reservation .detail-item span {
+  color: #1a1714 !important;
+}
+
+body.light-theme .reservation .detail-icon {
+  color: #a88b4a;
+}
+
+/* Ensure the form box remains legible against the background */
+body.light-theme .reservation-form {
+  background-color: rgba(255, 255, 255, 0.95);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+}
+
+body.light-theme .reservation-form .form-group label {
+  color: #5f5b55;
+}
+
+body.light-theme .reservation-form input,
+body.light-theme .reservation-form select,
+body.light-theme .reservation-form textarea {
+  background-color: #f7f2e9;
+  color: #1a1714;
+  border-color: #d6d1ca;
+}
+
+body.light-theme .reservation-form input::placeholder,
+body.light-theme .reservation-form textarea::placeholder {
+  color: #9a958e;
 }
