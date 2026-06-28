@@ -1981,20 +1981,6 @@ input[type="date"]::-webkit-calendar-picker-indicator:hover {
   display: none;
 }
 
-/* No results message */
-.diet-no-results {
-  text-align: center;
-  color: var(--color-primary, #c9a962);
-  font-style: italic;
-  padding: 2rem 0;
-  font-size: 1rem;
-  display: none;
-}
-
-.diet-no-results.visible {
-  display: block;
-}
-
 /* =============================================
    3D CARD FLIP WITH POLAROID STYLE
    ============================================= */

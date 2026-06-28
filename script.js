@@ -176,10 +176,34 @@ themeToggle.addEventListener("click", () => {
 
 // ── Menu Search and Filter ─────────────────────────
 
+// Show a single "no results" message based on the combined category, search and diet filters
+function updateMenuNoResults() {
+  const panel = document.querySelector('.menu-content');
+  if (!panel) return;
+
+  let visibleCount = 0;
+  panel.querySelectorAll('.menu-item').forEach((item) => {
+    if (!item.classList.contains('hidden-item') && !item.classList.contains('diet-hidden')) {
+      visibleCount++;
+    }
+  });
+
+  let noResults = panel.querySelector('.no-results');
+  if (visibleCount === 0) {
+    if (!noResults) {
+      noResults = document.createElement('p');
+      noResults.className = 'no-results';
+      noResults.textContent = i18next.t('menu.no_results');
+      panel.appendChild(noResults);
+    }
+  } else if (noResults) {
+    noResults.remove();
+  }
+}
+
 // FIX #1 — Use the correct parameter names (timeFilter, cuisineFilter) instead of undefined 'filter'
 function filterMenuItems(timeFilter, cuisineFilter, searchText) {
   const menuItems = document.querySelectorAll(".menu-item");
-  let visibleCount = 0;
 
   menuItems.forEach((item) => {
     const itemName = item.querySelector('h3')?.textContent?.toLowerCase() || '';
@@ -190,24 +214,12 @@ function filterMenuItems(timeFilter, cuisineFilter, searchText) {
 
     if (matchesSearch && matchesTime && matchesCuisine) {
       item.classList.remove('hidden-item');
-      visibleCount++;
     } else {
       item.classList.add('hidden-item');
     }
   });
 
-  // Handle "No Results" display
-  let noResults = document.querySelector(".no-results");
-  if (visibleCount === 0) {
-    if (!noResults) {
-      noResults = document.createElement('p');
-      noResults.className = 'no-results';
-      noResults.textContent = i18next.t('menu.no_results');
-      document.querySelector('.menu-content')?.appendChild(noResults);
-    }
-  } else if (noResults) {
-    noResults.remove();
-  }
+  updateMenuNoResults();
 }
 
 function triggerFilter() {
@@ -583,28 +595,14 @@ if (reviewForm) {
     const activePanels = document.querySelectorAll('.menu-panel.active');
 
     activePanels.forEach((panel) => {
-      const items = panel.querySelectorAll('.menu-item');
-      let visibleCount = 0;
-
-      items.forEach((item) => {
+      panel.querySelectorAll('.menu-item').forEach((item) => {
         const itemDiet = item.dataset.diet || 'all';
         const show = diet === 'all' || itemDiet === diet;
         item.classList.toggle('diet-hidden', !show);
-        if (show) visibleCount++;
       });
-
-      let noResults = panel.querySelector('.diet-no-results');
-      if (!noResults) {
-        noResults = document.createElement('p');
-        noResults.className = 'diet-no-results';
-        noResults.textContent = i18next.t('menu.diet_no_results');
-        const menuItems = panel.querySelector('.menu-items');
-        if (menuItems) {
-          menuItems.appendChild(noResults);
-        }
-      }
-      noResults.classList.toggle('visible', visibleCount === 0);
     });
+
+    updateMenuNoResults();
   }
 
   dietFilterBtns.forEach((btn) => {
@@ -677,11 +675,6 @@ function updateContent() {
   if (noResults) {
     noResults.textContent = i18next.t('menu.no_results');
   }
-
-  const dietNoResults = document.querySelectorAll(".diet-no-results");
-  dietNoResults.forEach((el) => {
-    el.textContent = i18next.t('menu.diet_no_results');
-  });
 
   // Update reviews
   renderReviews();
