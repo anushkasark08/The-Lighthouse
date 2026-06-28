@@ -350,6 +350,88 @@ body.light-theme .clicktoscroll {
   transform: rotate(10deg);
 }
 
+/* Language Selector */
+.language-selector-container {
+  position: relative;
+  display: inline-block;
+  margin: 0 10px;
+}
+
+.language-select {
+  background-color: rgba(255, 255, 255, 0.03);
+  border: 1px solid var(--color-border);
+  color: var(--color-text);
+  padding: 10px 18px;
+  font-size: 0.9rem;
+  font-weight: 500;
+  border-radius: 6px;
+  cursor: pointer;
+  outline: none;
+  font-family: var(--font-sans);
+  transition: all var(--transition);
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8' fill='none'><path d='M1.5 2L6 6.5L10.5 2' stroke='%23c9a962' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'/></svg>");
+  background-repeat: no-repeat;
+  background-position: right 14px center;
+  padding-right: 38px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.language-select:hover, .language-select:focus {
+  border-color: var(--color-primary);
+  color: var(--color-primary);
+  background-color: rgba(201, 169, 98, 0.05);
+  box-shadow: 0 4px 15px rgba(201, 169, 98, 0.15);
+}
+
+.language-select option {
+  background-color: var(--color-bg-card);
+  color: var(--color-text);
+  padding: 12px;
+}
+
+/* Light theme options styling override */
+body.light-theme .language-select {
+  background-color: rgba(0, 0, 0, 0.02);
+  color: var(--color-text);
+}
+body.light-theme .language-select:hover,
+body.light-theme .language-select:focus {
+  background-color: rgba(201, 169, 98, 0.05);
+}
+
+/* Responsive visibility utilities */
+@media (min-width: 769px) {
+  .mobile-only {
+    display: none !important;
+  }
+}
+@media (max-width: 768px) {
+  .desktop-only {
+    display: none !important;
+  }
+  
+  .nav-lang-item {
+    margin-top: 15px;
+    width: 80%;
+    display: flex;
+    justify-content: center;
+  }
+
+  .nav-lang-item .language-select {
+    width: 100%;
+    max-width: 200px;
+    padding: 12px 20px;
+    font-size: 0.95rem;
+    text-align: center;
+    background-position: right 16px center;
+    padding-right: 40px;
+    border-radius: 8px;
+  }
+}
+
 /* Hero Section */
 .hero {
   position: relative;
@@ -2278,4 +2360,13 @@ body.light-theme .back-details span {
 
 body.light-theme .polaroid-tape {
   background: rgba(255, 200, 100, 0.8);
+}
+
+/* ── Menu Category Count ── */
+#menu-category-count {
+  font-family: 'Inter', sans-serif;
+  font-size: 0.95rem;
+  color: var(--color-text-muted, #999);
+  margin-top: 0.4rem;
+  letter-spacing: 0.04em;
 }
