@@ -142,6 +142,8 @@ body.light-theme .reservation .detail-item span {
 
 .btn-full {
   width: 100%;
+  align-items: center;
+  justify-content: center;
 }
 
 /* Navigation */
@@ -648,10 +650,10 @@ body.light-theme .btn-outline:hover {
   object-fit: cover;
 }
 
-.menu-items { 
+.menu-items {
   gap: 24px;
   display: grid;
-  grid-template-columns: repeat(2, 1fr); 
+  grid-template-columns: repeat(2, 1fr);
 }
 
 .menu-item {
@@ -779,7 +781,7 @@ body.light-theme .btn-outline:hover {
   border: 1px solid var(--color-border);
   position: relative;
   transition: border-color 0.3s ease, transform 0.3s ease;
-  justify-content:center;
+  justify-content: center;
 }
 
 .food-card::before {
@@ -1079,6 +1081,15 @@ input[type="date"]::-webkit-calendar-picker-indicator:hover {
 
 .reservation-form .btn {
   margin-top: 20px;
+  align-items: center;
+  justify-content: center;
+}
+
+#review-form .btn {
+  margin-top: 20px;
+  align-items: center;
+  justify-content: center;
+
 }
 
 .form-note {
@@ -1241,7 +1252,7 @@ input[type="date"]::-webkit-calendar-picker-indicator:hover {
 }
 
 .review-stars {
-  font-size: 1.2rem;
+  font-size: 20px;
   color: var(--color-primary);
   letter-spacing: 2px;
 }
@@ -1295,7 +1306,7 @@ input[type="date"]::-webkit-calendar-picker-indicator:hover {
   background-color: var(--color-bg-card);
   border: 1px solid var(--color-border);
   border-radius: 4px;
-  padding: 40px;
+  padding: 50px;
 }
 
 .review-form-heading {
@@ -1308,13 +1319,13 @@ input[type="date"]::-webkit-calendar-picker-indicator:hover {
 .star-input {
   display: flex;
   gap: 4px;
-  padding: 6px 0;
+  padding: 6px 6px 6px 6px;
 }
 
 .star-btn {
   background: none;
   border: none;
-  font-size: 1.75rem;
+  font-size: 2.5rem;
   color: var(--color-border);
   cursor: pointer;
   padding: 0;
@@ -1378,6 +1389,12 @@ input[type="date"]::-webkit-calendar-picker-indicator:hover {
   gap: 60px;
   padding-bottom: 70px;
   border-bottom: 1px solid var(--color-border);
+}
+
+fieldset {
+  border: none;
+  padding: 0;
+  margin: 0;
 }
 
 /* BRAND */
@@ -1716,7 +1733,6 @@ input[type="date"]::-webkit-calendar-picker-indicator:hover {
 
   .btn {
     width: 100%;
-    max-width: 280px;
   }
 
   .form-row {
