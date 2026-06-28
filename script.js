@@ -653,7 +653,10 @@ document.addEventListener('click', function (e) {
 // Translate UI Content
 function updateContent() {
   if (typeof i18next === 'undefined' || !i18next.t) return;
-  
+
+  // Keep the document language in sync for screen readers and search engines
+  document.documentElement.lang = i18next.resolvedLanguage || 'en';
+
   // Translate standard data-i18n elements
   document.querySelectorAll("[data-i18n]").forEach((elem) => {
     const key = elem.getAttribute("data-i18n");
