@@ -542,7 +542,7 @@ if (reviewForm) {
       return;
     }
 
-    const dateStr = new Date().toLocaleDateString('en-IN', {
+    const dateStr = new Date().toLocaleDateString(i18next.resolvedLanguage || 'en-IN', {
       day: '2-digit',
       month: 'short',
       year: 'numeric',
