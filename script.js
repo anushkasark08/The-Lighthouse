@@ -279,7 +279,7 @@ function handleFormSubmit(e) {
   document.querySelectorAll('.error-message').forEach(el => el.remove());
 
   // Email validation
-  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
   if (emailInput && !emailRegex.test(emailInput.value.trim())) {
     emailInput.style.borderColor = '#c94a4a';
     const emailError = document.createElement('small');
