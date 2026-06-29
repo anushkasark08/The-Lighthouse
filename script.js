@@ -202,7 +202,7 @@ function filterMenuItems(timeFilter, cuisineFilter, searchText) {
     if (!noResults) {
       noResults = document.createElement('p');
       noResults.className = 'no-results';
-      noResults.textContent = 'No menu items found.';
+      noResults.textContent = i18next.t('menu.no_results');
       document.querySelector('.menu-content')?.appendChild(noResults);
     }
   } else if (noResults) {
@@ -285,7 +285,7 @@ function handleFormSubmit(e) {
     const emailError = document.createElement('small');
     emailError.className = 'error-message';
     emailError.style.color = '#c94a4a';
-    emailError.textContent = 'Please enter a valid email address.';
+    emailError.textContent = i18next.t('reservation.email_error');
     emailInput.parentElement.appendChild(emailError);
     isValid = false;
   }
@@ -298,7 +298,7 @@ function handleFormSubmit(e) {
       const phoneError = document.createElement('small');
       phoneError.className = 'error-message';
       phoneError.style.color = '#c94a4a';
-      phoneError.textContent = 'Phone number must contain exactly 10 digits.';
+      phoneError.textContent = i18next.t('reservation.phone_error');
       phoneInput.parentElement.appendChild(phoneError);
       isValid = false;
     }
@@ -306,15 +306,14 @@ function handleFormSubmit(e) {
 
   if (isValid) {
     const submitBtn = reservationForm.querySelector('button[type="submit"]');
-    const originalText = submitBtn.textContent;
-    submitBtn.textContent = 'Reservation Requested!';
+    submitBtn.textContent = i18next.t('reservation.submit_requested');
     submitBtn.style.backgroundColor = '#4a9c6a';
     submitBtn.disabled = true;
 
     setTimeout(() => {
       reservationForm.reset();
       updateAvailableTimes();
-      submitBtn.textContent = originalText;
+      submitBtn.textContent = i18next.t('reservation.submit');
       submitBtn.style.backgroundColor = '';
       submitBtn.disabled = false;
       updateAvailableTimes();
@@ -434,8 +433,8 @@ const STORAGE_KEY = 'lighthouse_reviews';
 const pinnedReview = {
   name: 'Rasshi Srivastav',
   rating: 5,
-  text: 'Absolutely loved the food and ambience! Every dish was crafted with such care and the atmosphere was warm and elegant. A truly memorable dining experience — will definitely be coming back!',
-  date: '14 May 2026',
+  text: 'reviews.pinned_review_text',
+  date: 'reviews.pinned_review_date',
 };
 
 function getReviews() {
@@ -454,7 +453,12 @@ function renderReviews() {
   if (!grid) return;
 
   const userReviews = getReviews();
-  const allReviews = [pinnedReview, ...userReviews];
+  const activePinnedReview = {
+    ...pinnedReview,
+    text: typeof i18next !== 'undefined' && i18next.t ? i18next.t(pinnedReview.text) : pinnedReview.text,
+    date: typeof i18next !== 'undefined' && i18next.t ? i18next.t(pinnedReview.date) : pinnedReview.date,
+  };
+  const allReviews = [activePinnedReview, ...userReviews];
 
   grid.innerHTML = allReviews
     .map(
@@ -518,22 +522,22 @@ if (reviewForm) {
     reviewMsg.style.display = 'block';
 
     if (!selectedRating) {
-      reviewMsg.textContent = 'Please select a star rating.';
+      reviewMsg.textContent = i18next.t('reviews.rating_error');
       reviewMsg.style.color = '#c94a4a';
       return;
     }
     if (!isValidName(name)) {
-      reviewMsg.textContent = 'Name should contain only letters and be 3–30 characters long.';
+      reviewMsg.textContent = i18next.t('reviews.name_error');
       reviewMsg.style.color = '#c94a4a';
       return;
     }
     if (reviewText.length < 20) {
-      reviewMsg.textContent = 'Review must contain at least 20 characters.';
+      reviewMsg.textContent = i18next.t('reviews.text_length_error');
       reviewMsg.style.color = '#c94a4a';
       return;
     }
     if (!isMeaningfulReview(reviewText)) {
-      reviewMsg.textContent = 'Please enter a meaningful review.';
+      reviewMsg.textContent = i18next.t('reviews.meaningful_error');
       reviewMsg.style.color = '#c94a4a';
       return;
     }
@@ -561,7 +565,7 @@ if (reviewForm) {
     document.getElementById('review-rating').value = 0;
     starBtns.forEach((s) => s.classList.remove('active'));
 
-    reviewMsg.textContent = 'Review submitted successfully!';
+    reviewMsg.textContent = i18next.t('reviews.success_msg');
     reviewMsg.style.color = '#4a9c6a';
     setTimeout(() => {
       reviewMsg.style.display = 'none';
@@ -593,7 +597,7 @@ if (reviewForm) {
       if (!noResults) {
         noResults = document.createElement('p');
         noResults.className = 'diet-no-results';
-        noResults.textContent = 'No items match the selected filter.';
+        noResults.textContent = i18next.t('menu.diet_no_results');
         const menuItems = panel.querySelector('.menu-items');
         if (menuItems) {
           menuItems.appendChild(noResults);
@@ -646,13 +650,91 @@ document.addEventListener('click', function (e) {
   }
 });
 
+// Translate UI Content
+function updateContent() {
+  if (typeof i18next === 'undefined' || !i18next.t) return;
+  
+  // Translate standard data-i18n elements
+  document.querySelectorAll("[data-i18n]").forEach((elem) => {
+    const key = elem.getAttribute("data-i18n");
+    elem.textContent = i18next.t(key);
+  });
+
+  // Translate placeholders
+  document.querySelectorAll("[data-i18n-placeholder]").forEach((elem) => {
+    const key = elem.getAttribute("data-i18n-placeholder");
+    elem.setAttribute("placeholder", i18next.t(key));
+  });
+
+  // Translate titles
+  document.querySelectorAll("[data-i18n-title]").forEach((elem) => {
+    const key = elem.getAttribute("data-i18n-title");
+    elem.setAttribute("title", i18next.t(key));
+  });
+
+  // Dynamic Elements
+  const noResults = document.querySelector(".no-results");
+  if (noResults) {
+    noResults.textContent = i18next.t('menu.no_results');
+  }
+
+  const dietNoResults = document.querySelectorAll(".diet-no-results");
+  dietNoResults.forEach((el) => {
+    el.textContent = i18next.t('menu.diet_no_results');
+  });
+
+  // Update reviews
+  renderReviews();
+}
+
 // ── Initialise ───
 document.addEventListener('DOMContentLoaded', function () {
   handleScroll();
   setupIntersectionObserver();
   updateAvailableTimes();
-  renderReviews();
   handleCardFlip();
+
+  // Initialize i18next
+  if (typeof i18next !== 'undefined') {
+    i18next
+      .use(i18nextHttpBackend)
+      .use(i18nextBrowserLanguageDetector)
+      .init({
+        fallbackLng: 'en',
+        supportedLngs: ['en', 'hi', 'gu'],
+        load: 'languageOnly',
+        backend: {
+          loadPath: '/locales/{{lng}}/translation.json'
+        },
+        detection: {
+          order: ['localStorage', 'navigator'],
+          caches: ['localStorage']
+        }
+      }, function (err, t) {
+        if (err) return console.error(err);
+
+        const activeLang = i18next.resolvedLanguage || 'en';
+        const langSelectors = document.querySelectorAll('.language-select');
+        langSelectors.forEach((langSelector) => {
+          langSelector.value = activeLang;
+          langSelector.addEventListener('change', (e) => {
+            const selectedVal = e.target.value;
+            // Update all language dropdowns on the page to match
+            document.querySelectorAll('.language-select').forEach((sel) => {
+              sel.value = selectedVal;
+            });
+            i18next.changeLanguage(selectedVal, (err, t) => {
+              if (err) return console.error(err);
+              updateContent();
+            });
+          });
+        });
+
+        updateContent();
+      });
+  } else {
+    renderReviews();
+  }
 });
 
 // Mobile flip style
@@ -667,3 +749,10 @@ const styleForMobile = `
 const mobileStyle = document.createElement('style');
 mobileStyle.textContent = styleForMobile;
 document.head.appendChild(mobileStyle);
+
+// Automatically update copyright year
+const currentYear = document.getElementById("current-year");
+
+if (currentYear) {
+  currentYear.textContent = new Date().getFullYear();
+}
