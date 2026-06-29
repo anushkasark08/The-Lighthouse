@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>The Lighthouse | Fine Dining Restaurant</title>
+    <title data-i18n="hero.title">The Lighthouse | Fine Dining Restaurant</title>
     <meta
       name="description"
       content="Experience culinary excellence at The Lighthouse. Reservations available for breakfast, lunch, and dinner."
@@ -15,49 +15,72 @@
       rel="stylesheet"
     />
     <link rel="stylesheet" href="style.css" />
+    <!-- i18next libraries -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/i18next/23.11.5/i18next.min.js" defer></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/i18next-http-backend/2.5.2/i18nextHttpBackend.min.js" defer></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/i18next-browser-languagedetector/8.0.0/i18nextBrowserLanguageDetector.min.js" defer></script>
   </head>
   <body>
 
     <!-- Navigation -->
     <nav class="nav" id="nav">
       <div class="nav-container">
-        <a href="#home" class="nav-logo">The Lighthouse</a>
+        <a href="#home" class="nav-logo" data-i18n="nav.logo">The Lighthouse</a>
         <button class="nav-toggle" id="navToggle" aria-label="Toggle menu">
           <span></span>
           <span></span>
           <span></span>
         </button>
         <ul class="nav-menu" id="navMenu">
-          <li><a href="#home" class="nav-link active" data-section="home">Home</a></li>
-          <li><a href="#about" class="nav-link" data-section="about">About</a></li>
-          <li><a href="#chef" class="nav-link" data-section="chef">Chef's Picks</a></li>
-          <li><a href="#menu" class="nav-link" data-section="menu">Menu</a></li>
-          <li><a href="#reservation" class="nav-link" data-section="reservation">Reservations</a></li>
-          <li><a href="#reviews" class="nav-link" data-section="reviews">Reviews</a></li>
-          <li><a href="#location" class="nav-link" data-section="location">Location</a></li>
+          <li><a href="#home" class="nav-link active" data-section="home" data-i18n="nav.home">Home</a></li>
+          <li><a href="#about" class="nav-link" data-section="about" data-i18n="nav.about">About</a></li>
+          <li><a href="#chef" class="nav-link" data-section="chef" data-i18n="nav.chef">Chef's Picks</a></li>
+          <li><a href="#menu" class="nav-link" data-section="menu" data-i18n="nav.menu">Menu</a></li>
+          <li><a href="#reservation" class="nav-link" data-section="reservation" data-i18n="nav.reservation">Reservations</a></li>
+          <li><a href="#reviews" class="nav-link" data-section="reviews" data-i18n="nav.reviews">Reviews</a></li>
+          <li><a href="#location" class="nav-link" data-section="location" data-i18n="nav.location">Location</a></li>
+          <li class="mobile-only nav-lang-item">
+            <div class="language-selector-container">
+              <select class="language-select" aria-label="Select Language">
+                <option value="en">English</option>
+                <option value="hi">हिंदी</option>
+                <option value="gu">ગુજરાતી</option>
+              </select>
+            </div>
+          </li>
         </ul>
+        <div class="language-selector-container desktop-only">
+          <select class="language-select" aria-label="Select Language">
+            <option value="en">English</option>
+            <option value="hi">हिंदी</option>
+            <option value="gu">ગુજરાતી</option>
+          </select>
+        </div>
         <button id="themeToggle" class="theme-toggle" aria-label="Toggle Theme">🌙</button>
-        <a href="#reservation" class="nav-cta">Book a Table</a>
+        <a href="#reservation" class="nav-cta" data-i18n="nav.book_table">Book a Table</a>
       </div>
     </nav>
 
     <!-- Hero Section -->
     <section class="hero" id="home">
       <div class="hero-bg" id="heroBg">
-        <img src="./images/hero-restaurant.jpg" alt="The Lighthouse Restaurant Interior" loading="lazy" />
+        <img
+  src="./images/hero-restaurant.jpg"
+  alt="The Lighthouse Restaurant Interior"
+/>
       </div>
       <div class="hero-overlay"></div>
       <div class="hero-content">
-        <span class="hero-tagline">Est. 1987</span>
-        <h1 class="hero-title">The Lighthouse</h1>
-        <p class="hero-subtitle">Where culinary artistry meets timeless elegance</p>
+        <span class="hero-tagline" data-i18n="hero.tagline">Est. 1987</span>
+        <h1 class="hero-title" data-i18n="hero.title">The Lighthouse</h1>
+        <p class="hero-subtitle" data-i18n="hero.subtitle">Where culinary artistry meets timeless elegance</p>
         <div class="hero-buttons">
-          <a href="#menu" class="btn btn-primary">Explore Menu</a>
-          <a href="#reservation" class="btn btn-outline">Reserve Table</a>
+          <a href="#menu" class="btn btn-primary" data-i18n="hero.explore_menu">Explore Menu</a>
+          <a href="#reservation" class="btn btn-outline" data-i18n="hero.reserve_table">Reserve Table</a>
         </div>
         <div class="hero-scroll">
-          <span>Scroll To Discover</span>
-          <span class="clicktoscroll">Click To Scroll</span>
+          <span data-i18n="hero.scroll_discover">Scroll To Discover</span>
+          <span class="clicktoscroll" data-i18n="hero.click_scroll">Click To Scroll</span>
           <div class="scroll-indicator"></div>
           <svg class="scroll-arrow" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
             <path d="M12 5v14M5 12l7 7 7-7" />
@@ -71,17 +94,17 @@
       <div class="container">
         <div class="about-grid">
           <div class="about-image">
-            <img src="./images/chef.jpg" alt="Our Chef at Work" loading="lazy" />
+            <img src="./images/chef.jpg" alt="Our Chef at Work" loading="lazy"  />
           </div>
           <div class="about-content">
-            <span class="section-label">Our Story</span>
-            <h2 class="section-title">A Legacy of Flavor</h2>
-            <p class="about-text">
+            <span class="section-label" data-i18n="about.story">Our Story</span>
+            <h2 class="section-title" data-i18n="about.title">A Legacy of Flavor</h2>
+            <p class="about-text" data-i18n="about.text_1">
               For over three decades, The Lighthouse has been a beacon of culinary excellence.
               Our chef combines classical techniques with modern innovation, sourcing only the
               finest seasonal ingredients from local farms and trusted suppliers.
             </p>
-            <p class="about-text">
+            <p class="about-text" data-i18n="about.text_2">
               Every dish tells a story, every meal creates a memory. We invite you to experience
               the art of fine dining in an atmosphere of warmth and sophistication.
             </p>
@@ -94,34 +117,44 @@
     <section class="chef-section" id="chef">
       <div class="container">
         <div class="section-header">
-          <span class="section-label">Chef's recommendations</span>
+          <span class="section-label" data-i18n="chef_picks.label">Chef's recommendations</span>
         </div>
         <div class="chef-grid">
 
           <div class="menu-item" data-category="breakfast">
             <div class="food-card">
-              <img src="./images/Chicken_Keema_Dosa.jpg" alt="Chicken Keema Dosa" class="food-image" />
+              <img
+              src="./images/Chicken_Keema_Dosa.jpg"
+              alt="Chicken Keema Dosa"
+              class="food-image"
+              loading="lazy"
+              />
               <div class="food-content">
                 <div class="menu-item-header">
-                  <h3>Chicken Keema Dosa</h3>
+                  <h3 data-i18n="menu.items.chicken_keema_dosa.name">Chicken Keema Dosa</h3>
                   <span class="menu-price">₹240</span>
                 </div>
-                <span class="food-tag nonveg">Non-Veg</span>
-                <p>Crispy dosa stuffed with spicy chicken keema masala</p>
+                <span class="food-tag nonveg" data-i18n="menu.tags.nonveg">Non-Veg</span>
+                <p data-i18n="menu.items.chicken_keema_dosa.desc">Crispy dosa stuffed with spicy chicken keema masala</p>
               </div>
             </div>
           </div>
 
           <div class="menu-item" data-category="lunch">
             <div class="food-card">
-              <img src="./images/Paneer_Butter_Masala.jpg" alt="Paneer Butter Masala" class="food-image" />
+              <img
+              src="./images/Paneer_Butter_Masala.jpg"
+              alt="Paneer Butter Masala"
+              class="food-image"
+              loading="lazy"
+              />
               <div class="food-content">
                 <div class="menu-item-header">
-                  <h3>Paneer Butter Masala</h3>
+                  <h3 data-i18n="menu.items.paneer_butter_masala.name">Paneer Butter Masala</h3>
                   <span class="menu-price">₹280</span>
                 </div>
-                <span class="food-tag veg">Veg</span>
-                <p>Rich creamy paneer curry served with butter naan</p>
+                <span class="food-tag veg" data-i18n="menu.tags.veg">Veg</span>
+                <p data-i18n="menu.items.paneer_butter_masala.desc">Rich creamy paneer curry served with butter naan</p>
               </div>
             </div>
           </div>
@@ -134,32 +167,32 @@
     <section class="menu-section" id="menu">
       <div class="container">
         <div class="section-header">
-          <span class="section-label">Culinary Offerings</span>
-          <h2 class="section-title">Our Menu</h2>
+          <span class="section-label" data-i18n="menu.label">Culinary Offerings</span>
+          <h2 class="section-title" data-i18n="menu.title">Our Menu</h2>
         </div>
 
         <!-- Menu Search + Filters -->
         <div class="menu-controls">
-          <label for="menu-search" class="sr-only">Search Menu</label>
-          <input type="text" id="menu-search" placeholder="Search dishes..." class="menu-search" />
+          <label for="menu-search" class="sr-only" data-i18n="menu.search_placeholder">Search Menu</label>
+          <input type="text" id="menu-search" placeholder="Search dishes..." class="menu-search" data-i18n-placeholder="menu.search_placeholder" />
           <div class="menu-filters">
-            <button class="filter-btn active" data-filter="all">All</button>
-            <button class="filter-btn" data-filter="breakfast">Breakfast</button>
-            <button class="filter-btn" data-filter="lunch">Lunch</button>
-            <button class="filter-btn" data-filter="dinner">Dinner</button>
-            <button class="filter-btn" data-filter="desserts">Desserts</button>
-            <button class="filter-btn" data-filter="drinks">Drinks</button>
+            <button class="filter-btn active" data-filter="all" data-i18n="menu.filter_all">All</button>
+            <button class="filter-btn" data-filter="breakfast" data-i18n="menu.filter_breakfast">Breakfast</button>
+            <button class="filter-btn" data-filter="lunch" data-i18n="menu.filter_lunch">Lunch</button>
+            <button class="filter-btn" data-filter="dinner" data-i18n="menu.filter_dinner">Dinner</button>
+            <button class="filter-btn" data-filter="desserts" data-i18n="menu.filter_desserts">Desserts</button>
+            <button class="filter-btn" data-filter="drinks" data-i18n="menu.filter_drinks">Drinks</button>
           </div>
         </div>
 
         <!-- Veg / Non-Veg Filter Toggle -->
         <div class="diet-filter" id="dietFilter">
-          <button class="diet-btn active" data-diet="all">All Items</button>
+          <button class="diet-btn active" data-diet="all" data-i18n="menu.diet_all">All Items</button>
           <button class="diet-btn veg" data-diet="veg">
-            <span class="diet-dot veg-dot"></span> Veg
+            <span class="diet-dot veg-dot"></span> <span data-i18n="menu.diet_veg">Veg</span>
           </button>
           <button class="diet-btn non-veg" data-diet="non-veg">
-            <span class="diet-dot non-veg-dot"></span> Non-Veg
+            <span class="diet-dot non-veg-dot"></span> <span data-i18n="menu.diet_nonveg">Non-Veg</span>
           </button>
         </div>
 
@@ -178,33 +211,33 @@
                       <div class="polaroid-image-wrapper">
                         <img src="./images/MasalaDosa.jpg" alt="Masala Dosa" loading="lazy" />
                         <div class="polaroid-tape"></div>
-                        <div class="polaroid-badge popular">🔥 Popular</div>
+                        <div class="polaroid-badge popular" data-i18n="menu.tags.popular">🔥 Popular</div>
                       </div>
                       <div class="polaroid-caption">
-                        <h3>Masala Dosa</h3>
+                        <h3 data-i18n="menu.items.masala_dosa.name">Masala Dosa</h3>
                         <div class="polaroid-price">₹180</div>
-                        <span class="food-tag veg">Veg</span>
+                        <span class="food-tag veg" data-i18n="menu.tags.veg">Veg</span>
                       </div>
                     </div>
                   </div>
                   <div class="food-card-back">
                     <div class="back-content">
-                      <h4>👨‍🍳 Chef's Notes</h4>
-                      <p>Golden crispy dosa made from fermented rice and lentil batter, filled with spiced potato masala. Served with fresh coconut chutney and sambar.</p>
+                      <h4 data-i18n="menu.chef_notes">👨‍🍳 Chef's Notes</h4>
+                      <p data-i18n="menu.items.masala_dosa.notes">Golden crispy dosa made from fermented rice and lentil batter, filled with spiced potato masala. Served with fresh coconut chutney and sambar.</p>
                       <div class="back-details">
-                        <span>🌶️ Medium Spicy</span>
-                        <span>⏱️ 15 mins</span>
-                        <span>🍽️ Serves 1</span>
+                        <span data-i18n="menu.items.masala_dosa.details_spicy">🌶️ Medium Spicy</span>
+                        <span data-i18n="menu.items.masala_dosa.details_time">⏱️ 15 mins</span>
+                        <span data-i18n="menu.items.masala_dosa.details_serves">🍽️ Serves 1</span>
                       </div>
                       <div class="back-ingredients">
-                        <strong>Key Ingredients:</strong>
-                        <span>Rice, Urad Dal, Potato, Onion, Curry Leaves</span>
+                        <strong data-i18n="menu.key_ingredients">Key Ingredients:</strong>
+                        <span data-i18n="menu.items.masala_dosa.ingredients">Rice, Urad Dal, Potato, Onion, Curry Leaves</span>
                       </div>
                       <div class="back-allergens">
-                        <span>⚠️ Contains: Gluten</span>
+                        <span><span data-i18n="menu.contains">⚠️ Contains:</span> <span data-i18n="menu.items.masala_dosa.allergens">Gluten</span></span>
                       </div>
                       <div class="star-rating">
-                        <span class="star" style="color: gold;">★★★★☆ 4.3 (210 Ratings)</span>
+                        <span class="star" style="color: gold;">★★★★☆ 4.3 (210 <span data-i18n="menu.ratings">Ratings</span>)</span>
                       </div>
                     </div>
                   </div>
@@ -221,33 +254,33 @@
                       <div class="polaroid-image-wrapper">
                         <img src="./images/Idli_Sambar.jpg" alt="Idli Sambar" loading="lazy" />
                         <div class="polaroid-tape"></div>
-                        <div class="polaroid-badge classic">⭐ Classic</div>
+                        <div class="polaroid-badge classic" data-i18n="menu.tags.classic">⭐ Classic</div>
                       </div>
                       <div class="polaroid-caption">
-                        <h3>Idli Sambar</h3>
+                        <h3 data-i18n="menu.items.idli_sambar.name">Idli Sambar</h3>
                         <div class="polaroid-price">₹120</div>
-                        <span class="food-tag veg">Veg</span>
+                        <span class="food-tag veg" data-i18n="menu.tags.veg">Veg</span>
                       </div>
                     </div>
                   </div>
                   <div class="food-card-back">
                     <div class="back-content">
-                      <h4>👨‍🍳 Chef's Notes</h4>
-                      <p>Soft, fluffy steamed idlis made from fermented rice and urad dal, served with hot, flavorful sambar and fresh coconut chutney.</p>
+                      <h4 data-i18n="menu.chef_notes">👨‍🍳 Chef's Notes</h4>
+                      <p data-i18n="menu.items.idli_sambar.notes">Soft, fluffy steamed idlis made from fermented rice and urad dal, served with hot, flavorful sambar and fresh coconut chutney.</p>
                       <div class="back-details">
-                        <span>🌶️ Mild</span>
-                        <span>⏱️ 10 mins</span>
-                        <span>🍽️ Serves 1</span>
+                        <span data-i18n="menu.items.idli_sambar.details_spicy">🌶️ Mild</span>
+                        <span data-i18n="menu.items.idli_sambar.details_time">⏱️ 10 mins</span>
+                        <span data-i18n="menu.items.idli_sambar.details_serves">🍽️ Serves 1</span>
                       </div>
                       <div class="back-ingredients">
-                        <strong>Key Ingredients:</strong>
-                        <span>Rice, Urad Dal, Toor Dal, Vegetables, Coconut</span>
+                        <strong data-i18n="menu.key_ingredients">Key Ingredients:</strong>
+                        <span data-i18n="menu.items.idli_sambar.ingredients">Rice, Urad Dal, Toor Dal, Vegetables, Coconut</span>
                       </div>
                       <div class="back-allergens">
-                        <span>⚠️ Contains: Gluten, Dairy</span>
+                        <span><span data-i18n="menu.contains">⚠️ Contains:</span> <span data-i18n="menu.items.idli_sambar.allergens">Gluten, Dairy</span></span>
                       </div>
                       <div class="star-rating">
-                        <span class="star" style="color: gold;">★★★★☆ 4.1 (185 Ratings)</span>
+                        <span class="star" style="color: gold;">★★★★☆ 4.1 (185 <span data-i18n="menu.ratings">Ratings</span>)</span>
                       </div>
                     </div>
                   </div>
@@ -264,33 +297,33 @@
                       <div class="polaroid-image-wrapper">
                         <img src="./images/Chicken_Keema_Dosa.jpg" alt="Chicken Keema Dosa" loading="lazy" />
                         <div class="polaroid-tape"></div>
-                        <div class="polaroid-badge chef">👨‍🍳 Chef's Pick</div>
+                        <div class="polaroid-badge chef" data-i18n="menu.tags.chef_pick">👨‍🍳 Chef's Pick</div>
                       </div>
                       <div class="polaroid-caption">
-                        <h3>Chicken Keema Dosa</h3>
+                        <h3 data-i18n="menu.items.chicken_keema_dosa.name">Chicken Keema Dosa</h3>
                         <div class="polaroid-price">₹240</div>
-                        <span class="food-tag nonveg">Non-Veg</span>
+                        <span class="food-tag nonveg" data-i18n="menu.tags.nonveg">Non-Veg</span>
                       </div>
                     </div>
                   </div>
                   <div class="food-card-back">
                     <div class="back-content">
-                      <h4>👨‍🍳 Chef's Notes</h4>
-                      <p>Crispy golden dosa generously stuffed with spicy minced chicken masala, perfectly seasoned with aromatic spices and herbs.</p>
+                      <h4 data-i18n="menu.chef_notes">👨‍🍳 Chef's Notes</h4>
+                      <p data-i18n="menu.items.chicken_keema_dosa.notes">Crispy golden dosa generously stuffed with spicy minced chicken masala, perfectly seasoned with aromatic spices and herbs.</p>
                       <div class="back-details">
-                        <span>🌶️ Hot</span>
-                        <span>⏱️ 20 mins</span>
-                        <span>🍽️ Serves 1</span>
+                        <span data-i18n="menu.items.chicken_keema_dosa.details_spicy">🌶️ Hot</span>
+                        <span data-i18n="menu.items.chicken_keema_dosa.details_time">⏱️ 20 mins</span>
+                        <span data-i18n="menu.items.chicken_keema_dosa.details_serves">🍽️ Serves 1</span>
                       </div>
                       <div class="back-ingredients">
-                        <strong>Key Ingredients:</strong>
-                        <span>Chicken, Rice Batter, Onion, Ginger, Garlic, Spices</span>
+                        <strong data-i18n="menu.key_ingredients">Key Ingredients:</strong>
+                        <span data-i18n="menu.items.chicken_keema_dosa.ingredients">Chicken, Rice Batter, Onion, Ginger, Garlic, Spices</span>
                       </div>
                       <div class="back-allergens">
-                        <span>⚠️ Contains: Gluten, Dairy</span>
+                        <span><span data-i18n="menu.contains">⚠️ Contains:</span> <span data-i18n="menu.items.chicken_keema_dosa.allergens">Gluten, Dairy</span></span>
                       </div>
                       <div class="star-rating">
-                        <span class="star" style="color: gold;">★★★★☆ 4.2 (143 Ratings)</span>
+                        <span class="star" style="color: gold;">★★★★☆ 4.2 (143 <span data-i18n="menu.ratings">Ratings</span>)</span>
                       </div>
                     </div>
                   </div>
@@ -309,33 +342,33 @@
                       <div class="polaroid-image-wrapper">
                         <img src="./images/Paneer_Butter_Masala.jpg" alt="Paneer Butter Masala" loading="lazy" />
                         <div class="polaroid-tape"></div>
-                        <div class="polaroid-badge popular">🔥 Popular</div>
+                        <div class="polaroid-badge popular" data-i18n="menu.tags.popular">🔥 Popular</div>
                       </div>
                       <div class="polaroid-caption">
-                        <h3>Paneer Butter Masala</h3>
+                        <h3 data-i18n="menu.items.paneer_butter_masala.name">Paneer Butter Masala</h3>
                         <div class="polaroid-price">₹280</div>
-                        <span class="food-tag veg">Veg</span>
+                        <span class="food-tag veg" data-i18n="menu.tags.veg">Veg</span>
                       </div>
                     </div>
                   </div>
                   <div class="food-card-back">
                     <div class="back-content">
-                      <h4>👨‍🍳 Chef's Notes</h4>
-                      <p>Rich and creamy paneer curry cooked in a buttery tomato gravy with a blend of aromatic spices. Best enjoyed with butter naan.</p>
+                      <h4 data-i18n="menu.chef_notes">👨‍🍳 Chef's Notes</h4>
+                      <p data-i18n="menu.items.paneer_butter_masala.notes">Rich and creamy paneer curry cooked in a buttery tomato gravy with a blend of aromatic spices. Best enjoyed with butter naan.</p>
                       <div class="back-details">
-                        <span>🌶️ Medium</span>
-                        <span>⏱️ 25 mins</span>
-                        <span>🍽️ Serves 2</span>
+                        <span data-i18n="menu.items.paneer_butter_masala.details_spicy">🌶️ Medium</span>
+                        <span data-i18n="menu.items.paneer_butter_masala.details_time">⏱️ 25 mins</span>
+                        <span data-i18n="menu.items.paneer_butter_masala.details_serves">🍽️ Serves 2</span>
                       </div>
                       <div class="back-ingredients">
-                        <strong>Key Ingredients:</strong>
-                        <span>Paneer, Tomato, Butter, Cream, Kasuri Methi</span>
+                        <strong data-i18n="menu.key_ingredients">Key Ingredients:</strong>
+                        <span data-i18n="menu.items.paneer_butter_masala.ingredients">Paneer, Tomato, Butter, Cream, Kasuri Methi</span>
                       </div>
                       <div class="back-allergens">
-                        <span>⚠️ Contains: Dairy, Gluten</span>
+                        <span><span data-i18n="menu.contains">⚠️ Contains:</span> <span data-i18n="menu.items.paneer_butter_masala.allergens">Dairy, Gluten</span></span>
                       </div>
                       <div class="star-rating">
-                        <span class="star" style="color: gold;">★★★★☆ 4.0 (140 Ratings)</span>
+                        <span class="star" style="color: gold;">★★★★☆ 4.0 (140 <span data-i18n="menu.ratings">Ratings</span>)</span>
                       </div>
                     </div>
                   </div>
@@ -354,33 +387,33 @@
                       <div class="polaroid-image-wrapper">
                         <img src="./images/Hyderabadi_Chicken_Biryani.jpg" alt="Hyderabadi Chicken Biryani" loading="lazy" />
                         <div class="polaroid-tape"></div>
-                        <div class="polaroid-badge signature">👑 Signature</div>
+                        <div class="polaroid-badge signature" data-i18n="menu.tags.signature">👑 Signature</div>
                       </div>
                       <div class="polaroid-caption">
-                        <h3>Hyderabadi Chicken Biryani</h3>
+                        <h3 data-i18n="menu.items.hyderabadi_chicken_biryani.name">Hyderabadi Chicken Biryani</h3>
                         <div class="polaroid-price">₹320</div>
-                        <span class="food-tag nonveg">Non-Veg</span>
+                        <span class="food-tag nonveg" data-i18n="menu.tags.nonveg">Non-Veg</span>
                       </div>
                     </div>
                   </div>
                   <div class="food-card-back">
                     <div class="back-content">
-                      <h4>👨‍🍳 Chef's Notes</h4>
-                      <p>Fragrant dum biryani layered with tender chicken, basmati rice, and a secret blend of authentic Hyderabad spices. Slow-cooked to perfection.</p>
+                      <h4 data-i18n="menu.chef_notes">👨‍🍳 Chef's Notes</h4>
+                      <p data-i18n="menu.items.hyderabadi_chicken_biryani.notes">Fragrant dum biryani layered with tender chicken, basmati rice, and a secret blend of authentic Hyderabad spices. Slow-cooked to perfection.</p>
                       <div class="back-details">
-                        <span>🌶️ Hot</span>
-                        <span>⏱️ 40 mins</span>
-                        <span>🍽️ Serves 2</span>
+                        <span data-i18n="menu.items.hyderabadi_chicken_biryani.details_spicy">🌶️ Hot</span>
+                        <span data-i18n="menu.items.hyderabadi_chicken_biryani.details_time">⏱️ 40 mins</span>
+                        <span data-i18n="menu.items.hyderabadi_chicken_biryani.details_serves">🍽️ Serves 2</span>
                       </div>
                       <div class="back-ingredients">
-                        <strong>Key Ingredients:</strong>
-                        <span>Chicken, Basmati Rice, Saffron, Mint, Fried Onions</span>
+                        <strong data-i18n="menu.key_ingredients">Key Ingredients:</strong>
+                        <span data-i18n="menu.items.hyderabadi_chicken_biryani.ingredients">Chicken, Basmati Rice, Saffron, Mint, Fried Onions</span>
                       </div>
                       <div class="back-allergens">
-                        <span>⚠️ Contains: Dairy, Gluten</span>
+                        <span><span data-i18n="menu.contains">⚠️ Contains:</span> <span data-i18n="menu.items.hyderabadi_chicken_biryani.allergens">Dairy, Gluten</span></span>
                       </div>
                       <div class="star-rating">
-                        <span class="star" style="color: gold;">★★★★☆ 4.2 (143 Ratings)</span>
+                        <span class="star" style="color: gold;">★★★★☆ 4.2 (143 <span data-i18n="menu.ratings">Ratings</span>)</span>
                       </div>
                     </div>
                   </div>
@@ -397,33 +430,33 @@
                       <div class="polaroid-image-wrapper">
                         <img src="./images/Butter_Chicken.jpg" alt="Butter Chicken" loading="lazy" />
                         <div class="polaroid-tape"></div>
-                        <div class="polaroid-badge classic">⭐ Classic</div>
+                        <div class="polaroid-badge classic" data-i18n="menu.tags.classic">⭐ Classic</div>
                       </div>
                       <div class="polaroid-caption">
-                        <h3>Butter Chicken</h3>
+                        <h3 data-i18n="menu.items.butter_chicken.name">Butter Chicken</h3>
                         <div class="polaroid-price">₹340</div>
-                        <span class="food-tag nonveg">Non-Veg</span>
+                        <span class="food-tag nonveg" data-i18n="menu.tags.nonveg">Non-Veg</span>
                       </div>
                     </div>
                   </div>
                   <div class="food-card-back">
                     <div class="back-content">
-                      <h4>👨‍🍳 Chef's Notes</h4>
-                      <p>Succulent chicken cooked in a creamy tomato-based gravy with butter and aromatic spices. A timeless classic served with naan.</p>
+                      <h4 data-i18n="menu.chef_notes">👨‍🍳 Chef's Notes</h4>
+                      <p data-i18n="menu.items.butter_chicken.notes">Succulent chicken cooked in a creamy tomato-based gravy with butter and aromatic spices. A timeless classic served with naan.</p>
                       <div class="back-details">
-                        <span>🌶️ Mild</span>
-                        <span>⏱️ 30 mins</span>
-                        <span>🍽️ Serves 2</span>
+                        <span data-i18n="menu.items.butter_chicken.details_spicy">🌶️ Mild</span>
+                        <span data-i18n="menu.items.butter_chicken.details_time">⏱️ 30 mins</span>
+                        <span data-i18n="menu.items.butter_chicken.details_serves">🍽️ Serves 2</span>
                       </div>
                       <div class="back-ingredients">
-                        <strong>Key Ingredients:</strong>
-                        <span>Chicken, Tomato, Butter, Cream, Kasuri Methi</span>
+                        <strong data-i18n="menu.key_ingredients">Key Ingredients:</strong>
+                        <span data-i18n="menu.items.butter_chicken.ingredients">Chicken, Tomato, Butter, Cream, Kasuri Methi</span>
                       </div>
                       <div class="back-allergens">
-                        <span>⚠️ Contains: Dairy, Gluten</span>
+                        <span><span data-i18n="menu.contains">⚠️ Contains:</span> <span data-i18n="menu.items.butter_chicken.allergens">Dairy, Gluten</span></span>
                       </div>
                       <div class="star-rating">
-                        <span class="star" style="color: gold;">★★★★☆ 4.2 (143 Ratings)</span>
+                        <span class="star" style="color: gold;">★★★★☆ 4.2 (143 <span data-i18n="menu.ratings">Ratings</span>)</span>
                       </div>
                     </div>
                   </div>
@@ -442,33 +475,33 @@
                       <div class="polaroid-image-wrapper">
                         <img src="./images/Mango_Lassi.jpg" alt="Mango Lassi" loading="lazy" />
                         <div class="polaroid-tape"></div>
-                        <div class="polaroid-badge refreshing">🥤 Refreshing</div>
+                        <div class="polaroid-badge refreshing" data-i18n="menu.tags.refreshing">🥤 Refreshing</div>
                       </div>
                       <div class="polaroid-caption">
-                        <h3>Mango Lassi</h3>
+                        <h3 data-i18n="menu.items.mango_lassi.name">Mango Lassi</h3>
                         <div class="polaroid-price">₹110</div>
-                        <span class="food-tag veg">Veg</span>
+                        <span class="food-tag veg" data-i18n="menu.tags.veg">Veg</span>
                       </div>
                     </div>
                   </div>
                   <div class="food-card-back">
                     <div class="back-content">
-                      <h4>👨‍🍳 Chef's Notes</h4>
-                      <p>Chilled, creamy yogurt drink blended with sweet mango pulp. Perfectly balanced with a hint of cardamom.</p>
+                      <h4 data-i18n="menu.chef_notes">👨‍🍳 Chef's Notes</h4>
+                      <p data-i18n="menu.items.mango_lassi.notes">Chilled, creamy yogurt drink blended with sweet mango pulp. Perfectly balanced with a hint of cardamom.</p>
                       <div class="back-details">
-                        <span>🥤 Cold</span>
-                        <span>⏱️ 5 mins</span>
-                        <span>🍽️ Serves 1</span>
+                        <span data-i18n="menu.items.mango_lassi.details_spicy">🥤 Cold</span>
+                        <span data-i18n="menu.items.mango_lassi.details_time">⏱️ 5 mins</span>
+                        <span data-i18n="menu.items.mango_lassi.details_serves">🍽️ Serves 1</span>
                       </div>
                       <div class="back-ingredients">
-                        <strong>Key Ingredients:</strong>
-                        <span>Yogurt, Mango Pulp, Sugar, Cardamom</span>
+                        <strong data-i18n="menu.key_ingredients">Key Ingredients:</strong>
+                        <span data-i18n="menu.items.mango_lassi.ingredients">Yogurt, Mango Pulp, Sugar, Cardamom</span>
                       </div>
                       <div class="back-allergens">
-                        <span>⚠️ Contains: Dairy</span>
+                        <span><span data-i18n="menu.contains">⚠️ Contains:</span> <span data-i18n="menu.items.mango_lassi.allergens">Dairy</span></span>
                       </div>
                       <div class="star-rating">
-                        <span class="star" style="color: gold;">★★★★☆ 4.2 (143 Ratings)</span>
+                        <span class="star" style="color: gold;">★★★★☆ 4.2 (143 <span data-i18n="menu.ratings">Ratings</span>)</span>
                       </div>
                     </div>
                   </div>
@@ -485,33 +518,33 @@
                       <div class="polaroid-image-wrapper">
                         <img src="./images/Masala_Chai.jpg" alt="Masala Chai" loading="lazy" />
                         <div class="polaroid-tape"></div>
-                        <div class="polaroid-badge classic">⭐ Classic</div>
+                        <div class="polaroid-badge classic" data-i18n="menu.tags.classic">⭐ Classic</div>
                       </div>
                       <div class="polaroid-caption">
-                        <h3>Masala Chai</h3>
+                        <h3 data-i18n="menu.items.masala_chai.name">Masala Chai</h3>
                         <div class="polaroid-price">₹70</div>
-                        <span class="food-tag veg">Veg</span>
+                        <span class="food-tag veg" data-i18n="menu.tags.veg">Veg</span>
                       </div>
                     </div>
                   </div>
                   <div class="food-card-back">
                     <div class="back-content">
-                      <h4>👨‍🍳 Chef's Notes</h4>
-                      <p>Traditional Indian tea brewed with a blend of aromatic spices — cardamom, ginger, cinnamon, and cloves. Perfect for any time of day.</p>
+                      <h4 data-i18n="menu.chef_notes">👨‍🍳 Chef's Notes</h4>
+                      <p data-i18n="menu.items.masala_chai.notes">Traditional Indian tea brewed with a blend of aromatic spices — cardamom, ginger, cinnamon, and cloves. Perfect for any time of day.</p>
                       <div class="back-details">
-                        <span>☕ Hot</span>
-                        <span>⏱️ 5 mins</span>
-                        <span>🍽️ Serves 1</span>
+                        <span data-i18n="menu.items.masala_chai.details_spicy">☕ Hot</span>
+                        <span data-i18n="menu.items.masala_chai.details_time">⏱️ 5 mins</span>
+                        <span data-i18n="menu.items.masala_chai.details_serves">🍽️ Serves 1</span>
                       </div>
                       <div class="back-ingredients">
-                        <strong>Key Ingredients:</strong>
-                        <span>Tea, Milk, Ginger, Cardamom, Cinnamon</span>
+                        <strong data-i18n="menu.key_ingredients">Key Ingredients:</strong>
+                        <span data-i18n="menu.items.masala_chai.ingredients">Tea, Milk, Ginger, Cardamom, Cinnamon</span>
                       </div>
                       <div class="back-allergens">
-                        <span>⚠️ Contains: Dairy</span>
+                        <span><span data-i18n="menu.contains">⚠️ Contains:</span> <span data-i18n="menu.items.masala_chai.allergens">Dairy</span></span>
                       </div>
                       <div class="star-rating">
-                        <span class="star" style="color: gold;">★★★★☆ 4.2 (143 Ratings)</span>
+                        <span class="star" style="color: gold;">★★★★☆ 4.2 (143 <span data-i18n="menu.ratings">Ratings</span>)</span>
                       </div>
                     </div>
                   </div>
@@ -528,33 +561,33 @@
                       <div class="polaroid-image-wrapper">
                         <img src="./images/Fresh_Lime_Soda.jpg" alt="Fresh Lime Soda" loading="lazy" />
                         <div class="polaroid-tape"></div>
-                        <div class="polaroid-badge refreshing">🥤 Refreshing</div>
+                        <div class="polaroid-badge refreshing" data-i18n="menu.tags.refreshing">🥤 Refreshing</div>
                       </div>
                       <div class="polaroid-caption">
-                        <h3>Fresh Lime Soda</h3>
+                        <h3 data-i18n="menu.items.fresh_lime_soda.name">Fresh Lime Soda</h3>
                         <div class="polaroid-price">₹90</div>
-                        <span class="food-tag veg">Veg</span>
+                        <span class="food-tag veg" data-i18n="menu.tags.veg">Veg</span>
                       </div>
                     </div>
                   </div>
                   <div class="food-card-back">
                     <div class="back-content">
-                      <h4>👨‍🍳 Chef's Notes</h4>
-                      <p>Fizzy lime soda available in sweet, salted, or mixed style. The perfect thirst-quencher on a warm day.</p>
+                      <h4 data-i18n="menu.chef_notes">👨‍🍳 Chef's Notes</h4>
+                      <p data-i18n="menu.items.fresh_lime_soda.notes">Fizzy lime soda available in sweet, salted, or mixed style. The perfect thirst-quencher on a warm day.</p>
                       <div class="back-details">
-                        <span>🥤 Cold &amp; Fizzy</span>
-                        <span>⏱️ 5 mins</span>
-                        <span>🍽️ Serves 1</span>
+                        <span data-i18n="menu.items.fresh_lime_soda.details_spicy">🥤 Cold &amp; Fizzy</span>
+                        <span data-i18n="menu.items.fresh_lime_soda.details_time">⏱️ 5 mins</span>
+                        <span data-i18n="menu.items.fresh_lime_soda.details_serves">🍽️ Serves 1</span>
                       </div>
                       <div class="back-ingredients">
-                        <strong>Key Ingredients:</strong>
-                        <span>Lime, Soda, Sugar, Salt (optional)</span>
+                        <strong data-i18n="menu.key_ingredients">Key Ingredients:</strong>
+                        <span data-i18n="menu.items.fresh_lime_soda.ingredients">Lime, Soda, Sugar, Salt (optional)</span>
                       </div>
                       <div class="back-allergens">
-                        <span>✅ No Allergens</span>
+                        <span data-i18n="menu.items.fresh_lime_soda.allergens">✅ No Allergens</span>
                       </div>
                       <div class="star-rating">
-                        <span class="star" style="color: gold;">★★★★☆ 4.2 (143 Ratings)</span>
+                        <span class="star" style="color: gold;">★★★★☆ 4.2 (143 <span data-i18n="menu.ratings">Ratings</span>)</span>
                       </div>
                     </div>
                   </div>
@@ -573,33 +606,33 @@
                       <div class="polaroid-image-wrapper">
                         <img src="./images/Gulab_Jamun.jpg" alt="Gulab Jamun" loading="lazy" />
                         <div class="polaroid-tape"></div>
-                        <div class="polaroid-badge classic">⭐ Classic</div>
+                        <div class="polaroid-badge classic" data-i18n="menu.tags.classic">⭐ Classic</div>
                       </div>
                       <div class="polaroid-caption">
-                        <h3>Gulab Jamun</h3>
+                        <h3 data-i18n="menu.items.gulab_jamun.name">Gulab Jamun</h3>
                         <div class="polaroid-price">₹120</div>
-                        <span class="food-tag veg">Veg</span>
+                        <span class="food-tag veg" data-i18n="menu.tags.veg">Veg</span>
                       </div>
                     </div>
                   </div>
                   <div class="food-card-back">
                     <div class="back-content">
-                      <h4>👨‍🍳 Chef's Notes</h4>
-                      <p>Soft, spongy milk-solid dumplings fried to golden perfection and soaked in warm, fragrant sugar syrup with cardamom and rose water.</p>
+                      <h4 data-i18n="menu.chef_notes">👨‍🍳 Chef's Notes</h4>
+                      <p data-i18n="menu.items.gulab_jamun.notes">Soft, spongy milk-solid dumplings fried to golden perfection and soaked in warm, fragrant sugar syrup with cardamom and rose water.</p>
                       <div class="back-details">
-                        <span>🍰 Sweet</span>
-                        <span>⏱️ 15 mins</span>
-                        <span>🍽️ Serves 1</span>
+                        <span data-i18n="menu.items.gulab_jamun.details_spicy">🍰 Sweet</span>
+                        <span data-i18n="menu.items.gulab_jamun.details_time">⏱️ 15 mins</span>
+                        <span data-i18n="menu.items.gulab_jamun.details_serves">🍽️ Serves 1</span>
                       </div>
                       <div class="back-ingredients">
-                        <strong>Key Ingredients:</strong>
-                        <span>Milk Solids, Sugar, Cardamom, Rose Water</span>
+                        <strong data-i18n="menu.key_ingredients">Key Ingredients:</strong>
+                        <span data-i18n="menu.items.gulab_jamun.ingredients">Milk Solids, Sugar, Cardamom, Rose Water</span>
                       </div>
                       <div class="back-allergens">
-                        <span>⚠️ Contains: Dairy, Gluten</span>
+                        <span><span data-i18n="menu.contains">⚠️ Contains:</span> <span data-i18n="menu.items.gulab_jamun.allergens">Dairy, Gluten</span></span>
                       </div>
                       <div class="star-rating">
-                        <span class="star" style="color: gold;">★★★★☆ 4.2 (143 Ratings)</span>
+                        <span class="star" style="color: gold;">★★★★☆ 4.2 (143 <span data-i18n="menu.ratings">Ratings</span>)</span>
                       </div>
                     </div>
                   </div>
@@ -616,33 +649,33 @@
                       <div class="polaroid-image-wrapper">
                         <img src="./images/Rasmalai.jpg" alt="Rasmalai" loading="lazy" />
                         <div class="polaroid-tape"></div>
-                        <div class="polaroid-badge popular">🔥 Popular</div>
+                        <div class="polaroid-badge popular" data-i18n="menu.tags.popular">🔥 Popular</div>
                       </div>
                       <div class="polaroid-caption">
-                        <h3>Rasmalai</h3>
+                        <h3 data-i18n="menu.items.rasmalai.name">Rasmalai</h3>
                         <div class="polaroid-price">₹140</div>
-                        <span class="food-tag veg">Veg</span>
+                        <span class="food-tag veg" data-i18n="menu.tags.veg">Veg</span>
                       </div>
                     </div>
                   </div>
                   <div class="food-card-back">
                     <div class="back-content">
-                      <h4>👨‍🍳 Chef's Notes</h4>
-                      <p>Soft, melt-in-your-mouth paneer discs soaked in creamy, saffron-infused reduced milk. Garnished with pistachios.</p>
+                      <h4 data-i18n="menu.chef_notes">👨‍🍳 Chef's Notes</h4>
+                      <p data-i18n="menu.items.rasmalai.notes">Soft, melt-in-your-mouth paneer discs soaked in creamy, saffron-infused reduced milk. Garnished with pistachios.</p>
                       <div class="back-details">
-                        <span>🍰 Sweet &amp; Creamy</span>
-                        <span>⏱️ 20 mins</span>
-                        <span>🍽️ Serves 1</span>
+                        <span data-i18n="menu.items.rasmalai.details_spicy">🍰 Sweet &amp; Creamy</span>
+                        <span data-i18n="menu.items.rasmalai.details_time">⏱️ 20 mins</span>
+                        <span data-i18n="menu.items.rasmalai.details_serves">🍽️ Serves 1</span>
                       </div>
                       <div class="back-ingredients">
-                        <strong>Key Ingredients:</strong>
-                        <span>Paneer, Milk, Saffron, Sugar, Pistachios</span>
+                        <strong data-i18n="menu.key_ingredients">Key Ingredients:</strong>
+                        <span data-i18n="menu.items.rasmalai.ingredients">Paneer, Milk, Saffron, Sugar, Pistachios</span>
                       </div>
                       <div class="back-allergens">
-                        <span>⚠️ Contains: Dairy</span>
+                        <span><span data-i18n="menu.contains">⚠️ Contains:</span> <span data-i18n="menu.items.rasmalai.allergens">Dairy</span></span>
                       </div>
                       <div class="star-rating">
-                        <span class="star" style="color: gold;">★★★★☆ 4.2 (143 Ratings)</span>
+                        <span class="star" style="color: gold;">★★★★☆ 4.2 (143 <span data-i18n="menu.ratings">Ratings</span>)</span>
                       </div>
                     </div>
                   </div>
@@ -659,33 +692,33 @@
                       <div class="polaroid-image-wrapper">
                         <img src="./images/Kulfi.jpg" alt="Kesar Pista Kulfi" loading="lazy" />
                         <div class="polaroid-tape"></div>
-                        <div class="polaroid-badge refreshing">🥄 Delight</div>
+                        <div class="polaroid-badge refreshing" data-i18n="menu.tags.delight">🥄 Delight</div>
                       </div>
                       <div class="polaroid-caption">
-                        <h3>Kesar Pista Kulfi</h3>
+                        <h3 data-i18n="menu.items.kesar_pista_kulfi.name">Kesar Pista Kulfi</h3>
                         <div class="polaroid-price">₹130</div>
-                        <span class="food-tag veg">Veg</span>
+                        <span class="food-tag veg" data-i18n="menu.tags.veg">Veg</span>
                       </div>
                     </div>
                   </div>
                   <div class="food-card-back">
                     <div class="back-content">
-                      <h4>👨‍🍳 Chef's Notes</h4>
-                      <p>Traditional Indian ice cream with a rich, creamy texture, infused with aromatic saffron and loaded with crunchy pistachios.</p>
+                      <h4 data-i18n="menu.chef_notes">👨‍🍳 Chef's Notes</h4>
+                      <p data-i18n="menu.items.kesar_pista_kulfi.notes">Traditional Indian ice cream with a rich, creamy texture, infused with aromatic saffron and loaded with crunchy pistachios.</p>
                       <div class="back-details">
-                        <span>🍰 Frozen Delight</span>
-                        <span>⏱️ 10 mins</span>
-                        <span>🍽️ Serves 1</span>
+                        <span data-i18n="menu.items.kesar_pista_kulfi.details_spicy">🍰 Frozen Delight</span>
+                        <span data-i18n="menu.items.kesar_pista_kulfi.details_time">⏱️ 10 mins</span>
+                        <span data-i18n="menu.items.kesar_pista_kulfi.details_serves">🍽️ Serves 1</span>
                       </div>
                       <div class="back-ingredients">
-                        <strong>Key Ingredients:</strong>
-                        <span>Milk, Saffron, Pistachios, Sugar, Cardamom</span>
+                        <strong data-i18n="menu.key_ingredients">Key Ingredients:</strong>
+                        <span data-i18n="menu.items.kesar_pista_kulfi.ingredients">Milk, Saffron, Pistachios, Sugar, Cardamom</span>
                       </div>
                       <div class="back-allergens">
-                        <span>⚠️ Contains: Dairy</span>
+                        <span><span data-i18n="menu.contains">⚠️ Contains:</span> <span data-i18n="menu.items.kesar_pista_kulfi.allergens">Dairy</span></span>
                       </div>
                       <div class="star-rating">
-                        <span class="star" style="color: gold;">★★★★☆ 4.2 (143 Ratings)</span>
+                        <span class="star" style="color: gold;">★★★★☆ 4.2 (143 <span data-i18n="menu.ratings">Ratings</span>)</span>
                       </div>
                     </div>
                   </div>
@@ -702,38 +735,50 @@
     <section class="specials" id="specials">
       <div class="container">
         <div class="section-header">
-          <span class="section-label">Chef Recommendations</span>
-          <h2 class="section-title">Today's Specials</h2>
-          <p>Handpicked signature dishes prepared by our chef.</p>
+          <span class="section-label" data-i18n="specials.label">Chef Recommendations</span>
+          <h2 class="section-title" data-i18n="specials.title">Today's Specials</h2>
+          <p data-i18n="specials.desc">Handpicked signature dishes prepared by our chef.</p>
         </div>
         <div class="specials-grid">
 
           <div class="special-card">
-            <img src="./images/Hyderabadi_Chicken_Biryani.jpg" alt="Royal Biryani" />
+            <img
+  src="./images/Hyderabadi_Chicken_Biryani.jpg"
+  alt="Royal Biryani"
+  loading="lazy"
+/>
             <div class="special-content">
-              <span class="special-badge">🔥 Best Seller</span>
-              <h3>Hyderabadi Chicken Biryani</h3>
-              <p>Slow-cooked dum biryani with aromatic spices.</p>
+              <span class="special-badge" data-i18n="specials.bestseller">🔥 Best Seller</span>
+              <h3 data-i18n="menu.items.hyderabadi_chicken_biryani.name">Hyderabadi Chicken Biryani</h3>
+              <p data-i18n="specials.hyderabadi_chicken_biryani_desc">Slow-cooked dum biryani with aromatic spices.</p>
               <span class="price">₹399</span>
             </div>
           </div>
 
           <div class="special-card">
-            <img src="./images/Paneer_Butter_Masala.jpg" alt="Paneer Delight" />
+            <img
+  src="./images/Paneer_Butter_Masala.jpg"
+  alt="Paneer Delight"
+  loading="lazy"
+/>
             <div class="special-content">
-              <span class="special-badge">👨‍🍳 Chef's Choice</span>
-              <h3>Paneer Delight</h3>
-              <p>Rich creamy paneer cooked with exotic herbs.</p>
+              <span class="special-badge" data-i18n="specials.choice">👨‍🍳 Chef's Choice</span>
+              <h3 data-i18n="specials.paneer_delight_title">Paneer Delight</h3>
+              <p data-i18n="specials.paneer_delight_desc">Rich creamy paneer cooked with exotic herbs.</p>
               <span class="price">₹349</span>
             </div>
           </div>
 
           <div class="special-card">
-            <img src="./images/Rasmalai.jpg" alt="Special Dessert" />
+            <img
+  src="./images/Rasmalai.jpg"
+  alt="Special Dessert"
+  loading="lazy"
+/>
             <div class="special-content">
-              <span class="special-badge">⭐ New Arrival</span>
-              <h3>Saffron Rasmalai</h3>
-              <p>Soft cottage cheese dumplings in saffron milk.</p>
+              <span class="special-badge" data-i18n="specials.new_arrival">⭐ New Arrival</span>
+              <h3 data-i18n="specials.saffron_rasmalai_title">Saffron Rasmalai</h3>
+              <p data-i18n="specials.saffron_rasmalai_desc">Soft cottage cheese dumplings in saffron milk.</p>
               <span class="price">₹199</span>
             </div>
           </div>
@@ -751,9 +796,9 @@
       <div class="container">
         <div class="reservation-content">
           <div class="reservation-info">
-            <span class="section-label">Join Us</span>
-            <h2 class="section-title">Make a Reservation</h2>
-            <p>Reserve your table and experience an unforgettable evening of culinary excellence. For parties larger than 8, please call us directly.</p>
+            <span class="section-label" data-i18n="reservation.join">Join Us</span>
+            <h2 class="section-title" data-i18n="reservation.title">Make a Reservation</h2>
+            <p data-i18n="reservation.desc">Reserve your table and experience an unforgettable evening of culinary excellence. For parties larger than 8, please call us directly.</p>
             <div class="reservation-details">
               <div class="detail-item">
                 <svg class="detail-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -761,8 +806,8 @@
                   <path d="M12 6v6l4 2" />
                 </svg>
                 <div>
-                  <strong>Hours</strong>
-                  <span>Mon-Sun: 7AM - 11PM</span>
+                  <strong data-i18n="reservation.hours">Hours</strong>
+                  <span data-i18n="reservation.hours_value">Mon-Sun: 7AM - 11PM</span>
                 </div>
               </div>
               <div class="detail-item">
@@ -770,7 +815,7 @@
                   <path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07 19.5 19.5 0 01-6-6 19.79 19.79 0 01-3.07-8.67A2 2 0 014.11 2h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L8.09 9.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z" />
                 </svg>
                 <div>
-                  <strong>Call Us</strong>
+                  <strong data-i18n="reservation.call">Call Us</strong>
                   <span>(555) 123-4567</span>
                 </div>
               </div>
@@ -780,73 +825,73 @@
           <form class="reservation-form" id="reservationForm">
             <div class="form-row">
               <div class="form-group">
-                <label for="name">Full Name</label>
-                <input type="text" id="name" name="name" placeholder="John Smith" autocomplete="name" required />
+                <label for="name" data-i18n="reservation.fullname">Full Name</label>
+                <input type="text" id="name" name="name" placeholder="John Smith" data-i18n-placeholder="reservation.fullname_placeholder" autocomplete="name" required />
               </div>
               <div class="form-group">
-                <label for="email">Email</label>
-                <input type="email" id="email" name="email" placeholder="john@example.com"
+                <label for="email" data-i18n="reservation.email">Email</label>
+                <input type="email" id="email" name="email" placeholder="john@example.com" data-i18n-placeholder="reservation.email_placeholder"
                   pattern="^[^\s@]+@[^\s@]+\.[^\s@]{2,}$"
-                  title="Please enter a valid email address"
+                  title="Please enter a valid email address" data-i18n-title="reservation.email_title"
                   autocomplete="email" required />
               </div>
             </div>
             <div class="form-row">
               <div class="form-group">
-                <label for="phone">Phone</label>
-                <input type="tel" id="phone" name="phone" placeholder="(555) 123-4567" autocomplete="tel" required />
+                <label for="phone" data-i18n="reservation.phone">Phone</label>
+                <input type="tel" id="phone" name="phone" placeholder="(555) 123-4567" data-i18n-placeholder="reservation.phone_placeholder" autocomplete="tel" required />
               </div>
               <div class="form-group">
-                <label for="guests">Guests</label>
+                <label for="guests" data-i18n="reservation.guests">Guests</label>
                 <select id="guests" name="guests" required>
-                  <option value="">Select guests</option>
-                  <option value="1">1 Guest</option>
-                  <option value="2">2 Guests</option>
-                  <option value="3">3 Guests</option>
-                  <option value="4">4 Guests</option>
-                  <option value="5">5 Guests</option>
-                  <option value="6">6 Guests</option>
-                  <option value="7">7 Guests</option>
-                  <option value="8">8 Guests</option>
+                  <option value="" data-i18n="reservation.select_guests">Select guests</option>
+                  <option value="1" data-i18n="reservation.guests_1">1 Guest</option>
+                  <option value="2" data-i18n="reservation.guests_2">2 Guests</option>
+                  <option value="3" data-i18n="reservation.guests_3">3 Guests</option>
+                  <option value="4" data-i18n="reservation.guests_4">4 Guests</option>
+                  <option value="5" data-i18n="reservation.guests_5">5 Guests</option>
+                  <option value="6" data-i18n="reservation.guests_6">6 Guests</option>
+                  <option value="7" data-i18n="reservation.guests_7">7 Guests</option>
+                  <option value="8" data-i18n="reservation.guests_8">8 Guests</option>
                 </select>
               </div>
             </div>
             <div class="form-row">
               <div class="form-group">
-                <label for="reservation-date">Date</label>
+                <label for="reservation-date" data-i18n="reservation.date">Date</label>
                 <input type="date" id="reservation-date" name="date" required />
               </div>
               <div class="form-group">
-                <label for="time">Time</label>
+                <label for="time" data-i18n="reservation.time">Time</label>
                 <select id="time" name="time" required>
-                  <option value="">Select time</option>
-                  <option value="07:00">7:00 AM</option>
-                  <option value="08:00">8:00 AM</option>
-                  <option value="09:00">9:00 AM</option>
-                  <option value="10:00">10:00 AM</option>
-                  <option value="11:00">11:00 AM</option>
-                  <option value="12:00">12:00 PM</option>
-                  <option value="13:00">1:00 PM</option>
-                  <option value="14:00">2:00 PM</option>
-                  <option value="15:00">3:00 PM</option>
-                  <option value="16:00">4:00 PM</option>
-                  <option value="17:00">5:00 PM</option>
-                  <option value="18:00">6:00 PM</option>
-                  <option value="19:00">7:00 PM</option>
-                  <option value="20:00">8:00 PM</option>
-                  <option value="21:00">9:00 PM</option>
-                  <option value="22:00">10:00 PM</option>
-                  <option value="23:00">11:00 PM</option>
+                  <option value="" data-i18n="reservation.select_time">Select time</option>
+                  <option value="07:00" data-i18n="reservation.time_07am">7:00 AM</option>
+                  <option value="08:00" data-i18n="reservation.time_08am">8:00 AM</option>
+                  <option value="09:00" data-i18n="reservation.time_09am">9:00 AM</option>
+                  <option value="10:00" data-i18n="reservation.time_10am">10:00 AM</option>
+                  <option value="11:00" data-i18n="reservation.time_11am">11:00 AM</option>
+                  <option value="12:00" data-i18n="reservation.time_12pm">12:00 PM</option>
+                  <option value="13:00" data-i18n="reservation.time_01pm">1:00 PM</option>
+                  <option value="14:00" data-i18n="reservation.time_02pm">2:00 PM</option>
+                  <option value="15:00" data-i18n="reservation.time_03pm">3:00 PM</option>
+                  <option value="16:00" data-i18n="reservation.time_04pm">4:00 PM</option>
+                  <option value="17:00" data-i18n="reservation.time_05pm">5:00 PM</option>
+                  <option value="18:00" data-i18n="reservation.time_06pm">6:00 PM</option>
+                  <option value="19:00" data-i18n="reservation.time_07pm">7:00 PM</option>
+                  <option value="20:00" data-i18n="reservation.time_08pm">8:00 PM</option>
+                  <option value="21:00" data-i18n="reservation.time_09pm">9:00 PM</option>
+                  <option value="22:00" data-i18n="reservation.time_10pm">10:00 PM</option>
+                  <option value="23:00" data-i18n="reservation.time_11pm">11:00 PM</option>
                 </select>
               </div>
             </div>
             <div class="form-group full-width">
-              <label for="requests">Special Requests</label>
+              <label for="requests" data-i18n="reservation.requests">Special Requests</label>
               <textarea id="requests" name="requests" rows="4"
-                placeholder="Dietary restrictions, special occasions, seating preferences..."></textarea>
+                placeholder="Dietary restrictions, special occasions, seating preferences..." data-i18n-placeholder="reservation.requests_placeholder"></textarea>
             </div>
-            <button type="submit" class="btn btn-primary btn-full">Request Reservation</button>
-            <p class="form-note">You will receive a confirmation email within 24 hours.</p>
+            <button type="submit" class="btn btn-primary btn-full" data-i18n="reservation.submit">Request Reservation</button>
+            <p class="form-note" data-i18n="reservation.note">You will receive a confirmation email within 24 hours.</p>
           </form>
         </div>
       </div>
@@ -856,8 +901,8 @@
     <section class="reviews-section" id="reviews">
       <div class="container">
         <div class="section-header">
-          <span class="section-label">Guest Experiences</span>
-          <h2 class="section-title">Customer Reviews</h2>
+          <span class="section-label" data-i18n="reviews.label">Guest Experiences</span>
+          <h2 class="section-title" data-i18n="reviews.title">Customer Reviews</h2>
         </div>
 
         <!-- Reviews display -->
@@ -865,16 +910,16 @@
 
         <!-- Submit form -->
         <div class="review-form-wrapper">
-          <h3 class="review-form-heading">Share Your Experience</h3>
+          <h3 class="review-form-heading" data-i18n="reviews.share">Share Your Experience</h3>
           <form id="review-form">
             <div class="form-row">
               <div class="form-group">
-                <label for="review-name">Your Name</label>
-                <input type="text" id="review-name" name="review-name" placeholder="Jane Smith" autocomplete="name" required />
+                <label for="review-name" data-i18n="reviews.name">Your Name</label>
+                <input type="text" id="review-name" name="review-name" placeholder="Jane Smith" data-i18n-placeholder="reviews.name_placeholder" autocomplete="name" required />
               </div>
               <div class="form-group">
                 <fieldset>
-                  <legend>Rating</legend>
+                  <legend data-i18n="reviews.rating">Rating</legend>
                   <div class="star-input" id="star-input">
                     <button type="button" class="star-btn" data-value="1">&#9733;</button>
                     <button type="button" class="star-btn" data-value="2">&#9733;</button>
@@ -887,11 +932,11 @@
               </div>
             </div>
             <div class="form-group full-width">
-              <label for="review-text">Your Review</label>
+              <label for="review-text" data-i18n="reviews.text">Your Review</label>
               <textarea id="review-text" name="review-text" rows="4"
-                placeholder="Tell us about your visit..." required></textarea>
+                placeholder="Tell us about your visit..." data-i18n-placeholder="reviews.text_placeholder" required></textarea>
             </div>
-            <button type="submit" class="btn btn-primary btn-full">Submit Review</button>
+            <button type="submit" class="btn btn-primary btn-full" data-i18n="reviews.submit">Submit Review</button>
             <p id="review-msg" class="form-note" style="display: none"></p>
           </form>
         </div>
@@ -903,60 +948,60 @@
       <div class="container">
         <div class="location-grid">
           <div class="location-info">
-            <span class="section-label">Find Us</span>
-            <h2 class="section-title">Our Location</h2>
+            <span class="section-label" data-i18n="location.label">Find Us</span>
+            <h2 class="section-title" data-i18n="location.title">Our Location</h2>
             <div class="location-address">
               <svg class="location-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                 <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z" />
                 <circle cx="12" cy="10" r="3" />
               </svg>
               <div>
-                <p>123 Harbor View Drive</p>
-                <p>Coastal City, CA 90210</p>
+                <p data-i18n="location.address_1">123 Harbor View Drive</p>
+                <p data-i18n="location.address_2">Coastal City, CA 90210</p>
               </div>
             </div>
             <div class="location-hours">
-              <h3>Opening Hours</h3>
+              <h3 data-i18n="location.hours">Opening Hours</h3>
               <div class="hours-grid">
                 <div class="hours-item">
-                  <span>Breakfast</span>
-                  <span>7:00 AM - 11:00 AM</span>
+                  <span data-i18n="location.breakfast">Breakfast</span>
+                  <span data-i18n="location.breakfast_hours">7:00 AM - 11:00 AM</span>
                 </div>
                 <div class="hours-item">
-                  <span>Lunch</span>
-                  <span>11:30 AM - 3:00 PM</span>
+                  <span data-i18n="location.lunch">Lunch</span>
+                  <span data-i18n="location.lunch_hours">11:30 AM - 3:00 PM</span>
                 </div>
                 <div class="hours-item">
-                  <span>Dinner</span>
-                  <span>5:00 PM - 11:00 PM</span>
+                  <span data-i18n="location.dinner">Dinner</span>
+                  <span data-i18n="location.dinner_hours">5:00 PM - 11:00 PM</span>
                 </div>
                 <div class="hours-item">
-                  <span>Bar</span>
-                  <span>11:00 AM - Midnight</span>
+                  <span data-i18n="location.bar">Bar</span>
+                  <span data-i18n="location.bar_hours">11:00 AM - Midnight</span>
                 </div>
               </div>
             </div>
             <div class="location-contact">
-              <h3>Contact</h3>
-              <p><strong>Phone:</strong> (555) 123-4567</p>
-              <p><strong>Email:</strong> reservations@thelighthouse.com</p>
+              <h3 data-i18n="location.contact">Contact</h3>
+              <p><strong data-i18n="location.phone">Phone:</strong> (555) 123-4567</p>
+              <p><strong data-i18n="location.email">Email:</strong> reservations@thelighthouse.com</p>
             </div>
             <div class="social-links">
-              <a href="https://www.instagram.com" target="_blank" rel="noopener noreferrer" class="social-link" aria-label="Instagram">
+              <a href="https://www.instagram.com" target="_blank" rel="noopener noreferrer" class="social-link" aria-label="Instagram" title="Instagram">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                   <rect x="2" y="2" width="20" height="20" rx="5" />
                   <path d="M16 11.37A4 4 0 1112.63 8 4 4 0 0116 11.37z" />
                   <line x1="17.5" y1="6.5" x2="17.51" y2="6.5" />
                 </svg>
               </a>
-              <a href="https://www.facebook.com" target="_blank" rel="noopener noreferrer" class="social-link" aria-label="Facebook">
+              <a href="https://www.facebook.com" target="_blank" rel="noopener noreferrer" class="social-link" aria-label="Facebook" title="Facebook">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                   <path d="M18 2h-3a5 5 0 00-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 011-1h3z" />
                 </svg>
               </a>
-              <a href="https://x.com" target="_blank" rel="noopener noreferrer" class="social-link" aria-label="Twitter">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                  <path d="M23 3a10.9 10.9 0 01-3.14 1.53 4.48 4.48 0 00-7.86 3v1A10.66 10.66 0 013 4s-4 9 5 13a11.64 11.64 0 01-7 2c9 5 20 0 20-11.5a4.5 4.5 0 00-.08-.83A7.72 7.72 0 0023 3z" />
+              <a href="https://x.com" target="_blank" rel="noopener noreferrer" class="social-link" aria-label="X" title="X">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M4 4l16 16M20 4L4 20" />
                 </svg>
               </a>
             </div>
@@ -984,24 +1029,24 @@
 
           <!-- Brand -->
           <div class="footer-brand">
-            <h2>The Lighthouse</h2>
-            <p>Experience timeless fine dining with handcrafted dishes, luxury ambiance, and unforgettable moments.</p>
+            <h2 data-i18n="nav.logo">The Lighthouse</h2>
+            <p data-i18n="footer.desc">Experience timeless fine dining with handcrafted dishes, luxury ambiance, and unforgettable moments.</p>
             <div class="footer-socials">
-              <a href="https://www.instagram.com" target="_blank" rel="noopener noreferrer" aria-label="Instagram">
+              <a href="https://www.instagram.com" target="_blank" rel="noopener noreferrer" class="social-link" aria-label="Instagram" title="Instagram">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                   <rect x="2" y="2" width="20" height="20" rx="5" />
                   <path d="M16 11.37A4 4 0 1112.63 8 4 4 0 0116 11.37z" />
                   <line x1="17.5" y1="6.5" x2="17.51" y2="6.5" />
                 </svg>
               </a>
-              <a href="https://www.facebook.com" target="_blank" rel="noopener noreferrer" aria-label="Facebook">
+              <a href="https://www.facebook.com" target="_blank" rel="noopener noreferrer" class="social-link" aria-label="Facebook" title="Facebook">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                   <path d="M18 2h-3a5 5 0 00-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 011-1h3z" />
                 </svg>
               </a>
-              <a href="https://x.com" target="_blank" rel="noopener noreferrer" aria-label="Twitter">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                  <path d="M23 3a10.9 10.9 0 01-3.14 1.53 4.48 4.48 0 00-7.86 3v1A10.66 10.66 0 013 4s-4 9 5 13a11.64 11.64 0 01-7 2c9 5 20 0 20-11.5a4.5 4.5 0 00-.08-.83A7.72 7.72 0 0023 3z" />
+              <a href="https://x.com" target="_blank" rel="noopener noreferrer" class="social-link" aria-label="X" title="X">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M4 4l16 16M20 4L4 20" />
                 </svg>
               </a>
             </div>
@@ -1009,32 +1054,32 @@
 
           <!-- Quick Links -->
           <div class="footer-column">
-            <h3>Quick Links</h3>
-            <a href="#home">Home</a>
-            <a href="#about">About</a>
-            <a href="#menu">Menu</a>
-            <a href="#reservation">Reservations</a>
-            <a href="#reviews">Reviews</a>
+            <h3 data-i18n="footer.quick_links">Quick Links</h3>
+            <a href="#home" data-i18n="nav.home">Home</a>
+            <a href="#about" data-i18n="nav.about">About</a>
+            <a href="#menu" data-i18n="nav.menu">Menu</a>
+            <a href="#reservation" data-i18n="nav.reservation">Reservations</a>
+            <a href="#reviews" data-i18n="nav.reviews">Reviews</a>
           </div>
 
           <!-- Contact -->
           <div class="footer-column">
-            <h3>Contact</h3>
-            <p>123 Harbor View Drive</p>
-            <p>Coastal City, CA 90210</p>
+            <h3 data-i18n="location.contact">Contact</h3>
+            <p data-i18n="location.address_1">123 Harbor View Drive</p>
+            <p data-i18n="location.address_2">Coastal City, CA 90210</p>
             <a href="tel:+15551234567">(555) 123-4567</a>
             <a href="mailto:reservations@thelighthouse.com">reservations@thelighthouse.com</a>
           </div>
 
           <!-- Newsletter -->
           <div class="footer-column newsletter">
-            <h3>Newsletter</h3>
-            <p>Get updates about seasonal menus and exclusive dining events.</p>
+            <h3 data-i18n="footer.newsletter">Newsletter</h3>
+            <p data-i18n="footer.newsletter_desc">Get updates about seasonal menus and exclusive dining events.</p>
             <form class="newsletter-form">
-              <label for="newsletter-email">Email Address</label>
-              <input type="email" placeholder="Your Email Address" autocomplete="email"
+              <label for="newsletter-email" data-i18n="reservation.email">Email Address</label>
+              <input type="email" placeholder="Your Email Address" data-i18n-placeholder="footer.newsletter_placeholder" autocomplete="email"
                 id="newsletter-email" name="newsletter-email" />
-              <button type="submit">Subscribe</button>
+              <button type="submit" data-i18n="footer.subscribe">Subscribe</button>
             </form>
           </div>
 
@@ -1042,17 +1087,17 @@
 
         <!-- Bottom -->
         <div class="footer-bottom">
-          <p>© 2026 The Lighthouse. Crafted with elegance.</p>
+          <p data-i18n="footer.copyright">© 2026 The Lighthouse. Crafted with elegance.</p>
           <div class="footer-bottom-links">
-            <a href="#">Privacy Policy</a>
-            <a href="#">Terms</a>
+            <a href="#" data-i18n="footer.privacy">Privacy Policy</a>
+            <a href="#" data-i18n="footer.terms">Terms</a>
           </div>
         </div>
 
       </div>
     </footer>
 
-    <button id="backToTop">BACK TO TOP ▲</button>
+    <button id="backToTop" data-i18n="back_to_top">BACK TO TOP ▲</button>
 
     <script src="script.js" defer></script>
   </body>
