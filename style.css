@@ -1162,6 +1162,9 @@ input[type="date"]::-webkit-calendar-picker-indicator:hover {
 .reservation-form .btn {
   margin-top: 20px;
 }
+#review-form .btn {
+  margin-top: 20px;
+}
 
 .form-note {
   text-align: center;
@@ -1396,7 +1399,7 @@ input[type="date"]::-webkit-calendar-picker-indicator:hover {
 .star-btn {
   background: none;
   border: none;
-  font-size: 1.75rem;
+  font-size: 2.5rem;
   color: var(--color-border);
   cursor: pointer;
   padding: 0;
@@ -1405,7 +1408,14 @@ input[type="date"]::-webkit-calendar-picker-indicator:hover {
     transform var(--transition);
   line-height: 1;
 }
-
+.star-rating-fieldset {
+  border: none;
+  padding: 0;
+  margin: 0;
+  text-transform: uppercase;
+  color: var(--color-text-muted);
+  font-size: 0.75rem;
+}
 .star-btn.active,
 .star-btn:hover {
   color: var(--color-primary);
@@ -1798,7 +1808,7 @@ input[type="date"]::-webkit-calendar-picker-indicator:hover {
 
   .btn {
     width: 100%;
-    max-width: 280px;
+
   }
 
   .form-row {
