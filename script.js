@@ -178,7 +178,10 @@ themeToggle.addEventListener("click", () => {
 
 // FIX #1 — Use the correct parameter names (timeFilter, cuisineFilter) instead of undefined 'filter'
 function filterMenuItems(timeFilter, cuisineFilter, searchText) {
-  const menuItems = document.querySelectorAll(".menu-item");
+  const menuContent = document.querySelector('#menu .menu-content');
+  if (!menuContent) return;
+
+  const menuItems = menuContent.querySelectorAll('.menu-item');
   let visibleCount = 0;
 
   menuItems.forEach((item) => {
@@ -197,13 +200,13 @@ function filterMenuItems(timeFilter, cuisineFilter, searchText) {
   });
 
   // Handle "No Results" display
-  let noResults = document.querySelector(".no-results");
+  let noResults = menuContent.querySelector('.no-results');
   if (visibleCount === 0) {
     if (!noResults) {
       noResults = document.createElement('p');
       noResults.className = 'no-results';
       noResults.textContent = 'No menu items found.';
-      document.querySelector('.menu-content')?.appendChild(noResults);
+      menuContent.appendChild(noResults);
     }
   } else if (noResults) {
     noResults.remove();
