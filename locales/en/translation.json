@@ -1,4 +1,7 @@
 {
+  "meta": {
+    "title": "The Lighthouse | Fine Dining Restaurant"
+  },
   "nav": {
     "logo": "The Lighthouse",
     "home": "Home",
@@ -47,6 +50,7 @@
     "key_ingredients": "Key Ingredients:",
     "contains": "⚠️ Contains:",
     "no_allergens": "✅ No Allergens",
+    "ratings": "Ratings",
     "tags": {
       "nonveg": "Non-Veg",
       "veg": "Veg",
@@ -278,7 +282,7 @@
     "newsletter_desc": "Get updates about seasonal menus and exclusive dining events.",
     "newsletter_placeholder": "Your Email Address",
     "subscribe": "Subscribe",
-    "copyright": "© 2026 The Lighthouse. Crafted with elegance.",
+    "copyright": "The Lighthouse. Crafted with elegance.",
     "privacy": "Privacy Policy",
     "terms": "Terms"
   },
