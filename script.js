@@ -1,171 +1,91 @@
-// =============================================
-// DOM ELEMENTS
-// =============================================
-const nav = document.getElementById("nav");
-const cuisineDropdown = document.getElementById("cuisine-filter");
-const menuSearch = document.getElementById("menu-search");
-const navToggle = document.getElementById("navToggle");
-const navMenu = document.getElementById("navMenu");
-const navLinks = document.querySelectorAll(".nav-link");
-const heroBg = document.getElementById("heroBg");
-const reservationBg = document.getElementById("reservationBg");
-const reservationForm = document.getElementById("reservationForm");
-const dateInput = document.getElementById("reservation-date");
-const timeSelect = document.getElementById("time");
-const themeToggle = document.getElementById("themeToggle");
-const filterBtns = document.querySelectorAll(".filter-btn");
-const menuContent = document.querySelector(".menu-content");
-const menuTabs = document.querySelectorAll(".menu-tab");
-const menuPanels = document.querySelectorAll(".menu-panel");
+document.addEventListener("DOMContentLoaded", () => {
+  const nav = document.getElementById("nav");
+  const navToggle = document.getElementById("navToggle");
+  const navMenu = document.getElementById("navMenu");
+  const navLinks = document.querySelectorAll(".nav-link");
+  const heroBg = document.getElementById("heroBg");
+  const reservationBg = document.getElementById("reservationBg");
+  const reservationForm = document.getElementById("reservationForm");
+  const dateInput = document.getElementById("reservation-date");
+  const timeSelect = document.getElementById("time");
+  const themeToggle = document.getElementById("themeToggle");
+  const filterBtns = document.querySelectorAll(".filter-btn");
+  const dietBtns = document.querySelectorAll(".diet-btn");
+  const cuisineDropdown = document.getElementById("cuisine-filter");
+  const menuSearch = document.getElementById("menu-search");
+  const heroScroll = document.querySelector(".hero-scroll");
+  const backToTopBtn = document.getElementById("backToTop");
+  const orderDock = document.getElementById("orderDock");
+  const orderToggle = document.getElementById("orderToggle");
+  const orderTabs = document.querySelectorAll(".order-tab");
+  const orderViews = document.querySelectorAll(".order-view");
+  const cartItemsEl = document.getElementById("cartItems");
+  const favoriteItemsEl = document.getElementById("favoriteItems");
+  const cartCountEl = document.getElementById("cartCount");
+  const cartTotalEl = document.getElementById("cartTotal");
+  const checkoutBtn = document.getElementById("checkoutBtn");
+  const isTouchDevice = window.matchMedia("(hover: none) and (pointer: coarse)").matches;
 
-// ── Device detection (used by FIX #9 and FIX #14) ───
-const isTouchDevice = window.matchMedia('(hover: none) and (pointer: coarse)').matches;
+  let currentCategory = "all";
+  let currentDiet = "all";
+  let autoScrollInterval = null;
+  let cart = loadStoredList("lighthouse_cart");
+  let favorites = loadStoredList("lighthouse_favorites");
 
-// ── FIX #9 — show correct scroll hint based on input type ────────
-const scrollHintMouse = document.querySelector('.scroll-hint-mouse');
-const scrollHintTouch = document.querySelector('.scroll-hint-touch');
+  function loadStoredList(key) {
+    try {
+      return JSON.parse(localStorage.getItem(key)) || [];
+    } catch {
+      return [];
+    }
+  }
 
-if (scrollHintMouse && scrollHintTouch) {
-  scrollHintMouse.style.display = isTouchDevice ? 'none' : '';
-  scrollHintTouch.style.display = isTouchDevice ? '' : 'none';
-}
+  function saveStoredList(key, value) {
+    localStorage.setItem(key, JSON.stringify(value));
+  }
 
-// ── FIX #13 — Date validation: min = tomorrow, max = 90 days out ─────
-if (dateInput) {
-  const tomorrow = new Date(Date.now() + 86400000);
-  const maxDate = new Date(Date.now() + 90 * 86400000);
+  function setReservationDateRange() {
+    if (!dateInput) return;
 
-  dateInput.setAttribute('min', tomorrow.toISOString().split('T')[0]);
-  dateInput.setAttribute('max', maxDate.toISOString().split('T')[0]);
+    const tomorrow = new Date(Date.now() + 86400000);
+    const maxDate = new Date(Date.now() + 90 * 86400000);
 
-  dateInput.addEventListener('change', updateAvailableTimes);
-}
+    dateInput.min = tomorrow.toISOString().split("T")[0];
+    dateInput.max = maxDate.toISOString().split("T")[0];
+  }
 
-// ── FIX #11 — Disable past time slots when today is selected ─────
-function updateAvailableTimes() {
-  if (!dateInput || !timeSelect) return;
+  // Theme Toggle & Background Update Logic
+  function updateThemeImages(isLight) {
+    const heroImg = document.querySelector("#heroBg img");
+    const resImg = document.querySelector("#reservationBg img");
+    const lightImg = "./images/hero-restaurant-daytime.png";
+    const darkImg = "./images/hero-restaurant.jpg";
+    
+    if (heroImg) heroImg.src = isLight ? lightImg : darkImg;
+    if (resImg) resImg.src = isLight ? lightImg : darkImg;
+  }
 
-  const selectedDate = dateInput.value;
-  const todayStr = new Date().toISOString().split('T')[0];
-  const now = new Date();
-  const currentHours = now.getHours();
-  const currentMins = now.getMinutes();
+  function updateAvailableTimes() {
+    if (!dateInput || !timeSelect) return;
 
-  timeSelect.querySelectorAll('option').forEach((option) => {
-    if (!option.value) return;
+    const selectedDate = dateInput.value;
+    const today = new Date();
+    const todayStr = today.toISOString().split("T")[0];
 
-    const [optHours, optMins] = option.value.split(':').map(Number);
+    timeSelect.querySelectorAll("option").forEach((option) => {
+      if (!option.value) return;
 
-    if (selectedDate === todayStr) {
-      const isPast =
-        optHours < currentHours ||
-        (optHours === currentHours && optMins <= currentMins + 30);
+      const [hours, minutes] = option.value.split(":").map(Number);
+      const optionMinutes = hours * 60 + minutes;
+      const currentMinutes = today.getHours() * 60 + today.getMinutes() + 30;
+      const isPastToday = selectedDate === todayStr && optionMinutes <= currentMinutes;
 
-      option.disabled = isPast;
-      if (isPast && option.selected) {
-        timeSelect.value = '';
+      option.disabled = isPastToday;
+      if (isPastToday && option.selected) {
+        timeSelect.value = "";
       }
-    } else {
-      option.disabled = false;
-    }
-  });
-}
-
-// ── Navigation scroll effect ──
-function handleScroll() {
-  const currentScroll = window.scrollY;
-
-  // Sticky nav background
-  nav.classList.toggle('scrolled', currentScroll > 50);
-
-  // Parallax skipped on touch devices
-  if (!isTouchDevice) {
-    if (heroBg) {
-      heroBg.style.transform = `translateY(${currentScroll * 0.5}px)`;
-    }
-    if (reservationBg && currentScroll > window.innerHeight) {
-      const sectionTop = document.getElementById('reservation').offsetTop;
-      const offset = (currentScroll - sectionTop) * 0.3;
-      reservationBg.style.transform = `translateY(${offset}px)`;
-    }
+    });
   }
-
-  updateActiveNavLink();
-}
-
-// ── Active nav link on scroll ───
-function updateActiveNavLink() {
-  const sections = document.querySelectorAll('section[id]');
-  const scrollPosition = window.scrollY + 150;
-
-  sections.forEach((section) => {
-    const sectionTop = section.offsetTop;
-    const sectionHeight = section.offsetHeight;
-    const sectionId = section.getAttribute('id');
-
-    if (scrollPosition >= sectionTop && scrollPosition < sectionTop + sectionHeight) {
-      navLinks.forEach((link) => {
-        link.classList.remove('active');
-        if (link.getAttribute('data-section') === sectionId) {
-          link.classList.add('active');
-        }
-      });
-    }
-  });
-}
-
-// ── Mobile menu ───
-function toggleMobileMenu() {
-  navToggle.classList.toggle('active');
-  navMenu.classList.toggle('active');
-  document.body.style.overflow = navMenu.classList.contains('active') ? 'hidden' : '';
-}
-
-function closeMobileMenu() {
-  navToggle.classList.remove('active');
-  navMenu.classList.remove('active');
-  document.body.style.overflow = '';
-}
-
-// Menu tabs functionality
-function switchMenuTab(e) {
-  const targetTab = e.target.dataset.tab;
-
-  // Update tab buttons
-  menuTabs.forEach((tab) => {
-    tab.classList.remove("active");
-  });
-  e.target.classList.add("active");
-
-  // Update panels
-  menuPanels.forEach((panel) => {
-    panel.classList.remove("active");
-    if (panel.id === targetTab) {
-      panel.classList.add("active");
-    }
-  });
-}
-
-// Theme Toggle
-const savedTheme = localStorage.getItem("theme");
-
-if (savedTheme === "light") {
-  document.body.classList.add("light-theme");
-}
-
-themeToggle.addEventListener("click", () => {
-  document.body.classList.toggle("light-theme");
-
-  const isLight = document.body.classList.contains("light-theme");
-
-  if (isLight) {
-    localStorage.setItem("theme", "light");
-  } else {
-    localStorage.setItem("theme", "dark");
-  }
-});
-
-// ── Menu Search and Filter ─────────────────────────
 
 // FIX #1 — Use the correct parameter names (timeFilter, cuisineFilter) instead of undefined 'filter'
 function filterMenuItems(timeFilter, cuisineFilter, searchText) {
@@ -202,767 +122,446 @@ function filterMenuItems(timeFilter, cuisineFilter, searchText) {
   } else if (noResults) {
     noResults.remove();
   }
-}
 
-function triggerFilter() {
-  const activeBtn = document.querySelector(".filter-btn.active");
-  const timeFilter = activeBtn ? activeBtn.dataset.filter : "all";
-  const cuisineFilter = cuisineDropdown ? cuisineDropdown.value : "all";
-  const searchText = menuSearch ? menuSearch.value : "";
-  
-  filterMenuItems(timeFilter, cuisineFilter, searchText);
-}
+  function updateActiveNavLink() {
+    const scrollPosition = window.scrollY + 150;
 
-if (cuisineDropdown) {
-  cuisineDropdown.addEventListener("change", triggerFilter);
-}
+    document.querySelectorAll("section[id]").forEach((section) => {
+      const sectionTop = section.offsetTop;
+      const sectionBottom = sectionTop + section.offsetHeight;
+      const sectionId = section.id;
 
-if (menuSearch) {
-  menuSearch.addEventListener("input", triggerFilter);
-}
-
-// Filter buttons
-filterBtns.forEach((btn) => {
-  btn.addEventListener("click", () => {
-    filterBtns.forEach((b) => b.classList.remove("active"));
-    btn.classList.add("active");
-    triggerFilter();
-  });
-});
-
-// FIX #2 — Removed duplicate menuSearch 'input' listener (was calling filterMenuItems with wrong/missing args)
-
-// Smooth scroll for navigation links
-function smoothScroll(e) {
-  e.preventDefault();
-  const targetId = this.getAttribute('href');
-  const targetSection = document.querySelector(targetId);
-
-  if (targetSection) {
-    const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    window.scrollTo({
-      top: targetSection.offsetTop - 80,
-      behavior: prefersReduced ? 'auto' : 'smooth',
+      if (scrollPosition >= sectionTop && scrollPosition < sectionBottom) {
+        navLinks.forEach((link) => {
+          link.classList.toggle("active", link.dataset.section === sectionId);
+        });
+      }
     });
   }
-  closeMobileMenu();
-}
 
-// ── Reservation form submission ──
-function handleFormSubmit(e) {
-  e.preventDefault();
+  function handleScroll() {
+    const currentScroll = window.scrollY;
 
-  const inputs = reservationForm.querySelectorAll('input, select, textarea');
-  let isValid = true;
-
-  inputs.forEach((input) => {
-    if (input.required && !input.value) {
-      input.style.borderColor = '#c94a4a';
-      isValid = false;
-    } else {
-      input.style.borderColor = '';
+    if (nav) {
+      nav.classList.toggle("scrolled", currentScroll > 50);
     }
-  });
 
-  const emailInput = document.getElementById('email');
-  const phoneInput = document.getElementById('phone');
+    if (!isTouchDevice) {
+      if (heroBg) {
+        heroBg.style.transform = `translateY(${currentScroll * 0.5}px)`;
+      }
 
-  // Remove old error messages
-  document.querySelectorAll('.error-message').forEach(el => el.remove());
+      const reservationSection = document.getElementById("reservation");
+      if (reservationBg && reservationSection && currentScroll > window.innerHeight) {
+        const offset = (currentScroll - reservationSection.offsetTop) * 0.3;
+        reservationBg.style.transform = `translateY(${offset}px)`;
+      }
+    }
 
-  // Email validation
-  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-  if (emailInput && !emailRegex.test(emailInput.value.trim())) {
-    emailInput.style.borderColor = '#c94a4a';
-    const emailError = document.createElement('small');
-    emailError.className = 'error-message';
-    emailError.style.color = '#c94a4a';
-    emailError.textContent = i18next.t('reservation.email_error');
-    emailInput.parentElement.appendChild(emailError);
-    isValid = false;
+    if (backToTopBtn) {
+      backToTopBtn.classList.toggle("visible", currentScroll > 300);
+    }
+
+    updateActiveNavLink();
   }
 
-  // Phone validation
-  if (phoneInput) {
-    const phoneValue = phoneInput.value.replace(/\D/g, '');
-    if (phoneValue.length !== 10) {
-      phoneInput.style.borderColor = '#c94a4a';
-      const phoneError = document.createElement('small');
-      phoneError.className = 'error-message';
-      phoneError.style.color = '#c94a4a';
-      phoneError.textContent = i18next.t('reservation.phone_error');
-      phoneInput.parentElement.appendChild(phoneError);
-      isValid = false;
-    }
+  function smoothScroll(event) {
+    const targetId = event.currentTarget.getAttribute("href");
+    if (!targetId || !targetId.startsWith("#")) return;
+
+    const target = document.querySelector(targetId);
+    if (!target) return;
+
+    event.preventDefault();
+    const prefersReduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+    window.scrollTo({
+      top: target.offsetTop - 80,
+      behavior: prefersReduced ? "auto" : "smooth",
+    });
+
+    closeMobileMenu();
   }
 
-  if (isValid) {
+  function filterMenuItems() {
+    const cuisine = cuisineDropdown ? cuisineDropdown.value : "all";
+    const search = menuSearch ? menuSearch.value.trim().toLowerCase() : "";
+    let visibleCount = 0;
+
+    document.querySelectorAll(".menu-content .menu-item").forEach((item) => {
+      const title = item.querySelector("h3")?.textContent.toLowerCase() || "";
+      const category = item.dataset.category || "all";
+      const itemCuisine = item.dataset.cuisine || "all";
+      const itemDiet = item.dataset.diet || (item.querySelector(".food-tag.nonveg") ? "non-veg" : "veg");
+      const matchesCategory =
+        currentCategory === "all" ||
+        category === currentCategory ||
+        (currentCategory === "veg" && itemDiet === "veg") ||
+        (currentCategory === "nonveg" && itemDiet === "non-veg");
+
+      const visible =
+        matchesCategory &&
+        (cuisine === "all" || itemCuisine === cuisine) &&
+        (currentDiet === "all" || itemDiet === currentDiet) &&
+        title.includes(search);
+
+      item.classList.toggle("hidden-item", !visible);
+      if (visible) visibleCount++;
+    });
+
+    let noResults = document.querySelector(".menu-content .no-results");
+    if (!noResults) {
+      noResults = document.createElement("p");
+      noResults.className = "no-results";
+      noResults.textContent = "No menu items found.";
+      document.querySelector(".menu-content")?.appendChild(noResults);
+    }
+    noResults.style.display = visibleCount === 0 ? "block" : "none";
+  }
+
+  function setupThemeToggle() {
+    if (!themeToggle) return;
+
+    const savedTheme = localStorage.getItem("theme");
+    const isLightOnLoad = savedTheme === "light";
+    
+    document.body.classList.toggle("light-theme", isLightOnLoad);
+    themeToggle.textContent = isLightOnLoad ? "\u2600" : "\u263E";
+    
+    // Set correct images on initial load
+    updateThemeImages(isLightOnLoad);
+
+    themeToggle.addEventListener("click", () => {
+      const isLight = document.body.classList.toggle("light-theme");
+      localStorage.setItem("theme", isLight ? "light" : "dark");
+      themeToggle.textContent = isLight ? "\u2600" : "\u263E";
+      
+      // Swap daytime/nighttime images dynamically
+      updateThemeImages(isLight);
+    });
+  }
+
+  function validateReservationForm(event) {
+    event.preventDefault();
+    if (!reservationForm) return;
+
+    let isValid = true;
+    const emailInput = document.getElementById("email");
+    const phoneInput = document.getElementById("phone");
+
+    reservationForm.querySelectorAll(".error-message").forEach((error) => error.remove());
+
+    reservationForm.querySelectorAll("input, select, textarea").forEach((input) => {
+      const invalid = input.required && !input.value.trim();
+      input.style.borderColor = invalid ? "#c94a4a" : "";
+      if (invalid) isValid = false;
+    });
+
+    if (emailInput && !/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(emailInput.value.trim())) {
+      addError(emailInput, "Please enter a valid email address.");
+      isValid = false;
+    }
+
+    if (phoneInput && phoneInput.value.replace(/\D/g, "").length !== 10) {
+      addError(phoneInput, "Phone number must contain exactly 10 digits.");
+      isValid = false;
+    }
+
+    if (!isValid) return;
+
     const submitBtn = reservationForm.querySelector('button[type="submit"]');
-    submitBtn.textContent = i18next.t('reservation.submit_requested');
-    submitBtn.style.backgroundColor = '#4a9c6a';
+    const originalText = submitBtn.textContent;
+
+    submitBtn.textContent = "Reservation Requested!";
+    submitBtn.style.backgroundColor = "#4a9c6a";
     submitBtn.disabled = true;
 
     setTimeout(() => {
       reservationForm.reset();
       updateAvailableTimes();
-      submitBtn.textContent = i18next.t('reservation.submit');
-      submitBtn.style.backgroundColor = '';
+      submitBtn.textContent = originalText;
+      submitBtn.style.backgroundColor = "";
       submitBtn.disabled = false;
-      updateAvailableTimes();
     }, 3000);
   }
-}
 
-// ── Intersection Observer with prefers-reduced-motion ──────
-function setupIntersectionObserver() {
-  const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  function addError(input, message) {
+    input.style.borderColor = "#c94a4a";
 
-  const animatedElements = document.querySelectorAll(
-    '.about-content, .menu-panel, .reservation-form, .location-info'
-  );
-
-  if (prefersReduced) {
-    animatedElements.forEach((el) => {
-      el.style.opacity = '1';
-      el.style.transform = 'none';
-    });
-    return;
+    const error = document.createElement("small");
+    error.className = "error-message";
+    error.style.color = "#c94a4a";
+    error.textContent = message;
+    input.parentElement.appendChild(error);
   }
 
-  const observer = new IntersectionObserver(
-    (entries) => {
-      entries.forEach((entry) => {
-        if (entry.isIntersecting) {
-          entry.target.classList.add('visible');
-        }
-      });
-    },
-    { root: null, rootMargin: '0px', threshold: 0.1 }
-  );
+  function setupIntersectionObserver() {
+    const animatedElements = document.querySelectorAll(
+      ".about-content, .menu-panel, .reservation-form, .location-info"
+    );
+    const prefersReduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
-  animatedElements.forEach((el) => {
-    el.style.opacity = '0';
-    el.style.transform = 'translateY(30px)';
-    el.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
-    observer.observe(el);
-  });
-}
-
-// Inject .visible class styles
-const style = document.createElement('style');
-style.textContent = `.visible { opacity: 1 !important; transform: translateY(0) !important; }`;
-document.head.appendChild(style);
-
-// ── Auto-scroll on hero "Scroll To Discover" click ───
-const heroScroll = document.querySelector('.hero-scroll');
-let autoScrollInterval = null;
-
-function startAutoScroll() {
-  autoScrollInterval = setInterval(() => {
-    window.scrollBy({ top: 2, behavior: 'instant' });
-    if (window.scrollY + window.innerHeight >= document.body.scrollHeight) {
-      stopAutoScroll();
+    if (prefersReduced || !("IntersectionObserver" in window)) {
+      animatedElements.forEach((el) => el.classList.add("visible"));
+      return;
     }
-  }, 15);
-}
 
-function stopAutoScroll() {
-  if (autoScrollInterval) {
-    clearInterval(autoScrollInterval);
-    autoScrollInterval = null;
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add("visible");
+            observer.unobserve(entry.target);
+          }
+        });
+      },
+      { rootMargin: "0px 0px -50px 0px" }
+    );
+
+    animatedElements.forEach((el) => observer.observe(el));
   }
-}
 
-if (heroScroll) {
-  heroScroll.style.cursor = 'pointer';
-  heroScroll.addEventListener('click', () => {
-    autoScrollInterval ? stopAutoScroll() : startAutoScroll();
-  });
-}
+  function setupAutoScroll() {
+    if (!heroScroll) return;
 
-['mousemove', 'touchstart', 'keydown', 'wheel', 'pointerdown'].forEach((event) => {
-  window.addEventListener(event, stopAutoScroll);
-});
-
-// ── Back To Top ──
-const backToTopBtn = document.getElementById('backToTop');
-
-if (backToTopBtn) {
-  window.addEventListener('scroll', () => {
-    const past = window.scrollY > 300;
-    backToTopBtn.style.display = past ? 'block' : 'none';
-    backToTopBtn.classList.toggle('visible', past);
-  });
-
-  backToTopBtn.addEventListener('click', () => {
-    const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    window.scrollTo({ top: 0, behavior: prefersReduced ? 'auto' : 'smooth' });
-  });
-}
-
-// ── Event Listeners ──
-window.addEventListener('scroll', handleScroll);
-
-navToggle.addEventListener('click', toggleMobileMenu);
-
-navLinks.forEach((link) => link.addEventListener('click', smoothScroll));
-
-document.querySelectorAll('.nav-cta, .nav-cta-mobile, .hero-buttons a').forEach((link) => {
-  link.addEventListener('click', smoothScroll);
-});
-
-if (reservationForm) {
-  reservationForm.addEventListener('submit', handleFormSubmit);
-}
-
-window.addEventListener('resize', () => {
-  if (window.innerWidth > 768) closeMobileMenu();
-});
-
-// ── Reviews (localStorage) ──
-const STORAGE_KEY = 'lighthouse_reviews';
-
-const pinnedReview = {
-  name: 'Rasshi Srivastav',
-  rating: 5,
-  text: 'reviews.pinned_review_text',
-  date: 'reviews.pinned_review_date',
-};
-
-function getReviews() {
-  const stored = localStorage.getItem(STORAGE_KEY);
-  if (stored) return JSON.parse(stored);
-  localStorage.setItem(STORAGE_KEY, JSON.stringify([]));
-  return [];
-}
-
-function saveReviews(reviews) {
-  localStorage.setItem(STORAGE_KEY, JSON.stringify(reviews));
-}
-function updateAverageRating() {
-  const averageRating = document.getElementById("average-rating");
-  if (!averageRating) return;
-
-  const userReviews = getReviews();
-  const allReviews = [pinnedReview, ...userReviews];
-
-  const totalRating = allReviews.reduce(
-    (sum, review) => sum + review.rating,
-    0
-  );
-
-  const average = (totalRating / allReviews.length).toFixed(1);
-
-  averageRating.textContent = `⭐ ${average}/5 from ${allReviews.length} review${
-    allReviews.length > 1 ? "s" : ""
-  }`;
-}
-function renderReviews() {
-  const grid = document.getElementById('reviews-grid');
-  if (!grid) return;
-
-  const userReviews = getReviews();
-  const activePinnedReview = {
-    ...pinnedReview,
-    text: typeof i18next !== 'undefined' && i18next.t ? i18next.t(pinnedReview.text) : pinnedReview.text,
-    date: typeof i18next !== 'undefined' && i18next.t ? i18next.t(pinnedReview.date) : pinnedReview.date,
-  };
-  const allReviews = [activePinnedReview, ...userReviews];
-
-  grid.innerHTML = allReviews
-    .map(
-      (r) => `
-      <div class="review-card">
-        <div class="review-stars">${'★'.repeat(r.rating)}${'☆'.repeat(5 - r.rating)}</div>
-        <p class="review-text">${r.text}</p>
-        <div class="review-author">
-          <div class="review-avatar">${r.name.slice(0, 2).toUpperCase()}</div>
-          <div>
-            <span class="review-name">${r.name}</span>
-            <span class="review-date">${r.date}</span>
-          </div>
-        </div>
-      </div>`
-    )
-    .join('');
-    updateAverageRating();
-}
-
-// Star rating widget
-let selectedRating = 0;
-const starBtns = document.querySelectorAll('#star-input .star-btn');
-
-starBtns.forEach((btn) => {
-  btn.addEventListener('mouseenter', () => {
-    const val = +btn.dataset.value;
-    starBtns.forEach((s) => s.classList.toggle('active', +s.dataset.value <= val));
-  });
-  btn.addEventListener('mouseleave', () => {
-    starBtns.forEach((s) => s.classList.toggle('active', +s.dataset.value <= selectedRating));
-  });
-  btn.addEventListener('click', () => {
-    selectedRating = +btn.dataset.value;
-    document.getElementById('review-rating').value = selectedRating;
-    starBtns.forEach((s) => s.classList.toggle('active', +s.dataset.value <= selectedRating));
-  });
-});
-
-// Review validation helpers
-function isMeaningfulReview(text) {
-  const words = text.trim().split(/\s+/);
-  const randomPattern = /^(.)\1+$|^[a-zA-Z]{1,6}$/;
-  if (randomPattern.test(text.trim())) return false;
-  return words.length >= 3;
-}
-
-function isValidName(name) {
-  return /^[A-Za-z\s'\-]{3,30}$/.test(name.trim());
-}
-
-const reviewForm = document.getElementById('review-form');
-const reviewMsg = document.getElementById('review-msg');
-
-if (reviewForm) {
-  reviewForm.addEventListener('submit', function (e) {
-    e.preventDefault();
-
-    const name = document.getElementById('review-name').value.trim();
-    const reviewText = document.getElementById('review-text').value.trim();
-
-    reviewMsg.style.display = 'block';
-
-    if (!selectedRating) {
-      reviewMsg.textContent = i18next.t('reviews.rating_error');
-      reviewMsg.style.color = '#c94a4a';
-      return;
-    }
-    if (!isValidName(name)) {
-      reviewMsg.textContent = i18next.t('reviews.name_error');
-      reviewMsg.style.color = '#c94a4a';
-      return;
-    }
-    if (reviewText.length < 20) {
-      reviewMsg.textContent = i18next.t('reviews.text_length_error');
-      reviewMsg.style.color = '#c94a4a';
-      return;
-    }
-    if (!isMeaningfulReview(reviewText)) {
-      reviewMsg.textContent = i18next.t('reviews.meaningful_error');
-      reviewMsg.style.color = '#c94a4a';
-      return;
-    }
-
-    const dateStr = new Date().toLocaleDateString('en-IN', {
-      day: '2-digit',
-      month: 'short',
-      year: 'numeric',
-    });
-
-    const newReview = {
-      id: Date.now(),
-      name,
-      rating: selectedRating,
-      text: reviewText,
-      date: dateStr,
-    };
-    const reviews = getReviews();
-    reviews.unshift(newReview);
-    saveReviews(reviews);
-    renderReviews();
-
-    reviewForm.reset();
-    selectedRating = 0;
-    document.getElementById('review-rating').value = 0;
-    starBtns.forEach((s) => s.classList.remove('active'));
-
-    reviewMsg.textContent = i18next.t('reviews.success_msg');
-    reviewMsg.style.color = '#4a9c6a';
-    setTimeout(() => {
-      reviewMsg.style.display = 'none';
-    }, 3000);
-  });
-}
-
-// ── Veg / Non-Veg Filter ──────────────────────────────
-// 1. Your filtering function, contained properly
-(function () {
-  const dietFilterBtns = document.querySelectorAll('.diet-btn');
-  if (!dietFilterBtns.length) return;
-
-  function applyDietFilter(diet) {
-    const activePanels = document.querySelectorAll('.menu-panel.active');
-
-    activePanels.forEach((panel) => {
-      const items = panel.querySelectorAll('.menu-item');
-      let visibleCount = 0;
-
-      items.forEach((item) => {
-        const itemDiet = item.dataset.diet || 'all';
-        const show = diet === 'all' || itemDiet === diet;
-        item.classList.toggle('diet-hidden', !show);
-        if (show) visibleCount++;
-      });
-
-      let noResults = panel.querySelector('.diet-no-results');
-      if (!noResults) {
-        noResults = document.createElement('p');
-        noResults.className = 'diet-no-results';
-        noResults.textContent = i18next.t('menu.diet_no_results');
-        const menuItems = panel.querySelector('.menu-items');
-        if (menuItems) {
-          menuItems.appendChild(noResults);
-        }
+    function stopAutoScroll() {
+      if (autoScrollInterval) {
+        clearInterval(autoScrollInterval);
+        autoScrollInterval = null;
       }
-      noResults.classList.toggle('visible', visibleCount === 0);
+    }
+
+    function startAutoScroll() {
+      autoScrollInterval = setInterval(() => {
+        window.scrollBy({ top: 2, behavior: "auto" });
+        if (window.scrollY + window.innerHeight >= document.body.scrollHeight) {
+          stopAutoScroll();
+        }
+      }, 15);
+    }
+
+    heroScroll.addEventListener("click", () => {
+      autoScrollInterval ? stopAutoScroll() : startAutoScroll();
+    });
+
+    ["mousemove", "touchstart", "keydown", "wheel", "pointerdown"].forEach((eventName) => {
+      window.addEventListener(eventName, stopAutoScroll, { passive: true });
     });
   }
 
-  dietFilterBtns.forEach((btn) => {
-    btn.addEventListener('click', () => {
-      dietFilterBtns.forEach((b) => b.classList.remove('active'));
-      btn.classList.add('active');
-      applyDietFilter(btn.dataset.diet);
-    });
-  });
+  function setupReviews() {
+    const storageKey = "lighthouse_reviews";
+    const reviewForm = document.getElementById("review-form");
+    const reviewMsg = document.getElementById("review-msg");
+    const starBtns = document.querySelectorAll("#star-input .star-btn");
+    let selectedRating = 0;
 
-  document.querySelectorAll('.menu-tab').forEach((tab) => {
-    tab.addEventListener('click', () => {
-      const activeDiet = document.querySelector('.diet-btn.active')?.dataset.diet || 'all';
-      setTimeout(() => applyDietFilter(activeDiet), 50);
-    });
-  });
-})();
+    const pinnedReview = {
+      name: "Rasshi Srivastav",
+      rating: 5,
+      text: "Absolutely loved the food and ambience! Every dish was crafted with such care and the atmosphere was warm and elegant. A truly memorable dining experience - will definitely be coming back!",
+      date: "14 May 2026",
+    };
 
-// =============================================
-// 3D CARD FLIP ENHANCEMENTS
-// =============================================
+    function getReviews() {
+      try {
+        return JSON.parse(localStorage.getItem(storageKey)) || [];
+      } catch {
+        return [];
+      }
+    }
 
-function handleCardFlip() {
-  const cards = document.querySelectorAll('.food-card-3d');
-  const isTouch = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
+    function renderReviews() {
+      const grid = document.getElementById("reviews-grid");
+      if (!grid) return;
 
-  if (isTouch) {
-    cards.forEach((card) => {
-      card.addEventListener('click', function (e) {
-        if (e.target.closest('a') || e.target.closest('button')) return;
-        this.classList.toggle('flipped');
+      grid.innerHTML = "";
+      [pinnedReview, ...getReviews()].forEach((review) => {
+        const card = document.createElement("div");
+        card.className = "review-card";
+        const stars = "\u2605".repeat(review.rating) + "\u2606".repeat(5 - review.rating);
+
+        card.innerHTML = `
+          <div class="review-stars">${stars}</div>
+          <p class="review-text"></p>
+          <div class="review-author">
+            <div class="review-avatar"></div>
+            <div>
+              <span class="review-name"></span>
+              <span class="review-date"></span>
+            </div>
+          </div>
+        `;
+
+        card.querySelector(".review-text").textContent = review.text;
+        card.querySelector(".review-avatar").textContent = review.name.slice(0, 2).toUpperCase();
+        card.querySelector(".review-name").textContent = review.name;
+        card.querySelector(".review-date").textContent = review.date;
+        grid.appendChild(card);
+      });
+    }
+
+    function isValidName(name) {
+      return /^[A-Za-z\s'-]{3,30}$/.test(name.trim());
+    }
+
+    function isMeaningfulReview(text) {
+      const value = text.trim();
+      const words = value.split(/\s+/);
+      return words.length >= 3 && !/^(.)\1+$|^[a-zA-Z]{1,6}$/.test(value);
+    }
+
+    starBtns.forEach((btn) => {
+      btn.addEventListener("mouseenter", () => {
+        const value = Number(btn.dataset.value);
+        starBtns.forEach((star) => star.classList.toggle("active", Number(star.dataset.value) <= value));
+      });
+
+      btn.addEventListener("mouseleave", () => {
+        starBtns.forEach((star) => star.classList.toggle("active", Number(star.dataset.value) <= selectedRating));
+      });
+
+      btn.addEventListener("click", () => {
+        selectedRating = Number(btn.dataset.value);
+        document.getElementById("review-rating").value = selectedRating;
+        starBtns.forEach((star) => star.classList.toggle("active", Number(star.dataset.value) <= selectedRating));
       });
     });
-  }
-}
 
-// Reset mobile flip when clicking elsewhere
-document.addEventListener('click', function (e) {
-  if (!e.target.closest('.food-card-3d')) {
-    document.querySelectorAll('.food-card-3d.flipped').forEach((card) => {
-      card.classList.remove('flipped');
-    });
-  }
-});
-// Random Chef's Recommendation
-function displayChefsRecommendation() {
-  const recommendation = document.getElementById("chefRecommendation");
-  if (!recommendation) return;
+    if (reviewForm) {
+      reviewForm.addEventListener("submit", (event) => {
+        event.preventDefault();
 
-  const menuItems = Array.from(document.querySelectorAll(".menu-item h3"));
+        const name = document.getElementById("review-name").value.trim();
+        const text = document.getElementById("review-text").value.trim();
+        reviewMsg.style.display = "block";
 
-  if (menuItems.length === 0) return;
-
-  const randomItem =
-    menuItems[Math.floor(Math.random() * menuItems.length)];
-
-  recommendation.textContent = randomItem.textContent;
-}
-
-// Translate UI Content
-function updateContent() {
-  if (typeof i18next === 'undefined' || !i18next.t) return;
-  
-  // Translate standard data-i18n elements
-  document.querySelectorAll("[data-i18n]").forEach((elem) => {
-    const key = elem.getAttribute("data-i18n");
-    elem.textContent = i18next.t(key);
-  });
-
-  // Translate placeholders
-  document.querySelectorAll("[data-i18n-placeholder]").forEach((elem) => {
-    const key = elem.getAttribute("data-i18n-placeholder");
-    elem.setAttribute("placeholder", i18next.t(key));
-  });
-
-  // Translate titles
-  document.querySelectorAll("[data-i18n-title]").forEach((elem) => {
-    const key = elem.getAttribute("data-i18n-title");
-    elem.setAttribute("title", i18next.t(key));
-  });
-
-  // Dynamic Elements
-  const noResults = document.querySelector(".no-results");
-  if (noResults) {
-    noResults.textContent = i18next.t('menu.no_results');
-  }
-
-  const dietNoResults = document.querySelectorAll(".diet-no-results");
-  dietNoResults.forEach((el) => {
-    el.textContent = i18next.t('menu.diet_no_results');
-  });
-
-  // Update reviews
-  renderReviews();
-}
-
-// ── Initialise ───
-document.addEventListener('DOMContentLoaded', function () {
-  handleScroll();
-  setupIntersectionObserver();
-  updateAvailableTimes();
-  handleCardFlip();
-
-  // Initialize i18next
-  if (typeof i18next !== 'undefined') {
-    i18next
-      .use(i18nextHttpBackend)
-      .use(i18nextBrowserLanguageDetector)
-      .init({
-        fallbackLng: 'en',
-        supportedLngs: ['en', 'hi', 'gu'],
-        load: 'languageOnly',
-        backend: {
-          loadPath: '/locales/{{lng}}/translation.json'
-        },
-        detection: {
-          order: ['localStorage', 'navigator'],
-          caches: ['localStorage']
+        if (!selectedRating) {
+          reviewMsg.textContent = "Please select a star rating.";
+          reviewMsg.style.color = "#c94a4a";
+          return;
         }
-      }, function (err, t) {
-        if (err) return console.error(err);
 
-        const activeLang = i18next.resolvedLanguage || 'en';
-        const langSelectors = document.querySelectorAll('.language-select');
-        langSelectors.forEach((langSelector) => {
-          langSelector.value = activeLang;
-          langSelector.addEventListener('change', (e) => {
-            const selectedVal = e.target.value;
-            // Update all language dropdowns on the page to match
-            document.querySelectorAll('.language-select').forEach((sel) => {
-              sel.value = selectedVal;
-            });
-            i18next.changeLanguage(selectedVal, (err, t) => {
-              if (err) return console.error(err);
-              updateContent();
-            });
-          });
+        if (!isValidName(name)) {
+          reviewMsg.textContent = "Name should contain only letters and be 3-30 characters long.";
+          reviewMsg.style.color = "#c94a4a";
+          return;
+        }
+
+        if (text.length < 20 || !isMeaningfulReview(text)) {
+          reviewMsg.textContent = "Please enter a meaningful review of at least 20 characters.";
+          reviewMsg.style.color = "#c94a4a";
+          return;
+        }
+
+        const reviews = getReviews();
+        reviews.unshift({
+          id: Date.now(),
+          name,
+          rating: selectedRating,
+          text,
+          date: new Date().toLocaleDateString("en-IN", {
+            day: "2-digit",
+            month: "short",
+            year: "numeric",
+          }),
         });
 
-        updateContent();
+        localStorage.setItem(storageKey, JSON.stringify(reviews));
+        renderReviews();
+        reviewForm.reset();
+        selectedRating = 0;
+        document.getElementById("review-rating").value = 0;
+        starBtns.forEach((star) => star.classList.remove("active"));
+
+        reviewMsg.textContent = "Review submitted successfully!";
+        reviewMsg.style.color = "#4a9c6a";
+        setTimeout(() => {
+          reviewMsg.style.display = "none";
+        }, 3000);
       });
-  } else {
+    }
+
     renderReviews();
   }
-});
 
-// Mobile flip style
-const styleForMobile = `
-  @media (max-width: 768px) {
-    .food-card-3d.flipped .food-card-inner {
-      transform: rotateY(180deg) scale(1.01);
-    }
-  }
-`;
+  function getMenuItemData(item) {
+    const title = item.querySelector("h3")?.textContent.trim() || "Menu item";
+    const priceText = item.querySelector(".menu-price")?.textContent || "0";
+    const price = Number(priceText.replace(/[^\d.]/g, "")) || 0;
+    const id = title.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)/g, "");
+    const image = item.querySelector("img")?.getAttribute("src") || "";
 
-// ── Skeleton Loader Initialization ─────────────────────────────────────
-function createCardSkeleton() {
-  const sk = document.createElement('div');
-  sk.className = 'skeleton-card skeleton';
-
-  const left = document.createElement('div');
-  left.className = 'skeleton-img';
-
-  const right = document.createElement('div');
-  right.className = 'skeleton-lines';
-
-  const line1 = document.createElement('div');
-  line1.className = 'skeleton-line long';
-  const line2 = document.createElement('div');
-  line2.className = 'skeleton-line medium';
-  const line3 = document.createElement('div');
-  line3.className = 'skeleton-line short';
-
-  right.appendChild(line1);
-  right.appendChild(line2);
-  right.appendChild(line3);
-
-  sk.appendChild(left);
-  sk.appendChild(right);
-
-  return sk;
-}
-
-function attachSkeletonToCard(card) {
-  if (card.__skeletonAttached) return;
-  const wrapper = document.createElement('div');
-  wrapper.className = 'skeleton-wrapper';
-
-  // Move existing children into wrapper
-  while (card.firstChild) {
-    wrapper.appendChild(card.firstChild);
+    return { id, title, price, image };
   }
 
-  card.appendChild(wrapper);
+  function setupOrderFeatures() {
+    const menuItems = document.querySelectorAll(".menu-content .menu-item");
+    if (!menuItems.length || !orderDock) return;
 
-  const skeleton = createCardSkeleton();
-  wrapper.appendChild(skeleton);
+    menuItems.forEach((item) => {
+      const data = getMenuItemData(item);
+      item.dataset.itemId = data.id;
 
-  // Hide native images inside the card while loading
-  const imgs = wrapper.querySelectorAll('img');
-  imgs.forEach((img) => {
-    img.classList.add('image-hidden');
-    // lazy-load optimization: set loading attribute where supported
-    try { if (!img.hasAttribute('loading')) img.setAttribute('loading', 'lazy'); } catch (e) {}
+      const actions = document.createElement("div");
+      actions.className = "menu-actions";
+      actions.innerHTML = `
+        <button class="menu-action-btn add-cart-btn" type="button" data-id="${data.id}">Add</button>
+        <button class="menu-action-btn favorite-btn" type="button" data-id="${data.id}" aria-label="Add ${data.title} to favourites">\u2661</button>
+      `;
 
-    if (img.complete && img.naturalWidth > 0) {
-      // Already loaded from cache - reveal immediately
-      img.classList.add('image-loaded');
-      img.classList.remove('image-hidden');
-      skeleton.remove();
+      item.querySelector(".food-content")?.appendChild(actions);
+
+      actions.querySelector(".add-cart-btn")?.addEventListener("click", () => addToCart(data));
+      actions.querySelector(".favorite-btn")?.addEventListener("click", () => toggleFavorite(data));
+    });
+
+    orderToggle?.addEventListener("click", () => {
+      const isOpen = orderDock.classList.toggle("open");
+      orderToggle.setAttribute("aria-expanded", String(isOpen));
+    });
+
+    orderTabs.forEach((tab) => {
+      tab.addEventListener("click", () => {
+        const targetView = tab.dataset.orderView;
+        orderTabs.forEach((item) => item.classList.toggle("active", item === tab));
+        orderViews.forEach((view) => view.classList.toggle("active", view.id === `${targetView}View`));
+      });
+    });
+
+    checkoutBtn?.addEventListener("click", () => {
+      if (!cart.length) return;
+
+      const summary = cart.map((item) => `${item.qty} x ${item.title}`).join(", ");
+      checkoutBtn.textContent = "Order Ready!";
+      checkoutBtn.title = summary;
+      setTimeout(() => {
+        checkoutBtn.textContent = "Review Order";
+        checkoutBtn.title = "";
+      }, 2200);
+    });
+
+    renderOrderState();
+  }
+
+  function addToCart(item) {
+    const existing = cart.find((cartItem) => cartItem.id === item.id);
+
+    if (existing) {
+      existing.qty += 1;
     } else {
-      // Wait for load or error
-      img.addEventListener('load', function onLoad() {
-        img.classList.add('image-loaded');
-        img.classList.remove('image-hidden');
-        // fade out skeleton then remove
-        skeleton.style.transition = 'opacity 0.45s ease';
-        skeleton.style.opacity = '0';
-        setTimeout(() => skeleton.remove(), 500);
-        img.removeEventListener('load', onLoad);
-      });
-
-      img.addEventListener('error', function onError() {
-        // remove skeleton even if image fails to avoid permanent overlays
-        skeleton.style.transition = 'opacity 0.25s ease';
-        skeleton.style.opacity = '0';
-        setTimeout(() => skeleton.remove(), 300);
-        img.classList.remove('image-hidden');
-        img.removeEventListener('error', onError);
-      });
+      cart.push({ ...item, qty: 1 });
     }
-  });
 
-  card.__skeletonAttached = true;
-}
-
-function attachSkeletonToSimpleImage(container, minHeight = 180) {
-  // container is element that contains a single img as background or child
-  const img = container.querySelector('img');
-  if (!img) return;
-  if (container.__skeletonAttached) return;
-
-  const sk = document.createElement('div');
-  sk.className = 'skeleton-img skeleton';
-  sk.style.height = minHeight + 'px';
-  sk.style.width = '100%';
-  sk.style.borderRadius = getComputedStyle(container).borderRadius || '4px';
-  sk.style.position = 'absolute';
-  sk.style.inset = '0';
-  sk.style.zIndex = '2';
-
-  // ensure container is positioned to allow absolute overlay
-  const prevPos = getComputedStyle(container).position;
-  if (prevPos === 'static') container.style.position = 'relative';
-
-  container.appendChild(sk);
-
-  img.classList.add('image-hidden');
-
-  if (img.complete && img.naturalWidth > 0) {
-    img.classList.add('image-loaded');
-    img.classList.remove('image-hidden');
-    sk.remove();
-  } else {
-    try { if (!img.hasAttribute('loading')) img.setAttribute('loading', 'lazy'); } catch (e) {}
-
-    img.addEventListener('load', function onLoad() {
-      img.classList.add('image-loaded');
-      img.classList.remove('image-hidden');
-      sk.style.transition = 'opacity 0.45s ease';
-      sk.style.opacity = '0';
-      setTimeout(() => sk.remove(), 500);
-      img.removeEventListener('load', onLoad);
-    });
-    img.addEventListener('error', function onError() {
-      sk.style.opacity = '0';
-      setTimeout(() => sk.remove(), 300);
-      img.classList.remove('image-hidden');
-      img.removeEventListener('error', onError);
-    });
+    saveStoredList("lighthouse_cart", cart);
+    renderOrderState();
+    orderDock?.classList.add("open");
+    orderToggle?.setAttribute("aria-expanded", "true");
   }
 
-  container.__skeletonAttached = true;
-}
-
-// Text skeletons
-function createTextSkeleton(lines = 3) {
-  const wrapper = document.createElement('div');
-  wrapper.className = 'skeleton skeleton-overlay skeleton-fade';
-  wrapper.setAttribute('aria-hidden', 'true');
-
-  const block = document.createElement('div');
-  block.className = 'skeleton-lines';
-
-  for (let i = 0; i < lines; i++) {
-    const line = document.createElement('div');
-    line.className = 'skeleton-line';
-    // vary width for realism
-    if (i === 0) line.classList.add('long');
-    else if (i === lines - 1) line.classList.add('short');
-    else line.classList.add('medium');
-    block.appendChild(line);
-  }
-
-  wrapper.appendChild(block);
-  return wrapper;
-}
-
-function attachSkeletonToTextBlock(el, lines = 3) {
-  if (!el || el.__skeletonAttached) return;
-
-  // ensure wrapper for absolute overlay
-  el.classList.add('skeleton-wrapper');
-  const sk = createTextSkeleton(lines);
-
-  // hide content until revealed
-  el.classList.add('content-hidden');
-
-  // insert skeleton overlay
-  sk.style.position = 'absolute';
-  sk.style.top = 0;
-  sk.style.left = 0;
-  sk.style.right = 0;
-  sk.style.bottom = 0;
-  sk.style.zIndex = 2;
-  el.appendChild(sk);
-
-  // Reveal content after microtask or when images inside have loaded
-  // For static text, unhide quickly to avoid long overlays
-  requestAnimationFrame(() => {
-    // small delay to allow shimmer to show slightly
-    setTimeout(() => {
-      el.classList.remove('content-hidden');
-      el.classList.add('content-visible');
-      // fade out skeleton
-      sk.style.opacity = '0';
-      setTimeout(() => sk.remove(), 500);
-    }, 300);
-  });
-
-  el.__skeletonAttached = true;
-}
-
-// Updated init to attach text skeletons
-function initSkeletonLoaders() {
-  // Menu card skeletons
-  const cards = document.querySelectorAll('.food-card');
-  cards.forEach((card) => attachSkeletonToCard(card));
+  function updateCartQty(id, delta) {
+    const item = cart.find((cartItem) => cartItem.id === id);
+    if (!item) return;
 
   // Large section images: hero, about image, reservation bg
   const largeContainers = [
