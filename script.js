@@ -13,13 +13,12 @@ const reservationForm = document.getElementById("reservationForm");
 const dateInput = document.getElementById("reservation-date");
 const timeSelect = document.getElementById("time");
 const themeToggle = document.getElementById("themeToggle");
-
-// FIX #4 — Declare filterBtns, menuTabs, menuPanels (were used but never declared)
 const filterBtns = document.querySelectorAll(".filter-btn");
+const menuContent = document.querySelector(".menu-content");
 const menuTabs = document.querySelectorAll(".menu-tab");
 const menuPanels = document.querySelectorAll(".menu-panel");
 
-// ── Device detection ───
+// ── Device detection (used by FIX #9 and FIX #14) ───
 const isTouchDevice = window.matchMedia('(hover: none) and (pointer: coarse)').matches;
 
 // ── FIX #9 — show correct scroll hint based on input type ────────
@@ -71,8 +70,6 @@ function updateAvailableTimes() {
     }
   });
 }
-
-
 
 // ── Navigation scroll effect ──
 function handleScroll() {
@@ -149,15 +146,11 @@ function switchMenuTab(e) {
   });
 }
 
-//
 // Theme Toggle
 const savedTheme = localStorage.getItem("theme");
 
 if (savedTheme === "light") {
   document.body.classList.add("light-theme");
-  themeToggle.textContent = "☀️";
-} else {
-  themeToggle.textContent = "🌙";
 }
 
 themeToggle.addEventListener("click", () => {
@@ -167,10 +160,8 @@ themeToggle.addEventListener("click", () => {
 
   if (isLight) {
     localStorage.setItem("theme", "light");
-    themeToggle.textContent = "☀️";
   } else {
     localStorage.setItem("theme", "dark");
-    themeToggle.textContent = "🌙";
   }
 });
 
@@ -237,8 +228,6 @@ filterBtns.forEach((btn) => {
 });
 
 // FIX #2 — Removed duplicate menuSearch 'input' listener (was calling filterMenuItems with wrong/missing args)
-
- 
 
 // Smooth scroll for navigation links
 function smoothScroll(e) {
@@ -447,7 +436,24 @@ function getReviews() {
 function saveReviews(reviews) {
   localStorage.setItem(STORAGE_KEY, JSON.stringify(reviews));
 }
+function updateAverageRating() {
+  const averageRating = document.getElementById("average-rating");
+  if (!averageRating) return;
 
+  const userReviews = getReviews();
+  const allReviews = [pinnedReview, ...userReviews];
+
+  const totalRating = allReviews.reduce(
+    (sum, review) => sum + review.rating,
+    0
+  );
+
+  const average = (totalRating / allReviews.length).toFixed(1);
+
+  averageRating.textContent = `⭐ ${average}/5 from ${allReviews.length} review${
+    allReviews.length > 1 ? "s" : ""
+  }`;
+}
 function renderReviews() {
   const grid = document.getElementById('reviews-grid');
   if (!grid) return;
@@ -476,6 +482,7 @@ function renderReviews() {
       </div>`
     )
     .join('');
+    updateAverageRating();
 }
 
 // Star rating widget
@@ -649,6 +656,20 @@ document.addEventListener('click', function (e) {
     });
   }
 });
+// Random Chef's Recommendation
+function displayChefsRecommendation() {
+  const recommendation = document.getElementById("chefRecommendation");
+  if (!recommendation) return;
+
+  const menuItems = Array.from(document.querySelectorAll(".menu-item h3"));
+
+  if (menuItems.length === 0) return;
+
+  const randomItem =
+    menuItems[Math.floor(Math.random() * menuItems.length)];
+
+  recommendation.textContent = randomItem.textContent;
+}
 
 // Translate UI Content
 function updateContent() {
@@ -746,6 +767,223 @@ const styleForMobile = `
   }
 `;
 
+// ── Skeleton Loader Initialization ─────────────────────────────────────
+function createCardSkeleton() {
+  const sk = document.createElement('div');
+  sk.className = 'skeleton-card skeleton';
+
+  const left = document.createElement('div');
+  left.className = 'skeleton-img';
+
+  const right = document.createElement('div');
+  right.className = 'skeleton-lines';
+
+  const line1 = document.createElement('div');
+  line1.className = 'skeleton-line long';
+  const line2 = document.createElement('div');
+  line2.className = 'skeleton-line medium';
+  const line3 = document.createElement('div');
+  line3.className = 'skeleton-line short';
+
+  right.appendChild(line1);
+  right.appendChild(line2);
+  right.appendChild(line3);
+
+  sk.appendChild(left);
+  sk.appendChild(right);
+
+  return sk;
+}
+
+function attachSkeletonToCard(card) {
+  if (card.__skeletonAttached) return;
+  const wrapper = document.createElement('div');
+  wrapper.className = 'skeleton-wrapper';
+
+  // Move existing children into wrapper
+  while (card.firstChild) {
+    wrapper.appendChild(card.firstChild);
+  }
+
+  card.appendChild(wrapper);
+
+  const skeleton = createCardSkeleton();
+  wrapper.appendChild(skeleton);
+
+  // Hide native images inside the card while loading
+  const imgs = wrapper.querySelectorAll('img');
+  imgs.forEach((img) => {
+    img.classList.add('image-hidden');
+    // lazy-load optimization: set loading attribute where supported
+    try { if (!img.hasAttribute('loading')) img.setAttribute('loading', 'lazy'); } catch (e) {}
+
+    if (img.complete && img.naturalWidth > 0) {
+      // Already loaded from cache - reveal immediately
+      img.classList.add('image-loaded');
+      img.classList.remove('image-hidden');
+      skeleton.remove();
+    } else {
+      // Wait for load or error
+      img.addEventListener('load', function onLoad() {
+        img.classList.add('image-loaded');
+        img.classList.remove('image-hidden');
+        // fade out skeleton then remove
+        skeleton.style.transition = 'opacity 0.45s ease';
+        skeleton.style.opacity = '0';
+        setTimeout(() => skeleton.remove(), 500);
+        img.removeEventListener('load', onLoad);
+      });
+
+      img.addEventListener('error', function onError() {
+        // remove skeleton even if image fails to avoid permanent overlays
+        skeleton.style.transition = 'opacity 0.25s ease';
+        skeleton.style.opacity = '0';
+        setTimeout(() => skeleton.remove(), 300);
+        img.classList.remove('image-hidden');
+        img.removeEventListener('error', onError);
+      });
+    }
+  });
+
+  card.__skeletonAttached = true;
+}
+
+function attachSkeletonToSimpleImage(container, minHeight = 180) {
+  // container is element that contains a single img as background or child
+  const img = container.querySelector('img');
+  if (!img) return;
+  if (container.__skeletonAttached) return;
+
+  const sk = document.createElement('div');
+  sk.className = 'skeleton-img skeleton';
+  sk.style.height = minHeight + 'px';
+  sk.style.width = '100%';
+  sk.style.borderRadius = getComputedStyle(container).borderRadius || '4px';
+  sk.style.position = 'absolute';
+  sk.style.inset = '0';
+  sk.style.zIndex = '2';
+
+  // ensure container is positioned to allow absolute overlay
+  const prevPos = getComputedStyle(container).position;
+  if (prevPos === 'static') container.style.position = 'relative';
+
+  container.appendChild(sk);
+
+  img.classList.add('image-hidden');
+
+  if (img.complete && img.naturalWidth > 0) {
+    img.classList.add('image-loaded');
+    img.classList.remove('image-hidden');
+    sk.remove();
+  } else {
+    try { if (!img.hasAttribute('loading')) img.setAttribute('loading', 'lazy'); } catch (e) {}
+
+    img.addEventListener('load', function onLoad() {
+      img.classList.add('image-loaded');
+      img.classList.remove('image-hidden');
+      sk.style.transition = 'opacity 0.45s ease';
+      sk.style.opacity = '0';
+      setTimeout(() => sk.remove(), 500);
+      img.removeEventListener('load', onLoad);
+    });
+    img.addEventListener('error', function onError() {
+      sk.style.opacity = '0';
+      setTimeout(() => sk.remove(), 300);
+      img.classList.remove('image-hidden');
+      img.removeEventListener('error', onError);
+    });
+  }
+
+  container.__skeletonAttached = true;
+}
+
+// Text skeletons
+function createTextSkeleton(lines = 3) {
+  const wrapper = document.createElement('div');
+  wrapper.className = 'skeleton skeleton-overlay skeleton-fade';
+  wrapper.setAttribute('aria-hidden', 'true');
+
+  const block = document.createElement('div');
+  block.className = 'skeleton-lines';
+
+  for (let i = 0; i < lines; i++) {
+    const line = document.createElement('div');
+    line.className = 'skeleton-line';
+    // vary width for realism
+    if (i === 0) line.classList.add('long');
+    else if (i === lines - 1) line.classList.add('short');
+    else line.classList.add('medium');
+    block.appendChild(line);
+  }
+
+  wrapper.appendChild(block);
+  return wrapper;
+}
+
+function attachSkeletonToTextBlock(el, lines = 3) {
+  if (!el || el.__skeletonAttached) return;
+
+  // ensure wrapper for absolute overlay
+  el.classList.add('skeleton-wrapper');
+  const sk = createTextSkeleton(lines);
+
+  // hide content until revealed
+  el.classList.add('content-hidden');
+
+  // insert skeleton overlay
+  sk.style.position = 'absolute';
+  sk.style.top = 0;
+  sk.style.left = 0;
+  sk.style.right = 0;
+  sk.style.bottom = 0;
+  sk.style.zIndex = 2;
+  el.appendChild(sk);
+
+  // Reveal content after microtask or when images inside have loaded
+  // For static text, unhide quickly to avoid long overlays
+  requestAnimationFrame(() => {
+    // small delay to allow shimmer to show slightly
+    setTimeout(() => {
+      el.classList.remove('content-hidden');
+      el.classList.add('content-visible');
+      // fade out skeleton
+      sk.style.opacity = '0';
+      setTimeout(() => sk.remove(), 500);
+    }, 300);
+  });
+
+  el.__skeletonAttached = true;
+}
+
+// Updated init to attach text skeletons
+function initSkeletonLoaders() {
+  // Menu card skeletons
+  const cards = document.querySelectorAll('.food-card');
+  cards.forEach((card) => attachSkeletonToCard(card));
+
+  // Large section images: hero, about image, reservation bg
+  const largeContainers = [
+    document.querySelector('.hero-bg'),
+    document.querySelector('.about-image'),
+    document.querySelector('.reservation-bg'),
+  ];
+
+  largeContainers.forEach((c) => {
+    if (c) attachSkeletonToSimpleImage(c, 360);
+  });
+
+  // Text blocks (about, reservation info, first paragraph areas)
+  const textTargets = document.querySelectorAll('.about-content, .reservation-info, .review-form-heading');
+  textTargets.forEach((t) => attachSkeletonToTextBlock(t, 3));
+}
+
+// Initialize skeletons once DOM is ready
+document.addEventListener('DOMContentLoaded', () => {
+  // existing DOMContentLoaded handlers already call init functions earlier,
+  // but ensure skeletons are attached after render
+  initSkeletonLoaders();
+});
+
 const mobileStyle = document.createElement('style');
 mobileStyle.textContent = styleForMobile;
 document.head.appendChild(mobileStyle);
@@ -756,3 +994,338 @@ const currentYear = document.getElementById("current-year");
 if (currentYear) {
   currentYear.textContent = new Date().getFullYear();
 }
+
+
+// =============================================
+// PDF MENU DOWNLOAD
+// =============================================
+
+// Load html2pdf library dynamically
+function loadHtml2Pdf() {
+  return new Promise((resolve, reject) => {
+    if (typeof html2pdf !== 'undefined') {
+      resolve();
+      return;
+    }
+    
+    const script = document.createElement('script');
+    script.src = 'https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js';
+    script.onload = resolve;
+    script.onerror = reject;
+    document.head.appendChild(script);
+  });
+}
+
+// Create loading overlay
+function showLoadingOverlay() {
+  const overlay = document.createElement('div');
+  overlay.className = 'pdf-loading';
+  overlay.id = 'pdfLoading';
+  overlay.innerHTML = `
+    <div class="spinner"></div>
+    <p>Generating your menu PDF...</p>
+    <p style="font-size: 0.9rem; color: rgba(255,255,255,0.7); margin-top: 10px;">Please wait</p>
+  `;
+  document.body.appendChild(overlay);
+}
+
+function hideLoadingOverlay() {
+  const overlay = document.getElementById('pdfLoading');
+  if (overlay) {
+    overlay.remove();
+  }
+}
+
+// Generate PDF Menu
+async function generateMenuPDF() {
+  try {
+    // Show loading
+    showLoadingOverlay();
+
+    // Load html2pdf library if not loaded
+    await loadHtml2Pdf();
+
+    // Get menu items
+    const menuItems = document.querySelectorAll('.menu-item:not(.hidden-item)');
+    
+    if (menuItems.length === 0) {
+      alert('No menu items available to download.');
+      hideLoadingOverlay();
+      return;
+    }
+
+    // Build PDF content
+    const pdfContent = document.createElement('div');
+    pdfContent.style.cssText = `
+      padding: 40px;
+      background: white;
+      font-family: 'Georgia', serif;
+      max-width: 1000px;
+      margin: 0 auto;
+      color: #1a1714;
+    `;
+
+    // Header
+    const header = document.createElement('div');
+    header.style.cssText = `
+      text-align: center;
+      border-bottom: 3px solid #c9a962;
+      padding-bottom: 30px;
+      margin-bottom: 30px;
+    `;
+    header.innerHTML = `
+      <h1 style="font-size: 36px; font-family: 'Georgia', serif; color: #c9a962; margin-bottom: 10px; letter-spacing: 2px;">
+        The Lighthouse
+      </h1>
+      <p style="font-size: 18px; color: #666; font-style: italic; margin-bottom: 5px;">
+        Where culinary artistry meets timeless elegance
+      </p>
+      <p style="font-size: 14px; color: #999; letter-spacing: 1px;">
+        EST. 1987
+      </p>
+      <p style="font-size: 14px; color: #999; margin-top: 10px;">
+        123 Harbor View Drive, Coastal City, CA 90210
+      </p>
+      <p style="font-size: 14px; color: #999;">
+        📞 (555) 123-4567
+      </p>
+    `;
+    pdfContent.appendChild(header);
+
+    // Group items by category
+    const categories = {
+      breakfast: { title: 'Breakfast', items: [] },
+      lunch: { title: 'Lunch', items: [] },
+      dinner: { title: 'Dinner', items: [] },
+      desserts: { title: 'Desserts', items: [] },
+      drinks: { title: 'Drinks', items: [] }
+    };
+
+    menuItems.forEach((item) => {
+      const category = item.dataset.category;
+      if (categories[category]) {
+        const name = item.querySelector('h3')?.textContent || 'Unknown';
+        const price = item.querySelector('.polaroid-price')?.textContent || 
+                      item.querySelector('.menu-price')?.textContent || 
+                      'Price on Request';
+        const diet = item.dataset.diet || 'veg';
+        const description = item.querySelector('.back-content p')?.textContent || 
+                           item.querySelector('.food-content p')?.textContent || 
+                           '';
+        
+        categories[category].items.push({ name, price, diet, description });
+      }
+    });
+
+    // Add categories to PDF
+    Object.values(categories).forEach((category) => {
+      if (category.items.length === 0) return;
+
+      const section = document.createElement('div');
+      section.style.cssText = `
+        margin-bottom: 30px;
+        page-break-inside: avoid;
+      `;
+
+      const title = document.createElement('h2');
+      title.style.cssText = `
+        font-size: 24px;
+        color: #c9a962;
+        border-bottom: 2px solid #c9a962;
+        padding-bottom: 8px;
+        margin-bottom: 20px;
+        font-family: 'Georgia', serif;
+      `;
+      title.textContent = category.title;
+      section.appendChild(title);
+
+      const grid = document.createElement('div');
+      grid.style.cssText = `
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 20px;
+      `;
+
+      category.items.forEach((item) => {
+        const card = document.createElement('div');
+        card.style.cssText = `
+          border: 1px solid #e0e0e0;
+          padding: 15px;
+          border-radius: 8px;
+          background: #fafafa;
+        `;
+
+        const namePrice = document.createElement('div');
+        namePrice.style.cssText = `
+          display: flex;
+          justify-content: space-between;
+          align-items: baseline;
+          margin-bottom: 6px;
+        `;
+
+        const nameEl = document.createElement('span');
+        nameEl.style.cssText = `
+          font-size: 16px;
+          font-weight: 600;
+          color: #1a1714;
+        `;
+        nameEl.textContent = item.name;
+
+        const priceEl = document.createElement('span');
+        priceEl.style.cssText = `
+          font-size: 15px;
+          font-weight: 600;
+          color: #c9a962;
+        `;
+        priceEl.textContent = item.price;
+
+        namePrice.appendChild(nameEl);
+        namePrice.appendChild(priceEl);
+        card.appendChild(namePrice);
+
+        // Diet tag
+        const dietTag = document.createElement('span');
+        dietTag.style.cssText = `
+          display: inline-block;
+          font-size: 11px;
+          padding: 2px 10px;
+          border-radius: 12px;
+          margin-top: 4px;
+          margin-bottom: 6px;
+          font-weight: 600;
+          background: ${item.diet === 'veg' ? '#e8f5e9' : '#ffebee'};
+          color: ${item.diet === 'veg' ? '#2e7d32' : '#c62828'};
+        `;
+        dietTag.textContent = item.diet === 'veg' ? '🌱 Vegetarian' : '🍗 Non-Veg';
+        card.appendChild(dietTag);
+
+        if (item.description) {
+          const desc = document.createElement('p');
+          desc.style.cssText = `
+            font-size: 13px;
+            color: #666;
+            margin-top: 6px;
+            line-height: 1.5;
+          `;
+          desc.textContent = item.description.substring(0, 100) + (item.description.length > 100 ? '...' : '');
+          card.appendChild(desc);
+        }
+
+        grid.appendChild(card);
+      });
+
+      section.appendChild(grid);
+      pdfContent.appendChild(section);
+    });
+
+    // Footer
+    const footer = document.createElement('div');
+    footer.style.cssText = `
+      margin-top: 40px;
+      padding-top: 20px;
+      border-top: 2px solid #c9a962;
+      text-align: center;
+      color: #999;
+      font-size: 12px;
+    `;
+    footer.innerHTML = `
+      <p>Thank you for dining with us at The Lighthouse</p>
+      <p style="margin-top: 5px;">We look forward to serving you!</p>
+      <p style="margin-top: 10px; font-size: 11px;">
+        Menu generated on ${new Date().toLocaleDateString('en-US', { 
+          weekday: 'long', 
+          year: 'numeric', 
+          month: 'long', 
+          day: 'numeric' 
+        })}
+      </p>
+    `;
+    pdfContent.appendChild(footer);
+
+    // Generate PDF
+    const opt = {
+      margin: [15, 15, 15, 15],
+      filename: `The_Lighthouse_Menu_${new Date().toISOString().split('T')[0]}.pdf`,
+      image: { type: 'jpeg', quality: 0.98 },
+      html2canvas: { 
+        scale: 2,
+        useCORS: true,
+        letterRendering: true,
+        scrollY: 0,
+        windowHeight: pdfContent.scrollHeight
+      },
+      jsPDF: { 
+        unit: 'mm', 
+        format: 'a4', 
+        orientation: 'portrait' 
+      },
+      pagebreak: { mode: ['avoid-all', 'css', 'legacy'] }
+    };
+
+    await html2pdf().set(opt).from(pdfContent).save();
+
+    // Hide loading
+    hideLoadingOverlay();
+
+  } catch (error) {
+    console.error('Error generating PDF:', error);
+    hideLoadingOverlay();
+    alert('Sorry, there was an error generating the PDF. Please try again.');
+  }
+}
+
+// ── PDF Download Button ──
+const downloadBtn = document.getElementById('downloadMenuPDF');
+if (downloadBtn) {
+  downloadBtn.addEventListener('click', generateMenuPDF);
+}
+
+// ── Also add a floating download button for quick access ──
+const floatingDownloadBtn = document.createElement('button');
+floatingDownloadBtn.id = 'floatingPdfBtn';
+floatingDownloadBtn.innerHTML = '📄 Menu PDF';
+floatingDownloadBtn.style.cssText = `
+  position: fixed;
+  bottom: 100px;
+  right: 32px;
+  padding: 12px 20px;
+  background: linear-gradient(135deg, #c9a962, #a88b4a);
+  color: #1a1714;
+  border: none;
+  border-radius: 30px;
+  font-weight: 600;
+  cursor: pointer;
+  z-index: 999;
+  box-shadow: 0 4px 20px rgba(201, 169, 98, 0.4);
+  transition: all 0.3s ease;
+  font-size: 14px;
+  display: none;
+`;
+
+floatingDownloadBtn.addEventListener('mouseenter', () => {
+  floatingDownloadBtn.style.transform = 'translateY(-3px) scale(1.05)';
+  floatingDownloadBtn.style.boxShadow = '0 6px 30px rgba(201, 169, 98, 0.6)';
+});
+
+floatingDownloadBtn.addEventListener('mouseleave', () => {
+  floatingDownloadBtn.style.transform = 'translateY(0) scale(1)';
+  floatingDownloadBtn.style.boxShadow = '0 4px 20px rgba(201, 169, 98, 0.4)';
+});
+
+floatingDownloadBtn.addEventListener('click', generateMenuPDF);
+document.body.appendChild(floatingDownloadBtn);
+
+// Show/hide floating button based on scroll position
+window.addEventListener('scroll', () => {
+  const menuSection = document.getElementById('menu');
+  if (!menuSection) return;
+  
+  const rect = menuSection.getBoundingClientRect();
+  if (rect.top < window.innerHeight && rect.bottom > 0) {
+    floatingDownloadBtn.style.display = 'block';
+  } else {
+    floatingDownloadBtn.style.display = 'none';
+  }
+});
+
+console.log('PDF Menu Download feature loaded!');

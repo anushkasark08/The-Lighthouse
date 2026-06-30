@@ -15,14 +15,12 @@
       rel="stylesheet"
     />
     <link rel="stylesheet" href="style.css" />
-    <!-- i18next libraries -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/i18next/23.11.5/i18next.min.js" defer></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/i18next-http-backend/2.5.2/i18nextHttpBackend.min.js" defer></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/i18next-browser-languagedetector/8.0.0/i18nextBrowserLanguageDetector.min.js" defer></script>
   </head>
   <body>
 
-    <!-- Navigation -->
     <nav class="nav" id="nav">
       <div class="nav-container">
         <a href="#home" class="nav-logo" data-i18n="nav.logo">The Lighthouse</a>
@@ -56,18 +54,29 @@
             <option value="gu">ગુજરાતી</option>
           </select>
         </div>
-        <button id="themeToggle" class="theme-toggle" aria-label="Toggle Theme">🌙</button>
+        <button id="themeToggle" class="theme-toggle" aria-label="Toggle Theme">
+          <span class="theme-toggle-icon theme-toggle-icon-moon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M21 13.2A8.5 8.5 0 1 1 10.8 3a7 7 0 1 0 10.2 10.2Z" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </span>
+          <span class="theme-toggle-icon theme-toggle-icon-sun" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <circle cx="12" cy="12" r="4" stroke="currentColor" stroke-width="1.8"/>
+              <path d="M12 2.8v2.4M12 18.8v2.4M4.2 4.2l1.7 1.7M18.1 18.1l1.7 1.7M2.8 12h2.4M18.8 12h2.4M4.2 19.8l1.7-1.7M18.1 5.9l1.7-1.7" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+            </svg>
+          </span>
+        </button>
         <a href="#reservation" class="nav-cta" data-i18n="nav.book_table">Book a Table</a>
       </div>
     </nav>
 
-    <!-- Hero Section -->
     <section class="hero" id="home">
       <div class="hero-bg" id="heroBg">
         <img
-  src="./images/hero-restaurant.jpg"
-  alt="The Lighthouse Restaurant Interior"
-/>
+          src="./images/hero-restaurant.jpg"
+          alt="The Lighthouse Restaurant Interior"
+        />
       </div>
       <div class="hero-overlay"></div>
       <div class="hero-content">
@@ -78,6 +87,9 @@
           <a href="#menu" class="btn btn-primary" data-i18n="hero.explore_menu">Explore Menu</a>
           <a href="#reservation" class="btn btn-outline" data-i18n="hero.reserve_table">Reserve Table</a>
         </div>
+        <div class="chef-recommendation">
+  <p><strong>🍽️ Chef's Recommendation:</strong> <span id="chefRecommendation"></span></p>
+</div>
         <div class="hero-scroll">
           <span data-i18n="hero.scroll_discover">Scroll To Discover</span>
           <span class="clicktoscroll" data-i18n="hero.click_scroll">Click To Scroll</span>
@@ -89,7 +101,6 @@
       </div>
     </section>
 
-    <!-- About Section -->
     <section class="about" id="about">
       <div class="container">
         <div class="about-grid">
@@ -113,7 +124,6 @@
       </div>
     </section>
 
-    <!-- Chef's Picks Section -->
     <section class="chef-section" id="chef">
       <div class="container">
         <div class="section-header">
@@ -124,10 +134,10 @@
           <div class="menu-item" data-category="breakfast">
             <div class="food-card">
               <img
-              src="./images/Chicken_Keema_Dosa.jpg"
-              alt="Chicken Keema Dosa"
-              class="food-image"
-              loading="lazy"
+                src="./images/Chicken_Keema_Dosa.jpg"
+                alt="Chicken Keema Dosa"
+                class="food-image"
+                loading="lazy"
               />
               <div class="food-content">
                 <div class="menu-item-header">
@@ -143,10 +153,10 @@
           <div class="menu-item" data-category="lunch">
             <div class="food-card">
               <img
-              src="./images/Paneer_Butter_Masala.jpg"
-              alt="Paneer Butter Masala"
-              class="food-image"
-              loading="lazy"
+                src="./images/Paneer_Butter_Masala.jpg"
+                alt="Paneer Butter Masala"
+                class="food-image"
+                loading="lazy"
               />
               <div class="food-content">
                 <div class="menu-item-header">
@@ -163,15 +173,19 @@
       </div>
     </section>
 
-    <!-- Menu Section -->
     <section class="menu-section" id="menu">
       <div class="container">
         <div class="section-header">
+          <span class="section-label">Culinary Offerings</span>
+          <h2 class="section-title">Our Menu</h2>
+      <p id="menu-category-count" class="category-count"></p>
+      <button id="downloadMenuPDF" class="btn btn-primary" style="margin-top: 20px;">
+        📄 Download Full Menu (PDF)
+      </button>
           <span class="section-label" data-i18n="menu.label">Culinary Offerings</span>
           <h2 class="section-title" data-i18n="menu.title">Our Menu</h2>
         </div>
 
-        <!-- Menu Search + Filters -->
         <div class="menu-controls">
           <label for="menu-search" class="sr-only" data-i18n="menu.search_placeholder">Search Menu</label>
           <input type="text" id="menu-search" placeholder="Search dishes..." class="menu-search" data-i18n-placeholder="menu.search_placeholder" />
@@ -185,7 +199,6 @@
           </div>
         </div>
 
-        <!-- Veg / Non-Veg Filter Toggle -->
         <div class="diet-filter" id="dietFilter">
           <button class="diet-btn active" data-diet="all" data-i18n="menu.diet_all">All Items</button>
           <button class="diet-btn veg" data-diet="veg">
@@ -196,14 +209,10 @@
           </button>
         </div>
 
-        <!-- Menu Content -->
         <div class="menu-content menu-panel active">
           <div class="menu-items">
 
-            <!-- ===== BREAKFAST ITEMS ===== -->
-
-            <!-- Masala Dosa -->
-            <div class="menu-item" data-category="breakfast" data-diet="veg">
+            <div class="menu-item" data-cuisine="core-menu regional-variation south-indian" data-category="breakfast" data-diet="veg">
               <div class="food-card-3d">
                 <div class="food-card-inner">
                   <div class="food-card-front">
@@ -245,7 +254,6 @@
               </div>
             </div>
 
-            <!-- Idli Sambar -->
             <div class="menu-item" data-category="breakfast" data-diet="veg">
               <div class="food-card-3d">
                 <div class="food-card-inner">
@@ -288,7 +296,6 @@
               </div>
             </div>
 
-            <!-- Chicken Keema Dosa -->
             <div class="menu-item" data-category="breakfast" data-diet="non-veg">
               <div class="food-card-3d">
                 <div class="food-card-inner">
@@ -331,9 +338,6 @@
               </div>
             </div>
 
-            <!-- ===== LUNCH ITEMS ===== -->
-
-            <!-- Paneer Butter Masala -->
             <div class="menu-item" data-category="lunch" data-diet="veg">
               <div class="food-card-3d">
                 <div class="food-card-inner">
@@ -376,9 +380,6 @@
               </div>
             </div>
 
-            <!-- ===== DINNER ITEMS ===== -->
-
-            <!-- Hyderabadi Chicken Biryani -->
             <div class="menu-item" data-category="dinner" data-diet="non-veg">
               <div class="food-card-3d">
                 <div class="food-card-inner">
@@ -421,7 +422,6 @@
               </div>
             </div>
 
-            <!-- Butter Chicken -->
             <div class="menu-item" data-category="dinner" data-diet="non-veg">
               <div class="food-card-3d">
                 <div class="food-card-inner">
@@ -464,9 +464,6 @@
               </div>
             </div>
 
-            <!-- ===== DRINKS ===== -->
-
-            <!-- Mango Lassi -->
             <div class="menu-item" data-category="drinks" data-diet="veg">
               <div class="food-card-3d">
                 <div class="food-card-inner">
@@ -509,7 +506,6 @@
               </div>
             </div>
 
-            <!-- Masala Chai -->
             <div class="menu-item" data-category="drinks" data-diet="veg">
               <div class="food-card-3d">
                 <div class="food-card-inner">
@@ -552,7 +548,6 @@
               </div>
             </div>
 
-            <!-- Fresh Lime Soda -->
             <div class="menu-item" data-category="drinks" data-diet="veg">
               <div class="food-card-3d">
                 <div class="food-card-inner">
@@ -575,7 +570,7 @@
                       <h4 data-i18n="menu.chef_notes">👨‍🍳 Chef's Notes</h4>
                       <p data-i18n="menu.items.fresh_lime_soda.notes">Fizzy lime soda available in sweet, salted, or mixed style. The perfect thirst-quencher on a warm day.</p>
                       <div class="back-details">
-                        <span data-i18n="menu.items.fresh_lime_soda.details_spicy">🥤 Cold &amp; Fizzy</span>
+                        <span data-i18n="menu.items.fresh_lime_soda.details_spicy">🥤 Cold & Fizzy</span>
                         <span data-i18n="menu.items.fresh_lime_soda.details_time">⏱️ 5 mins</span>
                         <span data-i18n="menu.items.fresh_lime_soda.details_serves">🍽️ Serves 1</span>
                       </div>
@@ -595,9 +590,6 @@
               </div>
             </div>
 
-            <!-- ===== DESSERTS ===== -->
-
-            <!-- Gulab Jamun -->
             <div class="menu-item" data-category="desserts" data-diet="veg">
               <div class="food-card-3d">
                 <div class="food-card-inner">
@@ -640,7 +632,6 @@
               </div>
             </div>
 
-            <!-- Rasmalai -->
             <div class="menu-item" data-category="desserts" data-diet="veg">
               <div class="food-card-3d">
                 <div class="food-card-inner">
@@ -663,7 +654,7 @@
                       <h4 data-i18n="menu.chef_notes">👨‍🍳 Chef's Notes</h4>
                       <p data-i18n="menu.items.rasmalai.notes">Soft, melt-in-your-mouth paneer discs soaked in creamy, saffron-infused reduced milk. Garnished with pistachios.</p>
                       <div class="back-details">
-                        <span data-i18n="menu.items.rasmalai.details_spicy">🍰 Sweet &amp; Creamy</span>
+                        <span data-i18n="menu.items.rasmalai.details_spicy">🍰 Sweet & Creamy</span>
                         <span data-i18n="menu.items.rasmalai.details_time">⏱️ 20 mins</span>
                         <span data-i18n="menu.items.rasmalai.details_serves">🍽️ Serves 1</span>
                       </div>
@@ -683,7 +674,6 @@
               </div>
             </div>
 
-            <!-- Kesar Pista Kulfi -->
             <div class="menu-item" data-category="desserts" data-diet="veg">
               <div class="food-card-3d">
                 <div class="food-card-inner">
