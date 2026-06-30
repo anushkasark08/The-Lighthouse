@@ -41,6 +41,7 @@ Designed with elegant dark aesthetics, immersive visuals, smooth animations, and
 ## 🎨 Premium UI & Branding
 
 - Elegant dark-themed luxury interface
+- Built-in dark/light theme toggle
 - Gold-accented modern design
 - Premium typography using:
   - **Cormorant Garamond**
@@ -56,9 +57,11 @@ Interactive category-based menu tabs:
 - 🍳 Breakfast
 - 🥗 Lunch
 - 🍽️ Dinner
+- 🍰 Desserts
 - 🍸 Drinks
 
 Switch seamlessly between menu sections without page reloads.
+Search and veg/non-veg filters help users quickly discover matching dishes.
 
 ---
 
@@ -80,6 +83,8 @@ Switch seamlessly between menu sections without page reloads.
 - Scroll reveal animations
 - Hover effects and transitions
 - Parallax scrolling backgrounds
+- Interactive 3D menu cards
+- Customer review submission with local storage
 
 ---
 
@@ -95,7 +100,7 @@ Switch seamlessly between menu sections without page reloads.
 ## 📍 Google Maps Integration
 
 - Embedded Google Maps support
-- Custom grayscale styling matching site aesthetics
+- Location section with address, contact details, hours, and social links
 
 ---
 
@@ -156,17 +161,32 @@ The-Lighthouse/
 │
 ├── images/
 │   ├── breakfast.jpg
+│   ├── Butter_Chicken.jpg
 │   ├── chef.jpg
+│   ├── Chicken_Keema_Dosa.jpg
 │   ├── dinner.jpg
 │   ├── drinks.jpg
+│   ├── Fresh_Lime_Soda.jpg
+│   ├── Gulab_Jamun.jpg
 │   ├── hero-restaurant.jpg
-│   └── lunch.jpg
+│   ├── Hyderabadi_Chicken_Biryani.jpg
+│   ├── Idli_Sambar.jpg
+│   ├── Kulfi.jpg
+│   ├── lunch.jpg
+│   ├── Mango_Lassi.jpg
+│   ├── Masala_Chai.jpg
+│   ├── MasalaDosa.jpg
+│   ├── Paneer_Butter_Masala.jpg
+│   └── Rasmalai.jpg
 │
+├── CODE_OF_CONDUCT.md
+├── CONTRIBUTING.md
 ├── Favicon.ico
 ├── index.html
 ├── LICENSE
-├── README.md
+├── Readme.md
 ├── robots.txt
+├── SECURITY.md
 ├── sitemap.xml
 ├── script.js
 └── style.css
@@ -179,7 +199,7 @@ The-Lighthouse/
 ## 1️⃣ Clone the Repository
 
 ```bash
-git clone https://github.com/Anushka-Sarkar/the-lighthouse-restaurant.git
+git clone https://github.com/anushkasark08/The-Lighthouse.git
 ```
 
 ---
@@ -187,7 +207,7 @@ git clone https://github.com/Anushka-Sarkar/the-lighthouse-restaurant.git
 ## 2️⃣ Navigate to the Project Directory
 
 ```bash
-cd the-lighthouse-restaurant
+cd The-Lighthouse
 ```
 
 ---
@@ -277,8 +297,8 @@ Modify colors inside `style.css`:
 
 # 🌟 Future Improvements
 
-- Dark/Light mode toggle
 - Online reservation backend
+- Newsletter subscription backend
 - Payment gateway integration
 - Food ordering functionality
 - Multi-language support
@@ -372,4 +392,4 @@ If you like this project:
 # 🔗 Repository
 
 GitHub Repository:  
-https://github.com/Anushka-Sarkar/the-lighthouse-restaurant
+https://github.com/anushkasark08/The-Lighthouse
