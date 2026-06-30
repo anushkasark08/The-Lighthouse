@@ -15,14 +15,12 @@
       rel="stylesheet"
     />
     <link rel="stylesheet" href="style.css" />
-    <!-- i18next libraries -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/i18next/23.11.5/i18next.min.js" defer></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/i18next-http-backend/2.5.2/i18nextHttpBackend.min.js" defer></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/i18next-browser-languagedetector/8.0.0/i18nextBrowserLanguageDetector.min.js" defer></script>
   </head>
   <body>
 
-    <!-- Navigation -->
     <nav class="nav" id="nav">
       <div class="nav-container">
         <a href="#home" class="nav-logo" data-i18n="nav.logo">The Lighthouse</a>
@@ -56,18 +54,29 @@
             <option value="gu">ગુજરાતી</option>
           </select>
         </div>
-        <button id="themeToggle" class="theme-toggle" aria-label="Toggle Theme">🌙</button>
+        <button id="themeToggle" class="theme-toggle" aria-label="Toggle Theme">
+          <span class="theme-toggle-icon theme-toggle-icon-moon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M21 13.2A8.5 8.5 0 1 1 10.8 3a7 7 0 1 0 10.2 10.2Z" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </span>
+          <span class="theme-toggle-icon theme-toggle-icon-sun" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <circle cx="12" cy="12" r="4" stroke="currentColor" stroke-width="1.8"/>
+              <path d="M12 2.8v2.4M12 18.8v2.4M4.2 4.2l1.7 1.7M18.1 18.1l1.7 1.7M2.8 12h2.4M18.8 12h2.4M4.2 19.8l1.7-1.7M18.1 5.9l1.7-1.7" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+            </svg>
+          </span>
+        </button>
         <a href="#reservation" class="nav-cta" data-i18n="nav.book_table">Book a Table</a>
       </div>
     </nav>
 
-    <!-- Hero Section -->
     <section class="hero" id="home">
       <div class="hero-bg" id="heroBg">
         <img
-  src="./images/hero-restaurant.jpg"
-  alt="The Lighthouse Restaurant Interior"
-/>
+          src="./images/hero-restaurant.jpg"
+          alt="The Lighthouse Restaurant Interior"
+        />
       </div>
       <div class="hero-overlay"></div>
       <div class="hero-content">
@@ -78,6 +87,9 @@
           <a href="#menu" class="btn btn-primary" data-i18n="hero.explore_menu">Explore Menu</a>
           <a href="#reservation" class="btn btn-outline" data-i18n="hero.reserve_table">Reserve Table</a>
         </div>
+        <div class="chef-recommendation">
+  <p><strong>🍽️ Chef's Recommendation:</strong> <span id="chefRecommendation"></span></p>
+</div>
         <div class="hero-scroll">
           <span data-i18n="hero.scroll_discover">Scroll To Discover</span>
           <span class="clicktoscroll" data-i18n="hero.click_scroll">Click To Scroll</span>
@@ -89,7 +101,6 @@
       </div>
     </section>
 
-    <!-- About Section -->
     <section class="about" id="about">
       <div class="container">
         <div class="about-grid">
@@ -113,7 +124,6 @@
       </div>
     </section>
 
-    <!-- Chef's Picks Section -->
     <section class="chef-section" id="chef">
       <div class="container">
         <div class="section-header">
@@ -124,10 +134,10 @@
           <div class="menu-item" data-category="breakfast">
             <div class="food-card">
               <img
-              src="./images/Chicken_Keema_Dosa.jpg"
-              alt="Chicken Keema Dosa"
-              class="food-image"
-              loading="lazy"
+                src="./images/Chicken_Keema_Dosa.jpg"
+                alt="Chicken Keema Dosa"
+                class="food-image"
+                loading="lazy"
               />
               <div class="food-content">
                 <div class="menu-item-header">
@@ -143,10 +153,10 @@
           <div class="menu-item" data-category="lunch">
             <div class="food-card">
               <img
-              src="./images/Paneer_Butter_Masala.jpg"
-              alt="Paneer Butter Masala"
-              class="food-image"
-              loading="lazy"
+                src="./images/Paneer_Butter_Masala.jpg"
+                alt="Paneer Butter Masala"
+                class="food-image"
+                loading="lazy"
               />
               <div class="food-content">
                 <div class="menu-item-header">
@@ -163,15 +173,19 @@
       </div>
     </section>
 
-    <!-- Menu Section -->
     <section class="menu-section" id="menu">
       <div class="container">
         <div class="section-header">
+          <span class="section-label">Culinary Offerings</span>
+          <h2 class="section-title">Our Menu</h2>
+      <p id="menu-category-count" class="category-count"></p>
+      <button id="downloadMenuPDF" class="btn btn-primary" style="margin-top: 20px;">
+        📄 Download Full Menu (PDF)
+      </button>
           <span class="section-label" data-i18n="menu.label">Culinary Offerings</span>
           <h2 class="section-title" data-i18n="menu.title">Our Menu</h2>
         </div>
 
-        <!-- Menu Search + Filters -->
         <div class="menu-controls">
           <label for="menu-search" class="sr-only" data-i18n="menu.search_placeholder">Search Menu</label>
           <input type="text" id="menu-search" placeholder="Search dishes..." class="menu-search" data-i18n-placeholder="menu.search_placeholder" />
@@ -185,7 +199,6 @@
           </div>
         </div>
 
-        <!-- Veg / Non-Veg Filter Toggle -->
         <div class="diet-filter" id="dietFilter">
           <button class="diet-btn active" data-diet="all" data-i18n="menu.diet_all">All Items</button>
           <button class="diet-btn veg" data-diet="veg">
@@ -196,14 +209,10 @@
           </button>
         </div>
 
-        <!-- Menu Content -->
         <div class="menu-content menu-panel active">
           <div class="menu-items">
 
-            <!-- ===== BREAKFAST ITEMS ===== -->
-
-            <!-- Masala Dosa -->
-            <div class="menu-item" data-category="breakfast" data-diet="veg">
+            <div class="menu-item" data-cuisine="core-menu regional-variation south-indian" data-category="breakfast" data-diet="veg">
               <div class="food-card-3d">
                 <div class="food-card-inner">
                   <div class="food-card-front">
@@ -245,7 +254,6 @@
               </div>
             </div>
 
-            <!-- Idli Sambar -->
             <div class="menu-item" data-category="breakfast" data-diet="veg">
               <div class="food-card-3d">
                 <div class="food-card-inner">
@@ -288,7 +296,6 @@
               </div>
             </div>
 
-            <!-- Chicken Keema Dosa -->
             <div class="menu-item" data-category="breakfast" data-diet="non-veg">
               <div class="food-card-3d">
                 <div class="food-card-inner">
@@ -331,9 +338,6 @@
               </div>
             </div>
 
-            <!-- ===== LUNCH ITEMS ===== -->
-
-            <!-- Paneer Butter Masala -->
             <div class="menu-item" data-category="lunch" data-diet="veg">
               <div class="food-card-3d">
                 <div class="food-card-inner">
@@ -376,9 +380,6 @@
               </div>
             </div>
 
-            <!-- ===== DINNER ITEMS ===== -->
-
-            <!-- Hyderabadi Chicken Biryani -->
             <div class="menu-item" data-category="dinner" data-diet="non-veg">
               <div class="food-card-3d">
                 <div class="food-card-inner">
@@ -421,7 +422,6 @@
               </div>
             </div>
 
-            <!-- Butter Chicken -->
             <div class="menu-item" data-category="dinner" data-diet="non-veg">
               <div class="food-card-3d">
                 <div class="food-card-inner">
@@ -464,9 +464,6 @@
               </div>
             </div>
 
-            <!-- ===== DRINKS ===== -->
-
-            <!-- Mango Lassi -->
             <div class="menu-item" data-category="drinks" data-diet="veg">
               <div class="food-card-3d">
                 <div class="food-card-inner">
@@ -509,7 +506,6 @@
               </div>
             </div>
 
-            <!-- Masala Chai -->
             <div class="menu-item" data-category="drinks" data-diet="veg">
               <div class="food-card-3d">
                 <div class="food-card-inner">
@@ -552,7 +548,6 @@
               </div>
             </div>
 
-            <!-- Fresh Lime Soda -->
             <div class="menu-item" data-category="drinks" data-diet="veg">
               <div class="food-card-3d">
                 <div class="food-card-inner">
@@ -575,7 +570,7 @@
                       <h4 data-i18n="menu.chef_notes">👨‍🍳 Chef's Notes</h4>
                       <p data-i18n="menu.items.fresh_lime_soda.notes">Fizzy lime soda available in sweet, salted, or mixed style. The perfect thirst-quencher on a warm day.</p>
                       <div class="back-details">
-                        <span data-i18n="menu.items.fresh_lime_soda.details_spicy">🥤 Cold &amp; Fizzy</span>
+                        <span data-i18n="menu.items.fresh_lime_soda.details_spicy">🥤 Cold & Fizzy</span>
                         <span data-i18n="menu.items.fresh_lime_soda.details_time">⏱️ 5 mins</span>
                         <span data-i18n="menu.items.fresh_lime_soda.details_serves">🍽️ Serves 1</span>
                       </div>
@@ -595,9 +590,6 @@
               </div>
             </div>
 
-            <!-- ===== DESSERTS ===== -->
-
-            <!-- Gulab Jamun -->
             <div class="menu-item" data-category="desserts" data-diet="veg">
               <div class="food-card-3d">
                 <div class="food-card-inner">
@@ -640,7 +632,6 @@
               </div>
             </div>
 
-            <!-- Rasmalai -->
             <div class="menu-item" data-category="desserts" data-diet="veg">
               <div class="food-card-3d">
                 <div class="food-card-inner">
@@ -663,7 +654,7 @@
                       <h4 data-i18n="menu.chef_notes">👨‍🍳 Chef's Notes</h4>
                       <p data-i18n="menu.items.rasmalai.notes">Soft, melt-in-your-mouth paneer discs soaked in creamy, saffron-infused reduced milk. Garnished with pistachios.</p>
                       <div class="back-details">
-                        <span data-i18n="menu.items.rasmalai.details_spicy">🍰 Sweet &amp; Creamy</span>
+                        <span data-i18n="menu.items.rasmalai.details_spicy">🍰 Sweet & Creamy</span>
                         <span data-i18n="menu.items.rasmalai.details_time">⏱️ 20 mins</span>
                         <span data-i18n="menu.items.rasmalai.details_serves">🍽️ Serves 1</span>
                       </div>
@@ -683,422 +674,10 @@
               </div>
             </div>
 
-            <!-- Kesar Pista Kulfi -->
             <div class="menu-item" data-category="desserts" data-diet="veg">
               <div class="food-card-3d">
                 <div class="food-card-inner">
                   <div class="food-card-front">
                     <div class="polaroid">
                       <div class="polaroid-image-wrapper">
-                        <img src="./images/Kulfi.jpg" alt="Kesar Pista Kulfi" loading="lazy" />
-                        <div class="polaroid-tape"></div>
-                        <div class="polaroid-badge refreshing" data-i18n="menu.tags.delight">🥄 Delight</div>
-                      </div>
-                      <div class="polaroid-caption">
-                        <h3 data-i18n="menu.items.kesar_pista_kulfi.name">Kesar Pista Kulfi</h3>
-                        <div class="polaroid-price">₹130</div>
-                        <span class="food-tag veg" data-i18n="menu.tags.veg">Veg</span>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="food-card-back">
-                    <div class="back-content">
-                      <h4 data-i18n="menu.chef_notes">👨‍🍳 Chef's Notes</h4>
-                      <p data-i18n="menu.items.kesar_pista_kulfi.notes">Traditional Indian ice cream with a rich, creamy texture, infused with aromatic saffron and loaded with crunchy pistachios.</p>
-                      <div class="back-details">
-                        <span data-i18n="menu.items.kesar_pista_kulfi.details_spicy">🍰 Frozen Delight</span>
-                        <span data-i18n="menu.items.kesar_pista_kulfi.details_time">⏱️ 10 mins</span>
-                        <span data-i18n="menu.items.kesar_pista_kulfi.details_serves">🍽️ Serves 1</span>
-                      </div>
-                      <div class="back-ingredients">
-                        <strong data-i18n="menu.key_ingredients">Key Ingredients:</strong>
-                        <span data-i18n="menu.items.kesar_pista_kulfi.ingredients">Milk, Saffron, Pistachios, Sugar, Cardamom</span>
-                      </div>
-                      <div class="back-allergens">
-                        <span><span data-i18n="menu.contains">⚠️ Contains:</span> <span data-i18n="menu.items.kesar_pista_kulfi.allergens">Dairy</span></span>
-                      </div>
-                      <div class="star-rating">
-                        <span class="star" style="color: gold;">★★★★☆ 4.2 (143 <span data-i18n="menu.ratings">Ratings</span>)</span>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-          </div><!-- /.menu-items -->
-        </div><!-- /.menu-content -->
-      </div><!-- /.container -->
-    </section><!-- /#menu -->
-
-    <!-- Chef's Specials Section -->
-    <section class="specials" id="specials">
-      <div class="container">
-        <div class="section-header">
-          <span class="section-label" data-i18n="specials.label">Chef Recommendations</span>
-          <h2 class="section-title" data-i18n="specials.title">Today's Specials</h2>
-          <p data-i18n="specials.desc">Handpicked signature dishes prepared by our chef.</p>
-        </div>
-        <div class="specials-grid">
-
-          <div class="special-card">
-            <img
-  src="./images/Hyderabadi_Chicken_Biryani.jpg"
-  alt="Royal Biryani"
-  loading="lazy"
-/>
-            <div class="special-content">
-              <span class="special-badge" data-i18n="specials.bestseller">🔥 Best Seller</span>
-              <h3 data-i18n="menu.items.hyderabadi_chicken_biryani.name">Hyderabadi Chicken Biryani</h3>
-              <p data-i18n="specials.hyderabadi_chicken_biryani_desc">Slow-cooked dum biryani with aromatic spices.</p>
-              <span class="price">₹399</span>
-            </div>
-          </div>
-
-          <div class="special-card">
-            <img
-  src="./images/Paneer_Butter_Masala.jpg"
-  alt="Paneer Delight"
-  loading="lazy"
-/>
-            <div class="special-content">
-              <span class="special-badge" data-i18n="specials.choice">👨‍🍳 Chef's Choice</span>
-              <h3 data-i18n="specials.paneer_delight_title">Paneer Delight</h3>
-              <p data-i18n="specials.paneer_delight_desc">Rich creamy paneer cooked with exotic herbs.</p>
-              <span class="price">₹349</span>
-            </div>
-          </div>
-
-          <div class="special-card">
-            <img
-  src="./images/Rasmalai.jpg"
-  alt="Special Dessert"
-  loading="lazy"
-/>
-            <div class="special-content">
-              <span class="special-badge" data-i18n="specials.new_arrival">⭐ New Arrival</span>
-              <h3 data-i18n="specials.saffron_rasmalai_title">Saffron Rasmalai</h3>
-              <p data-i18n="specials.saffron_rasmalai_desc">Soft cottage cheese dumplings in saffron milk.</p>
-              <span class="price">₹199</span>
-            </div>
-          </div>
-
-        </div>
-      </div>
-    </section>
-
-    <!-- Reservation Section -->
-    <section class="reservation" id="reservation">
-      <div class="reservation-bg" id="reservationBg">
-        <img src="./images/hero-restaurant.jpg" alt="Restaurant Ambiance" loading="lazy" />
-      </div>
-      <div class="reservation-overlay"></div>
-      <div class="container">
-        <div class="reservation-content">
-          <div class="reservation-info">
-            <span class="section-label" data-i18n="reservation.join">Join Us</span>
-            <h2 class="section-title" data-i18n="reservation.title">Make a Reservation</h2>
-            <p data-i18n="reservation.desc">Reserve your table and experience an unforgettable evening of culinary excellence. For parties larger than 8, please call us directly.</p>
-            <div class="reservation-details">
-              <div class="detail-item">
-                <svg class="detail-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                  <circle cx="12" cy="12" r="10" />
-                  <path d="M12 6v6l4 2" />
-                </svg>
-                <div>
-                  <strong data-i18n="reservation.hours">Hours</strong>
-                  <span data-i18n="reservation.hours_value">Mon-Sun: 7AM - 11PM</span>
-                </div>
-              </div>
-              <div class="detail-item">
-                <svg class="detail-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                  <path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07 19.5 19.5 0 01-6-6 19.79 19.79 0 01-3.07-8.67A2 2 0 014.11 2h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L8.09 9.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z" />
-                </svg>
-                <div>
-                  <strong data-i18n="reservation.call">Call Us</strong>
-                  <span>(555) 123-4567</span>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <form class="reservation-form" id="reservationForm">
-            <div class="form-row">
-              <div class="form-group">
-                <label for="name" data-i18n="reservation.fullname">Full Name</label>
-                <input type="text" id="name" name="name" placeholder="John Smith" data-i18n-placeholder="reservation.fullname_placeholder" autocomplete="name" required />
-              </div>
-              <div class="form-group">
-                <label for="email" data-i18n="reservation.email">Email</label>
-                <input type="email" id="email" name="email" placeholder="john@example.com" data-i18n-placeholder="reservation.email_placeholder"
-                  pattern="^[^\s@]+@[^\s@]+\.[^\s@]{2,}$"
-                  title="Please enter a valid email address" data-i18n-title="reservation.email_title"
-                  autocomplete="email" required />
-              </div>
-            </div>
-            <div class="form-row">
-              <div class="form-group">
-                <label for="phone" data-i18n="reservation.phone">Phone</label>
-                <input type="tel" id="phone" name="phone" placeholder="(555) 123-4567" data-i18n-placeholder="reservation.phone_placeholder" autocomplete="tel" required />
-              </div>
-              <div class="form-group">
-                <label for="guests" data-i18n="reservation.guests">Guests</label>
-                <select id="guests" name="guests" required>
-                  <option value="" data-i18n="reservation.select_guests">Select guests</option>
-                  <option value="1" data-i18n="reservation.guests_1">1 Guest</option>
-                  <option value="2" data-i18n="reservation.guests_2">2 Guests</option>
-                  <option value="3" data-i18n="reservation.guests_3">3 Guests</option>
-                  <option value="4" data-i18n="reservation.guests_4">4 Guests</option>
-                  <option value="5" data-i18n="reservation.guests_5">5 Guests</option>
-                  <option value="6" data-i18n="reservation.guests_6">6 Guests</option>
-                  <option value="7" data-i18n="reservation.guests_7">7 Guests</option>
-                  <option value="8" data-i18n="reservation.guests_8">8 Guests</option>
-                </select>
-              </div>
-            </div>
-            <div class="form-row">
-              <div class="form-group">
-                <label for="reservation-date" data-i18n="reservation.date">Date</label>
-                <input type="date" id="reservation-date" name="date" required />
-              </div>
-              <div class="form-group">
-                <label for="time" data-i18n="reservation.time">Time</label>
-                <select id="time" name="time" required>
-                  <option value="" data-i18n="reservation.select_time">Select time</option>
-                  <option value="07:00" data-i18n="reservation.time_07am">7:00 AM</option>
-                  <option value="08:00" data-i18n="reservation.time_08am">8:00 AM</option>
-                  <option value="09:00" data-i18n="reservation.time_09am">9:00 AM</option>
-                  <option value="10:00" data-i18n="reservation.time_10am">10:00 AM</option>
-                  <option value="11:00" data-i18n="reservation.time_11am">11:00 AM</option>
-                  <option value="12:00" data-i18n="reservation.time_12pm">12:00 PM</option>
-                  <option value="13:00" data-i18n="reservation.time_01pm">1:00 PM</option>
-                  <option value="14:00" data-i18n="reservation.time_02pm">2:00 PM</option>
-                  <option value="15:00" data-i18n="reservation.time_03pm">3:00 PM</option>
-                  <option value="16:00" data-i18n="reservation.time_04pm">4:00 PM</option>
-                  <option value="17:00" data-i18n="reservation.time_05pm">5:00 PM</option>
-                  <option value="18:00" data-i18n="reservation.time_06pm">6:00 PM</option>
-                  <option value="19:00" data-i18n="reservation.time_07pm">7:00 PM</option>
-                  <option value="20:00" data-i18n="reservation.time_08pm">8:00 PM</option>
-                  <option value="21:00" data-i18n="reservation.time_09pm">9:00 PM</option>
-                  <option value="22:00" data-i18n="reservation.time_10pm">10:00 PM</option>
-                  <option value="23:00" data-i18n="reservation.time_11pm">11:00 PM</option>
-                </select>
-              </div>
-            </div>
-            <div class="form-group full-width">
-              <label for="requests" data-i18n="reservation.requests">Special Requests</label>
-              <textarea id="requests" name="requests" rows="4"
-                placeholder="Dietary restrictions, special occasions, seating preferences..." data-i18n-placeholder="reservation.requests_placeholder"></textarea>
-            </div>
-            <button type="submit" class="btn btn-primary btn-full" data-i18n="reservation.submit">Request Reservation</button>
-            <p class="form-note" data-i18n="reservation.note">You will receive a confirmation email within 24 hours.</p>
-          </form>
-        </div>
-      </div>
-    </section>
-
-    <!-- Reviews Section -->
-    <section class="reviews-section" id="reviews">
-      <div class="container">
-        <div class="section-header">
-          <span class="section-label" data-i18n="reviews.label">Guest Experiences</span>
-          <h2 class="section-title" data-i18n="reviews.title">Customer Reviews</h2>
-        </div>
-
-        <!-- Reviews display -->
-        <div class="reviews-grid" id="reviews-grid"></div>
-
-        <!-- Submit form -->
-        <div class="review-form-wrapper">
-          <h3 class="review-form-heading" data-i18n="reviews.share">Share Your Experience</h3>
-          <form id="review-form">
-            <div class="form-row">
-              <div class="form-group">
-                <label for="review-name" data-i18n="reviews.name">Your Name</label>
-                <input type="text" id="review-name" name="review-name" placeholder="Jane Smith" data-i18n-placeholder="reviews.name_placeholder" autocomplete="name" required />
-              </div>
-              <div class="form-group">
-                <fieldset>
-                  <legend data-i18n="reviews.rating">Rating</legend>
-                  <div class="star-input" id="star-input">
-                    <button type="button" class="star-btn" data-value="1">&#9733;</button>
-                    <button type="button" class="star-btn" data-value="2">&#9733;</button>
-                    <button type="button" class="star-btn" data-value="3">&#9733;</button>
-                    <button type="button" class="star-btn" data-value="4">&#9733;</button>
-                    <button type="button" class="star-btn" data-value="5">&#9733;</button>
-                  </div>
-                  <input type="hidden" id="review-rating" value="0" name="review-rating" />
-                </fieldset>
-              </div>
-            </div>
-            <div class="form-group full-width">
-              <label for="review-text" data-i18n="reviews.text">Your Review</label>
-              <textarea id="review-text" name="review-text" rows="4"
-                placeholder="Tell us about your visit..." data-i18n-placeholder="reviews.text_placeholder" required></textarea>
-            </div>
-            <button type="submit" class="btn btn-primary btn-full" data-i18n="reviews.submit">Submit Review</button>
-            <p id="review-msg" class="form-note" style="display: none"></p>
-          </form>
-        </div>
-      </div>
-    </section>
-
-    <!-- Location Section -->
-    <section class="location" id="location">
-      <div class="container">
-        <div class="location-grid">
-          <div class="location-info">
-            <span class="section-label" data-i18n="location.label">Find Us</span>
-            <h2 class="section-title" data-i18n="location.title">Our Location</h2>
-            <div class="location-address">
-              <svg class="location-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z" />
-                <circle cx="12" cy="10" r="3" />
-              </svg>
-              <div>
-                <p data-i18n="location.address_1">123 Harbor View Drive</p>
-                <p data-i18n="location.address_2">Coastal City, CA 90210</p>
-              </div>
-            </div>
-            <div class="location-hours">
-              <h3 data-i18n="location.hours">Opening Hours</h3>
-              <div class="hours-grid">
-                <div class="hours-item">
-                  <span data-i18n="location.breakfast">Breakfast</span>
-                  <span data-i18n="location.breakfast_hours">7:00 AM - 11:00 AM</span>
-                </div>
-                <div class="hours-item">
-                  <span data-i18n="location.lunch">Lunch</span>
-                  <span data-i18n="location.lunch_hours">11:30 AM - 3:00 PM</span>
-                </div>
-                <div class="hours-item">
-                  <span data-i18n="location.dinner">Dinner</span>
-                  <span data-i18n="location.dinner_hours">5:00 PM - 11:00 PM</span>
-                </div>
-                <div class="hours-item">
-                  <span data-i18n="location.bar">Bar</span>
-                  <span data-i18n="location.bar_hours">11:00 AM - Midnight</span>
-                </div>
-              </div>
-            </div>
-            <div class="location-contact">
-              <h3 data-i18n="location.contact">Contact</h3>
-              <p><strong data-i18n="location.phone">Phone:</strong> (555) 123-4567</p>
-              <p><strong data-i18n="location.email">Email:</strong> reservations@thelighthouse.com</p>
-            </div>
-            <div class="social-links">
-              <a href="https://www.instagram.com" target="_blank" rel="noopener noreferrer" class="social-link" aria-label="Instagram" title="Instagram">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                  <rect x="2" y="2" width="20" height="20" rx="5" />
-                  <path d="M16 11.37A4 4 0 1112.63 8 4 4 0 0116 11.37z" />
-                  <line x1="17.5" y1="6.5" x2="17.51" y2="6.5" />
-                </svg>
-              </a>
-              <a href="https://www.facebook.com" target="_blank" rel="noopener noreferrer" class="social-link" aria-label="Facebook" title="Facebook">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                  <path d="M18 2h-3a5 5 0 00-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 011-1h3z" />
-                </svg>
-              </a>
-              <a href="https://x.com" target="_blank" rel="noopener noreferrer" class="social-link" aria-label="X" title="X">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                  <path d="M4 4l16 16M20 4L4 20" />
-                </svg>
-              </a>
-            </div>
-          </div>
-          <div class="location-map">
-            <iframe
-              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3305.7152203499!2d-118.4911912!3d34.0194543!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x80c2a4d74d5ea79b%3A0xcd9a111d76f7336e!2sSanta%20Monica%20Pier!5e0!3m2!1sen!2sus!4v1699999999999!5m2!1sen!2sus"
-              width="100%"
-              height="100%"
-              style="border: 0"
-              allowfullscreen=""
-              loading="lazy"
-              referrerpolicy="no-referrer-when-downgrade"
-              title="Restaurant Location Map">
-            </iframe>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- Footer -->
-    <footer class="footer">
-      <div class="container">
-        <div class="footer-top">
-
-          <!-- Brand -->
-          <div class="footer-brand">
-            <h2 data-i18n="nav.logo">The Lighthouse</h2>
-            <p data-i18n="footer.desc">Experience timeless fine dining with handcrafted dishes, luxury ambiance, and unforgettable moments.</p>
-            <div class="footer-socials">
-              <a href="https://www.instagram.com" target="_blank" rel="noopener noreferrer" class="social-link" aria-label="Instagram" title="Instagram">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                  <rect x="2" y="2" width="20" height="20" rx="5" />
-                  <path d="M16 11.37A4 4 0 1112.63 8 4 4 0 0116 11.37z" />
-                  <line x1="17.5" y1="6.5" x2="17.51" y2="6.5" />
-                </svg>
-              </a>
-              <a href="https://www.facebook.com" target="_blank" rel="noopener noreferrer" class="social-link" aria-label="Facebook" title="Facebook">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                  <path d="M18 2h-3a5 5 0 00-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 011-1h3z" />
-                </svg>
-              </a>
-              <a href="https://x.com" target="_blank" rel="noopener noreferrer" class="social-link" aria-label="X" title="X">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                  <path d="M4 4l16 16M20 4L4 20" />
-                </svg>
-              </a>
-            </div>
-          </div>
-
-          <!-- Quick Links -->
-          <div class="footer-column">
-            <h3 data-i18n="footer.quick_links">Quick Links</h3>
-            <a href="#home" data-i18n="nav.home">Home</a>
-            <a href="#about" data-i18n="nav.about">About</a>
-            <a href="#menu" data-i18n="nav.menu">Menu</a>
-            <a href="#reservation" data-i18n="nav.reservation">Reservations</a>
-            <a href="#reviews" data-i18n="nav.reviews">Reviews</a>
-          </div>
-
-          <!-- Contact -->
-          <div class="footer-column">
-            <h3 data-i18n="location.contact">Contact</h3>
-            <p data-i18n="location.address_1">123 Harbor View Drive</p>
-            <p data-i18n="location.address_2">Coastal City, CA 90210</p>
-            <a href="tel:+15551234567">(555) 123-4567</a>
-            <a href="mailto:reservations@thelighthouse.com">reservations@thelighthouse.com</a>
-          </div>
-
-          <!-- Newsletter -->
-          <div class="footer-column newsletter">
-            <h3 data-i18n="footer.newsletter">Newsletter</h3>
-            <p data-i18n="footer.newsletter_desc">Get updates about seasonal menus and exclusive dining events.</p>
-            <form class="newsletter-form">
-              <label for="newsletter-email" data-i18n="reservation.email">Email Address</label>
-              <input type="email" placeholder="Your Email Address" data-i18n-placeholder="footer.newsletter_placeholder" autocomplete="email"
-                id="newsletter-email" name="newsletter-email" />
-              <button type="submit" data-i18n="footer.subscribe">Subscribe</button>
-            </form>
-          </div>
-
-        </div>
-
-        <!-- Bottom -->
-        <div class="footer-bottom">
-          <p data-i18n="footer.copyright">© 2026 The Lighthouse. Crafted with elegance.</p>
-          <div class="footer-bottom-links">
-            <a href="#" data-i18n="footer.privacy">Privacy Policy</a>
-            <a href="#" data-i18n="footer.terms">Terms</a>
-          </div>
-        </div>
-
-      </div>
-    </footer>
-
-    <button id="backToTop" data-i18n="back_to_top">BACK TO TOP ▲</button>
-
-    <script src="script.js" defer></script>
-  </body>
-</html>
+                        <img src="./images/Kulfi.jpg" alt="Kesar P
