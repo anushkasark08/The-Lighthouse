@@ -7,7 +7,9 @@ document.addEventListener("DOMContentLoaded", () => {
   const reservationBg = document.getElementById("reservationBg");
   const reservationForm = document.getElementById("reservationForm");
   const dateInput = document.getElementById("reservation-date");
-  const timeSelect = document.getElementById("time");
+  const timeInput = document.getElementById("time");
+  const timeSlotsGrid = document.getElementById("timeSlotsGrid");
+  const guestsSelect = document.getElementById("guests");
   const themeToggle = document.getElementById("themeToggle");
   const filterBtns = document.querySelectorAll(".filter-btn");
   const dietBtns = document.querySelectorAll(".diet-btn");
@@ -25,6 +27,10 @@ document.addEventListener("DOMContentLoaded", () => {
   const cartTotalEl = document.getElementById("cartTotal");
   const checkoutBtn = document.getElementById("checkoutBtn");
   const isTouchDevice = window.matchMedia("(hover: none) and (pointer: coarse)").matches;
+  
+  const menuContent = document.querySelector(".menu-content");
+  const menuTabs = document.querySelectorAll(".menu-tab");
+  const menuPanels = document.querySelectorAll(".menu-panel");
 
   let currentCategory = "all";
   let currentDiet = "all";
@@ -54,6 +60,7 @@ document.addEventListener("DOMContentLoaded", () => {
     dateInput.max = maxDate.toISOString().split("T")[0];
   }
 
+
   // Theme Toggle & Background Update Logic
   function updateThemeImages(isLight) {
     const heroImg = document.querySelector("#heroBg img");
@@ -65,26 +72,114 @@ document.addEventListener("DOMContentLoaded", () => {
     if (resImg) resImg.src = isLight ? lightImg : darkImg;
   }
 
+  if (guestsSelect) {
+    guestsSelect.addEventListener('change', updateAvailableTimes);
+  }
+
+  // ── Live Table Availability ─────
+  const TOTAL_TABLES = 12;
+  const mockBookings = {};
+
+  function getAvailableTables(dateStr, timeStr, guestsCount) {
+    if (mockBookings[dateStr] && mockBookings[dateStr][timeStr] !== undefined) {
+      return mockBookings[dateStr][timeStr];
+    }
+    const hash = dateStr.split('-').join('') + timeStr.replace(':', '') + (guestsCount || '2');
+    let num = parseInt(hash, 10);
+    
+    const hour = parseInt(timeStr.split(':')[0], 10);
+    if (hour >= 18 && hour <= 20) num += 7;
+    
+    const booked = (num % (TOTAL_TABLES + 3)) - 1; 
+    return Math.max(0, TOTAL_TABLES - Math.max(0, booked));
+  }
+
+  function handleTimeSlotClick(e, timeVal) {
+    e.preventDefault();
+    const btns = timeSlotsGrid.querySelectorAll('.time-slot-btn');
+    btns.forEach(b => b.classList.remove('selected'));
+    
+    const btn = e.currentTarget;
+    btn.classList.add('selected');
+    timeInput.value = timeVal;
+  }
+
   function updateAvailableTimes() {
-    if (!dateInput || !timeSelect) return;
-
+    if (!dateInput || !timeSlotsGrid) return;
+    
     const selectedDate = dateInput.value;
-    const today = new Date();
-    const todayStr = today.toISOString().split("T")[0];
+    const guestsCount = guestsSelect ? guestsSelect.value : '2';
+    
+    if (!selectedDate || !guestsCount) {
+      timeSlotsGrid.innerHTML = '<div class="time-slot-placeholder">Please select a date and number of guests to view available times.</div>';
+      timeInput.value = '';
+      return;
+    }
 
-    timeSelect.querySelectorAll("option").forEach((option) => {
-      if (!option.value) return;
+    const todayStr = new Date().toISOString().split('T')[0];
+    const now = new Date();
+    const currentHours = now.getHours();
+    const currentMins = now.getMinutes();
 
-      const [hours, minutes] = option.value.split(":").map(Number);
-      const optionMinutes = hours * 60 + minutes;
-      const currentMinutes = today.getHours() * 60 + today.getMinutes() + 30;
-      const isPastToday = selectedDate === todayStr && optionMinutes <= currentMinutes;
+    const allTimes = [
+      "07:00", "08:00", "09:00", "10:00", "11:00", "12:00",
+      "13:00", "14:00", "15:00", "16:00", "17:00", "18:00",
+      "19:00", "20:00", "21:00", "22:00", "23:00"
+    ];
 
-      option.disabled = isPastToday;
-      if (isPastToday && option.selected) {
-        timeSelect.value = "";
+    timeSlotsGrid.innerHTML = '';
+    let hasAvailable = false;
+
+    allTimes.forEach((timeVal) => {
+      const [optHours, optMins] = timeVal.split(':').map(Number);
+      let isPast = false;
+
+      if (selectedDate === todayStr) {
+        isPast = optHours < currentHours || (optHours === currentHours && optMins <= currentMins + 30);
       }
+      
+      const availableTables = getAvailableTables(selectedDate, timeVal, guestsCount);
+      const isFullyBooked = availableTables === 0;
+      
+      const btn = document.createElement('button');
+      btn.type = 'button';
+      btn.className = 'time-slot-btn';
+      
+      if (availableTables > 0 && availableTables <= 3) {
+        btn.classList.add('limited');
+      }
+      
+      if (isPast || isFullyBooked) {
+        btn.disabled = true;
+      } else {
+        hasAvailable = true;
+        btn.addEventListener('click', (e) => handleTimeSlotClick(e, timeVal));
+      }
+
+      if (timeInput.value === timeVal && !isPast && !isFullyBooked) {
+        btn.classList.add('selected');
+      }
+
+      const ampm = optHours >= 12 ? 'PM' : 'AM';
+      const displayHour = optHours % 12 || 12;
+      const timeLabel = `${displayHour}:${optMins === 0 ? '00' : optMins} ${ampm}`;
+      const availabilityText = isPast ? 'Past' : (isFullyBooked ? 'Booked' : (availableTables <= 3 ? `${availableTables} left` : 'Available'));
+      
+      btn.innerHTML = `
+        <span class="time-label">${timeLabel}</span>
+        <span class="availability">${availabilityText}</span>
+      `;
+      timeSlotsGrid.appendChild(btn);
     });
+    
+    if (!hasAvailable) {
+       timeSlotsGrid.innerHTML = '<div class="time-slot-placeholder">No times available for this date.</div>';
+    }
+
+    const selectedBtn = timeSlotsGrid.querySelector('.selected');
+    if (!selectedBtn) {
+      timeInput.value = '';
+    }
   }
 
   function closeMobileMenu() {
@@ -200,7 +295,8 @@ document.addEventListener("DOMContentLoaded", () => {
   function setupThemeToggle() {
     if (!themeToggle) return;
 
-    const savedTheme = localStorage.getItem("theme");
+    let savedTheme = null;
+    try { savedTheme = localStorage.getItem("theme"); } catch (e) {}
     const isLightOnLoad = savedTheme === "light";
     
     document.body.classList.toggle("light-theme", isLightOnLoad);
@@ -211,7 +307,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     themeToggle.addEventListener("click", () => {
       const isLight = document.body.classList.toggle("light-theme");
-      localStorage.setItem("theme", isLight ? "light" : "dark");
+      try { localStorage.setItem("theme", isLight ? "light" : "dark"); } catch (e) {}
       themeToggle.textContent = isLight ? "\u2600" : "\u263E";
       
       // Swap daytime/nighttime images dynamically
@@ -253,6 +349,17 @@ document.addEventListener("DOMContentLoaded", () => {
     submitBtn.textContent = "Reservation Requested!";
     submitBtn.style.backgroundColor = "#4a9c6a";
     submitBtn.disabled = true;
+
+    // Simulate backend recording the booking
+    const selectedDate = dateInput.value;
+    const selectedTime = timeInput.value;
+    const guestsCount = guestsSelect ? guestsSelect.value : '2';
+    
+    if (selectedDate && selectedTime) {
+      if (!mockBookings[selectedDate]) mockBookings[selectedDate] = {};
+      const currentAvailable = getAvailableTables(selectedDate, selectedTime, guestsCount);
+      mockBookings[selectedDate][selectedTime] = Math.max(0, currentAvailable - 1);
+    }
 
     setTimeout(() => {
       reservationForm.reset();
@@ -541,10 +648,287 @@ document.addEventListener("DOMContentLoaded", () => {
     const item = cart.find((cartItem) => cartItem.id === id);
     if (!item) return;
 
+
+  // Large section images: hero, about image, reservation bg
+  const largeContainers = [
+    document.querySelector('.hero-bg'),
+    document.querySelector('.about-image'),
+    document.querySelector('.reservation-bg'),
+  ];
+
+  largeContainers.forEach((c) => {
+    if (c) attachSkeletonToSimpleImage(c, 360);
+  });
+
+  // Text blocks (about, reservation info, first paragraph areas)
+  const textTargets = document.querySelectorAll('.about-content, .reservation-info, .review-form-heading');
+  textTargets.forEach((t) => attachSkeletonToTextBlock(t, 3));
+}
+
+// Initialize skeletons once DOM is ready
+document.addEventListener('DOMContentLoaded', () => {
+  // existing DOMContentLoaded handlers already call init functions earlier,
+  // but ensure skeletons are attached after render
+  initSkeletonLoaders();
+});
+
+const mobileStyle = document.createElement('style');
+mobileStyle.textContent = styleForMobile;
+document.head.appendChild(mobileStyle);
+
+// Automatically update copyright year
+const currentYear = document.getElementById("current-year");
+
+if (currentYear) {
+  currentYear.textContent = new Date().getFullYear();
+}
+
+// ============= RESERVATION API INTEGRATION =============
+
+class ReservationAPI {
+  constructor() {
+    this.baseURL = 'http://localhost:5000/api';
+    this.token = localStorage.getItem('token');
+  }
+
+  setToken(token) {
+    this.token = token;
+    if (token) {
+      localStorage.setItem('token', token);
+    } else {
+      localStorage.removeItem('token');
+    }
+  }
+
+  getHeaders() {
+    const headers = {
+      'Content-Type': 'application/json'
+    };
+    if (this.token) {
+      headers['Authorization'] = `Bearer ${this.token}`;
+    }
+    return headers;
+  }
+
+  async getAvailableSlots(date, guests) {
+    const response = await fetch(
+      `${this.baseURL}/reservations/slots?date=${date}&guests=${guests}`,
+      { headers: this.getHeaders() }
+    );
+    return response.json();
+  }
+
+  async createReservation(data) {
+    const response = await fetch(`${this.baseURL}/reservations`, {
+      method: 'POST',
+      headers: this.getHeaders(),
+      body: JSON.stringify(data)
+    });
+    return response.json();
+  }
+
+  async getMyReservations() {
+    const response = await fetch(`${this.baseURL}/reservations`, {
+      headers: this.getHeaders()
+    });
+    return response.json();
+  }
+
+  async cancelReservation(id) {
+    const response = await fetch(`${this.baseURL}/reservations/${id}`, {
+      method: 'DELETE',
+      headers: this.getHeaders()
+    });
+    return response.json();
+  }
+
+  async login(email, password) {
+    const response = await fetch(`${this.baseURL}/auth/login`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email, password })
+    });
+    const data = await response.json();
+    if (data.success && data.token) {
+      this.setToken(data.token);
+    }
+    return data;
+  }
+
+  async register(name, email, password, phone) {
+    const response = await fetch(`${this.baseURL}/auth/register`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ name, email, password, phone })
+    });
+    const data = await response.json();
+    if (data.success && data.token) {
+      this.setToken(data.token);
+    }
+    return data;
+  }
+}
+
+// Initialize Reservation API
+const reservationAPI = new ReservationAPI();
+
+// ============= UPDATE RESERVATION FORM =============
+
+// Update the existing reservation form submit handler
+const originalReservationSubmit = reservationForm?.onsubmit;
+
+reservationForm.addEventListener('submit', async function(e) {
+  e.preventDefault();
+
+  // Check if user is logged in
+  if (!reservationAPI.token) {
+    alert('Please login or register to make a reservation');
+    // Show login modal or redirect to login
+    return;
+  }
+
+  const formData = new FormData(this);
+  const data = {
+    date: formData.get('date'),
+    time: formData.get('time'),
+    guests: formData.get('guests'),
+    specialRequests: formData.get('specialRequests') || ''
+  };
+
+  // Validate
+  if (!data.date || !data.time || !data.guests) {
+    alert('Please fill in all required fields');
+    return;
+  }
+
+  // Show loading state
+  const submitBtn = this.querySelector('button[type="submit"]');
+  const originalText = submitBtn.textContent;
+  submitBtn.textContent = 'Booking...';
+  submitBtn.disabled = true;
+
+  try {
+    const result = await reservationAPI.createReservation(data);
+    
+    if (result.success) {
+      alert('✅ Reservation confirmed! Check your email for details.');
+      this.reset();
+    } else {
+      alert('❌ ' + result.error);
+    }
+  } catch (error) {
+    alert('❌ Something went wrong. Please try again.');
+    console.error(error);
+  } finally {
+    submitBtn.textContent = originalText;
+    submitBtn.disabled = false;
+  }
+});
+
+// ============= ADD REAL-TIME AVAILABILITY =============
+
+// Update time slot dropdown dynamically
+const dateInput = document.querySelector('#reservation input[type="date"]');
+const guestsInput = document.querySelector('#reservation input[type="number"]');
+const timeSelect = document.querySelector('#reservation select');
+
+async function updateAvailableSlots() {
+  const date = dateInput?.value;
+  const guests = guestsInput?.value;
+
+  if (!date || !guests || guests < 1) {
+    return;
+  }
+
+  try {
+    const result = await reservationAPI.getAvailableSlots(date, guests);
+    
+    if (result.success && result.data.slots) {
+      // Clear existing options
+      timeSelect.innerHTML = '<option value="">Select Time</option>';
+      
+      // Add available slots
+      result.data.slots.forEach(slot => {
+        const option = document.createElement('option');
+        option.value = slot.time;
+        option.textContent = slot.time + (slot.available ? ' ✅' : ' ❌');
+        option.disabled = !slot.available;
+        timeSelect.appendChild(option);
+      });
+
+      // Show availability message
+      const availableCount = result.data.slots.filter(s => s.available).length;
+      if (availableCount === 0) {
+        const msg = document.createElement('p');
+        msg.id = 'availability-msg';
+        msg.style.color = '#c9a962';
+        msg.textContent = '⚠️ No tables available for this date and party size';
+        timeSelect.parentNode.appendChild(msg);
+      }
+    }
+  } catch (error) {
+    console.error('Error fetching availability:', error);
+  }
+}
+
+// Add event listeners for real-time availability
+dateInput?.addEventListener('change', updateAvailableSlots);
+guestsInput?.addEventListener('change', updateAvailableSlots);
+
+// ============= AUTO-LOGIN FOR TESTING =============
+
+// Uncomment for testing
+// (async function autoLogin() {
+//   const result = await reservationAPI.login('test@example.com', 'password123');
+//   if (result.success) {
+//     console.log('Auto-login successful');
+//   }
+// })();
+
+
+// =============================================
+// PDF MENU DOWNLOAD
+// =============================================
+
+// Load html2pdf library dynamically
+function loadHtml2Pdf() {
+  return new Promise((resolve, reject) => {
+    if (typeof html2pdf !== 'undefined') {
+      resolve();
+      return;
+    }
+    
+    const script = document.createElement('script');
+    script.src = 'https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js';
+    script.onload = resolve;
+    script.onerror = reject;
+    document.head.appendChild(script);
+  });
+}
+
+// Create loading overlay
+function showLoadingOverlay() {
+  const overlay = document.createElement('div');
+  overlay.className = 'pdf-loading';
+  overlay.id = 'pdfLoading';
+  overlay.innerHTML = `
+    <div class="spinner"></div>
+    <p>Generating your menu PDF...</p>
+    <p style="font-size: 0.9rem; color: rgba(255,255,255,0.7); margin-top: 10px;">Please wait</p>
+  `;
+  document.body.appendChild(overlay);
+}
+
+function hideLoadingOverlay() {
+  const overlay = document.getElementById('pdfLoading');
+  if (overlay) {
+    overlay.remove();
+
     item.qty += delta;
     cart = cart.filter((cartItem) => cartItem.qty > 0);
     saveStoredList("lighthouse_cart", cart);
     renderOrderState();
+
   }
 
   function toggleFavorite(item) {
@@ -570,6 +954,7 @@ document.addEventListener("DOMContentLoaded", () => {
       btn.classList.toggle("active", isFavorite);
       btn.textContent = isFavorite ? "\u2665" : "\u2661";
     });
+  }
 
 // ─── Open / Closed Badge ────────────────────────────────────────────────────
 (function updateOpenStatusBadge() {
@@ -610,10 +995,57 @@ document.addEventListener("DOMContentLoaded", () => {
   setInterval(render, 60 * 1000);
 })();
 
+  setReservationDateRange();
+  updateAvailableTimes();
+  setupThemeToggle();
+  setupIntersectionObserver();
+  setupAutoScroll();
+  setupReviews();
+  setupOrderFeatures();
+  filterMenuItems();
+  handleScroll();
 
+  dateInput?.addEventListener("change", updateAvailableTimes);
+  navToggle?.addEventListener("click", toggleMobileMenu);
+  reservationForm?.addEventListener("submit", validateReservationForm);
+  window.addEventListener("scroll", handleScroll, { passive: true });
+  window.addEventListener("resize", () => {
+    if (window.innerWidth > 768) closeMobileMenu();
+  });
+
+  navLinks.forEach((link) => link.addEventListener("click", smoothScroll));
+  document.querySelectorAll(".nav-cta, .nav-cta-mobile, .hero-buttons a").forEach((link) => {
+    link.addEventListener("click", smoothScroll);
+  });
+
+  filterBtns.forEach((btn) => {
+    btn.addEventListener("click", () => {
+      filterBtns.forEach((item) => item.classList.remove("active"));
+      btn.classList.add("active");
+      currentCategory = btn.dataset.filter || "all";
+      filterMenuItems();
+    });
+  });
+
+  dietBtns.forEach((btn) => {
+    btn.addEventListener("click", () => {
+      dietBtns.forEach((item) => item.classList.remove("active"));
+      btn.classList.add("active");
+      currentDiet = btn.dataset.diet || "all";
+      filterMenuItems();
+    });
+  });
+
+  cuisineDropdown?.addEventListener("change", filterMenuItems);
+  menuSearch?.addEventListener("input", filterMenuItems);
 
   backToTopBtn?.addEventListener("click", () => {
     const prefersReduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     window.scrollTo({ top: 0, behavior: prefersReduced ? "auto" : "smooth" });
   });
 });
+
+
+console.log('PDF Menu Download feature loaded!');
+
+
