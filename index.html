@@ -170,11 +170,26 @@
           <span class="section-label" data-i18n="menu.label">Culinary Offerings</span>
           <h2 class="section-title" data-i18n="menu.title">Our Menu</h2>
         </div>
+</div>
 
         <!-- Menu Search + Filters -->
         <div class="menu-controls">
-          <label for="menu-search" class="sr-only" data-i18n="menu.search_placeholder">Search Menu</label>
-          <input type="text" id="menu-search" placeholder="Search dishes..." class="menu-search" data-i18n-placeholder="menu.search_placeholder" />
+     <label for="menu-search" class="sr-only" data-i18n="menu.search_placeholder">
+    Search Menu
+</label>
+
+<div class="search-wrapper">
+    <input
+        type="text"
+        id="menu-search"
+        placeholder="Search dishes..."
+        class="menu-search"
+        data-i18n-placeholder="menu.search_placeholder"
+    />
+    <button id="clearFiltersBtn" class="clear-filters-btn">
+        Clear Filters
+    </button>
+</div>
           <div class="menu-filters">
             <button class="filter-btn active" data-filter="all" data-i18n="menu.filter_all">All</button>
             <button class="filter-btn" data-filter="breakfast" data-i18n="menu.filter_breakfast">Breakfast</button>

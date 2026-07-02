@@ -2354,3 +2354,40 @@ body.light-theme .polaroid-tape {
   margin-top: 0.4rem;
   letter-spacing: 0.04em;
 }
+/* Clear Filters Button */
+.search-wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    width: 100%;
+}
+
+.menu-search {
+    flex: 1;
+}
+
+.clear-filters-btn {
+    background-color:#2f2f2f;      /* Grey background */
+    color: #ffffff;                 /* White text */
+    border: 2px solid #d4af37;      /* Golden border */
+    padding: 10px 18px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 15px;
+    font-weight: 500;
+    transition: all 0.3s ease;
+    white-space: nowrap;
+}
+
+/* Hover Effect */
+.clear-filters-btn:hover {
+    background-color: #d4af37;      /* Golden background */
+    color: #ffffff;                 /* White text */
+    border-color: #d4af37;          /* Golden border */
+}
+
+/* Optional: Click Effect */
+.clear-filters-btn:active {
+    transform: scale(0.98);
+}
