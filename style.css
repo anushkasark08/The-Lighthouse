@@ -33,6 +33,16 @@ body.light-theme {
   box-sizing: border-box;
 }
 
+/* Premium focus indicators for keyboard navigation accessibility */
+a:focus-visible,
+button:focus-visible,
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 4px;
+}
+
 @media (prefers-reduced-motion: no-preference) {
   html {
     scroll-behavior: smooth;
@@ -2390,11 +2400,31 @@ legend{
 }
 
 @media (max-width: 768px) {
+  .nav-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.6);
+    backdrop-filter: blur(4px);
+    opacity: 0;
+    visibility: hidden;
+    z-index: 1001;
+    transition: opacity 0.4s ease, visibility 0.4s ease;
+  }
+
+  .nav-overlay.active {
+    opacity: 1;
+    visibility: visible;
+  }
+
   .nav-menu {
     position: fixed;
     top: 0;
     right: -100%;
     opacity: 0;
+    visibility: hidden;
     width: 80%;
     max-width: 320px;
     height: 100vh;
@@ -2403,14 +2433,20 @@ legend{
     justify-content: center;
     align-items: center;
     gap: 32px;
+    z-index: 1002;
     transition:
       right 0.4s ease,
-      opacity 0.4s ease;
+      opacity 0.4s ease,
+      visibility 0.4s ease;
   }
 
   .nav-menu.active {
     right: 0;
     opacity: 1;
+    visibility: visible;
+    transition:
+      right 0.4s ease,
+      opacity 0.4s ease;
   }
 
   .nav-menu.active .nav-link {
@@ -2439,7 +2475,8 @@ legend{
 
   .nav-toggle {
     display: flex;
-    z-index: 1001;
+    position: relative;
+    z-index: 1003;
   }
 
   .nav-toggle.active span:nth-child(1) {

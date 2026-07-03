@@ -29,11 +29,12 @@
     <nav class="nav" id="nav">
       <div class="nav-container">
         <a href="#home" class="nav-logo" data-i18n="nav.logo">The Lighthouse</a>
-        <button class="nav-toggle" id="navToggle" aria-label="Toggle menu">
+        <button class="nav-toggle" id="navToggle" aria-label="Toggle menu" aria-haspopup="true" aria-expanded="false" aria-controls="navMenu">
           <span></span>
           <span></span>
           <span></span>
         </button>
+        <div class="nav-overlay" id="navOverlay"></div>
         <ul class="nav-menu" id="navMenu">
           <li><a href="#home" class="nav-link active" data-section="home" data-i18n="nav.home">Home</a></li>
           <li><a href="#about" class="nav-link" data-section="about" data-i18n="nav.about">About</a></li>
