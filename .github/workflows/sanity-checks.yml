@@ -1,0 +1,29 @@
+name: Sanity Checks
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out the code
+        uses: actions/checkout@v4
+
+      - name: Verify script.js parses
+        run: node --check script.js
+
+      - name: Verify index.html is complete
+        run: |
+          for tag in "</body>" "</html>" 'src="script.js"'; do
+            grep -qF "$tag" index.html || { echo "index.html is missing: $tag"; exit 1; }
+          done
+
+      - name: Verify locale JSON files are valid
+        run: |
+          for f in locales/*/translation.json; do
+            node -e "JSON.parse(require('fs').readFileSync(process.argv[1], 'utf8'))" "$f" \
+              || { echo "Invalid JSON: $f"; exit 1; }
+          done
