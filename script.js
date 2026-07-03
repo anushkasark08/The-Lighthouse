@@ -22,6 +22,34 @@ const menuPanels = document.querySelectorAll(".menu-panel");
 // ── Device detection ───
 const isTouchDevice = window.matchMedia('(hover: none) and (pointer: coarse)').matches;
 
+
+// ── DOM ELEMENTS ──
+const nav = document.getElementById('nav');
+const navToggle = document.getElementById('navToggle');
+const navMenu = document.getElementById('navMenu');
+const navLinks = document.querySelectorAll('.nav-link');
+const heroBg = document.getElementById('heroBg');
+const reservationBg = document.getElementById('reservationBg');
+const reservationForm = document.getElementById('reservationForm');
+const dateInput = document.getElementById('date');
+const timeSelect = document.getElementById('time');
+const themeToggle = document.getElementById('themeToggle');
+
+
+// ── EmailJS Configuration ──
+// Replace these with your actual EmailJS credentials
+const EMAILJS_CONFIG = {
+  publicKey: 'abc123XYZ',        // actual public key
+  serviceId: 'service_abc1234',  //  actual service ID
+  guestTemplateId: 'template_guest01', //  template ID
+  adminTemplateId: 'template_admin02', // template ID
+};
+
+// Initialise EmailJS as soon as the key is set
+if (EMAILJS_CONFIG.publicKey !== 'YOUR_PUBLIC_KEY') {
+  emailjs.init(EMAILJS_CONFIG.publicKey);
+}
+
 // ── FIX #9 — show correct scroll hint based on input type ────────
 const scrollHintMouse = document.querySelector('.scroll-hint-mouse');
 const scrollHintTouch = document.querySelector('.scroll-hint-touch');
@@ -31,57 +59,62 @@ if (scrollHintMouse && scrollHintTouch) {
   scrollHintTouch.style.display = isTouchDevice ? '' : 'none';
 }
 
-// ── FIX #13 — Date validation: min = tomorrow, max = 90 days out ─────
-if (dateInput) {
-  const tomorrow = new Date(Date.now() + 86400000);
-  const maxDate = new Date(Date.now() + 90 * 86400000);
+  function saveStoredList(key, value) {
+    localStorage.setItem(key, JSON.stringify(value));
+  }
 
-  dateInput.setAttribute('min', tomorrow.toISOString().split('T')[0]);
-  dateInput.setAttribute('max', maxDate.toISOString().split('T')[0]);
+  function setReservationDateRange() {
+    if (!dateInput) return;
 
-  dateInput.addEventListener('change', updateAvailableTimes);
-}
+    const tomorrow = new Date(Date.now() + 86400000);
+    const maxDate = new Date(Date.now() + 90 * 86400000);
 
-// ── FIX #11 — Disable past time slots when today is selected ─────
+
+// ── FIX #11 — Disable past time slots when today is selected ──
+
 function updateAvailableTimes() {
   if (!dateInput || !timeSelect) return;
 
-  const selectedDate = dateInput.value;
-  const todayStr = new Date().toISOString().split('T')[0];
-  const now = new Date();
-  const currentHours = now.getHours();
-  const currentMins = now.getMinutes();
 
-  timeSelect.querySelectorAll('option').forEach((option) => {
-    if (!option.value) return;
+  // Theme Toggle & Background Update Logic
+  function updateThemeImages(isLight) {
+    const heroImg = document.querySelector("#heroBg img");
+    const resImg = document.querySelector("#reservationBg img");
+    const lightImg = "./images/hero-restaurant-daytime.png";
+    const darkImg = "./images/hero-restaurant.jpg";
+    
+    if (heroImg) heroImg.src = isLight ? lightImg : darkImg;
+    if (resImg) resImg.src = isLight ? lightImg : darkImg;
+  }
 
-    const [optHours, optMins] = option.value.split(':').map(Number);
+  if (guestsSelect) {
+    guestsSelect.addEventListener('change', updateAvailableTimes);
+  }
 
-    if (selectedDate === todayStr) {
-      const isPast =
-        optHours < currentHours ||
-        (optHours === currentHours && optMins <= currentMins + 30);
+  // ── Live Table Availability ─────
+  const TOTAL_TABLES = 12;
+  const mockBookings = {};
 
-      option.disabled = isPast;
-      if (isPast && option.selected) {
-        timeSelect.value = '';
-      }
-    } else {
-      option.disabled = false;
+  function getAvailableTables(dateStr, timeStr, guestsCount) {
+    if (mockBookings[dateStr] && mockBookings[dateStr][timeStr] !== undefined) {
+      return mockBookings[dateStr][timeStr];
     }
-  });
-}
+    const hash = dateStr.split('-').join('') + timeStr.replace(':', '') + (guestsCount || '2');
+    let num = parseInt(hash, 10);
+    
+    const hour = parseInt(timeStr.split(':')[0], 10);
+    if (hour >= 18 && hour <= 20) num += 7;
+    
+    const booked = (num % (TOTAL_TABLES + 3)) - 1; 
+    return Math.max(0, TOTAL_TABLES - Math.max(0, booked));
+  }
 
-
-
-// ── Navigation scroll effect ──
-function handleScroll() {
-  const currentScroll = window.scrollY;
-
-  // Sticky nav background
   nav.classList.toggle('scrolled', currentScroll > 50);
 
-  // Parallax skipped on touch devices
+
+  // FIX #14 — Parallax completely skipped on touch/iOS
+
+
   if (!isTouchDevice) {
     if (heroBg) {
       heroBg.style.transform = `translateY(${currentScroll * 0.5}px)`;
@@ -91,12 +124,13 @@ function handleScroll() {
       const offset = (currentScroll - sectionTop) * 0.3;
       reservationBg.style.transform = `translateY(${offset}px)`;
     }
-  }
 
-  updateActiveNavLink();
-}
+    const todayStr = new Date().toISOString().split('T')[0];
+    const now = new Date();
+    const currentHours = now.getHours();
+    const currentMins = now.getMinutes();
 
-// ── Active nav link on scroll ───
+// ── Active nav link on scroll ──
 function updateActiveNavLink() {
   const sections = document.querySelectorAll('section[id]');
   const scrollPosition = window.scrollY + 150;
@@ -138,28 +172,24 @@ function closeMobileMenu() {
   updateMobileMenuA11y(false);
 }
 
-// Menu tabs functionality
+// ── Menu tabs functionality ──
 function switchMenuTab(e) {
   const targetTab = e.target.dataset.tab;
 
-  // Update tab buttons
-  menuTabs.forEach((tab) => {
-    tab.classList.remove("active");
+  document.querySelectorAll('.menu-tab').forEach((tab) => {
+    tab.classList.remove('active');
   });
-  e.target.classList.add("active");
+  e.target.classList.add('active');
 
-  // Update panels
-  menuPanels.forEach((panel) => {
-    panel.classList.remove("active");
+  document.querySelectorAll('.menu-panel').forEach((panel) => {
+    panel.classList.remove('active');
     if (panel.id === targetTab) {
-      panel.classList.add("active");
+      panel.classList.add('active');
     }
-  });
-}
 
-//
-// Theme Toggle
-const savedTheme = localStorage.getItem("theme");
+// ── Menu search & filter ──
+const filterBtns = document.querySelectorAll('.filter-btn');
+const menuSearch = document.getElementById('menu-search');
 
 function updateThemeToggleA11y(isLight) {
   themeToggle.textContent = isLight ? '☀️' : '🌙';
@@ -189,305 +219,548 @@ themeToggle.addEventListener("click", () => {
 
 // ── Menu Search and Filter ─────────────────────────
 
-// FIX #1 — Use the correct parameter names (timeFilter, cuisineFilter) instead of undefined 'filter'
-function filterMenuItems(timeFilter, cuisineFilter, searchText) {
-  const menuItems = document.querySelectorAll(".menu-item");
+function filterMenuItems(filter = 'all', searchText = '', diet = 'all') {
+  const menuItems = document.querySelectorAll('.menu-item');
   let visibleCount = 0;
 
   menuItems.forEach((item) => {
-    const itemName = item.querySelector('h3')?.textContent?.toLowerCase() || '';
+    const itemName = item.querySelector('h3').textContent.toLowerCase();
     const category = item.dataset.category;
-    const matchesSearch = !searchText || itemName.includes(searchText.toLowerCase());
-    const matchesTime = timeFilter === 'all' || category === timeFilter;
-    const matchesCuisine = !cuisineFilter || cuisineFilter === 'all' || item.dataset.cuisine === cuisineFilter;
+    const type = item.dataset.type;
 
-    if (matchesSearch && matchesTime && matchesCuisine) {
+    const matchesSearch = itemName.includes(searchText.toLowerCase());
+    const matchesFilter = filter === 'all' || category === filter;
+    const matchesDiet = diet === 'all' || type === diet;
+
+    if (matchesSearch && matchesFilter && matchesDiet) {
+
       item.classList.remove('hidden-item');
       visibleCount++;
     } else {
       item.classList.add('hidden-item');
+    const selectedBtn = timeSlotsGrid.querySelector('.selected');
+    if (!selectedBtn) {
+      timeInput.value = '';
     }
-  });
-
-  // Handle "No Results" display
-  let noResults = document.querySelector(".no-results");
-  if (visibleCount === 0) {
-    if (!noResults) {
-      noResults = document.createElement('p');
-      noResults.className = 'no-results';
-      noResults.textContent = 'No menu items found.';
-      document.querySelector('.menu-content')?.appendChild(noResults);
-    }
-  } else if (noResults) {
-    noResults.remove();
   }
-}
+
+  function closeMobileMenu() {
+    if (!navToggle || !navMenu) return;
+    navToggle.classList.remove("active");
+    navMenu.classList.remove("active");
+    document.body.style.overflow = "";
+  }
+
+  function toggleMobileMenu() {
+    if (!navToggle || !navMenu) return;
+    navToggle.classList.toggle("active");
+    navMenu.classList.toggle("active");
+    document.body.style.overflow = navMenu.classList.contains("active") ? "hidden" : "";
+  }
+
+  function updateActiveNavLink() {
+    const scrollPosition = window.scrollY + 150;
+
+    document.querySelectorAll("section[id]").forEach((section) => {
+      const sectionTop = section.offsetTop;
+      const sectionBottom = sectionTop + section.offsetHeight;
+      const sectionId = section.id;
+
+      if (scrollPosition >= sectionTop && scrollPosition < sectionBottom) {
+        const hasLink = Array.from(navLinks).some((link) => link.dataset.section === sectionId);
+        if (!hasLink) return;
+        navLinks.forEach((link) => {
+          link.classList.toggle("active", link.dataset.section === sectionId);
+        });
+      }
+    });
+  }
+
+  function handleScroll() {
+    const currentScroll = window.scrollY;
+
+    if (nav) {
+      nav.classList.toggle("scrolled", currentScroll > 50);
+    }
+
+    if (!isTouchDevice) {
+      if (heroBg) {
+        heroBg.style.transform = `translateY(${currentScroll * 0.5}px)`;
+      }
+
+      const reservationSection = document.getElementById("reservation");
+      if (reservationBg && reservationSection && currentScroll > window.innerHeight) {
+        const offset = (currentScroll - reservationSection.offsetTop) * 0.3;
+        reservationBg.style.transform = `translateY(${offset}px)`;
+      }
+
+    }
+
+    if (backToTopBtn) {
+      backToTopBtn.classList.toggle("visible", currentScroll > 300);
+    }
+
+    updateActiveNavLink();
+  }
 
 function triggerFilter() {
   const activeBtn = document.querySelector(".filter-btn.active");
   const timeFilter = activeBtn ? activeBtn.dataset.filter : "all";
   const cuisineFilter = cuisineDropdown ? cuisineDropdown.value : "all";
   const searchText = menuSearch ? menuSearch.value : "";
-  
+
   filterMenuItems(timeFilter, cuisineFilter, searchText);
 }
 
-if (cuisineDropdown) {
-  cuisineDropdown.addEventListener("change", triggerFilter);
-}
+    const target = document.querySelector(targetId);
+    if (!target) return;
 
-if (menuSearch) {
-  menuSearch.addEventListener("input", triggerFilter);
-}
+    event.preventDefault();
+    const prefersReduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
 // Filter buttons
 filterBtns.forEach((btn) => {
-  btn.addEventListener("click", () => {
-    filterBtns.forEach((b) => b.classList.remove("active"));
-    btn.classList.add("active");
-    triggerFilter();
+
+  btn.addEventListener('click', () => {
+    filterBtns.forEach((b) => b.classList.remove('active'));
+    btn.classList.add('active');
+    filterMenuItems(btn.dataset.filter, menuSearch ? menuSearch.value : '', getActiveDiet());
   });
 });
 
-// FIX #2 — Removed duplicate menuSearch 'input' listener (was calling filterMenuItems with wrong/missing args)
+if (menuSearch) {
+  menuSearch.addEventListener('input', () => {
+    filterMenuItems(getActiveFilter(), menuSearch.value, getActiveDiet());
+  });
+}
 
- 
+// ── Diet filter buttons ──
+const dietBtns = document.querySelectorAll('.diet-btn');
 
-// Smooth scroll for navigation links
+dietBtns.forEach((btn) => {
+  btn.addEventListener('click', () => {
+    dietBtns.forEach((b) => b.classList.remove('active'));
+    btn.classList.add('active');
+    filterMenuItems(getActiveFilter(), menuSearch ? menuSearch.value : '', btn.dataset.type);
+  });
+});
+
+// ── Smooth scroll ──
+
 function smoothScroll(e) {
   e.preventDefault();
   const targetId = this.getAttribute('href');
   const targetSection = document.querySelector(targetId);
 
-  if (targetSection) {
-    const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    window.scrollTo({
-      top: targetSection.offsetTop - 80,
-      behavior: prefersReduced ? 'auto' : 'smooth',
+  function setupThemeToggle() {
+    if (!themeToggle) return;
+
+    let savedTheme = null;
+    try { savedTheme = localStorage.getItem("theme"); } catch (e) {}
+    const isLightOnLoad = savedTheme === "light";
+    
+    document.body.classList.toggle("light-theme", isLightOnLoad);
+    themeToggle.textContent = isLightOnLoad ? "\u2600" : "\u263E";
+    
+    // Set correct images on initial load
+    updateThemeImages(isLightOnLoad);
+
+    themeToggle.addEventListener("click", () => {
+      const isLight = document.body.classList.toggle("light-theme");
+      try { localStorage.setItem("theme", isLight ? "light" : "dark"); } catch (e) {}
+      themeToggle.textContent = isLight ? "\u2600" : "\u263E";
+      
+      // Swap daytime/nighttime images dynamically
+      updateThemeImages(isLight);
     });
   }
-  closeMobileMenu();
+
+// ── EmailJS helper: format date & time for readable email ──
+function formatBookingDate(dateStr) {
+  if (!dateStr) return dateStr;
+  const d = new Date(dateStr + 'T00:00:00');
+  return d.toLocaleDateString('en-IN', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' });
 }
 
-// ── Reservation form submission ──
-function handleFormSubmit(e) {
+function formatBookingTime(timeStr) {
+  if (!timeStr) return timeStr;
+  const [h, m] = timeStr.split(':').map(Number);
+  const period = h >= 12 ? 'PM' : 'AM';
+  const hour12 = h % 12 || 12;
+  return `${hour12}:${String(m).padStart(2, '0')} ${period}`;
+}
+
+// ── Reservation toast notification ──
+function showReservationToast(type, message) {
+  // Remove any existing toast
+  const existing = document.querySelector('.reservation-toast');
+  if (existing) existing.remove();
+
+  const toast = document.createElement('div');
+  toast.className = `reservation-toast reservation-toast--${type}`;
+  toast.innerHTML = `
+    <div class="reservation-toast__icon">${type === 'success' ? '✓' : '✕'}</div>
+    <div class="reservation-toast__body">
+      <p class="reservation-toast__title">${type === 'success' ? 'Reservation Requested!' : 'Something went wrong'}</p>
+      <p class="reservation-toast__msg">${message}</p>
+    </div>
+    <button class="reservation-toast__close" aria-label="Close">✕</button>
+  `;
+
+  document.body.appendChild(toast);
+
+  // Animate in
+  requestAnimationFrame(() => toast.classList.add('reservation-toast--visible'));
+
+  // Close button
+  toast.querySelector('.reservation-toast__close').addEventListener('click', () => {
+    toast.classList.remove('reservation-toast--visible');
+    setTimeout(() => toast.remove(), 400);
+  });
+
+  // Auto-remove after 6s
+  setTimeout(() => {
+    toast.classList.remove('reservation-toast--visible');
+    setTimeout(() => toast.remove(), 400);
+  }, 6000);
+}
+
+// ── Reservation form submission (with EmailJS) ──
+async function handleFormSubmit(e) {
   e.preventDefault();
 
   const inputs = reservationForm.querySelectorAll('input, select, textarea');
+
   let isValid = true;
 
-  inputs.forEach((input) => {
-    if (input.required && !input.value) {
-      input.style.borderColor = '#c94a4a';
-      isValid = false;
-    } else {
-      input.style.borderColor = '';
-    }
-  });
+    reservationForm.querySelectorAll(".error-message").forEach((error) => error.remove());
 
-  const emailInput = document.getElementById('email');
-  const phoneInput = document.getElementById('phone');
-
-  // Remove old error messages
-  document.querySelectorAll('.error-message').forEach(el => el.remove());
-
-  // Email validation
-  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-  if (emailInput && !emailRegex.test(emailInput.value.trim())) {
-    emailInput.style.borderColor = '#c94a4a';
-    const emailError = document.createElement('small');
-    emailError.className = 'error-message';
-    emailError.style.color = '#c94a4a';
-    emailError.textContent = 'Please enter a valid email address.';
-    emailInput.parentElement.appendChild(emailError);
-    isValid = false;
-  }
-
-  // Phone validation
-  if (phoneInput) {
-    const phoneValue = phoneInput.value.replace(/\D/g, '');
-    if (phoneValue.length !== 10) {
-      phoneInput.style.borderColor = '#c94a4a';
-      const phoneError = document.createElement('small');
-      phoneError.className = 'error-message';
-      phoneError.style.color = '#c94a4a';
-      phoneError.textContent = 'Phone number must contain exactly 10 digits.';
-      phoneInput.parentElement.appendChild(phoneError);
-      isValid = false;
-    }
-  }
-
-  if (isValid) {
-    const submitBtn = reservationForm.querySelector('button[type="submit"]');
-    const originalText = submitBtn.textContent;
-    submitBtn.textContent = 'Reservation Requested!';
-    submitBtn.style.backgroundColor = '#4a9c6a';
-    submitBtn.disabled = true;
-
-    setTimeout(() => {
-      reservationForm.reset();
-      updateAvailableTimes();
-      submitBtn.textContent = originalText;
-      submitBtn.style.backgroundColor = '';
-      submitBtn.disabled = false;
-      updateAvailableTimes();
-    }, 3000);
-  }
-}
-
-// ── Intersection Observer with prefers-reduced-motion ──────
-function setupIntersectionObserver() {
-  const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-
-  const animatedElements = document.querySelectorAll(
-    '.about-content, .menu-panel, .reservation-form, .location-info'
-  );
-
-  if (prefersReduced) {
-    animatedElements.forEach((el) => {
-      el.style.opacity = '1';
-      el.style.transform = 'none';
+    reservationForm.querySelectorAll("input, select, textarea").forEach((input) => {
+      const invalid = input.required && !input.value.trim();
+      input.style.borderColor = invalid ? "#c94a4a" : "";
+      if (invalid) isValid = false;
     });
+
+    if (emailInput && !/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(emailInput.value.trim())) {
+      addError(emailInput, "Please enter a valid email address.");
+      isValid = false;
+    }
+
+
+  if (!isValid) return;
+
+  const submitBtn = reservationForm.querySelector('button[type="submit"]');
+  const originalText = submitBtn.textContent;
+
+  // Gather form data
+  const formData = {
+    guest_name: document.getElementById('name').value.trim(),
+    guest_email: document.getElementById('email').value.trim(),
+    guest_phone: document.getElementById('phone').value.trim(),
+    guest_count: document.getElementById('guests').value,
+    booking_date: formatBookingDate(document.getElementById('date').value),
+    booking_time: formatBookingTime(document.getElementById('time').value),
+    special_requests: document.getElementById('requests').value.trim() || 'None',
+    restaurant_name: 'The Lighthouse',
+    restaurant_phone: '(555) 123-4567',
+    restaurant_email: 'reservations@thelighthouse.com',
+  };
+
+  // Loading state
+  submitBtn.textContent = 'Sending…';
+  submitBtn.disabled = true;
+
+  // EmailJS not configured → graceful fallback (still shows success UX)
+  if (EMAILJS_CONFIG.publicKey === 'YOUR_PUBLIC_KEY') {
+    console.warn('[EmailJS] Not configured — running in demo mode. Fill in EMAILJS_CONFIG in script.js.');
+    await new Promise(r => setTimeout(r, 1200));
+    showReservationToast('success', `Thank you, ${formData.guest_name}! We'll confirm your table for ${formData.guest_count} guest(s) on ${formData.booking_date} at ${formData.booking_time} within 24 hours.`);
+    reservationForm.reset();
+    updateAvailableTimes();
+    submitBtn.textContent = originalText;
+    submitBtn.disabled = false;
     return;
   }
 
-  const observer = new IntersectionObserver(
-    (entries) => {
-      entries.forEach((entry) => {
-        if (entry.isIntersecting) {
-          entry.target.classList.add('visible');
+  try {
+    // Send guest confirmation email
+    await emailjs.send(
+      EMAILJS_CONFIG.serviceId,
+      EMAILJS_CONFIG.guestTemplateId,
+      formData
+    );
+
+    // Send admin notification email
+    await emailjs.send(
+      EMAILJS_CONFIG.serviceId,
+      EMAILJS_CONFIG.adminTemplateId,
+      formData
+    );
+
+    showReservationToast(
+      'success',
+      `Thank you, ${formData.guest_name}! A confirmation has been sent to ${formData.guest_email}. We look forward to welcoming you on ${formData.booking_date} at ${formData.booking_time}.`
+    );
+
+    reservationForm.reset();
+    updateAvailableTimes();
+
+  } catch (err) {
+    console.error('[EmailJS] Error:', err);
+    showReservationToast(
+      'error',
+      'We couldn\'t send your confirmation email. Please call us at (555) 123-4567 or try again.'
+    );
+  } finally {
+    submitBtn.textContent = originalText;
+    submitBtn.disabled = false;
+  }
+
+// ── FIX #15 — Intersection Observer with prefers-reduced-motion ──
+
+function setupIntersectionObserver() {
+  const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    const error = document.createElement("small");
+    error.className = "error-message";
+    error.style.color = "#c94a4a";
+    error.textContent = message;
+    input.parentElement.appendChild(error);
+  }
+
+  function setupIntersectionObserver() {
+    const animatedElements = document.querySelectorAll(
+      ".about-content, .menu-panel, .reservation-form, .location-info"
+    );
+    const prefersReduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+    if (prefersReduced || !("IntersectionObserver" in window)) {
+      animatedElements.forEach((el) => el.classList.add("visible"));
+      return;
+    }
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add("visible");
+            observer.unobserve(entry.target);
+          }
+        });
+      },
+      { rootMargin: "0px 0px -50px 0px" }
+    );
+
+    animatedElements.forEach((el) => observer.observe(el));
+  }
+
+  function setupAutoScroll() {
+    if (!heroScroll) return;
+
+    function stopAutoScroll() {
+      if (autoScrollInterval) {
+        clearInterval(autoScrollInterval);
+        autoScrollInterval = null;
+      }
+    }
+
+    function startAutoScroll() {
+      autoScrollInterval = setInterval(() => {
+        window.scrollBy({ top: 2, behavior: "auto" });
+        if (window.scrollY + window.innerHeight >= document.body.scrollHeight) {
+          stopAutoScroll();
         }
+      }, 15);
+    }
+
+    heroScroll.addEventListener("click", () => {
+      autoScrollInterval ? stopAutoScroll() : startAutoScroll();
+    });
+
+    ["mousemove", "touchstart", "keydown", "wheel", "pointerdown"].forEach((eventName) => {
+      window.addEventListener(eventName, stopAutoScroll, { passive: true });
+    });
+  }
+
+  function setupReviews() {
+    const storageKey = "lighthouse_reviews";
+    const reviewForm = document.getElementById("review-form");
+    const reviewMsg = document.getElementById("review-msg");
+    const starBtns = document.querySelectorAll("#star-input .star-btn");
+    let selectedRating = 0;
+
+    const pinnedReview = {
+      name: "Rasshi Srivastav",
+      rating: 5,
+      text: "Absolutely loved the food and ambience! Every dish was crafted with such care and the atmosphere was warm and elegant. A truly memorable dining experience - will definitely be coming back!",
+      date: "14 May 2026",
+    };
+
+    function getReviews() {
+      try {
+        return JSON.parse(localStorage.getItem(storageKey)) || [];
+      } catch {
+        return [];
+      }
+    }
+
+    function renderReviews() {
+      const grid = document.getElementById("reviews-grid");
+      if (!grid) return;
+
+      grid.innerHTML = "";
+      [pinnedReview, ...getReviews()].forEach((review) => {
+        const card = document.createElement("div");
+        card.className = "review-card";
+        const rating = Math.max(0, Math.min(5, Math.round(Number(review.rating) || 0)));
+        const stars = "\u2605".repeat(rating) + "\u2606".repeat(5 - rating);
+
+        card.innerHTML = `
+          <div class="review-stars">${stars}</div>
+          <p class="review-text"></p>
+          <div class="review-author">
+            <div class="review-avatar"></div>
+            <div>
+              <span class="review-name"></span>
+              <span class="review-date"></span>
+            </div>
+          </div>
+        `;
+
+        card.querySelector(".review-text").textContent = review.text;
+        card.querySelector(".review-avatar").textContent = review.name.slice(0, 2).toUpperCase();
+        card.querySelector(".review-name").textContent = review.name;
+        card.querySelector(".review-date").textContent = review.date;
+        grid.appendChild(card);
       });
-    },
-    { root: null, rootMargin: '0px', threshold: 0.1 }
-  );
+    }
 
-  animatedElements.forEach((el) => {
-    el.style.opacity = '0';
-    el.style.transform = 'translateY(30px)';
-    el.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
-    observer.observe(el);
-  });
-}
+    function isValidName(name) {
+      return /^[\p{L}\p{M}\s'-]{3,30}$/u.test(name.trim());
+    }
 
-// Inject .visible class styles
-const style = document.createElement('style');
-style.textContent = `.visible { opacity: 1 !important; transform: translateY(0) !important; }`;
-document.head.appendChild(style);
+    function isMeaningfulReview(text) {
+      const value = text.trim();
+      const words = value.split(/\s+/);
+      return words.length >= 3 && !/^(.)\1+$|^[a-zA-Z]{1,6}$/.test(value);
+    }
 
-// ── Auto-scroll on hero "Scroll To Discover" click ───
+// ── Auto-scroll on hero click ──
 const heroScroll = document.querySelector('.hero-scroll');
 let autoScrollInterval = null;
 
-function startAutoScroll() {
-  autoScrollInterval = setInterval(() => {
-    window.scrollBy({ top: 2, behavior: 'instant' });
-    if (window.scrollY + window.innerHeight >= document.body.scrollHeight) {
-      stopAutoScroll();
+        if (text.length < 20 || !isMeaningfulReview(text)) {
+          reviewMsg.textContent = "Please enter a meaningful review of at least 20 characters.";
+          reviewMsg.style.color = "#c94a4a";
+          return;
+        }
+
+        const reviews = getReviews();
+        reviews.unshift({
+          id: Date.now(),
+          name,
+          rating: selectedRating,
+          text,
+          date: new Date().toLocaleDateString("en-IN", {
+            day: "2-digit",
+            month: "short",
+            year: "numeric",
+          }),
+        });
+
+        localStorage.setItem(storageKey, JSON.stringify(reviews));
+        renderReviews();
+        reviewForm.reset();
+        selectedRating = 0;
+        document.getElementById("review-rating").value = 0;
+        starBtns.forEach((star) => star.classList.remove("active"));
+
+        reviewMsg.textContent = "Review submitted successfully!";
+        reviewMsg.style.color = "#4a9c6a";
+        setTimeout(() => {
+          reviewMsg.style.display = "none";
+        }, 3000);
+      });
     }
-  }, 15);
-}
 
-function stopAutoScroll() {
-  if (autoScrollInterval) {
-    clearInterval(autoScrollInterval);
-    autoScrollInterval = null;
+    renderReviews();
   }
-}
 
-if (heroScroll) {
-  heroScroll.style.cursor = 'pointer';
-  heroScroll.addEventListener('click', () => {
-    autoScrollInterval ? stopAutoScroll() : startAutoScroll();
-  });
-}
+  function getMenuItemData(item) {
+    const title = item.querySelector("h3")?.textContent.trim() || "Menu item";
+    const priceText = item.querySelector(".menu-price")?.textContent || "0";
+    const price = Number(priceText.replace(/[^\d.]/g, "")) || 0;
+    const id = title.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)/g, "");
+    const image = item.querySelector("img")?.getAttribute("src") || "";
 
-['mousemove', 'touchstart', 'keydown', 'wheel', 'pointerdown'].forEach((event) => {
-  window.addEventListener(event, stopAutoScroll);
-});
+    return { id, title, price, image };
+  }
 
-// ── Back To Top ──
-const backToTopBtn = document.getElementById('backToTop');
+  function setupOrderFeatures() {
+    const menuItems = document.querySelectorAll(".menu-content .menu-item");
+    if (!menuItems.length || !orderDock) return;
 
-if (backToTopBtn) {
-  window.addEventListener('scroll', () => {
-    const past = window.scrollY > 300;
-    backToTopBtn.style.display = past ? 'block' : 'none';
-    backToTopBtn.classList.toggle('visible', past);
-  });
+    menuItems.forEach((item) => {
+      const data = getMenuItemData(item);
+      item.dataset.itemId = data.id;
 
-  backToTopBtn.addEventListener('click', () => {
-    const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    window.scrollTo({ top: 0, behavior: prefersReduced ? 'auto' : 'smooth' });
-  });
-}
+      const actions = document.createElement("div");
+      actions.className = "menu-actions";
+      actions.innerHTML = `
+        <button class="menu-action-btn add-cart-btn" type="button" data-id="${data.id}">Add</button>
+        <button class="menu-action-btn favorite-btn" type="button" data-id="${data.id}" aria-label="Add ${data.title} to favourites">\u2661</button>
+      `;
 
-// ── Event Listeners ──
-window.addEventListener('scroll', handleScroll);
+      item.querySelector(".food-content")?.appendChild(actions);
 
-navToggle.addEventListener('click', toggleMobileMenu);
+      actions.querySelector(".add-cart-btn")?.addEventListener("click", () => addToCart(data));
+      actions.querySelector(".favorite-btn")?.addEventListener("click", () => toggleFavorite(data));
+    });
 
-navLinks.forEach((link) => link.addEventListener('click', smoothScroll));
+    orderToggle?.addEventListener("click", () => {
+      const isOpen = orderDock.classList.toggle("open");
+      orderToggle.setAttribute("aria-expanded", String(isOpen));
+    });
 
-document.querySelectorAll('.nav-cta, .nav-cta-mobile, .hero-buttons a').forEach((link) => {
-  link.addEventListener('click', smoothScroll);
-});
+    orderTabs.forEach((tab) => {
+      tab.addEventListener("click", () => {
+        const targetView = tab.dataset.orderView;
+        orderTabs.forEach((item) => item.classList.toggle("active", item === tab));
+        orderViews.forEach((view) => view.classList.toggle("active", view.id === `${targetView}View`));
+      });
+    });
 
-if (reservationForm) {
-  reservationForm.addEventListener('submit', handleFormSubmit);
-}
+    checkoutBtn?.addEventListener("click", () => {
+      if (!cart.length) return;
 
-window.addEventListener('resize', () => {
-  if (window.innerWidth > 768) closeMobileMenu();
-});
+      const summary = cart.map((item) => `${item.qty} x ${item.title}`).join(", ");
+      checkoutBtn.textContent = "Order Ready!";
+      checkoutBtn.title = summary;
+      setTimeout(() => {
+        checkoutBtn.textContent = "Review Order";
+        checkoutBtn.title = "";
+      }, 2200);
+    });
 
-// ── Reviews (localStorage) ──
-const STORAGE_KEY = 'lighthouse_reviews';
+    renderOrderState();
+  }
 
-const pinnedReview = {
-  name: 'Rasshi Srivastav',
-  rating: 5,
-  text: 'Absolutely loved the food and ambience! Every dish was crafted with such care and the atmosphere was warm and elegant. A truly memorable dining experience — will definitely be coming back!',
-  date: '14 May 2026',
-};
+  function addToCart(item) {
+    const existing = cart.find((cartItem) => cartItem.id === item.id);
 
-function getReviews() {
-  const stored = localStorage.getItem(STORAGE_KEY);
-  if (stored) return JSON.parse(stored);
-  localStorage.setItem(STORAGE_KEY, JSON.stringify([]));
-  return [];
-}
+    if (existing) {
+      existing.qty += 1;
+    } else {
+      cart.push({ ...item, qty: 1 });
+    }
 
-function saveReviews(reviews) {
-  localStorage.setItem(STORAGE_KEY, JSON.stringify(reviews));
-}
+    saveStoredList("lighthouse_cart", cart);
+    renderOrderState();
+    orderDock?.classList.add("open");
+    orderToggle?.setAttribute("aria-expanded", "true");
+  }
 
-function renderReviews() {
-  const grid = document.getElementById('reviews-grid');
-  if (!grid) return;
-
-  const userReviews = getReviews();
-  const allReviews = [pinnedReview, ...userReviews];
-
-  grid.innerHTML = allReviews
-    .map(
-      (r) => `
-      <div class="review-card">
-        <div class="review-stars">${'★'.repeat(r.rating)}${'☆'.repeat(5 - r.rating)}</div>
-        <p class="review-text">${r.text}</p>
-        <div class="review-author">
-          <div class="review-avatar">${r.name.slice(0, 2).toUpperCase()}</div>
-          <div>
-            <span class="review-name">${r.name}</span>
-            <span class="review-date">${r.date}</span>
-          </div>
-        </div>
-      </div>`
-    )
-    .join('');
-}
-
-// Star rating widget
+// ── Star rating widget ──
 let selectedRating = 0;
 const starBtns = document.querySelectorAll('#star-input .star-btn');
 
@@ -512,7 +785,6 @@ starBtns.forEach((btn) => {
     document.getElementById('review-rating').value = selectedRating;
     updateStarButtons(selectedRating);
   });
-});
 
 updateStarButtons(selectedRating);
 
@@ -524,117 +796,219 @@ function isMeaningfulReview(text) {
   return words.length >= 3;
 }
 
-function isValidName(name) {
-  return /^[A-Za-z\s'\-]{3,30}$/.test(name.trim());
+// Initialize skeletons once DOM is ready
+document.addEventListener('DOMContentLoaded', () => {
+  // existing DOMContentLoaded handlers already call init functions earlier,
+  // but ensure skeletons are attached after render
+  initSkeletonLoaders();
+});
+
+const mobileStyle = document.createElement('style');
+mobileStyle.textContent = styleForMobile;
+document.head.appendChild(mobileStyle);
+
+// Automatically update copyright year
+const currentYear = document.getElementById("current-year");
+
+if (currentYear) {
+  currentYear.textContent = new Date().getFullYear();
 }
 
-const reviewForm = document.getElementById('review-form');
-const reviewMsg = document.getElementById('review-msg');
+// ============= RESERVATION API INTEGRATION =============
 
-if (reviewForm) {
-  reviewForm.addEventListener('submit', function (e) {
-    e.preventDefault();
+class ReservationAPI {
+  constructor() {
+    this.baseURL = 'http://localhost:5000/api';
+    this.token = localStorage.getItem('token');
+  }
 
-    const name = document.getElementById('review-name').value.trim();
-    const reviewText = document.getElementById('review-text').value.trim();
-
-    reviewMsg.style.display = 'block';
-
-    if (!selectedRating) {
-      reviewMsg.textContent = 'Please select a star rating.';
-      reviewMsg.style.color = '#c94a4a';
-      return;
+  setToken(token) {
+    this.token = token;
+    if (token) {
+      localStorage.setItem('token', token);
+    } else {
+      localStorage.removeItem('token');
     }
-    if (!isValidName(name)) {
-      reviewMsg.textContent = 'Name should contain only letters and be 3–30 characters long.';
-      reviewMsg.style.color = '#c94a4a';
-      return;
-    }
-    if (reviewText.length < 20) {
-      reviewMsg.textContent = 'Review must contain at least 20 characters.';
-      reviewMsg.style.color = '#c94a4a';
-      return;
-    }
-    if (!isMeaningfulReview(reviewText)) {
-      reviewMsg.textContent = 'Please enter a meaningful review.';
-      reviewMsg.style.color = '#c94a4a';
-      return;
-    }
+  }
 
-    const dateStr = new Date().toLocaleDateString('en-IN', {
-      day: '2-digit',
-      month: 'short',
-      year: 'numeric',
-    });
-
-    const newReview = {
-      id: Date.now(),
-      name,
-      rating: selectedRating,
-      text: reviewText,
-      date: dateStr,
+  getHeaders() {
+    const headers = {
+      'Content-Type': 'application/json'
     };
-    const reviews = getReviews();
-    reviews.unshift(newReview);
-    saveReviews(reviews);
-    renderReviews();
+    if (this.token) {
+      headers['Authorization'] = `Bearer ${this.token}`;
+    }
+    return headers;
+  }
+
+  async getAvailableSlots(date, guests) {
+    const response = await fetch(
+      `${this.baseURL}/reservations/slots?date=${date}&guests=${guests}`,
+      { headers: this.getHeaders() }
+    );
+    return response.json();
+  }
+
+  async createReservation(data) {
+    const response = await fetch(`${this.baseURL}/reservations`, {
+      method: 'POST',
+      headers: this.getHeaders(),
+      body: JSON.stringify(data)
+    });
+    return response.json();
+  }
+
+  async getMyReservations() {
+    const response = await fetch(`${this.baseURL}/reservations`, {
+      headers: this.getHeaders()
+    });
+    return response.json();
+  }
 
     reviewForm.reset();
     selectedRating = 0;
     document.getElementById('review-rating').value = 0;
     updateStarButtons(selectedRating);
 
-    reviewMsg.textContent = 'Review submitted successfully!';
-    reviewMsg.style.color = '#4a9c6a';
-    setTimeout(() => {
-      reviewMsg.style.display = 'none';
-    }, 3000);
-  });
+  async login(email, password) {
+    const response = await fetch(`${this.baseURL}/auth/login`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email, password })
+    });
+    const data = await response.json();
+    if (data.success && data.token) {
+      this.setToken(data.token);
+    }
+    return data;
+  }
+
+  async register(name, email, password, phone) {
+    const response = await fetch(`${this.baseURL}/auth/register`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ name, email, password, phone })
+    });
+    const data = await response.json();
+    if (data.success && data.token) {
+      this.setToken(data.token);
+    }
+    return data;
+  }
 }
 
-// ── Veg / Non-Veg Filter ──────────────────────────────
-// 1. Your filtering function, contained properly
+
+// ── Initialise ──
+document.addEventListener('DOMContentLoaded', () => {
+  handleScroll();
+  setupIntersectionObserver();
+  updateAvailableTimes();
+  renderReviews();
+});
+
+// ── Veg / Non-Veg Filter ──
+
 (function () {
   const dietFilterBtns = document.querySelectorAll('.diet-btn');
   if (!dietFilterBtns.length) return;
 
-  function applyDietFilter(diet) {
-    const activePanels = document.querySelectorAll('.menu-panel.active');
+  const formData = new FormData(this);
+  const data = {
+    date: formData.get('date'),
+    time: formData.get('time'),
+    guests: formData.get('guests'),
+    specialRequests: formData.get('specialRequests') || ''
+  };
 
-    activePanels.forEach((panel) => {
-      const items = panel.querySelectorAll('.menu-item');
-      let visibleCount = 0;
-
-      items.forEach((item) => {
-        const itemDiet = item.dataset.diet || 'all';
-        const show = diet === 'all' || itemDiet === diet;
-        item.classList.toggle('diet-hidden', !show);
-        if (show) visibleCount++;
-      });
-
-      let noResults = panel.querySelector('.diet-no-results');
-      if (!noResults) {
-        noResults = document.createElement('p');
-        noResults.className = 'diet-no-results';
-        noResults.textContent = 'No items match the selected filter.';
-        const menuItems = panel.querySelector('.menu-items');
-        if (menuItems) {
-          menuItems.appendChild(noResults);
-        }
-      }
-      noResults.classList.toggle('visible', visibleCount === 0);
-    });
+  // Validate
+  if (!data.date || !data.time || !data.guests) {
+    alert('Please fill in all required fields');
+    return;
   }
 
-  dietFilterBtns.forEach((btn) => {
+  // Show loading state
+  const submitBtn = this.querySelector('button[type="submit"]');
+  const originalText = submitBtn.textContent;
+  submitBtn.textContent = 'Booking...';
+  submitBtn.disabled = true;
+
+  try {
+    const result = await reservationAPI.createReservation(data);
+    
+    if (result.success) {
+      alert('✅ Reservation confirmed! Check your email for details.');
+      this.reset();
+    } else {
+      alert('❌ ' + result.error);
+    }
+  } catch (error) {
+    alert('❌ Something went wrong. Please try again.');
+    console.error(error);
+  } finally {
+    submitBtn.textContent = originalText;
+    submitBtn.disabled = false;
+  }
+});
+
+// ============= ADD REAL-TIME AVAILABILITY =============
+
+// Update time slot dropdown dynamically
+const dateInput = document.querySelector('#reservation input[type="date"]');
+const guestsInput = document.querySelector('#reservation input[type="number"]');
+const timeSelect = document.querySelector('#reservation select');
+
+async function updateAvailableSlots() {
+  const date = dateInput?.value;
+  const guests = guestsInput?.value;
+
+  if (!date || !guests || guests < 1) {
+    return;
+  }
+
+  try {
+    const result = await reservationAPI.getAvailableSlots(date, guests);
+    
+    if (result.success && result.data.slots) {
+      // Clear existing options
+      timeSelect.innerHTML = '<option value="">Select Time</option>';
+      
+      // Add available slots
+      result.data.slots.forEach(slot => {
+        const option = document.createElement('option');
+        option.value = slot.time;
+        option.textContent = slot.time + (slot.available ? ' ✅' : ' ❌');
+        option.disabled = !slot.available;
+        timeSelect.appendChild(option);
+      });
+
+      // Show availability message
+      const availableCount = result.data.slots.filter(s => s.available).length;
+      if (availableCount === 0) {
+        const msg = document.createElement('p');
+        msg.id = 'availability-msg';
+        msg.style.color = '#c9a962';
+        msg.textContent = '⚠️ No tables available for this date and party size';
+        timeSelect.parentNode.appendChild(msg);
+      }
+    }
+  } catch (error) {
+    console.error('Error fetching availability:', error);
+  }
+}
+
+
+  dietFilterBtns.forEach(btn => {
     btn.addEventListener('click', () => {
-      dietFilterBtns.forEach((b) => b.classList.remove('active'));
+      dietFilterBtns.forEach(b => b.classList.remove('active'));
+
+
       btn.classList.add('active');
       applyDietFilter(btn.dataset.diet);
     });
   });
 
-  document.querySelectorAll('.menu-tab').forEach((tab) => {
+  document.querySelectorAll('.menu-tab').forEach(tab => {
+
     tab.addEventListener('click', () => {
       const activeDiet = document.querySelector('.diet-btn.active')?.dataset.diet || 'all';
       setTimeout(() => applyDietFilter(activeDiet), 50);
@@ -642,50 +1016,137 @@ if (reviewForm) {
   });
 })();
 
+
 // =============================================
-// 3D CARD FLIP ENHANCEMENTS
+// PDF MENU DOWNLOAD
 // =============================================
 
-function handleCardFlip() {
-  const cards = document.querySelectorAll('.food-card-3d');
-  const isTouch = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
-
-  if (isTouch) {
-    cards.forEach((card) => {
-      card.addEventListener('click', function (e) {
-        if (e.target.closest('a') || e.target.closest('button')) return;
-        this.classList.toggle('flipped');
-      });
-    });
-  }
+// Load html2pdf library dynamically
+function loadHtml2Pdf() {
+  return new Promise((resolve, reject) => {
+    if (typeof html2pdf !== 'undefined') {
+      resolve();
+      return;
+    }
+    
+    const script = document.createElement('script');
+    script.src = 'https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js';
+    script.onload = resolve;
+    script.onerror = reject;
+    document.head.appendChild(script);
+  });
 }
 
-// Reset mobile flip when clicking elsewhere
-document.addEventListener('click', function (e) {
-  if (!e.target.closest('.food-card-3d')) {
-    document.querySelectorAll('.food-card-3d.flipped').forEach((card) => {
-      card.classList.remove('flipped');
+// Create loading overlay
+function showLoadingOverlay() {
+  const overlay = document.createElement('div');
+  overlay.className = 'pdf-loading';
+  overlay.id = 'pdfLoading';
+  overlay.innerHTML = `
+    <div class="spinner"></div>
+    <p>Generating your menu PDF...</p>
+    <p style="font-size: 0.9rem; color: rgba(255,255,255,0.7); margin-top: 10px;">Please wait</p>
+  `;
+  document.body.appendChild(overlay);
+}
+
+function hideLoadingOverlay() {
+  const overlay = document.getElementById('pdfLoading');
+  if (overlay) {
+    overlay.remove();
+
+    item.qty += delta;
+    cart = cart.filter((cartItem) => cartItem.qty > 0);
+    saveStoredList("lighthouse_cart", cart);
+    renderOrderState();
+
+  }
+
+  function toggleFavorite(item) {
+    const exists = favorites.some((favorite) => favorite.id === item.id);
+    favorites = exists
+      ? favorites.filter((favorite) => favorite.id !== item.id)
+      : [...favorites, item];
+
+    saveStoredList("lighthouse_favorites", favorites);
+    renderOrderState();
+  }
+
+  function renderOrderState() {
+    const totalCount = cart.reduce((sum, item) => sum + item.qty, 0);
+    const totalPrice = cart.reduce((sum, item) => sum + item.price * item.qty, 0);
+
+    if (cartCountEl) cartCountEl.textContent = totalCount;
+    if (cartTotalEl) cartTotalEl.textContent = `\u20B9${totalPrice}`;
+    if (checkoutBtn) checkoutBtn.disabled = cart.length === 0;
+
+    document.querySelectorAll(".favorite-btn").forEach((btn) => {
+      const isFavorite = favorites.some((item) => item.id === btn.dataset.id);
+      btn.classList.toggle("active", isFavorite);
+      btn.textContent = isFavorite ? "\u2665" : "\u2661";
     });
   }
-});
 
-// ── Initialise ───
-document.addEventListener('DOMContentLoaded', function () {
-  handleScroll();
-  setupIntersectionObserver();
+// Translate UI Content
+function updateContent() {
+  if (typeof i18next === 'undefined' || !i18next.t) return;
+
+  // Translate standard data-i18n elements
+  document.querySelectorAll("[data-i18n]").forEach((elem) => {
+    const key = elem.getAttribute("data-i18n");
+    elem.textContent = i18next.t(key);
+  });
+
+  setReservationDateRange();
   updateAvailableTimes();
-  renderReviews();
-  handleCardFlip();
+  setupThemeToggle();
+  setupIntersectionObserver();
+  setupAutoScroll();
+  setupReviews();
+  setupOrderFeatures();
+  filterMenuItems();
+  handleScroll();
+
+  dateInput?.addEventListener("change", updateAvailableTimes);
+  navToggle?.addEventListener("click", toggleMobileMenu);
+  reservationForm?.addEventListener("submit", validateReservationForm);
+  window.addEventListener("scroll", handleScroll, { passive: true });
+  window.addEventListener("resize", () => {
+    if (window.innerWidth > 768) closeMobileMenu();
+  });
+
+  navLinks.forEach((link) => link.addEventListener("click", smoothScroll));
+  document.querySelectorAll(".nav-cta, .nav-cta-mobile, .hero-buttons a").forEach((link) => {
+    link.addEventListener("click", smoothScroll);
+  });
+
+  filterBtns.forEach((btn) => {
+    btn.addEventListener("click", () => {
+      filterBtns.forEach((item) => item.classList.remove("active"));
+      btn.classList.add("active");
+      currentCategory = btn.dataset.filter || "all";
+      filterMenuItems();
+    });
+  });
+
+  dietBtns.forEach((btn) => {
+    btn.addEventListener("click", () => {
+      dietBtns.forEach((item) => item.classList.remove("active"));
+      btn.classList.add("active");
+      currentDiet = btn.dataset.diet || "all";
+      filterMenuItems();
+    });
+  });
+
+  cuisineDropdown?.addEventListener("change", filterMenuItems);
+  menuSearch?.addEventListener("input", filterMenuItems);
+
+  backToTopBtn?.addEventListener("click", () => {
+    const prefersReduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    window.scrollTo({ top: 0, behavior: prefersReduced ? "auto" : "smooth" });
+  });
 });
 
-// Mobile flip style
-const styleForMobile = `
-  @media (max-width: 768px) {
-    .food-card-3d.flipped .food-card-inner {
-      transform: rotateY(180deg) scale(1.01);
-    }
-  }
-`;
 
 const mobileStyle = document.createElement('style');
 mobileStyle.textContent = styleForMobile;
