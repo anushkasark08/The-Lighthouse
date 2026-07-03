@@ -2,7 +2,6 @@
 // DOM ELEMENTS
 // =============================================
 const nav = document.getElementById("nav");
-const cuisineDropdown = document.getElementById("cuisine-filter");
 const menuSearch = document.getElementById("menu-search");
 const navToggle = document.getElementById("navToggle");
 const navMenu = document.getElementById("navMenu");
@@ -61,15 +60,6 @@ const EMAILJS_CONFIG = {
 // Initialise EmailJS
 if (typeof emailjs !== 'undefined' && EMAILJS_CONFIG.publicKey !== 'YOUR_PUBLIC_KEY') {
   emailjs.init(EMAILJS_CONFIG.publicKey);
-}
-
-// ── Scroll hint based on input type ──
-const scrollHintMouse = document.querySelector('.scroll-hint-mouse');
-const scrollHintTouch = document.querySelector('.scroll-hint-touch');
-
-if (scrollHintMouse && scrollHintTouch) {
-  scrollHintMouse.style.display = isTouchDevice ? 'none' : '';
-  scrollHintTouch.style.display = isTouchDevice ? '' : 'none';
 }
 
 // ============= RESERVATION DATE/TIME VALIDATION =============
@@ -1164,9 +1154,6 @@ dietBtns.forEach((btn) => {
   });
 });
 
-if (cuisineDropdown) {
-  cuisineDropdown.addEventListener("change", filterMenuItems);
-}
 if (menuSearch) {
   menuSearch.addEventListener("input", filterMenuItems);
 }
