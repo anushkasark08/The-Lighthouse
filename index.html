@@ -41,6 +41,8 @@
           <li><a href="#menu" class="nav-link" data-section="menu" data-i18n="nav.menu">Menu</a></li>
           <li><a href="#reservation" class="nav-link" data-section="reservation" data-i18n="nav.reservation">Reservations</a></li>
           <li><a href="#reviews" class="nav-link" data-section="reviews" data-i18n="nav.reviews">Reviews</a></li>
+          <li><a href="#giftcards" class="nav-link" data-section="giftcards" data-i18n="nav.giftcards">Gift Cards</a></li>
+          <li><a href="#loyalty" class="nav-link" data-section="loyalty" data-i18n="nav.loyalty">Lighthouse Club</a></li>
           <li><a href="#location" class="nav-link" data-section="location" data-i18n="nav.location">Location</a></li>
           <li class="mobile-only nav-lang-item">
             <div class="language-selector-container">
@@ -224,6 +226,29 @@
           <button class="diet-btn non-veg" data-diet="non-veg">
             <span class="diet-dot non-veg-dot"></span> <span data-i18n="menu.diet_nonveg">Non-Veg</span>
           </button>
+        </div>
+
+        <!-- Virtual Sommelier Widget -->
+        <div class="sommelier-widget" id="sommelier-widget">
+          <div class="sommelier-container">
+            <div class="sommelier-header">
+              <span class="sommelier-badge">🍷 Virtual Sommelier</span>
+              <h3 class="sommelier-title">Exquisite Beverage Pairings</h3>
+              <p class="sommelier-desc">Select a dish below to discover its recommended vintage wine or premium craft drink pairing.</p>
+            </div>
+            <div class="sommelier-body">
+              <div class="sommelier-selector-group">
+                <label for="sommelier-main-select">Choose your dish:</label>
+                <select id="sommelier-main-select">
+                  <option value="" disabled selected>Select a dish...</option>
+                  <!-- Populated dynamically in script.js -->
+                </select>
+              </div>
+              <div class="sommelier-result" id="sommelier-result" style="display: none;">
+                <!-- Dynamic results rendered here -->
+              </div>
+            </div>
+          </div>
         </div>
 
         <div class="menu-content menu-panel active">
@@ -836,11 +861,49 @@
                 </select>
               </div>
             </div>
-            <div class="form-group full-width">
-              <label for="requests" data-i18n="reservation.requests">Special Requests</label>
-              <textarea id="requests" name="requests" rows="4"
-                placeholder="Dietary restrictions, special occasions, seating preferences..." data-i18n-placeholder="reservation.requests_placeholder"></textarea>
-            </div>
+             <div class="form-group full-width">
+               <label data-i18n="reservation.select_zone">Select Dining Zone</label>
+               <div class="dining-zones" id="dining-zones">
+                 <div class="zone-card active" data-zone="main">
+                   <div class="zone-name">Main Dining Hall</div>
+                   <div class="zone-desc">Elegant indoor setting, live acoustic music</div>
+                 </div>
+                 <div class="zone-card" data-zone="terrace">
+                   <div class="zone-name">Ocean Breeze Terrace</div>
+                   <div class="zone-desc">Outdoor seating with panoramic sunset sea views</div>
+                 </div>
+                 <div class="zone-card" data-zone="alcove">
+                   <div class="zone-name">Private Alcoves</div>
+                   <div class="zone-desc">Secluded intimate booths, romantic lighting</div>
+                 </div>
+                 <div class="zone-card" data-zone="bar">
+                   <div class="zone-name">Chef's Bar Counter</div>
+                   <div class="zone-desc">High-top seating overlooking the open kitchen</div>
+                 </div>
+               </div>
+               <input type="hidden" id="selected-zone" name="zone" value="main" />
+             </div>
+
+             <div class="form-group full-width">
+               <label data-i18n="reservation.select_table">Available Tables (Click to select)</label>
+               <div class="seating-map-container">
+                 <div class="seating-map" id="seating-map">
+                   <!-- Dynamically populated tables -->
+                 </div>
+                 <div class="seating-legend">
+                   <span class="legend-item"><span class="legend-dot available"></span> Available</span>
+                   <span class="legend-item"><span class="legend-dot reserved"></span> Reserved</span>
+                   <span class="legend-item"><span class="legend-dot selected"></span> Selected</span>
+                 </div>
+               </div>
+               <input type="hidden" id="selected-table" name="table" value="" />
+             </div>
+
+             <div class="form-group full-width">
+               <label for="requests" data-i18n="reservation.requests">Special Requests</label>
+               <textarea id="requests" name="requests" rows="4"
+                 placeholder="Dietary restrictions, special occasions, seating preferences..." data-i18n-placeholder="reservation.requests_placeholder"></textarea>
+             </div>
             <button type="submit" class="btn btn-primary btn-full" data-i18n="reservation.submit">Request Reservation</button>
             <p class="form-note" data-i18n="reservation.note">You will receive a confirmation email within 24 hours.</p>
           </form>
@@ -890,6 +953,189 @@
             <button type="submit" class="btn btn-primary btn-full" data-i18n="reviews.submit">Submit Review</button>
             <p id="review-msg" class="form-note" style="display: none"></p>
           </form>
+        </div>
+      </div>
+    </section>
+
+    <!-- Gift Cards Section -->
+    <section class="giftcards-section" id="giftcards">
+      <div class="container">
+        <div class="section-header">
+          <span class="section-label" data-i18n="giftcards.label">Luxury Gifting</span>
+          <h2 class="section-title" data-i18n="giftcards.title">Gift Cards & Vouchers</h2>
+          <p class="section-desc" data-i18n="giftcards.subtitle" style="max-width: 600px; margin: 0 auto; color: var(--color-text-muted);">Share the gift of an exceptional dining experience at The Lighthouse</p>
+        </div>
+
+        <div class="giftcards-grid">
+          <!-- Customization Form -->
+          <div class="giftcard-form-container">
+            <form id="giftcard-form">
+              <!-- Value Selector -->
+              <div class="form-group full-width">
+                <label data-i18n="giftcards.select_value">Select Voucher Value</label>
+                <div class="value-options">
+                  <button type="button" class="value-btn active" data-value="5000">₹5,000</button>
+                  <button type="button" class="value-btn" data-value="10000">₹10,000</button>
+                  <button type="button" class="value-btn" data-value="25000">₹25,000</button>
+                  <button type="button" class="value-btn" data-value="custom">Custom</button>
+                </div>
+                <div class="custom-value-input-wrapper" style="display: none; margin-top: 10px;">
+                  <input type="number" id="custom-giftcard-value" placeholder="Enter custom amount in ₹" min="1000" max="500000" />
+                </div>
+                <input type="hidden" id="selected-giftcard-value" name="giftcard-value" value="5000" />
+              </div>
+
+              <!-- Theme Selector -->
+              <div class="form-group full-width" style="margin-top: 20px;">
+                <label data-i18n="giftcards.select_theme">Select Design Theme</label>
+                <div class="theme-options">
+                  <button type="button" class="theme-option-btn active" data-theme="theme-gold">
+                    <span class="theme-preview gold"></span> Classic Gold
+                  </button>
+                  <button type="button" class="theme-option-btn" data-theme="theme-obsidian">
+                    <span class="theme-preview obsidian"></span> Midnight Obsidian
+                  </button>
+                  <button type="button" class="theme-option-btn" data-theme="theme-platinum">
+                    <span class="theme-preview platinum"></span> Platinum Crest
+                  </button>
+                </div>
+                <input type="hidden" id="selected-giftcard-theme" name="giftcard-theme" value="theme-gold" />
+              </div>
+
+              <!-- Recipient & Message -->
+              <div class="form-row" style="margin-top: 20px;">
+                <div class="form-group">
+                  <label for="giftcard-recipient" data-i18n="giftcards.recipient_name">Recipient Name</label>
+                  <input type="text" id="giftcard-recipient" placeholder="Recipient Name" required />
+                </div>
+                <div class="form-group">
+                  <label for="giftcard-sender" data-i18n="giftcards.sender_name">Your Name</label>
+                  <input type="text" id="giftcard-sender" placeholder="Your Name" required />
+                </div>
+              </div>
+
+              <div class="form-group full-width" style="margin-top: 20px;">
+                <label for="giftcard-message" data-i18n="giftcards.personal_message">Personal Message</label>
+                <textarea id="giftcard-message" rows="3" placeholder="Write a warm message..." maxlength="150"></textarea>
+              </div>
+
+              <button type="submit" class="btn btn-primary btn-full" style="margin-top: 25px;" data-i18n="giftcards.purchase_btn">Purchase Gift Card</button>
+            </form>
+          </div>
+
+          <!-- Live Card Preview -->
+          <div class="giftcard-preview-container">
+            <div class="giftcard-card theme-gold" id="giftcard-card-preview">
+              <div class="giftcard-card-logo">The Lighthouse</div>
+              <div class="giftcard-card-badge">E-Voucher</div>
+              <div class="giftcard-card-value-display">₹5,000</div>
+              <div class="giftcard-card-details">
+                <div class="card-detail-item">
+                  <span class="label">TO:</span>
+                  <span class="value" id="preview-to">Recipient Name</span>
+                </div>
+                <div class="card-detail-item">
+                  <span class="label">FROM:</span>
+                  <span class="value" id="preview-from">Your Name</span>
+                </div>
+                <div class="card-detail-msg" id="preview-message">"Write a warm message..."</div>
+              </div>
+              <div class="giftcard-card-footer">
+                <span class="code">LH-XXXX-XXXX</span>
+                <span class="expiry">Valid for 1 year</span>
+              </div>
+            </div>
+            
+            <!-- Download / Print Voucher Trigger -->
+            <div class="voucher-success-panel" id="voucher-success-panel" style="display: none;">
+              <p class="success-msg">🎉 Gift Card Purchased Successfully!</p>
+              <button id="download-voucher-btn" class="btn btn-outline btn-full">🖨️ Print & Download Voucher</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Loyalty Club Section -->
+    <section class="loyalty-section" id="loyalty">
+      <div class="container">
+        <div class="section-header">
+          <span class="section-label" data-i18n="loyalty.label">Exclusive Club</span>
+          <h2 class="section-title" data-i18n="loyalty.title">The Lighthouse Club</h2>
+          <p class="section-desc" data-i18n="loyalty.subtitle" style="max-width: 600px; margin: 0 auto; color: var(--color-text-muted);">Join our premium club to earn points on reservations and reviews, and unlock exclusive dining rewards.</p>
+        </div>
+
+        <div class="loyalty-grid">
+          <!-- Auth Card: Registration & Login -->
+          <div class="loyalty-card" id="loyalty-auth-card">
+            <h3>Join the Elite</h3>
+            <p style="font-size: 0.9rem; color: var(--color-text-muted); margin-bottom: 20px;">Enter your details to register or sign in to your club account.</p>
+            <form id="loyalty-auth-form">
+              <div class="form-group full-width">
+                <label for="loyalty-email">Email Address</label>
+                <input type="email" id="loyalty-email" placeholder="you@example.com" required />
+              </div>
+              <div class="form-group full-width" style="margin-top: 15px;">
+                <label for="loyalty-name">Full Name (New Members)</label>
+                <input type="text" id="loyalty-name" placeholder="John Doe" />
+              </div>
+              <button type="submit" class="btn btn-primary btn-full" style="margin-top: 20px;">Access Club Portal</button>
+            </form>
+          </div>
+
+          <!-- Dashboard Card (Visible when logged in) -->
+          <div class="loyalty-card" id="loyalty-dashboard-card" style="display: none;">
+            <div class="dashboard-header">
+              <div class="member-info">
+                <span class="member-tier">PLATINUM MEMBER</span>
+                <h3 id="member-display-name">Guest Name</h3>
+              </div>
+              <div class="points-badge">
+                <span class="points-val" id="member-points-val">0</span>
+                <span class="points-lbl">POINTS</span>
+              </div>
+            </div>
+
+            <!-- Earn points guides -->
+            <div class="earn-info" style="margin-top: 20px;">
+              <h4 style="font-family: var(--font-serif); font-size: 1.15rem; color: var(--color-primary);">How to Earn Points:</h4>
+              <ul style="list-style-type: none; padding-left: 0; margin-top: 8px; font-size: 0.9rem;">
+                <li style="margin-bottom: 5px;">📅 <strong>+100 points</strong> per successful Table Booking</li>
+                <li>⭐ <strong>+50 points</strong> per Review Shared</li>
+              </ul>
+            </div>
+
+            <!-- Rewards Redemption Section -->
+            <div class="redemption-section" style="margin-top: 25px;">
+              <h4 style="font-family: var(--font-serif); font-size: 1.15rem; color: var(--color-primary); margin-bottom: 12px;">Redeem Reward Vouchers:</h4>
+              <div class="rewards-options">
+                <div class="reward-item">
+                  <div class="reward-details">
+                    <h5>₹500 Discount Code</h5>
+                    <p style="font-size: 0.8rem; color: var(--color-text-muted);">Cost: 200 Points</p>
+                  </div>
+                  <button type="button" class="btn btn-outline btn-sm redeem-btn" data-cost="200" data-reward="₹500 Discount" data-code="LHC-500D">Redeem</button>
+                </div>
+                <div class="reward-item" style="margin-top: 15px;">
+                  <div class="reward-details">
+                    <h5>₹1,500 Discount Code</h5>
+                    <p style="font-size: 0.8rem; color: var(--color-text-muted);">Cost: 500 Points</p>
+                  </div>
+                  <button type="button" class="btn btn-outline btn-sm redeem-btn" data-cost="500" data-reward="₹1,500 Discount" data-code="LHC-1500D">Redeem</button>
+                </div>
+              </div>
+            </div>
+
+            <!-- Active discount codes display -->
+            <div class="active-codes" id="active-codes-container" style="display: none; margin-top: 20px; border-top: 1px solid var(--color-border); padding-top: 15px;">
+              <h4 style="font-family: var(--font-serif); font-size: 1.15rem; color: var(--color-primary);">Your Active Vouchers:</h4>
+              <div id="vouchers-list" style="margin-top: 10px;">
+                <!-- Populated dynamically -->
+              </div>
+            </div>
+
+            <button type="button" class="btn btn-outline btn-sm" id="loyalty-logout-btn" style="margin-top: 25px; width: 100%;">Sign Out</button>
+          </div>
         </div>
       </div>
     </section>
@@ -1137,6 +1383,76 @@
     </footer>
 
     <button id="backToTop" data-i18n="back_to_top">BACK TO TOP ▲</button>
+
+    <!-- Menu Item Customizer Modal -->
+    <div class="customizer-modal" id="customizer-modal" style="display: none;">
+      <div class="customizer-modal-content">
+        <button class="customizer-close" id="customizer-close" aria-label="Close customizer">&times;</button>
+        <div class="customizer-header">
+          <h3 id="customizer-title">Customize Item</h3>
+          <p id="customizer-base-price">Base Price: ₹0</p>
+        </div>
+        <form id="customizer-form">
+          <!-- Spice/Sweetness Selection -->
+          <div class="customizer-option-group" id="customizer-spice-group">
+            <label class="option-label">Spice Level</label>
+            <div class="customizer-options">
+              <label class="customizer-radio-label">
+                <input type="radio" name="spice-level" value="Mild" checked />
+                <span>Mild</span>
+              </label>
+              <label class="customizer-radio-label">
+                <input type="radio" name="spice-level" value="Medium" />
+                <span>Medium</span>
+              </label>
+              <label class="customizer-radio-label">
+                <input type="radio" name="spice-level" value="Hot" />
+                <span>Hot</span>
+              </label>
+              <label class="customizer-radio-label">
+                <input type="radio" name="spice-level" value="Chef Special" />
+                <span>Chef's Special (Extra Hot)</span>
+              </label>
+            </div>
+          </div>
+
+          <!-- Sides Swapping Selection -->
+          <div class="customizer-option-group" id="customizer-sides-group">
+            <label class="option-label">Select Side</label>
+            <select id="customizer-side-select">
+              <option value="Default Side">Default Side</option>
+              <option value="Basmati Rice">Basmati Rice</option>
+              <option value="Garlic Naan">Garlic Naan</option>
+              <option value="Fresh Green Salad">Fresh Green Salad</option>
+            </select>
+          </div>
+
+          <!-- Toppings/Extras Selection -->
+          <div class="customizer-option-group" id="customizer-toppings-group">
+            <label class="option-label">Add Extras / Toppings</label>
+            <div class="customizer-checkboxes">
+              <label class="customizer-checkbox-label">
+                <input type="checkbox" class="topping-cb" value="Truffle Butter" data-price="150" />
+                <span>Truffle Butter (+₹150)</span>
+              </label>
+              <label class="customizer-checkbox-label">
+                <input type="checkbox" class="topping-cb" value="Extra Protein" data-price="200" />
+                <span>Extra Protein (+₹200)</span>
+              </label>
+              <label class="customizer-checkbox-label">
+                <input type="checkbox" class="topping-cb" value="Shredded Cheese" data-price="80" />
+                <span>Shredded Cheese (+₹80)</span>
+              </label>
+            </div>
+          </div>
+
+          <div class="customizer-footer">
+            <div class="customizer-total-price">Total: <span id="customizer-total-val">₹0</span></div>
+            <button type="submit" class="btn btn-primary" id="customizer-add-btn">Add to Cart</button>
+          </div>
+        </form>
+      </div>
+    </div>
 
     <script src="script.js"></script>
   </body>

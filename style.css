@@ -3058,3 +3058,907 @@ body.light-theme .newsletter-form input {
     gap: 50px;
   }
 }
+
+/* ── Feature 1: Seating Zone Map Selector ── */
+.dining-zones {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 15px;
+  margin-top: 10px;
+  margin-bottom: 20px;
+}
+
+.zone-card {
+  background: var(--color-bg-card, #25211e);
+  border: 1px solid var(--color-border, #3a342f);
+  border-radius: 8px;
+  padding: 15px;
+  cursor: pointer;
+  transition: all var(--transition, 0.3s ease);
+}
+
+.zone-card:hover {
+  border-color: var(--color-primary, #c9a962);
+  transform: translateY(-2px);
+}
+
+.zone-card.active {
+  border-color: var(--color-primary, #c9a962);
+  background: rgba(201, 169, 98, 0.1);
+  box-shadow: 0 0 10px rgba(201, 169, 98, 0.2);
+}
+
+.zone-name {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: var(--color-primary, #c9a962);
+  margin-bottom: 5px;
+}
+
+.zone-desc {
+  font-size: 0.85rem;
+  color: var(--color-text-muted, #9a958e);
+  line-height: 1.3;
+}
+
+.seating-map-container {
+  background: var(--color-bg-card, #25211e);
+  border: 1px solid var(--color-border, #3a342f);
+  border-radius: 8px;
+  padding: 20px;
+  margin-top: 10px;
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+.seating-map {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 15px;
+  max-width: 400px;
+  margin: 0 auto 15px auto;
+}
+
+@media (max-width: 480px) {
+  .seating-map {
+    grid-template-columns: repeat(4, 1fr);
+    gap: 10px;
+  }
+}
+
+.seating-table {
+  aspect-ratio: 1;
+  border-radius: 50%;
+  border: 2px solid var(--color-border, #3a342f);
+  background: transparent;
+  color: var(--color-text, #f5f2ed);
+  font-size: 0.9rem;
+  font-weight: 700;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  transition: all var(--transition, 0.3s ease);
+}
+
+.seating-table span {
+  font-size: 0.65rem;
+  font-weight: 400;
+  color: var(--color-text-muted, #9a958e);
+}
+
+.seating-table.available:hover {
+  border-color: var(--color-primary, #c9a962);
+  background: rgba(201, 169, 98, 0.05);
+}
+
+.seating-table.reserved {
+  background: rgba(201, 74, 74, 0.1);
+  border-color: #c94a4a;
+  color: #c94a4a;
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+.seating-table.reserved span {
+  color: #c94a4a;
+}
+
+.seating-table.selected {
+  background: var(--color-primary, #c9a962);
+  border-color: var(--color-primary, #c9a962);
+  color: #161311;
+  box-shadow: 0 0 10px rgba(201, 169, 98, 0.4);
+}
+
+.seating-table.selected span {
+  color: #161311;
+}
+
+.seating-legend {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  font-size: 0.85rem;
+}
+
+.legend-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--color-text-muted, #9a958e);
+}
+
+.legend-dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  border: 1px solid var(--color-border, #3a342f);
+}
+
+.legend-dot.available {
+  background: transparent;
+}
+
+.legend-dot.reserved {
+  background: rgba(201, 74, 74, 0.2);
+  border-color: #c94a4a;
+}
+
+.legend-dot.selected {
+  background: var(--color-primary, #c9a962);
+  border-color: var(--color-primary, #c9a962);
+}
+
+/* ── Feature 2: Luxury Dining Gift Cards & Voucher Customizer ── */
+.giftcards-section {
+  padding: 80px 0;
+  border-top: 1px solid var(--color-border, #3d3835);
+  background-color: var(--color-bg-lighter, #252220);
+}
+
+.giftcards-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 40px;
+  margin-top: 40px;
+  align-items: flex-start;
+}
+
+@media (max-width: 992px) {
+  .giftcards-grid {
+    grid-template-columns: 1fr;
+    gap: 30px;
+  }
+}
+
+.giftcard-form-container {
+  background: var(--color-bg-card, #2a2725);
+  border: 1px solid var(--color-border, #3d3835);
+  border-radius: 12px;
+  padding: 30px;
+}
+
+.value-options, .theme-options {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.value-btn, .theme-option-btn {
+  background: transparent;
+  border: 1px solid var(--color-border, #3d3835);
+  color: var(--color-text, #f5f2ed);
+  padding: 10px 20px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-family: var(--font-sans);
+  font-weight: 500;
+  transition: all var(--transition, 0.3s ease);
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.value-btn:hover, .theme-option-btn:hover {
+  border-color: var(--color-primary, #c9a962);
+}
+
+.value-btn.active, .theme-option-btn.active {
+  background: rgba(201, 169, 98, 0.1);
+  border-color: var(--color-primary, #c9a962);
+  color: var(--color-primary, #c9a962);
+}
+
+.theme-preview {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  display: inline-block;
+}
+
+.theme-preview.gold {
+  background: #c9a962;
+  border: 1px solid #fff;
+}
+
+.theme-preview.obsidian {
+  background: #111;
+  border: 1px solid #555;
+}
+
+.theme-preview.platinum {
+  background: #e3e8eb;
+  border: 1px solid #777;
+}
+
+.custom-value-input-wrapper input {
+  width: 100%;
+  padding: 12px;
+  background: var(--color-bg, #1a1714);
+  border: 1px solid var(--color-border, #3d3835);
+  border-radius: 8px;
+  color: var(--color-text, #f5f2ed);
+}
+
+.giftcard-preview-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: sticky;
+  top: 100px;
+}
+
+.giftcard-card {
+  width: 100%;
+  max-width: 450px;
+  aspect-ratio: 1.58;
+  border-radius: 16px;
+  padding: 25px;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.4);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.giftcard-card.theme-gold {
+  background: linear-gradient(135deg, #2b251f 0%, #171310 100%);
+  border: 2px solid var(--color-primary, #c9a962);
+  color: var(--color-text, #f5f2ed);
+}
+
+.giftcard-card.theme-gold .giftcard-card-logo,
+.giftcard-card.theme-gold .giftcard-card-value-display {
+  color: var(--color-primary, #c9a962);
+}
+
+.giftcard-card.theme-obsidian {
+  background: linear-gradient(135deg, #0d0d0d 0%, #1a1a1a 100%);
+  border: 2px solid #555;
+  color: #fff;
+}
+
+.giftcard-card.theme-obsidian .giftcard-card-logo,
+.giftcard-card.theme-obsidian .giftcard-card-value-display {
+  color: #fff;
+  text-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
+}
+
+.giftcard-card.theme-platinum {
+  background: linear-gradient(135deg, #f7f9fa 0%, #d5dbde 100%);
+  border: 2px solid #b2b8bb;
+  color: #2c3e50;
+}
+
+.giftcard-card.theme-platinum .giftcard-card-logo,
+.giftcard-card.theme-platinum .giftcard-card-value-display {
+  color: #2c3e50;
+  font-weight: 700;
+}
+
+.giftcard-card.theme-platinum .giftcard-card-badge {
+  background: #2c3e50;
+  color: #fff;
+}
+
+.giftcard-card.theme-platinum .card-detail-msg,
+.giftcard-card.theme-platinum .card-detail-item .label,
+.giftcard-card.theme-platinum .expiry {
+  color: #7f8c8d;
+}
+
+.giftcard-card-logo {
+  font-family: var(--font-serif);
+  font-size: 1.5rem;
+  font-weight: 700;
+  letter-spacing: 1px;
+}
+
+.giftcard-card-badge {
+  position: absolute;
+  top: 25px;
+  right: 25px;
+  background: var(--color-primary, #c9a962);
+  color: #161311;
+  font-size: 0.65rem;
+  text-transform: uppercase;
+  font-weight: 700;
+  padding: 4px 10px;
+  border-radius: 20px;
+  letter-spacing: 1px;
+}
+
+.giftcard-card-value-display {
+  font-family: var(--font-serif);
+  font-size: 2.5rem;
+  font-weight: 700;
+  margin-top: 15px;
+}
+
+.giftcard-card-details {
+  margin-top: 20px;
+  flex-grow: 1;
+}
+
+.card-detail-item {
+  display: flex;
+  margin-bottom: 4px;
+  font-size: 0.8rem;
+}
+
+.card-detail-item .label {
+  width: 55px;
+  color: var(--color-text-muted, #9a958e);
+  font-weight: 600;
+}
+
+.card-detail-item .value {
+  font-weight: 500;
+}
+
+.card-detail-msg {
+  font-style: italic;
+  font-size: 0.8rem;
+  color: var(--color-text-muted, #9a958e);
+  margin-top: 10px;
+  line-height: 1.4;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.giftcard-card-footer {
+  display: flex;
+  justify-content: space-between;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  padding-top: 10px;
+  margin-top: 15px;
+  font-size: 0.7rem;
+  font-family: monospace;
+}
+
+.giftcard-card.theme-platinum .giftcard-card-footer {
+  border-top-color: rgba(0, 0, 0, 0.1);
+  color: #7f8c8d;
+}
+
+.voucher-success-panel {
+  margin-top: 25px;
+  width: 100%;
+  max-width: 450px;
+  text-align: center;
+}
+
+.success-msg {
+  color: #4caf50;
+  font-weight: 600;
+  margin-bottom: 15px;
+}
+
+@media print {
+  body * {
+    visibility: hidden;
+  }
+  #giftcard-card-preview, #giftcard-card-preview * {
+    visibility: visible;
+  }
+  #giftcard-card-preview {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    max-width: 500px;
+    box-shadow: none;
+    border: 2px solid #000 !important;
+  }
+}
+
+/* ── Feature 3: Menu Item Customizer Modal ── */
+.customizer-modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 3000;
+  background-color: rgba(16, 13, 11, 0.85);
+  backdrop-filter: blur(8px);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transition: opacity 0.3s ease;
+}
+
+.customizer-modal-content {
+  background-color: var(--color-bg-card, #2a2725);
+  border: 1px solid var(--color-border, #3d3835);
+  border-radius: 16px;
+  width: 90%;
+  max-width: 500px;
+  padding: 30px;
+  position: relative;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.6);
+  animation: modalReveal 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.15);
+}
+
+@keyframes modalReveal {
+  from {
+    transform: scale(0.9);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+.customizer-close {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  background: transparent;
+  border: none;
+  color: var(--color-text-muted, #9a958e);
+  font-size: 2rem;
+  cursor: pointer;
+  line-height: 1;
+  transition: color var(--transition, 0.3s ease);
+}
+
+.customizer-close:hover {
+  color: var(--color-primary, #c9a962);
+}
+
+.customizer-header {
+  margin-bottom: 25px;
+  border-bottom: 1px solid var(--color-border, #3d3835);
+  padding-bottom: 15px;
+}
+
+.customizer-header h3 {
+  font-size: 1.8rem;
+  color: var(--color-primary, #c9a962);
+}
+
+#customizer-base-price {
+  font-size: 0.95rem;
+  color: var(--color-text-muted, #9a958e);
+  margin-top: 5px;
+}
+
+.customizer-option-group {
+  margin-bottom: 25px;
+}
+
+.customizer-option-group .option-label {
+  display: block;
+  font-size: 0.9rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: var(--color-primary, #c9a962);
+  margin-bottom: 12px;
+  font-weight: 600;
+}
+
+.customizer-options {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 10px;
+}
+
+.customizer-radio-label, .customizer-checkbox-label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 15px;
+  border: 1px solid var(--color-border, #3d3835);
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all var(--transition, 0.3s ease);
+}
+
+.customizer-radio-label:hover, .customizer-checkbox-label:hover {
+  border-color: var(--color-primary, #c9a962);
+}
+
+.customizer-radio-label input, .customizer-checkbox-label input {
+  accent-color: var(--color-primary, #c9a962);
+  cursor: pointer;
+}
+
+.customizer-radio-label span, .customizer-checkbox-label span {
+  font-size: 0.85rem;
+  font-weight: 500;
+}
+
+.customizer-radio-label:has(input:checked), .customizer-checkbox-label:has(input:checked) {
+  border-color: var(--color-primary, #c9a962);
+  background: rgba(201, 169, 98, 0.1);
+  color: var(--color-primary, #c9a962);
+}
+
+#customizer-side-select {
+  width: 100%;
+  padding: 12px;
+  background: var(--color-bg, #1a1714);
+  border: 1px solid var(--color-border, #3d3835);
+  border-radius: 8px;
+  color: var(--color-text, #f5f2ed);
+  font-family: var(--font-sans);
+  cursor: pointer;
+}
+
+.customizer-checkboxes {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.customizer-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 30px;
+  border-top: 1px solid var(--color-border, #3d3835);
+  padding-top: 20px;
+}
+
+.customizer-total-price {
+  font-size: 1.1rem;
+  font-weight: 600;
+}
+
+#customizer-total-val {
+  color: var(--color-primary, #c9a962);
+  font-size: 1.3rem;
+  font-weight: 700;
+  font-family: var(--font-serif);
+}
+
+.order-item-customizations {
+  font-size: 0.75rem;
+  color: var(--color-text-muted, #9a958e);
+  margin-top: 4px;
+  line-height: 1.3;
+}
+
+/* ── Feature 4: Virtual Sommelier ── */
+.sommelier-widget {
+  margin: 30px auto 40px auto;
+  max-width: 800px;
+  background-color: var(--color-bg-card, #2a2725);
+  border: 1px solid var(--color-border, #3d3835);
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+}
+
+.sommelier-container {
+  padding: 30px;
+}
+
+.sommelier-header {
+  text-align: center;
+  margin-bottom: 25px;
+}
+
+.sommelier-badge {
+  display: inline-block;
+  font-size: 0.7rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: var(--color-primary, #c9a962);
+  border: 1px solid var(--color-primary, #c9a962);
+  padding: 4px 12px;
+  border-radius: 20px;
+  background-color: rgba(201, 169, 98, 0.05);
+  margin-bottom: 10px;
+}
+
+.sommelier-title {
+  font-size: 1.6rem;
+  font-family: var(--font-serif);
+  color: var(--color-text, #f5f2ed);
+  margin-bottom: 8px;
+}
+
+.sommelier-desc {
+  font-size: 0.9rem;
+  color: var(--color-text-muted, #9a958e);
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.sommelier-body {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  align-items: center;
+}
+
+.sommelier-selector-group {
+  width: 100%;
+  max-width: 450px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.sommelier-selector-group label {
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  font-weight: 600;
+  color: var(--color-primary, #c9a962);
+}
+
+.sommelier-selector-group select {
+  width: 100%;
+  padding: 12px 15px;
+  background-color: var(--color-bg, #1a1714);
+  border: 1px solid var(--color-border, #3d3835);
+  border-radius: 8px;
+  color: var(--color-text, #f5f2ed);
+  font-family: var(--font-sans);
+  cursor: pointer;
+  transition: border-color var(--transition, 0.3s ease);
+}
+
+.sommelier-selector-group select:focus {
+  border-color: var(--color-primary, #c9a962);
+  outline: none;
+}
+
+.sommelier-result {
+  width: 100%;
+  max-width: 550px;
+  background-color: var(--color-bg, #1a1714);
+  border: 1px solid var(--color-border, #3d3835);
+  border-radius: 8px;
+  padding: 20px;
+  animation: pairingReveal 0.5s ease;
+}
+
+@keyframes pairingReveal {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.sommelier-pairing-card {
+  display: flex;
+  gap: 20px;
+  align-items: center;
+}
+
+@media (max-width: 576px) {
+  .sommelier-pairing-card {
+    flex-direction: column;
+    text-align: center;
+  }
+}
+
+.pairing-info {
+  flex-grow: 1;
+}
+
+.pairing-label {
+  display: block;
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  color: var(--color-primary, #c9a962);
+  font-weight: 600;
+  margin-bottom: 4px;
+}
+
+.pairing-info h4 {
+  font-size: 1.35rem;
+  color: var(--color-text, #f5f2ed);
+  margin-bottom: 8px;
+  font-family: var(--font-serif);
+}
+
+.pairing-info p {
+  font-size: 0.85rem;
+  color: var(--color-text-muted, #9a958e);
+  line-height: 1.4;
+  margin-bottom: 12px;
+}
+
+.tasting-notes {
+  font-size: 0.8rem;
+  background-color: rgba(201, 169, 98, 0.05);
+  border-left: 2px solid var(--color-primary, #c9a962);
+  padding: 8px 12px;
+  margin-bottom: 15px;
+  border-radius: 0 4px 4px 0;
+}
+
+.tasting-notes strong {
+  color: var(--color-primary, #c9a962);
+}
+
+.pairing-price-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 15px;
+}
+
+@media (max-width: 576px) {
+  .pairing-price-row {
+    flex-direction: column;
+    gap: 10px;
+  }
+}
+
+.pairing-price {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--color-primary, #c9a962);
+  font-family: var(--font-serif);
+}
+
+.btn-sm {
+  padding: 8px 16px;
+  font-size: 0.8rem;
+}
+
+/* ── Feature 5: Guest Loyalty Rewards & Referral Portal ── */
+.loyalty-section {
+  padding: 80px 0;
+  background-color: var(--color-bg, #1a1714);
+  border-top: 1px solid var(--color-border, #3d3835);
+}
+
+.loyalty-grid {
+  max-width: 600px;
+  margin: 40px auto 0 auto;
+  width: 100%;
+}
+
+.loyalty-card {
+  background-color: var(--color-bg-card, #2a2725);
+  border: 1px solid var(--color-border, #3d3835);
+  border-radius: 12px;
+  padding: 35px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+}
+
+.loyalty-card h3 {
+  font-size: 1.6rem;
+  font-family: var(--font-serif);
+  color: var(--color-primary, #c9a962);
+  margin-bottom: 10px;
+}
+
+.dashboard-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid var(--color-border, #3d3835);
+  padding-bottom: 15px;
+  margin-bottom: 20px;
+}
+
+.member-tier {
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 2px;
+  color: var(--color-primary, #c9a962);
+  display: block;
+  margin-bottom: 4px;
+}
+
+#member-display-name {
+  font-size: 1.4rem;
+  color: var(--color-text, #f5f2ed);
+  font-family: var(--font-serif);
+  margin: 0;
+}
+
+.points-badge {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-color: rgba(201, 169, 98, 0.08);
+  border: 1px solid var(--color-primary, #c9a962);
+  border-radius: 8px;
+  padding: 10px 18px;
+  min-width: 90px;
+}
+
+.points-val {
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: var(--color-primary, #c9a962);
+  font-family: var(--font-serif);
+  line-height: 1;
+}
+
+.points-lbl {
+  font-size: 0.6rem;
+  font-weight: 600;
+  letter-spacing: 1px;
+  color: var(--color-text-muted, #9a958e);
+  margin-top: 3px;
+}
+
+.reward-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: var(--color-bg, #1a1714);
+  border: 1px solid var(--color-border, #3d3835);
+  border-radius: 8px;
+  padding: 15px 20px;
+  transition: all var(--transition, 0.3s ease);
+}
+
+.reward-item:hover {
+  border-color: var(--color-primary, #c9a962);
+}
+
+.reward-details h5 {
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--color-text, #f5f2ed);
+  margin-bottom: 2px;
+}
+
+.voucher-code-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: rgba(76, 175, 80, 0.05);
+  border: 1px dashed #4caf50;
+  border-radius: 6px;
+  padding: 10px 15px;
+  margin-bottom: 10px;
+  font-size: 0.85rem;
+}
+
+.voucher-code-item span {
+  font-family: monospace;
+  font-weight: 700;
+  background-color: rgba(76, 175, 80, 0.1);
+  padding: 3px 8px;
+  border-radius: 4px;
+  color: #4caf50;
+}
+
+
+
+
