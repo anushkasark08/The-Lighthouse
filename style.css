@@ -33,10 +33,8 @@ body.light-theme {
   box-sizing: border-box;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  html {
-    scroll-behavior: smooth;
-  }
+html {
+  scroll-behavior: smooth;
 }
 
 body {
@@ -127,6 +125,14 @@ body.light-theme .hero .btn-outline:hover {
   color: #ffffff;
 }
 
+body.light-theme .reservation .section-title,
+body.light-theme .reservation .reservation-info,
+body.light-theme .reservation .reservation-info p,
+body.light-theme .reservation .detail-item strong,
+body.light-theme .reservation .detail-item span {
+  color: #f5f2ed;
+}
+
 .btn-outline:hover {
   background-color: var(--color-text);
   color: var(--color-bg);
@@ -136,123 +142,6 @@ body.light-theme .hero .btn-outline:hover {
 
 .btn-full {
   width: 100%;
-}
-/* ── EmailJS Reservation Toast Notification ─────────────────────────── */
-.reservation-toast {
-  position: fixed;
-  bottom: 32px;
-  left: 50%;
-  transform: translateX(-50%) translateY(24px);
-  z-index: 9999;
-  min-width: 320px;
-  max-width: 520px;
-  width: calc(100% - 48px);
-
-  display: flex;
-  align-items: flex-start;
-  gap: 16px;
-  padding: 20px 20px 20px 24px;
-
-  background-color: var(--color-bg-card);
-  border: 1px solid var(--color-border);
-  border-left: 4px solid var(--color-primary);
-  border-radius: 6px;
-
-  box-shadow:
-    0 8px 32px rgba(0, 0, 0, 0.45),
-    0 2px 8px rgba(0, 0, 0, 0.25);
-
-  opacity: 0;
-  pointer-events: none;
-  transition: opacity 0.35s ease, transform 0.35s ease;
-}
-
-.reservation-toast--success {
-  border-left-color: #4a9c6a;
-}
-
-.reservation-toast--error {
-  border-left-color: #c94a4a;
-}
-
-.reservation-toast--visible {
-  opacity: 1;
-  transform: translateX(-50%) translateY(0);
-  pointer-events: auto;
-}
-
-.reservation-toast__icon {
-  flex-shrink: 0;
-  width: 28px;
-  height: 28px;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 0.85rem;
-  font-weight: 700;
-  margin-top: 2px;
-}
-
-.reservation-toast--success .reservation-toast__icon {
-  background-color: rgba(74, 156, 106, 0.15);
-  color: #4a9c6a;
-}
-
-.reservation-toast--error .reservation-toast__icon {
-  background-color: rgba(201, 74, 74, 0.15);
-  color: #c94a4a;
-}
-
-.reservation-toast__body {
-  flex: 1;
-  min-width: 0;
-}
-
-.reservation-toast__title {
-  font-family: var(--font-serif);
-  font-size: 1.1rem;
-  color: var(--color-text);
-  margin-bottom: 6px;
-  line-height: 1.3;
-}
-
-.reservation-toast__msg {
-  font-size: 0.875rem;
-  color: var(--color-text-muted);
-  line-height: 1.6;
-}
-
-.reservation-toast__close {
-  flex-shrink: 0;
-  background: none;
-  border: none;
-  color: var(--color-text-muted);
-  font-size: 0.8rem;
-  cursor: pointer;
-  padding: 2px 4px;
-  line-height: 1;
-  transition: color var(--transition);
-  margin-top: 2px;
-}
-
-.reservation-toast__close:hover {
-  color: var(--color-primary);
-}
-
-@media (max-width: 480px) {
-  .reservation-toast {
-    bottom: 16px;
-    left: 16px;
-    right: 16px;
-    width: auto;
-    transform: translateY(24px);
-    min-width: unset;
-  }
-
-  .reservation-toast--visible {
-    transform: translateY(0);
-  }
 }
 
 /* Navigation */
@@ -295,13 +184,6 @@ body.light-theme .hero .btn-outline:hover {
   padding: 0 24px;
 }
 
-@media (min-width: 769px) {
-  .nav-container {
-    justify-content: flex-end;
-    gap: 20px;
-  }
-}
-
 .nav-logo {
   font-family: var(--font-serif);
   font-size: 1.5rem;
@@ -309,23 +191,10 @@ body.light-theme .hero .btn-outline:hover {
   color: var(--color-primary);
 }
 
-@media (min-width: 769px) {
-  .nav-logo {
-    margin-right: auto;
-  }
-}
-
 .nav-menu {
   display: flex;
   list-style: none;
   gap: 40px;
-}
-
-@media (min-width: 769px) {
-  .nav-menu {
-    gap: 32px;
-    margin-right: 12px;
-  }
 }
 
 .nav-link {
@@ -396,76 +265,69 @@ body.light-theme .hero .btn-outline:hover {
   transition: all var(--transition);
 }
 
-/* Light Theme: Navigation */
+body.light-theme .nav.scrolled {
+  background: rgba(214, 184, 112, 0.95);
+  backdrop-filter: blur(10px);
+}
+
+/* Update the active/hover underline color for light theme */
+body.light-theme .nav-link::after {
+  background-color: white;
+}
+
 body.light-theme .nav {
   background: transparent;
 }
 
-body.light-theme .nav.scrolled {
-  background: rgba(214, 184, 112, 0.95);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
-  border-bottom: none;
+body.light-theme .nav-link {
+  color: white;
 }
 
-body.light-theme .nav-link {
-  color: #1a1714;
-  font-weight: 500;
-  padding: 6px 0;
-  transition: color 0.3s ease;
+body.light-theme .nav-logo {
+  color: white;
 }
 
 body.light-theme .nav-link.active,
 body.light-theme .nav-link:hover {
-  color: #1a1714;
-}
-
-body.light-theme .nav-link::after {
-  background-color: #1a1714;
-  height: 2px;
-  bottom: -4px;
-}
-
-body.light-theme .nav:not(.scrolled) .nav-link,
-body.light-theme .nav:not(.scrolled) .nav-logo {
-  color: #1a1714;
-  font-weight: 600;
-  text-shadow: 0 2px 12px rgba(255, 255, 255, 0.95), 0 0 5px rgba(255, 255, 255, 0.8);
+  color: white;
 }
 
 body.light-theme .nav-cta {
-  color: #1a1714;
-  border-color: #1a1714;
-  background-color: transparent;
-  border-radius: 6px;
-  padding: 10px 24px;
-  font-weight: 600;
-  letter-spacing: 1.2px;
-  box-shadow: none;
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-body.light-theme .nav:not(.scrolled) .nav-cta {
-  background-color: rgba(191, 185, 185, 0.75);
-  border-color: #1a1714;
-  color: #1a1714;
-  font-weight: 600;
-  box-shadow: 0 0 15px rgba(255, 255, 255, 0.6);
+  border-color: white;
+  color: white;
 }
 
 body.light-theme .nav-cta:hover {
-  background-color: #1a1714;
-  color: #ffffff;
-  border-color: #1a1714;
-  box-shadow: 0 6px 20px rgba(26, 23, 20, 0.25);
-  transform: translateY(-2px);
+  background-color: #8a6e2f;
+  color: #fff;
 }
 
-/* Ensure the logo turns dark when the navbar becomes gold on scroll */
-body.light-theme .nav.scrolled .nav-logo {
-  color: #1a1714;
-  text-shadow: none;
+/* Improve navbar visibility over hero image in light mode */
+body.light-theme .nav:not(.scrolled) .nav-link {
+  color: #f5f2ed;
+}
+
+body.light-theme .nav:not(.scrolled) .nav-logo {
+  color: #f5f2ed;
+}
+
+body.light-theme .nav:not(.scrolled) .nav-cta {
+  color: #f5f2ed;
+  border-color: #f5f2ed;
+}
+
+/* Fix hero text visibility in light mode */
+body.light-theme .hero-title {
+  color: #f5f2ed;
+}
+
+body.light-theme .hero-subtitle {
+  color: rgba(245, 242, 237, 0.9);
+}
+
+body.light-theme .hero-scroll span,
+body.light-theme .clicktoscroll {
+  color: rgba(245, 242, 237, 0.85);
 }
 
 .theme-toggle {
@@ -474,48 +336,10 @@ body.light-theme .nav.scrolled .nav-logo {
   color: var(--color-text);
   width: 44px;
   height: 44px;
-  position: relative;
   border-radius: 50%;
   cursor: pointer;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
+  font-size: 1rem;
   transition: all var(--transition);
-}
-
-.theme-toggle-icon {
-  position: absolute;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 20px;
-  height: 20px;
-  transition: opacity 0.25s ease, transform 0.25s ease;
-}
-
-.theme-toggle-icon svg {
-  width: 20px;
-  height: 20px;
-}
-
-.theme-toggle-icon-sun {
-  opacity: 0;
-  transform: scale(0.75) rotate(-35deg);
-}
-
-.theme-toggle-icon-moon {
-  opacity: 1;
-  transform: scale(1) rotate(0deg);
-}
-
-body.light-theme .theme-toggle-icon-moon {
-  opacity: 0;
-  transform: scale(0.75) rotate(35deg);
-}
-
-body.light-theme .theme-toggle-icon-sun {
-  opacity: 1;
-  transform: scale(1) rotate(0deg);
 }
 
 .theme-toggle:hover {
@@ -529,12 +353,6 @@ body.light-theme .theme-toggle-icon-sun {
   position: relative;
   display: inline-block;
   margin: 0 10px;
-}
-
-@media (min-width: 769px) {
-  .language-selector-container {
-    margin: 0;
-  }
 }
 
 .language-select {
@@ -572,42 +390,14 @@ body.light-theme .theme-toggle-icon-sun {
   padding: 12px;
 }
 
-/* Light Theme: Controls */
-body.light-theme .language-select,
-body.light-theme .theme-toggle {
-  border-color: rgba(201, 169, 98, 0.3);
-  color: #1a1714;
-  background-color: rgba(255, 255, 255, 0.5);
-  border-radius: 6px;
-  font-weight: 500;
-  box-shadow: none;
-  transition: all 0.3s ease;
-}
-
+/* Light theme options styling override */
 body.light-theme .language-select {
-  padding: 8px 32px 8px 14px;
+  background-color: rgba(0, 0, 0, 0.02);
+  color: var(--color-text);
 }
-
-body.light-theme .theme-toggle {
-  width: 40px;
-  height: 40px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-body.light-theme .nav:not(.scrolled) .language-select,
-body.light-theme .nav:not(.scrolled) .theme-toggle {
-  box-shadow: 0 2px 12px rgba(255, 255, 255, 0.6);
-}
-
 body.light-theme .language-select:hover,
-body.light-theme .language-select:focus,
-body.light-theme .theme-toggle:hover {
-  border-color: var(--color-primary);
-  background-color: rgba(255, 255, 255, 0.95);
-  color: var(--color-primary-dark);
-  box-shadow: 0 4px 12px rgba(201, 169, 98, 0.15);
+body.light-theme .language-select:focus {
+  background-color: rgba(201, 169, 98, 0.05);
 }
 
 /* Responsive visibility utilities */
@@ -717,18 +507,17 @@ body.light-theme .theme-toggle:hover {
   flex-wrap: wrap;
 }
 
-/* Light Theme: Hero */
-body.light-theme .hero-tagline {
-  color: rgba(45, 0, 57, 0.985);
-  font-weight: 700;
-  text-shadow: 0 2px 10px rgba(255, 255, 255, 0.9), 0 0 4px rgba(255, 255, 255, 0.6);
-}
-
+/* Fix homepage text visibility in light mode */
 body.light-theme .hero-title {
   color: #f8f5ef;
 }
 
 body.light-theme .hero-subtitle {
+  color: #e5ddd0;
+}
+
+body.light-theme .hero-scroll span,
+body.light-theme .clicktoscroll {
   color: #e5ddd0;
 }
 
@@ -739,19 +528,14 @@ body.light-theme .hero-overlay {
       rgba(26, 23, 20, 0.55) 100%);
 }
 
-body.light-theme .hero-scroll span,
-body.light-theme .clicktoscroll {
-  color: #f7f6f5;
-  font-weight: 600;
-  text-shadow: 0 1px 8px rgba(255, 255, 255, 0.8);
+body.light-theme .btn-outline {
+  color: #f8f5ef;
+  border-color: #f8f5ef;
 }
 
-body.light-theme .scroll-indicator {
-  background: linear-gradient(to bottom, #e5e2df, transparent);
-}
-
-body.light-theme .scroll-arrow {
-  color: #eeeae7;
+body.light-theme .btn-outline:hover {
+  background-color: #f8f5ef;
+  color: #1a1714;
 }
 
 .hero-scroll {
@@ -860,111 +644,6 @@ body.light-theme .scroll-arrow {
   margin-bottom: 20px;
   font-size: 1rem;
   line-height: 1.8;
-}
-
-/* About Stats Bar */
-.about-stats {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 0;
-  margin-top: 60px;
-  border: 1px solid var(--color-border);
-  border-radius: 8px;
-  overflow: hidden;
-}
-
-.stat-block {
-  padding: 32px 24px;
-  text-align: center;
-  border-right: 1px solid var(--color-border);
-  background-color: var(--color-bg-card);
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
-  transition: all 0.3s ease;
-  cursor: default;
-}
-
-.stat-block:hover {
-  background-color: var(--color-bg);
-  transform: translateY(-4px);
-}
-
-.stat-block:last-child {
-  border-right: none;
-}
-
-.stat-number {
-  font-family: var(--font-serif);
-  font-size: 2.5rem;
-  font-weight: 700;
-  color: var(--color-primary);
-  line-height: 1;
-  transition: color 0.3s ease;
-}
-
-.stat-block:hover .stat-number {
-  color: #ffd700;
-}
-
-.stat-label {
-  font-size: 0.7rem;
-  font-weight: 600;
-  letter-spacing: 2px;
-  text-transform: uppercase;
-  color: var(--color-text-muted);
-  transition: color 0.3s ease;
-}
-
-.stat-block:hover .stat-label {
-  color: var(--color-text);
-}
-
-/* Responsive styles for stats bar */
-@media (max-width: 768px) {
-  .about-stats {
-    grid-template-columns: repeat(2, 1fr);
-  }
-  
-  .stat-block:nth-child(2) {
-    border-right: none;
-  }
-  
-  .stat-block:nth-child(1),
-  .stat-block:nth-child(2) {
-    border-bottom: 1px solid var(--color-border);
-  }
-  
-  .stat-number {
-    font-size: 2rem;
-  }
-  
-  .stat-label {
-    font-size: 0.65rem;
-    letter-spacing: 1.5px;
-  }
-}
-
-@media (max-width: 480px) {
-  .about-stats {
-    grid-template-columns: 1fr;
-  }
-  
-  .stat-block {
-    border-right: none;
-    border-bottom: 1px solid var(--color-border);
-    padding: 24px 16px;
-  }
-  
-  .stat-block:last-child {
-    border-bottom: none;
-  }
-  
-  .stat-number {
-    font-size: 1.8rem;
-  }
 }
 
 /* Menu Section */
@@ -1117,34 +796,93 @@ body.light-theme .scroll-arrow {
   border-color: var(--color-primary);
 }
 
+/* Clear button for menu search — scoped to its own wrapper so it can't
+   clash with .menu-search, .filter-btn, or any other existing rules */
+.menu-search-wrapper {
+  position: relative;
+  width: 100%;
+  max-width: 500px;
+}
+
+.menu-search-wrapper .menu-search {
+  width: 100%;
+  max-width: none;
+  padding-right: 44px;
+}
+
+.menu-search-clear {
+  position: absolute;
+  top: 50%;
+  right: 10px;
+  transform: translateY(-50%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 26px;
+  height: 26px;
+  padding: 0;
+  border: none;
+  background: transparent;
+  color: var(--color-text-muted);
+  font-size: 1.3rem;
+  line-height: 1;
+  cursor: pointer;
+  border-radius: 50%;
+  transition: color 0.2s ease, background-color 0.2s ease;
+}
+
+.menu-search-clear:hover,
+.menu-search-clear:focus-visible {
+  color: var(--color-bg);
+  background-color: var(--color-primary);
+  outline: none;
+}
+
+.menu-search-clear[hidden] {
+  display: none;
+}
+
+/* Layout row placing the search box and the "Clean Filter" button side by side */
+.menu-search-row {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  width: 100%;
+  max-width: 620px;
+  flex-wrap: wrap;
+}
+
+.menu-search-row .menu-search-wrapper {
+  flex: 1 1 300px;
+}
+
+.clean-filter-btn {
+  flex-shrink: 0;
+  padding: 13px 22px;
+  border: 1px solid var(--color-primary);
+  background-color: #2b2b2b;
+  color: var(--color-primary);
+  cursor: pointer;
+  border-radius: 4px;
+  font-size: 0.95rem;
+  transition: all 0.3s ease;
+  white-space: nowrap;
+}
+
+.clean-filter-btn:hover,
+.clean-filter-btn:focus-visible {
+  background-color: var(--color-primary);
+  color: #ffffff;
+  border-color: var(--color-primary);
+  outline: none;
+}
+
 .menu-filters {
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
   gap: 12px;
-}
-.diet-filters {
-  display: flex;
-  gap: 10px;
-  justify-content: center;
-}
-
-.diet-btn {
-  padding: 10px 22px;
-  border: 1px solid var(--color-border);
-  background-color: transparent;
-  color: var(--color-text-muted);
-  cursor: pointer;
-  transition: all 0.3s ease;
-  border-radius: 30px;
-  font-size: 0.875rem;
-}
-
-.diet-btn:hover,
-.diet-btn.active {
-  background-color: var(--color-primary);
-  color: var(--color-bg);
-  border-color: var(--color-primary);
 }
 
 .filter-btn {
@@ -1230,6 +968,7 @@ body.light-theme .scroll-arrow {
   z-index: 1;
   pointer-events: none;
 }
+
 .food-card:hover::before {
   opacity: 1;
 }
@@ -1255,223 +994,6 @@ body.light-theme .scroll-arrow {
   flex: 1;
 }
 
-.menu-actions {
-  display: flex;
-  gap: 10px;
-  margin-top: 16px;
-}
-
-.menu-action-btn {
-  border: 1px solid var(--color-border);
-  background-color: transparent;
-  color: var(--color-text);
-  border-radius: 4px;
-  min-height: 38px;
-  padding: 8px 14px;
-  cursor: pointer;
-  transition:
-    background-color var(--transition),
-    border-color var(--transition),
-    color var(--transition),
-    transform var(--transition);
-}
-
-.add-cart-btn {
-  background-color: var(--color-primary);
-  border-color: var(--color-primary);
-  color: var(--color-bg);
-  font-weight: 700;
-  min-width: 92px;
-}
-
-.favorite-btn {
-  width: 42px;
-  padding: 0;
-  font-size: 1.2rem;
-}
-
-.menu-action-btn:hover,
-.favorite-btn.active {
-  border-color: var(--color-primary);
-  color: var(--color-primary);
-  transform: translateY(-2px);
-}
-
-.add-cart-btn:hover {
-  background-color: var(--color-primary-dark);
-  color: var(--color-bg);
-}
-
-.order-dock {
-  position: fixed;
-  right: 28px;
-  bottom: 92px;
-  z-index: 1002;
-  width: min(360px, calc(100vw - 32px));
-  color: var(--color-text);
-  display: flex;
-  flex-direction: column-reverse;
-  gap: 10px;
-}
-
-.order-toggle {
-  width: 100%;
-  min-height: 48px;
-  border: 1px solid var(--color-primary);
-  border-radius: 4px;
-  background-color: var(--color-primary);
-  color: var(--color-bg);
-  font-weight: 800;
-  letter-spacing: 1px;
-  text-transform: uppercase;
-  cursor: pointer;
-  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.32);
-}
-
-.order-toggle span {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  min-width: 24px;
-  height: 24px;
-  margin-left: 8px;
-  border-radius: 50%;
-  background-color: var(--color-bg);
-  color: var(--color-primary);
-}
-
-.order-panel {
-  display: none;
-  background-color: var(--color-bg-card);
-  border: 1px solid var(--color-border);
-  border-radius: 6px;
-  overflow: hidden;
-  box-shadow: 0 18px 45px rgba(0, 0, 0, 0.45);
-}
-
-.order-dock.open .order-panel {
-  display: block;
-}
-
-.order-tabs {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  border-bottom: 1px solid var(--color-border);
-}
-
-.order-tab {
-  border: none;
-  background-color: transparent;
-  color: var(--color-text-muted);
-  padding: 14px 10px;
-  cursor: pointer;
-  font-weight: 700;
-}
-
-.order-tab.active {
-  background-color: rgba(201, 169, 98, 0.14);
-  color: var(--color-primary);
-}
-
-.order-view {
-  display: none;
-  padding: 16px;
-}
-
-.order-view.active {
-  display: block;
-}
-
-.order-list {
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-  max-height: 300px;
-  overflow-y: auto;
-}
-
-.order-item {
-  display: flex;
-  justify-content: space-between;
-  gap: 14px;
-  align-items: center;
-  padding-bottom: 12px;
-  border-bottom: 1px solid var(--color-border);
-}
-
-.order-item strong,
-.order-item span {
-  display: block;
-}
-
-.order-item strong {
-  font-size: 0.95rem;
-}
-
-.order-item span {
-  color: var(--color-text-muted);
-  font-size: 0.8rem;
-}
-
-.qty-control {
-  display: grid;
-  grid-template-columns: 30px 28px 30px;
-  align-items: center;
-  text-align: center;
-}
-
-.qty-control button,
-.mini-add-btn {
-  border: 1px solid var(--color-border);
-  background-color: transparent;
-  color: var(--color-text);
-  min-height: 30px;
-  border-radius: 4px;
-  cursor: pointer;
-}
-
-.mini-add-btn {
-  padding: 6px 12px;
-}
-
-.qty-control button:hover,
-.mini-add-btn:hover {
-  border-color: var(--color-primary);
-  color: var(--color-primary);
-}
-
-.order-total {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-top: 16px;
-  padding-top: 14px;
-  border-top: 1px solid var(--color-border);
-}
-
-.order-checkout {
-  width: 100%;
-  margin-top: 14px;
-  min-height: 42px;
-  border: none;
-  border-radius: 4px;
-  background-color: var(--color-primary);
-  color: var(--color-bg);
-  cursor: pointer;
-  font-weight: 800;
-}
-
-.order-checkout:disabled {
-  cursor: not-allowed;
-  opacity: 0.55;
-}
-
-.order-empty {
-  color: var(--color-text-muted);
-  text-align: center;
-  padding: 18px 0;
-}
-
 .specials {
   padding: 100px 0;
   background-color: var(--color-bg);
@@ -1479,20 +1001,9 @@ body.light-theme .scroll-arrow {
 
 .specials-grid {
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 3rem;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 2rem;
   margin-top: 3rem;
-  max-width: 1000px;
-  margin-left: auto;
-  margin-right: auto;
-  padding: 0 2rem;
-}
-
-@media (max-width: 768px) {
-  .specials-grid {
-    grid-template-columns: 1fr;
-    gap: 2rem;
-  }
 }
 
 /* Dark Mode (default) */
@@ -1648,30 +1159,6 @@ body.light-theme .price {
   font-size: 0.9rem;
 }
 
-/* Light Theme: Reservation */
-body.light-theme .reservation-overlay {
-  background: rgba(247, 242, 233, 0.80);
-  backdrop-filter: blur(0.45px);
-}
-
-body.light-theme .reservation .section-label {
-  color: var(--color-primary-dark);
-}
-
-body.light-theme .reservation .section-title,
-body.light-theme .reservation .detail-item strong {
-  color: #1a1714;
-}
-
-body.light-theme .reservation .reservation-info p,
-body.light-theme .reservation .detail-item span {
-  color: #5f5b55;
-}
-
-body.light-theme .reservation .detail-icon {
-  color: var(--color-primary-dark);
-}
-
 /* Reservation Form */
 .reservation-form {
   background-color: var(--color-bg-card);
@@ -1733,81 +1220,6 @@ input[type="date"]::-webkit-calendar-picker-indicator:hover {
 .form-group textarea:focus {
   outline: none;
   border-color: var(--color-primary);
-}
-
-/* Time Selection Grid */
-.time-selection-container {
-  margin-top: 10px;
-}
-
-.time-slots-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(110px, 1fr));
-  gap: 12px;
-  margin-top: 8px;
-}
-
-.time-slot-btn {
-  background-color: var(--color-bg);
-  border: 1px solid var(--color-border);
-  border-radius: 4px;
-  padding: 12px 8px;
-  color: var(--color-text);
-  font-family: var(--font-sans);
-  font-size: 0.95rem;
-  cursor: pointer;
-  transition: all var(--transition);
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 4px;
-}
-
-.time-slot-btn:hover:not(:disabled) {
-  border-color: var(--color-primary);
-  transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(201, 169, 98, 0.15);
-}
-
-.time-slot-btn.selected {
-  background-color: var(--color-primary);
-  color: #1a1714;
-  border-color: var(--color-primary);
-}
-
-.time-slot-btn:disabled {
-  opacity: 0.4;
-  cursor: not-allowed;
-  background-color: var(--color-bg-lighter);
-  border-color: transparent;
-}
-
-.time-slot-btn .availability {
-  font-size: 0.75rem;
-  opacity: 0.8;
-}
-
-.time-slot-btn.limited .availability {
-  color: #ff9800;
-}
-
-body.light-theme .time-slot-btn.limited .availability {
-  color: #d84315;
-}
-
-.time-slot-btn.selected .availability {
-  color: inherit;
-}
-
-.time-slot-placeholder {
-  grid-column: 1 / -1;
-  text-align: center;
-  padding: 30px;
-  color: var(--color-text-muted);
-  border: 1px dashed var(--color-border);
-  border-radius: 4px;
-  font-style: italic;
 }
 
 .form-group input::placeholder,
@@ -2081,6 +1493,8 @@ body.light-theme .time-slot-btn.limited .availability {
   color: var(--color-primary);
   transform: scale(1.1);
 }
+
+
 @media (max-width: 1024px) {
   .reviews-grid {
     grid-template-columns: repeat(2, 1fr);
@@ -2091,9 +1505,6 @@ body.light-theme .time-slot-btn.limited .availability {
   .reviews-grid {
     grid-template-columns: 1fr;
   }
-  .menu-items {
-  grid-template-columns: 1fr;
-}
 
   .review-form-wrapper {
     padding: 24px 20px;
@@ -2291,6 +1702,21 @@ body.light-theme .time-slot-btn.limited .availability {
   font-size: 0.9rem;
 }
 
+.footer-bottom-links {
+  display: flex;
+  gap: 24px;
+}
+
+.footer-bottom-links a {
+  color: var(--color-text-muted);
+  font-size: 0.9rem;
+  transition: color 0.3s ease;
+}
+
+.footer-bottom-links a:hover {
+  color: var(--color-primary);
+}
+
 /* RESPONSIVE */
 
 @media (max-width: 1024px) {
@@ -2314,6 +1740,11 @@ body.light-theme .time-slot-btn.limited .availability {
   .footer-bottom {
     flex-direction: column;
     text-align: center;
+  }
+
+  .footer-bottom-links {
+    justify-content: center;
+    flex-wrap: wrap;
   }
 
   .footer-brand h2 {
@@ -2471,16 +1902,6 @@ body.light-theme .time-slot-btn.limited .availability {
 
   .location-map {
     height: 350px;
-  }
-
-  .order-dock {
-    right: 12px;
-    bottom: 72px;
-    width: calc(100vw - 24px);
-  }
-
-  .order-list {
-    max-height: 240px;
   }
 }
 
@@ -3007,39 +2428,11 @@ body.light-theme .polaroid-tape {
   background: rgba(255, 200, 100, 0.8);
 }
 
-
-/* Light Theme: Footer */
-.footer-bottom {
-  padding: 28px 0;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: 20px;
-}
-
-.footer-bottom p {
-  color: var(--color-text-muted);
-  font-size: 0.9rem;
-}
-
-body.light-theme .footer {
-  /* Scope the contrast adjustments specifically to the footer */
-  --color-bg: #fcfaf5;
-  --color-bg-lighter: #ffffff;
-  --color-primary: #b59549; 
-  
-  background: linear-gradient(to bottom, var(--color-bg-lighter), var(--color-bg));
-  border-top: 1px solid var(--color-border);
-}
-
-body.light-theme .newsletter-form input {
-  background-color: var(--color-bg-card);
-}
-
-/* RESPONSIVE */
-@media (max-width: 1024px) {
-  .footer-top {
-    grid-template-columns: 1fr 1fr;
-    gap: 50px;
-  }
+/* ── Menu Category Count ── */
+#menu-category-count {
+  font-family: 'Inter', sans-serif;
+  font-size: 0.95rem;
+  color: var(--color-text-muted, #999);
+  margin-top: 0.4rem;
+  letter-spacing: 0.04em;
 }
