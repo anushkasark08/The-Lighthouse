@@ -118,16 +118,24 @@ function updateActiveNavLink() {
 }
 
 // ── Mobile menu ───
+function updateMobileMenuA11y(isOpen) {
+  navToggle.setAttribute('aria-expanded', String(isOpen));
+  navToggle.setAttribute('aria-label', isOpen ? 'Close navigation menu' : 'Open navigation menu');
+}
+
 function toggleMobileMenu() {
   navToggle.classList.toggle('active');
   navMenu.classList.toggle('active');
-  document.body.style.overflow = navMenu.classList.contains('active') ? 'hidden' : '';
+  const isOpen = navMenu.classList.contains('active');
+  document.body.style.overflow = isOpen ? 'hidden' : '';
+  updateMobileMenuA11y(isOpen);
 }
 
 function closeMobileMenu() {
   navToggle.classList.remove('active');
   navMenu.classList.remove('active');
   document.body.style.overflow = '';
+  updateMobileMenuA11y(false);
 }
 
 // Menu tabs functionality
@@ -153,12 +161,17 @@ function switchMenuTab(e) {
 // Theme Toggle
 const savedTheme = localStorage.getItem("theme");
 
+function updateThemeToggleA11y(isLight) {
+  themeToggle.textContent = isLight ? '☀️' : '🌙';
+  themeToggle.setAttribute('aria-label', isLight ? 'Switch to dark theme' : 'Switch to light theme');
+  themeToggle.setAttribute('aria-pressed', String(isLight));
+}
+
 if (savedTheme === "light") {
   document.body.classList.add("light-theme");
-  themeToggle.textContent = "☀️";
-} else {
-  themeToggle.textContent = "🌙";
 }
+
+updateThemeToggleA11y(document.body.classList.contains("light-theme"));
 
 themeToggle.addEventListener("click", () => {
   document.body.classList.toggle("light-theme");
@@ -167,11 +180,11 @@ themeToggle.addEventListener("click", () => {
 
   if (isLight) {
     localStorage.setItem("theme", "light");
-    themeToggle.textContent = "☀️";
   } else {
     localStorage.setItem("theme", "dark");
-    themeToggle.textContent = "🌙";
   }
+
+  updateThemeToggleA11y(isLight);
 });
 
 // ── Menu Search and Filter ─────────────────────────
@@ -478,20 +491,30 @@ function renderReviews() {
 let selectedRating = 0;
 const starBtns = document.querySelectorAll('#star-input .star-btn');
 
+function updateStarButtons(rating) {
+  starBtns.forEach((star) => {
+    const isSelected = +star.dataset.value <= rating;
+    star.classList.toggle('active', isSelected);
+    star.setAttribute('aria-pressed', String(isSelected));
+  });
+}
+
 starBtns.forEach((btn) => {
   btn.addEventListener('mouseenter', () => {
     const val = +btn.dataset.value;
     starBtns.forEach((s) => s.classList.toggle('active', +s.dataset.value <= val));
   });
   btn.addEventListener('mouseleave', () => {
-    starBtns.forEach((s) => s.classList.toggle('active', +s.dataset.value <= selectedRating));
+    updateStarButtons(selectedRating);
   });
   btn.addEventListener('click', () => {
     selectedRating = +btn.dataset.value;
     document.getElementById('review-rating').value = selectedRating;
-    starBtns.forEach((s) => s.classList.toggle('active', +s.dataset.value <= selectedRating));
+    updateStarButtons(selectedRating);
   });
 });
+
+updateStarButtons(selectedRating);
 
 // Review validation helpers
 function isMeaningfulReview(text) {
@@ -559,7 +582,7 @@ if (reviewForm) {
     reviewForm.reset();
     selectedRating = 0;
     document.getElementById('review-rating').value = 0;
-    starBtns.forEach((s) => s.classList.remove('active'));
+    updateStarButtons(selectedRating);
 
     reviewMsg.textContent = 'Review submitted successfully!';
     reviewMsg.style.color = '#4a9c6a';

@@ -22,7 +22,7 @@
     <nav class="nav" id="nav">
       <div class="nav-container">
         <a href="#home" class="nav-logo">The Lighthouse</a>
-        <button class="nav-toggle" id="navToggle" aria-label="Toggle menu">
+        <button class="nav-toggle" id="navToggle" aria-label="Open navigation menu" aria-controls="navMenu" aria-expanded="false">
           <span></span>
           <span></span>
           <span></span>
@@ -36,7 +36,7 @@
           <li><a href="#reviews" class="nav-link" data-section="reviews">Reviews</a></li>
           <li><a href="#location" class="nav-link" data-section="location">Location</a></li>
         </ul>
-        <button id="themeToggle" class="theme-toggle" aria-label="Toggle Theme">🌙</button>
+        <button id="themeToggle" class="theme-toggle" aria-label="Switch to light theme" aria-pressed="false">🌙</button>
         <a href="#reservation" class="nav-cta">Book a Table</a>
       </div>
     </nav>
@@ -876,11 +876,11 @@
                 <fieldset>
                   <legend>Rating</legend>
                   <div class="star-input" id="star-input">
-                    <button type="button" class="star-btn" data-value="1">&#9733;</button>
-                    <button type="button" class="star-btn" data-value="2">&#9733;</button>
-                    <button type="button" class="star-btn" data-value="3">&#9733;</button>
-                    <button type="button" class="star-btn" data-value="4">&#9733;</button>
-                    <button type="button" class="star-btn" data-value="5">&#9733;</button>
+                    <button type="button" class="star-btn" data-value="1" aria-label="Rate 1 star" aria-pressed="false">&#9733;</button>
+                    <button type="button" class="star-btn" data-value="2" aria-label="Rate 2 stars" aria-pressed="false">&#9733;</button>
+                    <button type="button" class="star-btn" data-value="3" aria-label="Rate 3 stars" aria-pressed="false">&#9733;</button>
+                    <button type="button" class="star-btn" data-value="4" aria-label="Rate 4 stars" aria-pressed="false">&#9733;</button>
+                    <button type="button" class="star-btn" data-value="5" aria-label="Rate 5 stars" aria-pressed="false">&#9733;</button>
                   </div>
                   <input type="hidden" id="review-rating" value="0" name="review-rating" />
                 </fieldset>
