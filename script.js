@@ -1071,6 +1071,21 @@ function updateContent() {
   renderReviews();
 }
 
+// ==Chef's Recomendation==
+function displayChefsRecommendation() {
+  const recommendation = document.getElementById("chefRecommendation");
+  if (!recommendation) return;
+
+  const menuItems = Array.from(
+    document.querySelectorAll(".menu-item h3"));
+  if (menuItems.length === 0) return;
+
+  const randomItem =
+    menuItems[Math.floor(Math.random() * menuItems.length)];
+
+  recommendation.textContent = randomItem.textContent;
+}
+
 // ── Initialise page ──
 document.addEventListener('DOMContentLoaded', () => {
   handleScroll();
@@ -1089,6 +1104,8 @@ document.addEventListener('DOMContentLoaded', () => {
   setupGiftCardCustomizer();
   setupVirtualSommelier();
   setupLoyaltyClub();
+
+  displayChefsRecommendation();
 
   if (typeof i18next !== 'undefined') {
     i18next
