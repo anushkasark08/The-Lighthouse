@@ -328,12 +328,63 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   function setupReviews() {
+
+    
     const storageKey = "lighthouse_reviews";
     const reviewForm = document.getElementById("review-form");
     const reviewMsg = document.getElementById("review-msg");
     const starBtns = document.querySelectorAll("#star-input .star-btn");
     let selectedRating = 0;
+    const feedbackModal = document.getElementById("feedbackModal");
+const submitFeedback = document.getElementById("submitFeedback");
+const skipFeedback = document.getElementById("skipFeedback");
 
+let pendingReview = null;
+   function saveReview(data){
+
+    const reviews = getReviews();
+
+    reviews.unshift(data);
+
+    localStorage.setItem(storageKey, JSON.stringify(reviews));
+
+    renderReviews();
+
+    reviewForm.reset();
+
+    selectedRating = 0;
+
+    document.getElementById("review-rating").value = 0;
+
+    starBtns.forEach(star=>star.classList.remove("active"));
+
+    reviewMsg.textContent="Review submitted successfully!";
+
+    reviewMsg.style.color="#4a9c6a";
+
+    reviewMsg.style.display="block";
+
+    setTimeout(()=>{
+        reviewMsg.style.display="none";
+    },3000);
+}
+ submitFeedback.addEventListener("click",()=>{
+
+    feedbackModal.classList.remove("show");
+
+    saveReview(pendingReview);
+
+    pendingReview=null;
+});
+
+skipFeedback.addEventListener("click",()=>{
+
+    feedbackModal.classList.remove("show");
+
+    saveReview(pendingReview);
+
+    pendingReview=null;
+});
     const pinnedReview = {
       name: "Rasshi Srivastav",
       rating: 5,
@@ -432,22 +483,28 @@ document.addEventListener("DOMContentLoaded", () => {
           return;
         }
 
-        const reviews = getReviews();
-        reviews.unshift({
-          id: Date.now(),
-          name,
-          rating: selectedRating,
-          text,
-          date: new Date().toLocaleDateString("en-IN", {
-            day: "2-digit",
-            month: "short",
-            year: "numeric",
-          }),
-        });
+        const reviewData = {
+    id: Date.now(),
+    name,
+    rating: selectedRating,
+    text,
+    date: new Date().toLocaleDateString("en-IN",{
+        day:"2-digit",
+        month:"short",
+        year:"numeric"
+    })
+};
 
-        localStorage.setItem(storageKey, JSON.stringify(reviews));
-        renderReviews();
-        reviewForm.reset();
+if(selectedRating < 4){
+
+    pendingReview = reviewData;
+
+    feedbackModal.classList.add("show");
+
+    return;
+}
+
+saveReview(reviewData);
         selectedRating = 0;
         document.getElementById("review-rating").value = 0;
         starBtns.forEach((star) => star.classList.remove("active"));
@@ -570,6 +627,7 @@ document.addEventListener("DOMContentLoaded", () => {
       btn.classList.toggle("active", isFavorite);
       btn.textContent = isFavorite ? "\u2665" : "\u2661";
     });
+  }
 
 // ─── Open / Closed Badge ────────────────────────────────────────────────────
 (function updateOpenStatusBadge() {
@@ -616,4 +674,14 @@ document.addEventListener("DOMContentLoaded", () => {
     const prefersReduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     window.scrollTo({ top: 0, behavior: prefersReduced ? "auto" : "smooth" });
   });
+
+setReservationDateRange();
+updateAvailableTimes();
+setupThemeToggle();
+setupIntersectionObserver();
+setupAutoScroll();
+setupReviews();
+setupOrderFeatures();
+filterMenuItems();
+handleScroll();
 });

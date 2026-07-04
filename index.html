@@ -563,6 +563,35 @@
         <div class="review-form-wrapper">
           <h3 class="review-form-heading">Share Your Experience</h3>
           <form id="review-form">
+            <div id="feedbackModal" class="feedback-modal">
+  <div class="feedback-content">
+    <h3>We're sorry your experience wasn't perfect.</h3>
+    <p>How can we improve?</p>
+
+    <div class="feedback-options">
+      <label><input type="checkbox"> Service Quality</label>
+      <label><input type="checkbox"> Product Quality</label>
+      <label><input type="checkbox"> Website Experience</label>
+      <label><input type="checkbox"> Pricing</label>
+      <label><input type="checkbox"> Other</label>
+    </div>
+
+    <textarea
+      id="improvementText"
+      placeholder="Tell us more (optional)"
+    ></textarea>
+
+    <div class="feedback-buttons">
+      <button type="button" id="submitFeedback">
+        Submit Feedback
+      </button>
+
+      <button type="button" id="skipFeedback">
+        Skip
+      </button>
+    </div>
+  </div>
+</div>
             <div class="form-row">
               <div class="form-group">
                 <label for="review-name">Your Name</label>
@@ -887,50 +916,7 @@
     </section>
 
     <!-- Reviews Section -->
-    <section class="reviews-section" id="reviews">
-      <div class="container">
-        <div class="section-header">
-          <span class="section-label" data-i18n="reviews.label">Guest Experiences</span>
-          <h2 class="section-title" data-i18n="reviews.title">Customer Reviews</h2>
-        </div>
-
-        <!-- Reviews display -->
-        <div class="reviews-grid" id="reviews-grid"></div>
-
-        <!-- Submit form -->
-        <div class="review-form-wrapper">
-          <h3 class="review-form-heading" data-i18n="reviews.share">Share Your Experience</h3>
-          <form id="review-form">
-            <div class="form-row">
-              <div class="form-group">
-                <label for="review-name" data-i18n="reviews.name">Your Name</label>
-                <input type="text" id="review-name" name="review-name" placeholder="Jane Smith" data-i18n-placeholder="reviews.name_placeholder" autocomplete="name" required />
-              </div>
-              <div class="form-group">
-                <fieldset>
-                  <legend data-i18n="reviews.rating">Rating</legend>
-                  <div class="star-input" id="star-input">
-                    <button type="button" class="star-btn" data-value="1">&#9733;</button>
-                    <button type="button" class="star-btn" data-value="2">&#9733;</button>
-                    <button type="button" class="star-btn" data-value="3">&#9733;</button>
-                    <button type="button" class="star-btn" data-value="4">&#9733;</button>
-                    <button type="button" class="star-btn" data-value="5">&#9733;</button>
-                  </div>
-                  <input type="hidden" id="review-rating" value="0" name="review-rating" />
-                </fieldset>
-              </div>
-            </div>
-            <div class="form-group full-width">
-              <label for="review-text" data-i18n="reviews.text">Your Review</label>
-              <textarea id="review-text" name="review-text" rows="4"
-                placeholder="Tell us about your visit..." data-i18n-placeholder="reviews.text_placeholder" required></textarea>
-            </div>
-            <button type="submit" class="btn btn-primary btn-full" data-i18n="reviews.submit">Submit Review</button>
-            <p id="review-msg" class="form-note" style="display: none"></p>
-          </form>
-        </div>
-      </div>
-    </section>
+   
 
     <!-- Location Section -->
     <section class="location" id="location">
