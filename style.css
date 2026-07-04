@@ -2709,6 +2709,7 @@ legend{
 .diet-no-results.visible {
   display: block;
 }
+<<<<<<< Updated upstream
 
 /* =============================================
    3D CARD FLIP WITH POLAROID STYLE
@@ -4399,6 +4400,23 @@ body.light-theme .newsletter-form input {
   display: block;
   text-align: center;
   color: #c5a880; 
+=======
+/* ========================================== */
+/* FAQ Premium Section Styles                 */
+/* ========================================== */
+
+.faq-section {
+  padding: 100px 0;
+  background-color: #141210; /* Blends seamlessly into the existing dark section canvas */
+  color: #ffffff;
+}
+
+/* Reusing project alignment standards */
+.faq-section .section-label {
+  display: block;
+  text-align: center;
+  color: #c5a880; /* Elegant gold tone matching the theme labels */
+>>>>>>> Stashed changes
   font-size: 0.85rem;
   text-transform: uppercase;
   letter-spacing: 2px;
@@ -4407,25 +4425,42 @@ body.light-theme .newsletter-form input {
 
 .faq-section .section-title {
   text-align: center;
+<<<<<<< Updated upstream
   font-family: "Cormorant Garamond", serif; 
+=======
+  font-family: "Cormorant Garamond", serif; /* Mimics the classic luxury serif display */
+>>>>>>> Stashed changes
   font-size: 2.5rem;
   font-weight: 400;
   margin-bottom: 50px;
   letter-spacing: 1px;
 }
 
+<<<<<<< Updated upstream
 
+=======
+/* Accordion Outer Boundary Container */
+>>>>>>> Stashed changes
 .faq-accordion-container {
   max-width: 850px;
   margin: 0 auto;
   padding: 0 20px;
 }
 
+<<<<<<< Updated upstream
 
 .faq-accordion-item {
   border-bottom: 1px solid rgba(197, 168, 128, 0.15);  
 
 
+=======
+/* Individual Rows */
+.faq-accordion-item {
+  border-bottom: 1px solid rgba(197, 168, 128, 0.15); /* Minimalist soft gold accent horizontal border */
+}
+
+/* Interactive Accordion Button */
+>>>>>>> Stashed changes
 .faq-trigger {
   width: 100%;
   background: transparent;
@@ -4448,19 +4483,31 @@ body.light-theme .newsletter-form input {
   transition: color 0.3s ease;
 }
 
+<<<<<<< Updated upstream
 
+=======
+/* Hover highlights matching the top menu interactivity */
+>>>>>>> Stashed changes
 .faq-trigger:hover .faq-question-text {
   color: #c5a880;
 }
 
+<<<<<<< Updated upstream
 
+=======
+/* Minimalist Decorative State Icon Indicator */
+>>>>>>> Stashed changes
 .faq-status-icon {
   position: relative;
   width: 14px;
   height: 14px;
 }
 
+<<<<<<< Updated upstream
 
+=======
+/* Pure CSS cross line structure */
+>>>>>>> Stashed changes
 .faq-status-icon::before,
 .faq-status-icon::after {
   content: "";
@@ -4469,7 +4516,11 @@ body.light-theme .newsletter-form input {
   transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
+<<<<<<< Updated upstream
 
+=======
+/* Horizontal part of cross */
+>>>>>>> Stashed changes
 .faq-status-icon::before {
   top: 6px;
   left: 0;
@@ -4477,7 +4528,11 @@ body.light-theme .newsletter-form input {
   height: 1.5px;
 }
 
+<<<<<<< Updated upstream
 
+=======
+/* Vertical part of cross */
+>>>>>>> Stashed changes
 .faq-status-icon::after {
   top: 0;
   left: 6px;
@@ -4485,7 +4540,11 @@ body.light-theme .newsletter-form input {
   height: 14px;
 }
 
+<<<<<<< Updated upstream
 
+=======
+/* Smooth Dynamic Collapsible Drawer Rules */
+>>>>>>> Stashed changes
 .faq-panel {
   max-height: 0;
   overflow: hidden;
@@ -4503,10 +4562,24 @@ body.light-theme .newsletter-form input {
   letter-spacing: 0.3px;
 }
 
+<<<<<<< Updated upstream
+=======
+/* ========================================== */
+/* Active Toggled States via JavaScript       */
+/* ========================================== */
+
+>>>>>>> Stashed changes
 .faq-accordion-item.active .faq-question-text {
   color: #c5a880;
 }
 
+<<<<<<< Updated upstream
 .faq-accordion-item.active .faq-status-icon::after {
   transform: scaleY(0);
 }
+=======
+/* Collapse the vertical block line to visually transform the '+' into a '-' */
+.faq-accordion-item.active .faq-status-icon::after {
+  transform: scaleY(0);
+}
+>>>>>>> Stashed changes
