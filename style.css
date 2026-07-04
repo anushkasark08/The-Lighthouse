@@ -24,6 +24,33 @@ body.light-theme {
   --color-border: #d6d1ca;
 }
 
+/* Custom Scrollbar Styles */
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--color-bg);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--color-border);
+  border-radius: 5px;
+  border: 2px solid var(--color-bg);
+  transition: background var(--transition);
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-primary);
+}
+
+/* Firefox scrollbar */
+html {
+  scrollbar-width: thin;
+  scrollbar-color: var(--color-border) var(--color-bg);
+}
+
 /* Reset & Base */
 *,
 *::before,
@@ -47,6 +74,25 @@ body {
   color: var(--color-text);
   line-height: 1.6;
   overflow-x: hidden;
+}
+
+/* Scroll Progress Bar */
+.scroll-progress-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 4px;
+  background: transparent;
+  z-index: 2000;
+  pointer-events: none;
+}
+.scroll-progress-bar {
+  height: 100%;
+  width: 0%;
+  background: var(--color-primary);
+  box-shadow: 0 0 8px var(--color-primary);
+  transition: width 0.1s ease-out;
 }
 
 img {
@@ -139,6 +185,7 @@ body.light-theme .hero .btn-outline:hover {
 .btn-full {
   width: 100%;
 }
+
 /* ── EmailJS Reservation Toast Notification ─────────────────────────── */
 .reservation-toast {
   position: fixed;
@@ -269,12 +316,10 @@ body.light-theme .hero .btn-outline:hover {
 }
 
 .rating-value {
-
   gap: 6px;
   font-size: 14px;
   white-space: nowrap;
   flex-wrap: nowrap;
-
 }
 
 .rating-count {
@@ -485,39 +530,32 @@ body.light-theme .nav.scrolled .nav-logo {
   transition: all var(--transition);
 }
 
-.theme-toggle-icon {
+.theme-toggle svg {
   position: absolute;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
   width: 20px;
   height: 20px;
-  transition: opacity 0.25s ease, transform 0.25s ease;
+  transition: opacity 0.3s ease, transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-.theme-toggle-icon svg {
-  width: 20px;
-  height: 20px;
-}
-
-.theme-toggle-icon-sun {
+.theme-toggle .sun-icon {
   opacity: 0;
-  transform: scale(0.75) rotate(-35deg);
+  transform: rotate(-90deg) scale(0.6);
 }
 
-.theme-toggle-icon-moon {
+.theme-toggle .moon-icon {
   opacity: 1;
-  transform: scale(1) rotate(0deg);
+  transform: rotate(0deg) scale(1);
 }
 
-body.light-theme .theme-toggle-icon-moon {
+/* Light Theme toggle state */
+body.light-theme .theme-toggle .sun-icon {
+  opacity: 1;
+  transform: rotate(0deg) scale(1);
+}
+
+body.light-theme .theme-toggle .moon-icon {
   opacity: 0;
-  transform: scale(0.75) rotate(35deg);
-}
-
-body.light-theme .theme-toggle-icon-sun {
-  opacity: 1;
-  transform: scale(1) rotate(0deg);
+  transform: rotate(90deg) scale(0.6);
 }
 
 .theme-toggle:hover {
@@ -705,11 +743,11 @@ body.light-theme .theme-toggle:hover {
 
 .hero-subtitle {
   font-size: 1.125rem;
-  color: #9a958e;
-  /* Enforce light muted color over the dark background overlay across all themes */
+  /* WCAG AA: raised from #9a958e (~3.5:1) to #ccc6bc (~6:1) over the dark overlay */
+  color: #ccc6bc;
   margin-bottom: 40px;
   font-style: italic;
-  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+  text-shadow: 0 2px 12px rgba(0, 0, 0, 0.65);
 }
 
 .hero-buttons {
@@ -743,9 +781,11 @@ body.light-theme .hero-overlay {
 
 body.light-theme .hero-scroll span,
 body.light-theme .clicktoscroll {
-  color: #f7f6f5;
+  /* Light theme: use bright white with a dark shadow so it reads over the
+     lighter overlay — the opposite of the default white-on-white glow */
+  color: #ffffff;
   font-weight: 600;
-  text-shadow: 0 1px 8px rgba(255, 255, 255, 0.8);
+  text-shadow: 0 1px 8px rgba(0, 0, 0, 0.55), 0 2px 16px rgba(0, 0, 0, 0.35);
 }
 
 body.light-theme .scroll-indicator {
@@ -772,14 +812,18 @@ body.light-theme .scroll-arrow {
   font-size: 0.75rem;
   text-transform: uppercase;
   letter-spacing: 2px;
-  color: var(--color-text-muted);
+  /* WCAG AA: raised from --color-text-muted (#9a958e) to near-white cream */
+  color: #e8e2d9;
+  text-shadow: 0 1px 6px rgba(0, 0, 0, 0.6);
 }
 
 .scroll-indicator {
-  width: 1px;
+  /* Widened from 1px → 2px for better visibility */
+  width: 2px;
   height: 40px;
-  background: linear-gradient(to bottom, var(--color-primary), transparent);
+  background: linear-gradient(to bottom, var(--color-primary), rgba(201, 169, 98, 0.15));
   animation: scrollPulse 2s infinite;
+  border-radius: 2px;
 }
 
 .hero-scroll:hover span {
@@ -793,7 +837,9 @@ body.light-theme .scroll-arrow {
   font-size: 1.5rem;
   letter-spacing: 1px;
   margin-top: -0.8rem;
-  color: var(--color-text-muted);
+  /* WCAG AA: raised from --color-text-muted (#9a958e) to a warm cream */
+  color: #d4c9b8;
+  text-shadow: 0 1px 6px rgba(0, 0, 0, 0.6);
   text-transform: none !important;
 }
 
@@ -1125,6 +1171,7 @@ body.light-theme .scroll-arrow {
   justify-content: center;
   gap: 12px;
 }
+
 .diet-filters {
   display: flex;
   gap: 10px;
@@ -1222,7 +1269,6 @@ body.light-theme .scroll-arrow {
   pointer-events: none;
 }
 
-
 .food-card::after {
   content: '';
   position: absolute;
@@ -1232,6 +1278,7 @@ body.light-theme .scroll-arrow {
   z-index: 1;
   pointer-events: none;
 }
+
 .food-card:hover::before {
   opacity: 1;
 }
@@ -1578,7 +1625,6 @@ body.light-theme .price {
   position: relative;
   padding: 120px 0;
   overflow: hidden;
-
 }
 
 .reservation-bg {
@@ -1960,7 +2006,6 @@ body.light-theme .time-slot-btn.limited .availability {
   height: 100%;
   border: 0;
   filter: none;
-
 }
 
 /* ── Reviews Section ─────────────────────────────────── */
@@ -2097,6 +2142,7 @@ legend{
   color: var(--color-primary);
   transform: scale(1.1);
 }
+
 @media (max-width: 1024px) {
   .reviews-grid {
     grid-template-columns: repeat(2, 1fr);
@@ -2107,9 +2153,6 @@ legend{
   .reviews-grid {
     grid-template-columns: 1fr;
   }
-  .menu-items {
-  grid-template-columns: 1fr;
-}
 
   .review-form-wrapper {
     padding: 24px 20px;
@@ -2117,7 +2160,6 @@ legend{
 }
 
 /* Footer */
-
 .footer {
   background:
     linear-gradient(to bottom,
@@ -2150,7 +2192,6 @@ legend{
 }
 
 /* BRAND */
-
 .footer-brand h2 {
   font-family: var(--font-serif);
   font-size: 2.2rem;
@@ -2166,7 +2207,6 @@ legend{
 }
 
 /* SOCIALS */
-
 .footer-socials {
   display: flex;
   gap: 14px;
@@ -2221,7 +2261,6 @@ legend{
 }
 
 /* COLUMNS */
-
 .footer-column h3 {
   font-size: 1rem;
   text-transform: uppercase;
@@ -2249,7 +2288,6 @@ legend{
 }
 
 /* NEWSLETTER */
-
 .newsletter-form {
   display: flex;
   flex-direction: column;
@@ -2293,7 +2331,6 @@ legend{
 }
 
 /* BOTTOM */
-
 .footer-bottom {
   padding: 28px 0;
   display: flex;
@@ -2308,7 +2345,6 @@ legend{
 }
 
 /* RESPONSIVE */
-
 @media (max-width: 1024px) {
   .footer-top {
     grid-template-columns: 1fr 1fr;
@@ -2317,7 +2353,6 @@ legend{
 }
 
 @media (max-width: 768px) {
-
   .footer {
     padding-top: 70px;
   }
@@ -2342,7 +2377,6 @@ legend{
 }
 
 @media (max-width: 480px) {
-
   .footer {
     padding-top: 60px;
   }
@@ -2367,7 +2401,6 @@ legend{
 
 /* Responsive Design */
 @media (max-width: 1024px) {
-
   .about-grid,
   .menu-grid,
   .reservation-content,
@@ -2550,7 +2583,8 @@ legend{
   z-index: 1000;
   opacity: 0;
   visibility: hidden;
-  transition: all 0.3s ease;
+  transform: translateY(20px) scale(0.8);
+  transition: opacity 0.4s ease, transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275), visibility 0.4s ease;
   box-shadow:
     4px 4px 10px rgba(0, 0, 0, 0.5),
     -2px -2px 6px rgba(245, 224, 144, 0.3),
@@ -2559,7 +2593,7 @@ legend{
 }
 
 #backToTop:hover {
-  transform: translateY(-6px);
+  transform: translateY(-6px) scale(1.1);
   box-shadow:
     6px 10px 16px rgba(0, 0, 0, 0.5),
     -2px -2px 6px rgba(245, 224, 144, 0.3),
@@ -2567,9 +2601,14 @@ legend{
     inset -2px -2px 4px rgba(0, 0, 0, 0.3);
 }
 
+#backToTop:active {
+  transform: translateY(-2px) scale(0.95);
+}
+
 #backToTop.visible {
   opacity: 1;
   visibility: visible;
+  transform: translateY(0) scale(1);
 }
 
 /* Mobile menu card fix */
@@ -3022,21 +3061,7 @@ body.light-theme .polaroid-tape {
   background: rgba(255, 200, 100, 0.8);
 }
 
-
 /* Light Theme: Footer */
-.footer-bottom {
-  padding: 28px 0;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: 20px;
-}
-
-.footer-bottom p {
-  color: var(--color-text-muted);
-  font-size: 0.9rem;
-}
-
 body.light-theme .footer {
   /* Scope the contrast adjustments specifically to the footer */
   --color-bg: #fcfaf5;
@@ -3957,6 +3982,411 @@ body.light-theme .newsletter-form input {
   padding: 3px 8px;
   border-radius: 4px;
   color: #4caf50;
+}
+
+/* Digital Reservation Ticket Modal */
+.ticket-modal {
+/* Table Availability Estimator */
+.availability-estimator {
+  padding: 12px 16px;
+  border-radius: 6px;
+  font-size: 0.85rem;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  transition: all var(--transition);
+}
+
+.availability-estimator.high {
+  background-color: rgba(76, 175, 80, 0.08);
+  border: 1px solid rgba(76, 175, 80, 0.2);
+  color: #4caf50;
+}
+
+.availability-estimator.medium {
+  background-color: rgba(201, 169, 98, 0.08);
+  border: 1px solid rgba(201, 169, 98, 0.2);
+  color: var(--color-primary);
+}
+
+.availability-estimator.low {
+  background-color: rgba(196, 74, 74, 0.08);
+  border: 1px solid rgba(196, 74, 74, 0.2);
+  color: #c44a4a;
+}
+
+.availability-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  display: inline-block;
+}
+
+.availability-estimator.high .availability-dot {
+  background-color: #4caf50;
+  box-shadow: 0 0 8px #4caf50;
+}
+
+.availability-estimator.medium .availability-dot {
+  background-color: var(--color-primary);
+  box-shadow: 0 0 8px var(--color-primary);
+}
+
+.availability-estimator.low .availability-dot {
+  background-color: #c44a4a;
+  box-shadow: 0 0 8px #c44a4a;
+/* Search Suggestions and Highlighting */
+.suggestion-chip {
+  background-color: var(--color-bg-card);
+  border: 1px solid var(--color-border);
+  color: var(--color-text-muted);
+  font-family: var(--font-sans);
+  font-size: 0.75rem;
+  padding: 5px 12px;
+  border-radius: 15px;
+  cursor: pointer;
+  transition: all var(--transition);
+}
+
+.suggestion-chip:hover {
+  border-color: var(--color-primary);
+  color: var(--color-primary);
+  background-color: rgba(201, 169, 98, 0.05);
+}
+
+.search-highlight {
+  background-color: rgba(201, 169, 98, 0.3);
+  color: #ffffff;
+  border-radius: 2px;
+  padding: 0 1px;
+/* Reservation Success Modal and Calendar Integration */
+.reservation-success-modal {
+  display: none;
+  position: fixed;
+  z-index: 3000;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  background-color: rgba(0,0,0,0.85);
+  backdrop-filter: blur(8px);
+}
+
+.ticket-modal-content {
+  background-color: var(--color-bg-lighter);
+  border: 1px solid var(--color-primary);
+  margin: 5% auto;
+  padding: 40px;
+  width: 90%;
+  max-width: 500px;
+  border-radius: 12px;
+  position: relative;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+}
+
+.ticket-modal-close {
+.success-modal-content {
+  background-color: var(--color-bg-lighter);
+  border: 1px solid var(--color-primary);
+  margin: 10% auto;
+  padding: 40px;
+  width: 90%;
+  max-width: 450px;
+  border-radius: 12px;
+  position: relative;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+  text-align: center;
+}
+
+.success-modal-close {
+  color: var(--color-text-muted);
+  position: absolute;
+  top: 15px;
+  right: 20px;
+  font-size: 28px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: color var(--transition);
+}
+
+.ticket-modal-close:hover {
+  color: var(--color-primary);
+}
+
+.luxury-ticket {
+  border: 2px solid var(--color-primary);
+  background-color: var(--color-bg-card);
+  padding: 30px;
+  border-radius: 8px;
+  position: relative;
+  background-image: linear-gradient(rgba(201, 169, 98, 0.03) 1px, transparent 1px), linear-gradient(90deg, rgba(201, 169, 98, 0.03) 1px, transparent 1px);
+  background-size: 20px 20px;
+}
+
+.ticket-header {
+  text-align: center;
+  border-bottom: 1px dashed var(--color-border);
+  padding-bottom: 20px;
+  margin-bottom: 20px;
+}
+
+.ticket-logo {
+  font-family: var(--font-serif);
+  font-size: 1.8rem;
+  letter-spacing: 4px;
+  color: var(--color-primary);
+}
+
+.ticket-tagline {
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  color: var(--color-text-muted);
+  margin-top: 5px;
+}
+
+.ticket-body {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.ticket-row {
+  display: flex;
+  justify-content: space-between;
+  gap: 20px;
+}
+
+.ticket-field {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.ticket-field .label {
+  font-size: 0.65rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: var(--color-text-muted);
+}
+
+.ticket-field .value {
+  font-family: var(--font-serif);
+  font-size: 1.15rem;
+  color: var(--color-text);
+  border-bottom: 1px solid var(--color-border);
+  padding-top: 4px;
+  padding-bottom: 4px;
+}
+
+.ticket-barcode {
+  margin-top: 15px;
+  text-align: center;
+}
+
+.barcode-lines {
+  height: 40px;
+  background: repeating-linear-gradient(90deg, var(--color-text) 0px, var(--color-text) 2px, transparent 2px, transparent 6px, var(--color-text) 6px, var(--color-text) 10px);
+  opacity: 0.7;
+}
+
+.ticket-code {
+  font-family: monospace;
+  font-size: 0.8rem;
+  letter-spacing: 3px;
+  margin-top: 6px;
+  color: var(--color-primary);
+}
+
+.ticket-footer {
+  text-align: center;
+  border-top: 1px dashed var(--color-border);
+  margin-top: 20px;
+  padding-top: 15px;
+  font-size: 0.7rem;
+  color: var(--color-text-muted);
+  line-height: 1.5;
+}
+
+/* Print Styling */
+@media print {
+  body * {
+    visibility: hidden;
+  }
+  #ticket-print-area, #ticket-print-area * {
+    visibility: visible;
+  }
+  #ticket-print-area {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+.success-modal-close:hover {
+  color: var(--color-primary);
+}
+
+.success-header .success-icon {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  background-color: rgba(76, 175, 80, 0.1);
+  color: #4caf50;
+  font-size: 32px;
+  line-height: 60px;
+  margin: 0 auto 15px;
+  text-align: center;
+  border: 2px solid #4caf50;
+}
+
+.success-header h3 {
+  font-family: var(--font-serif);
+  font-size: 1.8rem;
+  color: var(--color-primary);
+  margin-bottom: 5px;
+}
+
+.success-header p {
+  color: var(--color-text-muted);
+  font-size: 0.9rem;
+}
+
+.success-details {
+  background-color: var(--color-bg-card);
+  border: 1px solid var(--color-border);
+  padding: 20px;
+  border-radius: 8px;
+  margin: 25px 0;
+  text-align: left;
+}
+
+.success-details p {
+  margin-bottom: 8px;
+  font-size: 0.95rem;
+}
+
+.success-details p:last-child {
+  margin-bottom: 0;
+}
+
+.calendar-actions h4 {
+  font-family: var(--font-serif);
+  font-size: 1.1rem;
+  color: var(--color-text);
+  margin-bottom: 10px;
+/* Scroll Reveal & Autoplay Styles */
+.reveal {
+  opacity: 0;
+  transform: translateY(30px);
+  transition: opacity 0.8s ease, transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.reveal.active {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Make sure reviews grid on small screen wraps or scrolls horizontally */
+@media (max-width: 992px) {
+  .reviews-grid {
+    display: flex;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    gap: 20px;
+    padding-bottom: 20px;
+    scrollbar-width: none; /* Hide scrollbar for clean carousel look */
+  }
+  
+  .reviews-grid::-webkit-scrollbar {
+    display: none;
+  }
+  
+  .review-card {
+    min-width: 300px;
+    scroll-snap-align: start;
+    flex: 0 0 calc(50% - 10px);
+  }
+}
+
+@media (max-width: 768px) {
+  .review-card {
+    flex: 0 0 100%;
+  }
+/* FAQ Section Styles */
+.faq-section {
+  padding: 80px 0;
+  background-color: var(--color-bg-lighter);
+  border-top: 1px solid var(--color-border);
+  border-bottom: 1px solid var(--color-border);
+}
+
+.faq-accordion {
+  max-width: 800px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.faq-item {
+  border: 1px solid var(--color-border);
+  border-radius: 8px;
+  background-color: var(--color-bg-card);
+  overflow: hidden;
+  transition: border-color var(--transition);
+}
+
+.faq-item:hover {
+  border-color: var(--color-primary);
+}
+
+.faq-question {
+  width: 100%;
+  padding: 20px 24px;
+  background: none;
+  border: none;
+  text-align: left;
+  font-family: var(--font-serif);
+  font-size: 1.25rem;
+  color: var(--color-text);
+  cursor: pointer;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 15px;
+  transition: color var(--transition);
+}
+
+.faq-question:hover {
+  color: var(--color-primary);
+}
+
+.faq-icon {
+  font-size: 1.5rem;
+  color: var(--color-primary);
+  transition: transform var(--transition);
+}
+
+.faq-item.active .faq-icon {
+  transform: rotate(45deg);
+}
+
+.faq-answer {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height var(--transition), padding var(--transition);
+  padding: 0 24px;
+}
+
+.faq-item.active .faq-answer {
+  max-height: 200px;
+  padding-bottom: 20px;
+}
+
+.faq-answer p {
+  color: var(--color-text-muted);
+  font-size: 0.95rem;
+  line-height: 1.6;
 }
 
 

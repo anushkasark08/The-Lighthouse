@@ -14,7 +14,6 @@
       href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&family=Inter:wght@400;500;600&display=swap"
       rel="stylesheet"
     />
-    <!-- EmailJS SDK — required for reservation confirmation emails -->
     <script
       type="text/javascript"
       src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"
@@ -25,6 +24,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/i18next-browser-languagedetector/8.0.0/i18nextBrowserLanguageDetector.min.js" defer></script>
   </head>
   <body>
+    <div class="scroll-progress-container"><div class="scroll-progress-bar" id="scrollProgressBar"></div></div>
 
     <nav class="nav" id="nav">
       <div class="nav-container">
@@ -54,7 +54,23 @@
             </div>
           </li>
         </ul>
-        <button id="themeToggle" class="theme-toggle" aria-label="Toggle Theme">&#9790;</button>
+        <button id="themeToggle" class="theme-toggle" aria-label="Toggle Theme">
+          <svg class="sun-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="12" cy="12" r="5"></circle>
+            <line x1="12" y1="1" x2="12" y2="3"></line>
+            <line x1="12" y1="21" x2="12" y2="23"></line>
+            <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+            <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+            <line x1="1" y1="12" x2="3" y2="12"></line>
+            <line x1="21" y1="12" x2="23" y2="12"></line>
+            <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+            <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+          </svg>
+          <svg class="moon-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+          </svg>
+        </button>
+        <button id="themeToggle" class="theme-toggle" aria-label="Toggle Theme">☾</button>
         <a href="#reservation" class="nav-cta">Book a Table</a>
       </div>
     </nav>
@@ -76,8 +92,8 @@
           <a href="#reservation" class="btn btn-outline" data-i18n="hero.reserve_table">Reserve Table</a>
         </div>
         <div class="chef-recommendation">
-  <p><strong>🍽️ Chef's Recommendation:</strong> <span id="chefRecommendation"></span></p>
-</div>
+          <p><strong>🍽️ Chef's Recommendation:</strong> <span id="chefRecommendation"></span></p>
+        </div>
         <div class="hero-scroll">
           <span data-i18n="hero.scroll_discover">Scroll To Discover</span>
           <span class="clicktoscroll" data-i18n="hero.click_scroll">Click To Scroll</span>
@@ -89,7 +105,7 @@
       </div>
     </section>
 
-    <section class="about" id="about">
+    <section class="about reveal" id="about">
       <div class="container">
         <div class="about-grid">
           <div class="about-image">
@@ -110,7 +126,6 @@
           </div>
         </div>
         
-        <!-- Stats Bar -->
         <div class="about-stats">
           <div class="stat-block">
             <div class="stat-number">30+</div>
@@ -132,7 +147,7 @@
       </div>
     </section>
 
-    <section class="chef-section" id="chef">
+    <section class="chef-section reveal" id="chef">
       <div class="container">
         <div class="section-header">
           <span class="section-label" data-i18n="chef_picks.label">Chef's recommendations</span>
@@ -183,7 +198,7 @@
       </div>
     </section>
 
-    <section class="menu-section" id="menu">
+    <section class="menu-section reveal" id="menu">
       <div class="container">
         <div class="section-header">
           <span class="section-label" data-i18n="menu.label">Culinary Offerings</span>
@@ -195,19 +210,16 @@
         </div>
 
         <div class="menu-controls">
-          <input
-            type="text"
-            id="menu-search"
-            placeholder="Search dishes..."
-            class="menu-search"
-          />
-          <div class="diet-filters">
-            <button class="diet-btn active" data-type="all">All</button>
-            <button class="diet-btn" data-type="veg">Veg</button>
-            <button class="diet-btn" data-type="nonveg">Non-Veg</button>
-          </div>
           <label for="menu-search" class="sr-only" data-i18n="menu.search_placeholder">Search Menu</label>
           <input type="text" id="menu-search" placeholder="Search dishes..." class="menu-search" data-i18n-placeholder="menu.search_placeholder" />
+          <div class="search-suggestions-container" style="margin-top: 10px; display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 15px; width: 100%;">
+            <span style="font-size: 0.8rem; color: var(--color-text-muted); align-self: center;">Popular:</span>
+            <button type="button" class="suggestion-chip" data-query="Biryani">Biryani</button>
+            <button type="button" class="suggestion-chip" data-query="Dosa">Dosa</button>
+            <button type="button" class="suggestion-chip" data-query="Paneer">Paneer</button>
+            <button type="button" class="suggestion-chip" data-query="Lassi">Lassi</button>
+          </div>
+          
           <div class="menu-filters">
             <button class="filter-btn active" data-filter="all" data-i18n="menu.filter_all">All</button>
             <button class="filter-btn" data-filter="breakfast" data-i18n="menu.filter_breakfast">Breakfast</button>
@@ -251,21 +263,11 @@
           </div>
         </div>
 
+        
+<!-- Menu Content -->
         <div class="menu-content menu-panel active">
           <div class="menu-items">
-          <!-- breakfast -->
-          <div class="menu-item" data-category="breakfast" data-type="veg">
-          
-            <div class="food-card">
-              <img
-                src="./images/MasalaDosa.jpg"
-                alt="Masala Dosa"
-                class="food-image"
-                loading="lazy"
-              />
-
             <!-- ===== BREAKFAST ITEMS ===== -->
-
             <!-- Masala Dosa -->
             <div class="menu-item" data-category="breakfast" data-diet="veg">
               <div class="food-card-3d">
@@ -275,213 +277,512 @@
                       <div class="polaroid-image-wrapper">
                         <img src="./images/MasalaDosa.jpg" alt="Masala Dosa" loading="lazy" />
                         <div class="polaroid-tape"></div>
-                        <div class="polaroid-badge popular" data-i18n="menu.tags.popular">🔥 Popular</div>
+                        <div class="polaroid-badge popular">🔥 Popular</div>
                       </div>
                       <div class="polaroid-caption">
-                        <h3 data-i18n="menu.items.masala_dosa.name">Masala Dosa</h3>
+                        <h3>Masala Dosa</h3>
                         <div class="polaroid-price">₹180</div>
-                        <span class="food-tag veg" data-i18n="menu.tags.veg">Veg</span>
+                        <span class="food-tag veg">Veg</span>
                       </div>
                     </div>
                   </div>
                   <div class="food-card-back">
                     <div class="back-content">
-                      <h4 data-i18n="menu.chef_notes">👨‍🍳 Chef's Notes</h4>
-                      <p data-i18n="menu.items.masala_dosa.notes">Golden crispy dosa made from fermented rice and lentil batter, filled with spiced potato masala. Served with fresh coconut chutney and sambar.</p>
+                      <h4>👨‍🍳 Chef's Notes</h4>
+                      <p>Golden crispy dosa made from fermented rice and lentil batter, filled with spiced potato masala. Served with fresh coconut chutney and sambar.</p>
                       <div class="back-details">
-                        <span data-i18n="menu.items.masala_dosa.details_spicy">🌶️ Medium Spicy</span>
-                        <span data-i18n="menu.items.masala_dosa.details_time">⏱️ 15 mins</span>
-                        <span data-i18n="menu.items.masala_dosa.details_serves">🍽️ Serves 1</span>
+                        <span>🌶️ Medium Spicy</span>
+                        <span>⏱️ 15 mins</span>
+                        <span>🍽️ Serves 1</span>
                       </div>
                       <div class="back-ingredients">
-                        <strong data-i18n="menu.key_ingredients">Key Ingredients:</strong>
-                        <span data-i18n="menu.items.masala_dosa.ingredients">Rice, Urad Dal, Potato, Onion, Curry Leaves</span>
+                        <strong>Key Ingredients:</strong>
+                        <span>Rice, Urad Dal, Potato, Onion, Curry Leaves</span>
                       </div>
                       <div class="back-allergens">
-                        <span><span data-i18n="menu.contains">⚠️ Contains:</span> <span data-i18n="menu.items.masala_dosa.allergens">Gluten</span></span>
+                        <span>⚠️ Contains: Gluten</span>
                       </div>
                       <div class="star-rating">
-                        <span class="star" style="color: gold;">★★★★☆ 4.3 (210 <span data-i18n="menu.ratings">Ratings</span>)</span>
+                        <span class="star" style="color: gold;">★★★★☆ 4.3 (210 Ratings)</span>
                       </div>
                     </div>
                   </div>
-                  <span class="food-tag veg">Veg</span>
-                  <p>Crispy dosa served with chutney and sambar</p>
                 </div>
               </div>
             </div>
-          </div>
-          <div class="menu-item" data-category="breakfast" data-type="veg">
-            <div class="food-card">
-              <img
-                src="./images/Idli_Sambar.jpg"
-                alt="Idli Sambar"
-                class="food-image"
-                loading="lazy"
-              />
-
-            <div class="menu-item" data-category="breakfast" data-cuisine="south-indian" data-diet="veg">
-              <div class="food-card">
-                <img src="./images/Idli_Sambar.jpg" alt="Idli Sambar" class="food-image" loading="lazy" />
-                <div class="food-content">
-                  <div class="menu-item-header">
-                    <h3>Idli Sambar</h3>
-                    <span class="menu-price">&#8377;120</span>
+            <!-- Idli Sambar -->
+            <div class="menu-item" data-category="breakfast" data-diet="veg">
+              <div class="food-card-3d">
+                <div class="food-card-inner">
+                  <div class="food-card-front">
+                    <div class="polaroid">
+                      <div class="polaroid-image-wrapper">
+                        <img src="./images/Idli_Sambar.jpg" alt="Idli Sambar" loading="lazy" />
+                        <div class="polaroid-tape"></div>
+                        <div class="polaroid-badge classic">⭐ Classic</div>
+                      </div>
+                      <div class="polaroid-caption">
+                        <h3>Idli Sambar</h3>
+                        <div class="polaroid-price">₹120</div>
+                        <span class="food-tag veg">Veg</span>
+                      </div>
+                    </div>
                   </div>
-                  <span class="food-tag veg">Veg</span>
-                  <p>Soft steamed idlis served with hot sambar and coconut chutney</p>
-                </div>
-              </div>
-            </div>
-
-            <div class="menu-item" data-category="breakfast" data-cuisine="regional-variation" data-diet="non-veg">
-              <div class="food-card">
-                <img src="./images/Chicken_Keema_Dosa.jpg" alt="Chicken Keema Dosa" class="food-image" loading="lazy" />
-                <div class="food-content">
-                  <div class="menu-item-header">
-                    <h3>Chicken Keema Dosa</h3>
-                    <span class="menu-price">&#8377;240</span>
+                  <div class="food-card-back">
+                    <div class="back-content">
+                      <h4>👨‍🍳 Chef's Notes</h4>
+                      <p>Soft, fluffy steamed idlis made from fermented rice and urad dal, served with hot, flavorful sambar and fresh coconut chutney.</p>
+                      <div class="back-details">
+                        <span>🌶️ Mild</span>
+                        <span>⏱️ 10 mins</span>
+                        <span>🍽️ Serves 1</span>
+                      </div>
+                      <div class="back-ingredients">
+                        <strong>Key Ingredients:</strong>
+                        <span>Rice, Urad Dal, Toor Dal, Vegetables, Coconut</span>
+                      </div>
+                      <div class="back-allergens">
+                        <span>⚠️ Contains: Gluten, Dairy</span>
+                      </div>
+                      <div class="star-rating">
+                        <span class="star" style="color: gold;">★★★★☆ 4.1 (185 Ratings)</span>
+                      </div>
+                    </div>
                   </div>
-                  <span class="food-tag non-veg">Non-Veg</span>
-                  <p>Crispy dosa stuffed with spicy chicken keema masala</p>
                 </div>
               </div>
             </div>
-
-            <!-- Lunch -->
-            <div class="menu-item" data-category="lunch" data-cuisine="regional-variation" data-diet="veg">
-              <div class="food-card">
-                <img src="./images/Paneer_Butter_Masala.jpg" alt="Paneer Butter Masala" class="food-image" loading="lazy" />
-                <div class="food-content">
-                  <div class="menu-item-header">
-                    <h3>Paneer Butter Masala</h3>
-                    <span class="menu-price">&#8377;280</span>
+            <!-- Chicken Keema Dosa -->
+            <div class="menu-item" data-category="breakfast" data-diet="non-veg">
+              <div class="food-card-3d">
+                <div class="food-card-inner">
+                  <div class="food-card-front">
+                    <div class="polaroid">
+                      <div class="polaroid-image-wrapper">
+                        <img src="./images/Chicken_Keema_Dosa.jpg" alt="Chicken Keema Dosa" loading="lazy" />
+                        <div class="polaroid-tape"></div>
+                        <div class="polaroid-badge chef">👨‍🍳 Chef's Pick</div>
+                      </div>
+                      <div class="polaroid-caption">
+                        <h3>Chicken Keema Dosa</h3>
+                        <div class="polaroid-price">₹240</div>
+                        <span class="food-tag nonveg">Non-Veg</span>
+                      </div>
+                    </div>
                   </div>
-                  <span class="food-tag veg">Veg</span>
-                  <p>Rich creamy paneer curry served with butter naan</p>
-                </div>
-              </div>
-            </div>
-
-            <!-- Dinner -->
-            <div class="menu-item" data-category="dinner" data-cuisine="core-menu" data-diet="non-veg">
-              <div class="food-card">
-                <img src="./images/Hyderabadi_Chicken_Biryani.jpg" alt="Hyderabadi Chicken Biryani" class="food-image" loading="lazy" />
-                <div class="food-content">
-                  <div class="menu-item-header">
-                    <h3>Hyderabadi Chicken Biryani</h3>
-                    <span class="menu-price">&#8377;320</span>
+                  <div class="food-card-back">
+                    <div class="back-content">
+                      <h4>👨‍🍳 Chef's Notes</h4>
+                      <p>Crispy golden dosa generously stuffed with spicy minced chicken masala, perfectly seasoned with aromatic spices and herbs.</p>
+                      <div class="back-details">
+                        <span>🌶️ Hot</span>
+                        <span>⏱️ 20 mins</span>
+                        <span>🍽️ Serves 1</span>
+                      </div>
+                      <div class="back-ingredients">
+                        <strong>Key Ingredients:</strong>
+                        <span>Chicken, Rice Batter, Onion, Ginger, Garlic, Spices</span>
+                      </div>
+                      <div class="back-allergens">
+                        <span>⚠️ Contains: Gluten, Dairy</span>
+                      </div>
+                      <div class="star-rating">
+                        <span class="star" style="color: gold;">★★★★☆ 4.2 (143 Ratings)</span>
+                      </div>
+                    </div>
                   </div>
-                  <span class="food-tag non-veg">Non-Veg</span>
-                  <p>Aromatic dum biryani layered with spicy chicken and basmati rice</p>
                 </div>
               </div>
             </div>
-
-            <div class="menu-item" data-category="dinner" data-cuisine="core-menu" data-diet="non-veg">
-              <div class="food-card">
-                <img src="./images/Butter_Chicken.jpg" alt="Butter Chicken" class="food-image" loading="lazy" />
-                <div class="food-content">
-                  <div class="menu-item-header">
-                    <h3>Butter Chicken</h3>
-                    <span class="menu-price">&#8377;340</span>
+            <!-- ===== LUNCH ITEMS ===== -->
+            <!-- Paneer Butter Masala -->
+            <div class="menu-item" data-category="lunch" data-diet="veg">
+              <div class="food-card-3d">
+                <div class="food-card-inner">
+                  <div class="food-card-front">
+                    <div class="polaroid">
+                      <div class="polaroid-image-wrapper">
+                        <img src="./images/Paneer_Butter_Masala.jpg" alt="Paneer Butter Masala" loading="lazy" />
+                        <div class="polaroid-tape"></div>
+                        <div class="polaroid-badge popular">🔥 Popular</div>
+                      </div>
+                      <div class="polaroid-caption">
+                        <h3>Paneer Butter Masala</h3>
+                        <div class="polaroid-price">₹280</div>
+                        <span class="food-tag veg">Veg</span>
+                      </div>
+                    </div>
                   </div>
-                  <span class="food-tag non-veg">Non-Veg</span>
-                  <p>Creamy tomato-based chicken curry with naan</p>
+                  <div class="food-card-back">
+                    <div class="back-content">
+                      <h4>👨‍🍳 Chef's Notes</h4>
+                      <p>Rich and creamy paneer curry cooked in a buttery tomato gravy with a blend of aromatic spices. Best enjoyed with butter naan.</p>
+                      <div class="back-details">
+                        <span>🌶️ Medium</span>
+                        <span>⏱️ 25 mins</span>
+                        <span>🍽️ Serves 2</span>
+                      </div>
+                      <div class="back-ingredients">
+                        <strong>Key Ingredients:</strong>
+                        <span>Paneer, Tomato, Butter, Cream, Kasuri Methi</span>
+                      </div>
+                      <div class="back-allergens">
+                        <span>⚠️ Contains: Dairy, Gluten</span>
+                      </div>
+                      <div class="star-rating">
+                        <span class="star" style="color: gold;">★★★★☆ 4.0 (140 Ratings)</span>
+                      </div>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
-
-            <!-- Drinks -->
+            <!-- ===== DINNER ITEMS ===== -->
+            <!-- Hyderabadi Chicken Biryani -->
+            <div class="menu-item" data-category="dinner" data-diet="non-veg">
+              <div class="food-card-3d">
+                <div class="food-card-inner">
+                  <div class="food-card-front">
+                    <div class="polaroid">
+                      <div class="polaroid-image-wrapper">
+                        <img src="./images/Hyderabadi_Chicken_Biryani.jpg" alt="Hyderabadi Chicken Biryani" loading="lazy" />
+                        <div class="polaroid-tape"></div>
+                        <div class="polaroid-badge signature">👑 Signature</div>
+                      </div>
+                      <div class="polaroid-caption">
+                        <h3>Hyderabadi Chicken Biryani</h3>
+                        <div class="polaroid-price">₹320</div>
+                        <span class="food-tag nonveg">Non-Veg</span>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="food-card-back">
+                    <div class="back-content">
+                      <h4>👨‍🍳 Chef's Notes</h4>
+                      <p>Fragrant dum biryani layered with tender chicken, basmati rice, and a secret blend of authentic Hyderabad spices. Slow-cooked to perfection.</p>
+                      <div class="back-details">
+                        <span>🌶️ Hot</span>
+                        <span>⏱️ 40 mins</span>
+                        <span>🍽️ Serves 2</span>
+                      </div>
+                      <div class="back-ingredients">
+                        <strong>Key Ingredients:</strong>
+                        <span>Chicken, Basmati Rice, Saffron, Mint, Fried Onions</span>
+                      </div>
+                      <div class="back-allergens">
+                        <span>⚠️ Contains: Dairy, Gluten</span>
+                      </div>
+                      <div class="star-rating">
+                        <span class="star" style="color: gold;">★★★★☆ 4.2 (143 Ratings)</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <!-- Butter Chicken -->
+            <div class="menu-item" data-category="dinner" data-diet="non-veg">
+              <div class="food-card-3d">
+                <div class="food-card-inner">
+                  <div class="food-card-front">
+                    <div class="polaroid">
+                      <div class="polaroid-image-wrapper">
+                        <img src="./images/Butter_Chicken.jpg" alt="Butter Chicken" loading="lazy" />
+                        <div class="polaroid-tape"></div>
+                        <div class="polaroid-badge classic">⭐ Classic</div>
+                      </div>
+                      <div class="polaroid-caption">
+                        <h3>Butter Chicken</h3>
+                        <div class="polaroid-price">₹340</div>
+                        <span class="food-tag nonveg">Non-Veg</span>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="food-card-back">
+                    <div class="back-content">
+                      <h4>👨‍🍳 Chef's Notes</h4>
+                      <p>Succulent chicken cooked in a creamy tomato-based gravy with butter and aromatic spices. A timeless classic served with naan.</p>
+                      <div class="back-details">
+                        <span>🌶️ Mild</span>
+                        <span>⏱️ 30 mins</span>
+                        <span>🍽️ Serves 2</span>
+                      </div>
+                      <div class="back-ingredients">
+                        <strong>Key Ingredients:</strong>
+                        <span>Chicken, Tomato, Butter, Cream, Kasuri Methi</span>
+                      </div>
+                      <div class="back-allergens">
+                        <span>⚠️ Contains: Dairy, Gluten</span>
+                      </div>
+                      <div class="star-rating">
+                        <span class="star" style="color: gold;">★★★★☆ 4.2 (143 Ratings)</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <!-- ===== DRINKS ===== -->
+            <!-- Mango Lassi -->
             <div class="menu-item" data-category="drinks" data-diet="veg">
-              <div class="food-card">
-                <img src="./images/Mango_Lassi.jpg" alt="Mango Lassi" class="food-image" loading="lazy" />
-                <div class="food-content">
-                  <div class="menu-item-header">
-                    <h3>Mango Lassi</h3>
-                    <span class="menu-price">&#8377;110</span>
+              <div class="food-card-3d">
+                <div class="food-card-inner">
+                  <div class="food-card-front">
+                    <div class="polaroid">
+                      <div class="polaroid-image-wrapper">
+                        <img src="./images/Mango_Lassi.jpg" alt="Mango Lassi" loading="lazy" />
+                        <div class="polaroid-tape"></div>
+                        <div class="polaroid-badge refreshing">🥤 Refreshing</div>
+                      </div>
+                      <div class="polaroid-caption">
+                        <h3>Mango Lassi</h3>
+                        <div class="polaroid-price">₹110</div>
+                        <span class="food-tag veg">Veg</span>
+                      </div>
+                    </div>
                   </div>
-                  <span class="food-tag veg">Veg</span>
-                  <p>Refreshing chilled yogurt drink blended with sweet mango pulp</p>
+                  <div class="food-card-back">
+                    <div class="back-content">
+                      <h4>👨‍🍳 Chef's Notes</h4>
+                      <p>Chilled, creamy yogurt drink blended with sweet mango pulp. Perfectly balanced with a hint of cardamom.</p>
+                      <div class="back-details">
+                        <span>🥤 Cold</span>
+                        <span>⏱️ 5 mins</span>
+                        <span>🍽️ Serves 1</span>
+                      </div>
+                      <div class="back-ingredients">
+                        <strong>Key Ingredients:</strong>
+                        <span>Yogurt, Mango Pulp, Sugar, Cardamom</span>
+                      </div>
+                      <div class="back-allergens">
+                        <span>⚠️ Contains: Dairy</span>
+                      </div>
+                      <div class="star-rating">
+                        <span class="star" style="color: gold;">★★★★☆ 4.2 (143 Ratings)</span>
+                      </div>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
-
+            <!-- Masala Chai -->
             <div class="menu-item" data-category="drinks" data-diet="veg">
-              <div class="food-card">
-                <img src="./images/Masala_Chai.jpg" alt="Masala Chai" class="food-image" loading="lazy" />
-                <div class="food-content">
-                  <div class="menu-item-header">
-                    <h3>Masala Chai</h3>
-                    <span class="menu-price">&#8377;70</span>
+              <div class="food-card-3d">
+                <div class="food-card-inner">
+                  <div class="food-card-front">
+                    <div class="polaroid">
+                      <div class="polaroid-image-wrapper">
+                        <img src="./images/Masala_Chai.jpg" alt="Masala Chai" loading="lazy" />
+                        <div class="polaroid-tape"></div>
+                        <div class="polaroid-badge classic">⭐ Classic</div>
+                      </div>
+                      <div class="polaroid-caption">
+                        <h3>Masala Chai</h3>
+                        <div class="polaroid-price">₹70</div>
+                        <span class="food-tag veg">Veg</span>
+                      </div>
+                    </div>
                   </div>
-                  <span class="food-tag veg">Veg</span>
-                  <p>Traditional Indian tea brewed with aromatic spices and milk</p>
+                  <div class="food-card-back">
+                    <div class="back-content">
+                      <h4>👨‍🍳 Chef's Notes</h4>
+                      <p>Traditional Indian tea brewed with a blend of aromatic spices — cardamom, ginger, cinnamon, and cloves. Perfect for any time of day.</p>
+                      <div class="back-details">
+                        <span>☕ Hot</span>
+                        <span>⏱️ 5 mins</span>
+                        <span>🍽️ Serves 1</span>
+                      </div>
+                      <div class="back-ingredients">
+                        <strong>Key Ingredients:</strong>
+                        <span>Tea, Milk, Ginger, Cardamom, Cinnamon</span>
+                      </div>
+                      <div class="back-allergens">
+                        <span>⚠️ Contains: Dairy</span>
+                      </div>
+                      <div class="star-rating">
+                        <span class="star" style="color: gold;">★★★★☆ 4.2 (143 Ratings)</span>
+                      </div>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
-
+            <!-- Fresh Lime Soda -->
             <div class="menu-item" data-category="drinks" data-diet="veg">
-              <div class="food-card">
-                <img src="./images/Fresh_Lime_Soda.jpg" alt="Fresh Lime Soda" class="food-image" loading="lazy" />
-                <div class="food-content">
-                  <div class="menu-item-header">
-                    <h3>Fresh Lime Soda</h3>
-                    <span class="menu-price">&#8377;90</span>
+              <div class="food-card-3d">
+                <div class="food-card-inner">
+                  <div class="food-card-front">
+                    <div class="polaroid">
+                      <div class="polaroid-image-wrapper">
+                        <img src="./images/Fresh_Lime_Soda.jpg" alt="Fresh Lime Soda" loading="lazy" />
+                        <div class="polaroid-tape"></div>
+                        <div class="polaroid-badge refreshing">🥤 Refreshing</div>
+                      </div>
+                      <div class="polaroid-caption">
+                        <h3>Fresh Lime Soda</h3>
+                        <div class="polaroid-price">₹90</div>
+                        <span class="food-tag veg">Veg</span>
+                      </div>
+                    </div>
                   </div>
-                  <span class="food-tag veg">Veg</span>
-                  <p>Fizzy lime soda served sweet, salted, or mixed style</p>
+                  <div class="food-card-back">
+                    <div class="back-content">
+                      <h4>👨‍🍳 Chef's Notes</h4>
+                      <p>Fizzy lime soda available in sweet, salted, or mixed style. The perfect thirst-quencher on a warm day.</p>
+                      <div class="back-details">
+                        <span>🥤 Cold &amp; Fizzy</span>
+                        <span>⏱️ 5 mins</span>
+                        <span>🍽️ Serves 1</span>
+                      </div>
+                      <div class="back-ingredients">
+                        <strong>Key Ingredients:</strong>
+                        <span>Lime, Soda, Sugar, Salt (optional)</span>
+                      </div>
+                      <div class="back-allergens">
+                        <span>✅ No Allergens</span>
+                      </div>
+                      <div class="star-rating">
+                        <span class="star" style="color: gold;">★★★★☆ 4.2 (143 Ratings)</span>
+                      </div>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
-
-            <!-- Desserts -->
+            <!-- ===== DESSERTS ===== -->
+            <!-- Gulab Jamun -->
             <div class="menu-item" data-category="desserts" data-diet="veg">
-              <div class="food-card">
-                <img src="./images/Gulab_Jamun.jpg" alt="Gulab Jamun" class="food-image" loading="lazy" />
-                <div class="food-content">
-                  <div class="menu-item-header">
-                    <h3>Gulab Jamun</h3>
-                    <span class="menu-price">&#8377;120</span>
+              <div class="food-card-3d">
+                <div class="food-card-inner">
+                  <div class="food-card-front">
+                    <div class="polaroid">
+                      <div class="polaroid-image-wrapper">
+                        <img src="./images/Gulab_Jamun.jpg" alt="Gulab Jamun" loading="lazy" />
+                        <div class="polaroid-tape"></div>
+                        <div class="polaroid-badge classic">⭐ Classic</div>
+                      </div>
+                      <div class="polaroid-caption">
+                        <h3>Gulab Jamun</h3>
+                        <div class="polaroid-price">₹120</div>
+                        <span class="food-tag veg">Veg</span>
+                      </div>
+                    </div>
                   </div>
-                  <span class="food-tag veg">Veg</span>
-                  <p>Soft milk-solid dumplings soaked in warm sugar syrup</p>
+                  <div class="food-card-back">
+                    <div class="back-content">
+                      <h4>👨‍🍳 Chef's Notes</h4>
+                      <p>Soft, spongy milk-solid dumplings fried to golden perfection and soaked in warm, fragrant sugar syrup with cardamom and rose water.</p>
+                      <div class="back-details">
+                        <span>🍰 Sweet</span>
+                        <span>⏱️ 15 mins</span>
+                        <span>🍽️ Serves 1</span>
+                      </div>
+                      <div class="back-ingredients">
+                        <strong>Key Ingredients:</strong>
+                        <span>Milk Solids, Sugar, Cardamom, Rose Water</span>
+                      </div>
+                      <div class="back-allergens">
+                        <span>⚠️ Contains: Dairy, Gluten</span>
+                      </div>
+                      <div class="star-rating">
+                        <span class="star" style="color: gold;">★★★★☆ 4.2 (143 Ratings)</span>
+                      </div>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
-
+            <!-- Rasmalai -->
             <div class="menu-item" data-category="desserts" data-diet="veg">
-              <div class="food-card">
-                <img src="./images/Rasmalai.jpg" alt="Rasmalai" class="food-image" loading="lazy" />
-                <div class="food-content">
-                  <div class="menu-item-header">
-                    <h3>Rasmalai</h3>
-                    <span class="menu-price">&#8377;140</span>
+              <div class="food-card-3d">
+                <div class="food-card-inner">
+                  <div class="food-card-front">
+                    <div class="polaroid">
+                      <div class="polaroid-image-wrapper">
+                        <img src="./images/Rasmalai.jpg" alt="Rasmalai" loading="lazy" />
+                        <div class="polaroid-tape"></div>
+                        <div class="polaroid-badge popular">🔥 Popular</div>
+                      </div>
+                      <div class="polaroid-caption">
+                        <h3>Rasmalai</h3>
+                        <div class="polaroid-price">₹140</div>
+                        <span class="food-tag veg">Veg</span>
+                      </div>
+                    </div>
                   </div>
-                  <span class="food-tag veg">Veg</span>
-                  <p>Soft paneer discs soaked in creamy saffron-flavored milk</p>
+                  <div class="food-card-back">
+                    <div class="back-content">
+                      <h4>👨‍🍳 Chef's Notes</h4>
+                      <p>Soft, melt-in-your-mouth paneer discs soaked in creamy, saffron-infused reduced milk. Garnished with pistachios.</p>
+                      <div class="back-details">
+                        <span>🍰 Sweet &amp; Creamy</span>
+                        <span>⏱️ 20 mins</span>
+                        <span>🍽️ Serves 1</span>
+                      </div>
+                      <div class="back-ingredients">
+                        <strong>Key Ingredients:</strong>
+                        <span>Paneer, Milk, Saffron, Sugar, Pistachios</span>
+                      </div>
+                      <div class="back-allergens">
+                        <span>⚠️ Contains: Dairy</span>
+                      </div>
+                      <div class="star-rating">
+                        <span class="star" style="color: gold;">★★★★☆ 4.2 (143 Ratings)</span>
+                      </div>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
-
+            <!-- Kesar Pista Kulfi -->
             <div class="menu-item" data-category="desserts" data-diet="veg">
-              <div class="food-card">
-                <img src="./images/Kulfi.jpg" alt="Kesar Pista Kulfi" class="food-image" loading="lazy" />
-                <div class="food-content">
-                  <div class="menu-item-header">
-                    <h3>Kesar Pista Kulfi</h3>
-                    <span class="menu-price">&#8377;130</span>
+              <div class="food-card-3d">
+                <div class="food-card-inner">
+                  <div class="food-card-front">
+                    <div class="polaroid">
+                      <div class="polaroid-image-wrapper">
+                        <img src="./images/Kulfi.jpg" alt="Kesar Pista Kulfi" loading="lazy" />
+                        <div class="polaroid-tape"></div>
+                        <div class="polaroid-badge refreshing">🥄 Delight</div>
+                      </div>
+                      <div class="polaroid-caption">
+                        <h3>Kesar Pista Kulfi</h3>
+                        <div class="polaroid-price">₹130</div>
+                        <span class="food-tag veg">Veg</span>
+                      </div>
+                    </div>
                   </div>
-                  <span class="food-tag veg">Veg</span>
-                  <p>Traditional Indian ice cream infused with saffron and pistachios</p>
+                  <div class="food-card-back">
+                    <div class="back-content">
+                      <h4>👨‍🍳 Chef's Notes</h4>
+                      <p>Traditional Indian ice cream with a rich, creamy texture, infused with aromatic saffron and loaded with crunchy pistachios.</p>
+                      <div class="back-details">
+                        <span>🍰 Frozen Delight</span>
+                        <span>⏱️ 10 mins</span>
+                        <span>🍽️ Serves 1</span>
+                      </div>
+                      <div class="back-ingredients">
+                        <strong>Key Ingredients:</strong>
+                        <span>Milk, Saffron, Pistachios, Sugar, Cardamom</span>
+                      </div>
+                      <div class="back-allergens">
+                        <span>⚠️ Contains: Dairy</span>
+                      </div>
+                      <div class="star-rating">
+                        <span class="star" style="color: gold;">★★★★☆ 4.2 (143 Ratings)</span>
+                      </div>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
-
           </div><!-- /.menu-items -->
         </div><!-- /.menu-content -->
       </div><!-- /.container -->
     </section><!-- /#menu -->
+
+
+            
 
     <!-- Chef's Specials Section -->
     <section class="specials" id="specials">
@@ -494,11 +795,7 @@
         <div class="specials-grid">
 
           <div class="special-card">
-            <img
-  src="./images/Hyderabadi_Chicken_Biryani.jpg"
-  alt="Royal Biryani"
-  loading="lazy"
-/>
+            <img src="./images/Hyderabadi_Chicken_Biryani.jpg" alt="Royal Biryani" loading="lazy" />
             <div class="special-content">
               <span class="special-badge" data-i18n="specials.bestseller">🔥 Best Seller</span>
               <h3 data-i18n="menu.items.hyderabadi_chicken_biryani.name">Hyderabadi Chicken Biryani</h3>
@@ -507,236 +804,8 @@
             </div>
           </div>
 
-          <div class="menu-item" data-category="breakfast" data-type="nonveg">
-            <div class="food-card">
-              <img
-                src="./images/Chicken_Keema_Dosa.jpg"
-                alt="Chicken Keema Dosa"
-                class="food-image"
-                loading="lazy"
-              />
-
-              <div class="food-content">
-                <div class="menu-item-header">
-                  <h3>Chicken Keema Dosa</h3>
-                  <span class="menu-price">₹240</span>
-                </div>
-
-                <span class="food-tag nonveg">Non-Veg</span>
-
-                <p>Crispy dosa stuffed with spicy chicken keema masala</p>
-              </div>
-            </div>
-          </div>
-
-          <!-- lunch -->
-          <div class="menu-item" data-category="lunch" data-type="veg">
-            <div class="food-card">
-              <img
-                src="./images/Paneer_Butter_Masala.jpg"
-                alt="Paneer Butter Masala"
-                class="food-image"
-                loading="lazy"
-              />
-
-              <div class="food-content">
-                <div class="menu-item-header">
-                  <h3>Paneer Butter Masala</h3>
-                  <span class="menu-price">₹280</span>
-                </div>
-
-                <span class="food-tag veg">Veg</span>
-
-                <p>Rich creamy paneer curry served with butter naan</p>
-              </div>
-            </div>
-          </div>
-
-          <!-- dinner -->
-          <div class="menu-item" data-category="dinner" data-type="nonveg">
-            <div class="food-card">
-              <img
-                src="./images/Hyderabadi_Chicken_Biryani.jpg"
-                alt="Hyderabadi Chicken Biryani"
-                class="food-image"
-                loading="lazy"
-              />
-
-              <div class="food-content">
-                <div class="menu-item-header">
-                  <h3>Hyderabadi Chicken Biryani</h3>
-                  <span class="menu-price">₹320</span>
-                </div>
-
-                <span class="food-tag nonveg">Non-Veg</span>
-
-                <p>
-                  Aromatic dum biryani layered with spicy chicken and basmati
-                  rice
-                </p>
-              </div>
-            </div>
-          </div>
-
-          <div class="menu-item" data-category="dinner" data-type="nonveg">
-            <div class="food-card">
-              <img
-                src="./images/Butter_Chicken.jpg"
-                alt="Butter Chicken"
-                class="food-image"
-                loading="lazy"
-              />
-
-              <div class="food-content">
-                <div class="menu-item-header">
-                  <h3>Butter Chicken</h3>
-                  <span class="menu-price">₹340</span>
-                </div>
-
-                <span class="food-tag nonveg">Non-Veg</span>
-
-                <p>Creamy tomato-based chicken curry with naan</p>
-              </div>
-            </div>
-          </div>
-
-          <!-- Drinks -->
-          <div class="menu-item" data-category="drinks" data-diet="veg">
-            <div class="food-card">
-              <img
-                src="./images/Mango_Lassi.jpg"
-                alt="Mango Lassi"
-                class="food-image"
-                loading="lazy"
-              />
-
-              <div class="food-content">
-                <div class="menu-item-header">
-                  <h3>Mango Lassi</h3>
-                  <span class="menu-price">₹110</span>
-                </div>
-
-                <span class="food-tag veg">Veg</span>
-
-                <p>
-                  Refreshing chilled yogurt drink blended with sweet mango pulp
-                </p>
-              </div>
-            </div>
-          </div>
-          <div class="menu-item" data-category="drinks" data-diet="veg">
-            <div class="food-card">
-              <img
-                src="./images/Masala_Chai.jpg"
-                alt="Masala Chai"
-                class="food-image"
-                loading="lazy"
-              />
-
-              <div class="food-content">
-                <div class="menu-item-header">
-                  <h3>Masala Chai</h3>
-                  <span class="menu-price">₹70</span>
-                </div>
-
-                <span class="food-tag veg">Veg</span>
-
-                <p>
-                  Traditional Indian tea brewed with aromatic spices and milk
-                </p>
-              </div>
-            </div>
-          </div>
-          <div class="menu-item" data-category="drinks" data-diet="veg">
-            <div class="food-card">
-              <img
-                src="./images/Fresh_Lime_Soda.jpg"
-                alt="Fresh Lime Soda"
-                class="food-image"
-                loading="lazy"
-              />
-
-              <div class="food-content">
-                <div class="menu-item-header">
-                  <h3>Fresh Lime Soda</h3>
-                  <span class="menu-price">₹90</span>
-                </div>
-
-                <span class="food-tag veg">Veg</span>
-
-                <p>Fizzy lime soda served sweet, salted, or mixed style</p>
-              </div>
-            </div>
-          </div>
-          <!-- Desserts -->
-          <div class="menu-item" data-category="desserts" data-diet="veg">
-            <div class="food-card">
-              <img
-                src="./images/Gulab_Jamun.jpg"
-                alt="Gulab Jamun"
-                class="food-image"
-                loading="lazy"
-              />
-
-              <div class="food-content">
-                <div class="menu-item-header">
-                  <h3>Gulab Jamun</h3>
-                  <span class="menu-price">₹120</span>
-                </div>
-
-                <span class="food-tag veg">Veg</span>
-
-                <p>Soft milk-solid dumplings soaked in warm sugar syrup</p>
-              </div>
-            </div>
-          </div>
-          <div class="menu-item" data-category="desserts" data-diet="veg">
-            <div class="food-card">
-              <img
-                src="./images/Rasmalai.jpg"
-                alt="Rasmalai"
-                class="food-image"
-                loading="lazy"
-              />
-
-              <div class="food-content">
-                <div class="menu-item-header">
-                  <h3>Rasmalai</h3>
-                  <span class="menu-price">₹140</span>
-                </div>
-
-                <span class="food-tag veg">Veg</span>
-
-                <p>Soft paneer discs soaked in creamy saffron-flavored milk</p>
-              </div>
-            </div>
-          </div>
-          <div class="menu-item" data-category="desserts" data-diet="veg">
-            <div class="food-card">
-              <img src="./images/Kulfi.jpg" alt="Kulfi" class="food-image" loading="lazy"/>
-
-              <div class="food-content">
-                <div class="menu-item-header">
-                  <h3>Kesar Pista Kulfi</h3>
-                  <span class="menu-price">₹130</span>
-                </div>
-
-                <span class="food-tag veg">Veg</span>
-
-                <p>
-                  Traditional Indian frozen dessert flavored with saffron and
-                  pistachios
-                </p>
-              </div>
-            </div>
-          </div>
-          </div>
           <div class="special-card">
-            <img
-  src="./images/Paneer_Butter_Masala.jpg"
-  alt="Paneer Delight"
-  loading="lazy"
-/>
+            <img src="./images/Paneer_Butter_Masala.jpg" alt="Paneer Delight" loading="lazy" />
             <div class="special-content">
               <span class="special-badge" data-i18n="specials.choice">👨‍🍳 Chef's Choice</span>
               <h3 data-i18n="specials.paneer_delight_title">Paneer Delight</h3>
@@ -746,11 +815,7 @@
           </div>
 
           <div class="special-card">
-            <img
-  src="./images/Rasmalai.jpg"
-  alt="Special Dessert"
-  loading="lazy"
-/>
+            <img src="./images/Rasmalai.jpg" alt="Special Dessert" loading="lazy" />
             <div class="special-content">
               <span class="special-badge" data-i18n="specials.new_arrival">⭐ New Arrival</span>
               <h3 data-i18n="specials.saffron_rasmalai_title">Saffron Rasmalai</h3>
@@ -759,11 +824,13 @@
             </div>
           </div>
 
+          
         </div>
-      </div>
+      
     </section>
 
     <!-- Reservation Section -->
+    <section class="reservation reveal" id="reservation">
     <section class="reservation" id="reservation">
       <div class="reservation-bg" id="reservationBg">
         <img src="./images/hero-restaurant.jpg" alt="Restaurant Ambiance" loading="lazy" />
@@ -861,6 +928,7 @@
                 </select>
               </div>
             </div>
+            <div id="availability-estimator" class="availability-estimator" style="display: none; margin-bottom: 20px; width: 100%;"></div>
              <div class="form-group full-width">
                <label data-i18n="reservation.select_zone">Select Dining Zone</label>
                <div class="dining-zones" id="dining-zones">
@@ -912,6 +980,7 @@
     </section>
 
     <!-- Reviews Section -->
+    <section class="reviews-section reveal" id="reviews">
     <section class="reviews-section" id="reviews">
       <div class="container">
         <div class="section-header">
@@ -919,10 +988,8 @@
           <h2 class="section-title" data-i18n="reviews.title">Customer Reviews</h2>
         </div>
 
-        <!-- Reviews display -->
         <div class="reviews-grid" id="reviews-grid"></div>
 
-        <!-- Submit form -->
         <div class="review-form-wrapper">
           <h3 class="review-form-heading" data-i18n="reviews.share">Share Your Experience</h3>
           <form id="review-form">
@@ -935,11 +1002,11 @@
                 <fieldset>
                   <legend data-i18n="reviews.rating">Rating</legend>
                   <div class="star-input" id="star-input">
-                    <button type="button" class="star-btn" data-value="1">&#9733;</button>
-                    <button type="button" class="star-btn" data-value="2">&#9733;</button>
-                    <button type="button" class="star-btn" data-value="3">&#9733;</button>
-                    <button type="button" class="star-btn" data-value="4">&#9733;</button>
-                    <button type="button" class="star-btn" data-value="5">&#9733;</button>
+                    <button type="button" class="star-btn" data-value="1">★</button>
+                    <button type="button" class="star-btn" data-value="2">★</button>
+                    <button type="button" class="star-btn" data-value="3">★</button>
+                    <button type="button" class="star-btn" data-value="4">★</button>
+                    <button type="button" class="star-btn" data-value="5">★</button>
                   </div>
                   <input type="hidden" id="review-rating" value="0" name="review-rating" />
                 </fieldset>
@@ -958,7 +1025,7 @@
     </section>
 
     <!-- Gift Cards Section -->
-    <section class="giftcards-section" id="giftcards">
+    <section class="giftcards-section reveal" id="giftcards">
       <div class="container">
         <div class="section-header">
           <span class="section-label" data-i18n="giftcards.label">Luxury Gifting</span>
@@ -1057,7 +1124,7 @@
     </section>
 
     <!-- Loyalty Club Section -->
-    <section class="loyalty-section" id="loyalty">
+    <section class="loyalty-section reveal" id="loyalty">
       <div class="container">
         <div class="section-header">
           <span class="section-label" data-i18n="loyalty.label">Exclusive Club</span>
@@ -1137,11 +1204,58 @@
             <button type="button" class="btn btn-outline btn-sm" id="loyalty-logout-btn" style="margin-top: 25px; width: 100%;">Sign Out</button>
           </div>
         </div>
+    </section>
+
+    <!-- FAQ Section -->
+    <section class="faq-section" id="faq">
+      <div class="container">
+        <div style="text-align: center; margin-bottom: 40px;">
+          <span class="section-label">Common Queries</span>
+          <h2 class="section-title">Frequently Asked Questions</h2>
+        </div>
+        <div class="faq-accordion">
+          <div class="faq-item">
+            <button class="faq-question" type="button">
+              <span>Do you cater to specific dietary requirements (Veg, Non-Veg, Gluten-Free)?</span>
+              <span class="faq-icon">+</span>
+            </button>
+            <div class="faq-answer">
+              <p>Yes, we offer a diverse range of vegetarian, vegan, and gluten-free options clearly marked on our menu. Please inform your server of any allergies prior to ordering.</p>
+            </div>
+          </div>
+          <div class="faq-item">
+            <button class="faq-question" type="button">
+              <span>What is the dress code at The Lighthouse?</span>
+              <span class="faq-icon">+</span>
+            </button>
+            <div class="faq-answer">
+              <p>We recommend smart casual attire. Avoid athletic wear, beachwear, or slippers to maintain our luxury dining atmosphere.</p>
+            </div>
+          </div>
+          <div class="faq-item">
+            <button class="faq-question" type="button">
+              <span>Can I customize my gift card and send it directly to a recipient?</span>
+              <span class="faq-icon">+</span>
+            </button>
+            <div class="faq-answer">
+              <p>Absolutely! Use our interactive Gift Cards section to pick a value, select a background theme, and add a personalized message. You can preview and generate it instantly.</p>
+            </div>
+          </div>
+          <div class="faq-item">
+            <button class="faq-question" type="button">
+              <span>How do I join the Lighthouse Club loyalty program?</span>
+              <span class="faq-icon">+</span>
+            </button>
+            <div class="faq-answer">
+              <p>Simply register with your name and email in the Lighthouse Club section. You will receive 100 Welcome Points instantly, which can be redeemed for gourmet discounts.</p>
+            </div>
+          </div>
+        </div>
       </div>
     </section>
 
     <!-- Location Section -->
-    <section class="location" id="location">
+    <section class="location reveal" id="location">
       <div class="container">
         <div class="location-grid">
           <div class="location-info">
@@ -1159,7 +1273,7 @@
             </div>
             <div class="location-hours">
               <h3 data-i18n="location.hours">Opening Hours</h3>
-<span id="open-status-badge"></span>
+              <span id="open-status-badge"></span>
               <div class="hours-grid">
                 <div class="hours-item">
                   <span data-i18n="location.breakfast">Breakfast</span>
@@ -1220,103 +1334,10 @@
       </div>
     </section>
 
-  <!-- Footer -->
- <footer class="footer">
-  <div class="container">
-    
-    <div class="footer-top">
-
-      <!-- Brand -->
-      <div class="footer-brand">
-        <h2>The Lighthouse</h2>
-        <p>
-          Experience timeless fine dining with handcrafted dishes,
-          luxury ambiance, and unforgettable moments.
-        </p>
-
-        <div class="footer-socials">
-          <a href="https://www.instagram.com" target="_blank" rel="noopener noreferrer" aria-label="Instagram">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-              <rect x="2" y="2" width="20" height="20" rx="5"/>
-              <path d="M16 11.37A4 4 0 1112.63 8 4 4 0 0116 11.37z"/>
-              <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/>
-            </svg>
-          </a>
-
-          <a href="https://www.facebook.com" target="_blank" rel="noopener noreferrer" aria-label="Facebook">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-              <path d="M18 2h-3a5 5 0 00-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 011-1h3z"/>
-            </svg>
-          </a>
-
-          <a href="https://x.com" target="_blank" rel="noopener noreferrer" aria-label="Twitter">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-              <path d="M23 3a10.9 10.9 0 01-3.14 1.53 4.48 4.48 0 00-7.86 3v1A10.66 10.66 0 013 4s-4 9 5 13a11.64 11.64 0 01-7 2c9 5 20 0 20-11.5a4.5 4.5 0 00-.08-.83A7.72 7.72 0 0023 3z"/>
-            </svg>
-          </a>
-        </div>
-      </div>
-
-      <!-- Quick Links -->
-      <div class="footer-column">
-        <h3>Quick Links</h3>
-
-        <a href="#home">Home</a>
-        <a href="#about">About</a>
-        <a href="#menu">Menu</a>
-        <a href="#reservation">Reservations</a>
-        <a href="#reviews">Reviews</a>
-      </div>
-
-      <!-- Contact -->
-      <div class="footer-column">
-        <h3>Contact</h3>
-
-        <p>123 Harbor View Drive</p>
-        <p>Coastal City, CA 90210</p>
-
-        <a href="tel:+15551234567">(555) 123-4567</a>
-        <a href="mailto:reservations@thelighthouse.com">
-          reservations@thelighthouse.com
-        </a>
-      </div>
-
-      <!-- Newsletter -->
-      <div class="footer-column newsletter">
-        <h3>Newsletter</h3>
-
-        <p>Get updates about seasonal menus and exclusive dining events.</p>
-
-        <form class="newsletter-form">
-          <input type="email" placeholder="Your Email Address">
-          <button type="submit">Subscribe</button>
-        </form>
-      </div>
-
-    </div>
-
-    <!-- Bottom -->
-    <div class="footer-bottom">
-      <p>© 2026 The Lighthouse. Crafted with elegance.</p>
-
-      <div class="footer-bottom-links">
-        <a href="#">Privacy Policy</a>
-        <a href="#">Terms</a>
-      </div>
-    </div>
-
-  </div>
-</footer>
-
-<button id="backToTop">BACK TO TOP ▲</button>
-
-<script src="script.js" defer></script>
-    <!-- Footer -->
     <footer class="footer">
       <div class="container">
         <div class="footer-top">
 
-          <!-- Brand -->
           <div class="footer-brand">
             <h2 data-i18n="nav.logo">The Lighthouse</h2>
             <p data-i18n="footer.desc">Experience timeless fine dining with handcrafted dishes, luxury ambiance, and unforgettable moments.</p>
@@ -1341,7 +1362,6 @@
             </div>
           </div>
 
-          <!-- Quick Links -->
           <div class="footer-column">
             <h3 data-i18n="footer.quick_links">Quick Links</h3>
             <a href="#home" data-i18n="nav.home">Home</a>
@@ -1351,7 +1371,6 @@
             <a href="#reviews" data-i18n="nav.reviews">Reviews</a>
           </div>
 
-          <!-- Contact -->
           <div class="footer-column">
             <h3 data-i18n="location.contact">Contact</h3>
             <p data-i18n="location.address_1">123 Harbor View Drive</p>
@@ -1360,7 +1379,6 @@
             <a href="mailto:reservations@thelighthouse.com">reservations@thelighthouse.com</a>
           </div>
 
-          <!-- Newsletter -->
           <div class="footer-column newsletter">
             <h3 data-i18n="footer.newsletter">Newsletter</h3>
             <p data-i18n="footer.newsletter_desc">Get updates about seasonal menus and exclusive dining events.</p>
@@ -1374,7 +1392,6 @@
 
         </div>
 
-        <!-- Bottom -->
         <div class="footer-bottom">
           <p>© 2026 The Lighthouse. Crafted with elegance.</p>
         </div>
@@ -1451,6 +1468,78 @@
             <button type="submit" class="btn btn-primary" id="customizer-add-btn">Add to Cart</button>
           </div>
         </form>
+      </div>
+    </div>
+
+    <!-- Digital Reservation Ticket Modal -->
+    <div id="ticket-modal" class="ticket-modal">
+      <div class="ticket-modal-content">
+        <span class="ticket-modal-close" id="closeTicketModal">&times;</span>
+        <div id="ticket-print-area">
+          <div class="luxury-ticket">
+            <div class="ticket-header">
+              <div class="ticket-logo">THE LIGHTHOUSE</div>
+              <div class="ticket-tagline">Fine Dining Reservation Pass</div>
+            </div>
+            <div class="ticket-body">
+              <div class="ticket-field">
+                <span class="label">Guest Name</span>
+                <span class="value" id="ticket-guest-name">-</span>
+              </div>
+              <div class="ticket-row">
+                <div class="ticket-field">
+                  <span class="label">Date</span>
+                  <span class="value" id="ticket-date">-</span>
+                </div>
+                <div class="ticket-field">
+                  <span class="label">Time</span>
+                  <span class="value" id="ticket-time">-</span>
+                </div>
+              </div>
+              <div class="ticket-row">
+                <div class="ticket-field">
+                  <span class="label">Party Size</span>
+                  <span class="value" id="ticket-guests">-</span>
+                </div>
+                <div class="ticket-field">
+                  <span class="label">Table Assigned</span>
+                  <span class="value" id="ticket-table">-</span>
+                </div>
+              </div>
+              <div class="ticket-barcode">
+                <div class="barcode-lines"></div>
+                <div class="ticket-code" id="ticket-booking-code">LH-1092-2938</div>
+              </div>
+            </div>
+            <div class="ticket-footer">
+              <p>Please present this digital pass upon arrival.</p>
+              <p>Valet parking is complimentary for ticket holders.</p>
+            </div>
+          </div>
+        </div>
+        <div style="text-align: center; margin-top: 20px;">
+          <button type="button" class="btn btn-primary btn-sm" id="printTicketBtn">Print / Save Ticket</button>
+    <!-- Reservation Success Modal -->
+    <div id="reservation-success-modal" class="reservation-success-modal">
+      <div class="success-modal-content">
+        <span class="success-modal-close" id="closeSuccessModal">&times;</span>
+        <div class="success-header">
+          <div class="success-icon">✓</div>
+          <h3>Reservation Confirmed!</h3>
+          <p>We look forward to welcoming you to The Lighthouse.</p>
+        </div>
+        <div class="success-details">
+          <p><strong>Date:</strong> <span id="summary-date">-</span></p>
+          <p><strong>Time:</strong> <span id="summary-time">-</span></p>
+          <p><strong>Guests:</strong> <span id="summary-guests">-</span></p>
+        </div>
+        <div class="calendar-actions">
+          <h4>Add to your calendar:</h4>
+          <div class="calendar-buttons" style="display: flex; gap: 10px; justify-content: center; margin-top: 10px;">
+            <button type="button" class="btn btn-outline btn-sm" id="googleCalBtn">Google Calendar</button>
+            <button type="button" class="btn btn-outline btn-sm" id="icsCalBtn">iCalendar (.ics)</button>
+          </div>
+        </div>
       </div>
     </div>
 
