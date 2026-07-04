@@ -54,6 +54,22 @@
             </div>
           </li>
         </ul>
+        <button id="themeToggle" class="theme-toggle" aria-label="Toggle Theme">
+          <svg class="sun-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="12" cy="12" r="5"></circle>
+            <line x1="12" y1="1" x2="12" y2="3"></line>
+            <line x1="12" y1="21" x2="12" y2="23"></line>
+            <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+            <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+            <line x1="1" y1="12" x2="3" y2="12"></line>
+            <line x1="21" y1="12" x2="23" y2="12"></line>
+            <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+            <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+          </svg>
+          <svg class="moon-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+          </svg>
+        </button>
         <button id="themeToggle" class="theme-toggle" aria-label="Toggle Theme">☾</button>
         <a href="#reservation" class="nav-cta">Book a Table</a>
       </div>
@@ -89,7 +105,7 @@
       </div>
     </section>
 
-    <section class="about" id="about">
+    <section class="about reveal" id="about">
       <div class="container">
         <div class="about-grid">
           <div class="about-image">
@@ -131,7 +147,7 @@
       </div>
     </section>
 
-    <section class="chef-section" id="chef">
+    <section class="chef-section reveal" id="chef">
       <div class="container">
         <div class="section-header">
           <span class="section-label" data-i18n="chef_picks.label">Chef's recommendations</span>
@@ -182,7 +198,7 @@
       </div>
     </section>
 
-    <section class="menu-section" id="menu">
+    <section class="menu-section reveal" id="menu">
       <div class="container">
         <div class="section-header">
           <span class="section-label" data-i18n="menu.label">Culinary Offerings</span>
@@ -196,6 +212,13 @@
         <div class="menu-controls">
           <label for="menu-search" class="sr-only" data-i18n="menu.search_placeholder">Search Menu</label>
           <input type="text" id="menu-search" placeholder="Search dishes..." class="menu-search" data-i18n-placeholder="menu.search_placeholder" />
+          <div class="search-suggestions-container" style="margin-top: 10px; display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 15px; width: 100%;">
+            <span style="font-size: 0.8rem; color: var(--color-text-muted); align-self: center;">Popular:</span>
+            <button type="button" class="suggestion-chip" data-query="Biryani">Biryani</button>
+            <button type="button" class="suggestion-chip" data-query="Dosa">Dosa</button>
+            <button type="button" class="suggestion-chip" data-query="Paneer">Paneer</button>
+            <button type="button" class="suggestion-chip" data-query="Lassi">Lassi</button>
+          </div>
           
           <div class="menu-filters">
             <button class="filter-btn active" data-filter="all" data-i18n="menu.filter_all">All</button>
@@ -240,6 +263,8 @@
           </div>
         </div>
 
+        
+<!-- Menu Content -->
         <div class="menu-content menu-panel active">
           <div class="menu-items">
           <!-- breakfast -->
@@ -534,7 +559,7 @@
             </div>
           </div>
         </div>
-      </div>
+      
     </section>
 
     <!-- Reservation Section -->
@@ -635,6 +660,7 @@
                 </select>
               </div>
             </div>
+            <div id="availability-estimator" class="availability-estimator" style="display: none; margin-bottom: 20px; width: 100%;"></div>
              <div class="form-group full-width">
                <label data-i18n="reservation.select_zone">Select Dining Zone</label>
                <div class="dining-zones" id="dining-zones">
@@ -685,6 +711,8 @@
       </div>
     </section>
 
+    <!-- Reviews Section -->
+    <section class="reviews-section reveal" id="reviews">
     <section class="reviews-section" id="reviews">
       <div class="container">
         <div class="section-header">
@@ -729,7 +757,7 @@
     </section>
 
     <!-- Gift Cards Section -->
-    <section class="giftcards-section" id="giftcards">
+    <section class="giftcards-section reveal" id="giftcards">
       <div class="container">
         <div class="section-header">
           <span class="section-label" data-i18n="giftcards.label">Luxury Gifting</span>
@@ -828,7 +856,7 @@
     </section>
 
     <!-- Loyalty Club Section -->
-    <section class="loyalty-section" id="loyalty">
+    <section class="loyalty-section reveal" id="loyalty">
       <div class="container">
         <div class="section-header">
           <span class="section-label" data-i18n="loyalty.label">Exclusive Club</span>
@@ -908,11 +936,58 @@
             <button type="button" class="btn btn-outline btn-sm" id="loyalty-logout-btn" style="margin-top: 25px; width: 100%;">Sign Out</button>
           </div>
         </div>
+    </section>
+
+    <!-- FAQ Section -->
+    <section class="faq-section" id="faq">
+      <div class="container">
+        <div style="text-align: center; margin-bottom: 40px;">
+          <span class="section-label">Common Queries</span>
+          <h2 class="section-title">Frequently Asked Questions</h2>
+        </div>
+        <div class="faq-accordion">
+          <div class="faq-item">
+            <button class="faq-question" type="button">
+              <span>Do you cater to specific dietary requirements (Veg, Non-Veg, Gluten-Free)?</span>
+              <span class="faq-icon">+</span>
+            </button>
+            <div class="faq-answer">
+              <p>Yes, we offer a diverse range of vegetarian, vegan, and gluten-free options clearly marked on our menu. Please inform your server of any allergies prior to ordering.</p>
+            </div>
+          </div>
+          <div class="faq-item">
+            <button class="faq-question" type="button">
+              <span>What is the dress code at The Lighthouse?</span>
+              <span class="faq-icon">+</span>
+            </button>
+            <div class="faq-answer">
+              <p>We recommend smart casual attire. Avoid athletic wear, beachwear, or slippers to maintain our luxury dining atmosphere.</p>
+            </div>
+          </div>
+          <div class="faq-item">
+            <button class="faq-question" type="button">
+              <span>Can I customize my gift card and send it directly to a recipient?</span>
+              <span class="faq-icon">+</span>
+            </button>
+            <div class="faq-answer">
+              <p>Absolutely! Use our interactive Gift Cards section to pick a value, select a background theme, and add a personalized message. You can preview and generate it instantly.</p>
+            </div>
+          </div>
+          <div class="faq-item">
+            <button class="faq-question" type="button">
+              <span>How do I join the Lighthouse Club loyalty program?</span>
+              <span class="faq-icon">+</span>
+            </button>
+            <div class="faq-answer">
+              <p>Simply register with your name and email in the Lighthouse Club section. You will receive 100 Welcome Points instantly, which can be redeemed for gourmet discounts.</p>
+            </div>
+          </div>
+        </div>
       </div>
     </section>
 
     <!-- Location Section -->
-    <section class="location" id="location">
+    <section class="location reveal" id="location">
       <div class="container">
         <div class="location-grid">
           <div class="location-info">
@@ -1125,6 +1200,78 @@
             <button type="submit" class="btn btn-primary" id="customizer-add-btn">Add to Cart</button>
           </div>
         </form>
+      </div>
+    </div>
+
+    <!-- Digital Reservation Ticket Modal -->
+    <div id="ticket-modal" class="ticket-modal">
+      <div class="ticket-modal-content">
+        <span class="ticket-modal-close" id="closeTicketModal">&times;</span>
+        <div id="ticket-print-area">
+          <div class="luxury-ticket">
+            <div class="ticket-header">
+              <div class="ticket-logo">THE LIGHTHOUSE</div>
+              <div class="ticket-tagline">Fine Dining Reservation Pass</div>
+            </div>
+            <div class="ticket-body">
+              <div class="ticket-field">
+                <span class="label">Guest Name</span>
+                <span class="value" id="ticket-guest-name">-</span>
+              </div>
+              <div class="ticket-row">
+                <div class="ticket-field">
+                  <span class="label">Date</span>
+                  <span class="value" id="ticket-date">-</span>
+                </div>
+                <div class="ticket-field">
+                  <span class="label">Time</span>
+                  <span class="value" id="ticket-time">-</span>
+                </div>
+              </div>
+              <div class="ticket-row">
+                <div class="ticket-field">
+                  <span class="label">Party Size</span>
+                  <span class="value" id="ticket-guests">-</span>
+                </div>
+                <div class="ticket-field">
+                  <span class="label">Table Assigned</span>
+                  <span class="value" id="ticket-table">-</span>
+                </div>
+              </div>
+              <div class="ticket-barcode">
+                <div class="barcode-lines"></div>
+                <div class="ticket-code" id="ticket-booking-code">LH-1092-2938</div>
+              </div>
+            </div>
+            <div class="ticket-footer">
+              <p>Please present this digital pass upon arrival.</p>
+              <p>Valet parking is complimentary for ticket holders.</p>
+            </div>
+          </div>
+        </div>
+        <div style="text-align: center; margin-top: 20px;">
+          <button type="button" class="btn btn-primary btn-sm" id="printTicketBtn">Print / Save Ticket</button>
+    <!-- Reservation Success Modal -->
+    <div id="reservation-success-modal" class="reservation-success-modal">
+      <div class="success-modal-content">
+        <span class="success-modal-close" id="closeSuccessModal">&times;</span>
+        <div class="success-header">
+          <div class="success-icon">✓</div>
+          <h3>Reservation Confirmed!</h3>
+          <p>We look forward to welcoming you to The Lighthouse.</p>
+        </div>
+        <div class="success-details">
+          <p><strong>Date:</strong> <span id="summary-date">-</span></p>
+          <p><strong>Time:</strong> <span id="summary-time">-</span></p>
+          <p><strong>Guests:</strong> <span id="summary-guests">-</span></p>
+        </div>
+        <div class="calendar-actions">
+          <h4>Add to your calendar:</h4>
+          <div class="calendar-buttons" style="display: flex; gap: 10px; justify-content: center; margin-top: 10px;">
+            <button type="button" class="btn btn-outline btn-sm" id="googleCalBtn">Google Calendar</button>
+            <button type="button" class="btn btn-outline btn-sm" id="icsCalBtn">iCalendar (.ics)</button>
+          </div>
+        </div>
       </div>
     </div>
 
