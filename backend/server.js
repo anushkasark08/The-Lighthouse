@@ -13,7 +13,9 @@ const connectDB = require('./src/config/database');
 connectDB();
 
 const app = express();
-
+// Add table routes
+const tableRoutes = require('./src/routes/tableRoutes');
+app.use('/api/tables', tableRoutes);
 // Middleware
 app.use(helmet({
   contentSecurityPolicy: false // Disable for development
