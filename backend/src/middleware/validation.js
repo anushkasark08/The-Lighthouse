@@ -33,4 +33,9 @@ const userValidation = [
   body('phone').matches(/^[0-9]{10}$/).withMessage('Please provide a valid 10-digit phone number')
 ];
 
-module.exports = { validate, reservationValidation, userValidation };
+const loginValidation = [
+  body('email').isEmail().withMessage('Please provide a valid email'),
+  body('password').notEmpty().withMessage('Please provide a password')
+];
+
+module.exports = { validate, reservationValidation, userValidation, loginValidation };

@@ -7,9 +7,10 @@ const {
   cancelReservation
 } = require('../controllers/reservationController');
 const { protect } = require('../middleware/auth');
+const { validate, reservationValidation } = require('../middleware/validation');
 
 router.get('/slots', getAvailableSlots);
-router.post('/', protect, createReservation);
+router.post('/', protect, validate(reservationValidation), createReservation);
 router.get('/', protect, getReservations);
 router.delete('/:id', protect, cancelReservation);
 
