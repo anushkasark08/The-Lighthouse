@@ -11,7 +11,9 @@
     "reservation": "Reservations",
     "reviews": "Reviews",
     "location": "Location",
-    "book_table": "Book a Table"
+    "book_table": "Book a Table",
+    "giftcards": "Gift Cards",
+    "loyalty": "Lighthouse Club"
   },
   "hero": {
     "tagline": "Est. 1987",
@@ -34,7 +36,7 @@
   "menu": {
     "label": "Culinary Offerings",
     "title": "Our Menu",
-    "search_placeholder": "Search dishes..." ,
+    "search_placeholder": "Search dishes...",
     "filter_all": "All",
     "filter_breakfast": "Breakfast",
     "filter_lunch": "Lunch",
@@ -66,7 +68,7 @@
         "name": "Chicken Keema Dosa",
         "desc": "Crispy dosa stuffed with spicy chicken keema masala",
         "notes": "Crispy golden dosa generously stuffed with spicy minced chicken masala, perfectly seasoned with aromatic spices and herbs.",
-        "details_spicy": "🌶 Hot",
+        "details_tag": "🌶 Hot",
         "details_time": "⏱ 20 mins",
         "details_serves": "🍽 Serves 1",
         "ingredients": "Chicken, Rice Batter, Onion, Ginger, Garlic, Spices",
@@ -76,7 +78,7 @@
         "name": "Paneer Butter Masala",
         "desc": "Rich creamy paneer curry served with butter naan",
         "notes": "Rich and creamy paneer curry cooked in a buttery tomato gravy with a blend of aromatic spices. Best enjoyed with butter naan.",
-        "details_spicy": "🌶 Medium",
+        "details_tag": "🌶 Medium",
         "details_time": "⏱ 25 mins",
         "details_serves": "🍽 Serves 2",
         "ingredients": "Paneer, Tomato, Butter, Cream, Kasuri Methi",
@@ -84,8 +86,9 @@
       },
       "masala_dosa": {
         "name": "Masala Dosa",
+        "desc": "Golden crispy dosa with savory potato filling",
         "notes": "Golden crispy dosa made from fermented rice and lentil batter, filled with spiced potato masala. Served with fresh coconut chutney and sambar.",
-        "details_spicy": "🌶 Medium Spicy",
+        "details_tag": "🌶 Medium Spicy",
         "details_time": "⏱ 15 mins",
         "details_serves": "🍽 Serves 1",
         "ingredients": "Rice, Urad Dal, Potato, Onion, Curry Leaves",
@@ -93,8 +96,9 @@
       },
       "idli_sambar": {
         "name": "Idli Sambar",
+        "desc": "Steamed rice cakes served with traditional lentil soup",
         "notes": "Soft, fluffy steamed idlis made from fermented rice and urad dal, served with hot, flavorful sambar and fresh coconut chutney.",
-        "details_spicy": "🌶 Mild",
+        "details_tag": "🌶 Mild",
         "details_time": "⏱ 10 mins",
         "details_serves": "🍽 Serves 1",
         "ingredients": "Rice, Urad Dal, Toor Dal, Vegetables, Coconut",
@@ -102,8 +106,9 @@
       },
       "hyderabadi_chicken_biryani": {
         "name": "Hyderabadi Chicken Biryani",
+        "desc": "Fragrant and slow-cooked layered chicken basmati rice",
         "notes": "Fragrant dum biryani layered with tender chicken, basmati rice, and a secret blend of authentic Hyderabad spices. Slow-cooked to perfection.",
-        "details_spicy": "🌶 Hot",
+        "details_tag": "🌶 Hot",
         "details_time": "⏱ 40 mins",
         "details_serves": "🍽 Serves 2",
         "ingredients": "Chicken, Basmati Rice, Saffron, Mint, Fried Onions",
@@ -111,8 +116,9 @@
       },
       "butter_chicken": {
         "name": "Butter Chicken",
+        "desc": "Tender chicken cooked in a rich, buttery tomato sauce",
         "notes": "Succulent chicken cooked in a creamy tomato-based gravy with butter and aromatic spices. A timeless classic served with naan.",
-        "details_spicy": "🌶 Mild",
+        "details_tag": "🌶 Mild",
         "details_time": "⏱ 30 mins",
         "details_serves": "🍽 Serves 2",
         "ingredients": "Chicken, Tomato, Butter, Cream, Kasuri Methi",
@@ -120,8 +126,9 @@
       },
       "mango_lassi": {
         "name": "Mango Lassi",
+        "desc": "Creamy yogurt drink blended with sweet mangoes",
         "notes": "Chilled, creamy yogurt drink blended with sweet mango pulp. Perfectly balanced with a hint of cardamom.",
-        "details_spicy": "🥤 Cold",
+        "details_tag": "🥤 Cold",
         "details_time": "⏱ 5 mins",
         "details_serves": "🍽 Serves 1",
         "ingredients": "Yogurt, Mango Pulp, Sugar, Cardamom",
@@ -129,8 +136,9 @@
       },
       "masala_chai": {
         "name": "Masala Chai",
+        "desc": "Spiced Indian tea brewed with aromatic milk",
         "notes": "Traditional Indian tea brewed with a blend of aromatic spices — cardamom, ginger, cinnamon, and cloves. Perfect for any time of day.",
-        "details_spicy": "☕ Hot",
+        "details_tag": "☕ Hot",
         "details_time": "⏱ 5 mins",
         "details_serves": "🍽 Serves 1",
         "ingredients": "Tea, Milk, Ginger, Cardamom, Cinnamon",
@@ -138,8 +146,9 @@
       },
       "fresh_lime_soda": {
         "name": "Fresh Lime Soda",
+        "desc": "Thirst-quenching fizzy lime beverage",
         "notes": "Fizzy lime soda available in sweet, salted, or mixed style. The perfect thirst-quencher on a warm day.",
-        "details_spicy": "🥤 Cold & Fizzy",
+        "details_tag": "🥤 Cold & Fizzy",
         "details_time": "⏱ 5 mins",
         "details_serves": "🍽 Serves 1",
         "ingredients": "Lime, Soda, Sugar, Salt (optional)",
@@ -147,8 +156,9 @@
       },
       "gulab_jamun": {
         "name": "Gulab Jamun",
+        "desc": "Golden fried milk dumplings in warm cardamom syrup",
         "notes": "Soft, spongy milk-solid dumplings fried to golden perfection and soaked in warm, fragrant sugar syrup with cardamom and rose water.",
-        "details_spicy": "🍰 Sweet",
+        "details_tag": "🍰 Sweet",
         "details_time": "⏱ 15 mins",
         "details_serves": "🍽 Serves 1",
         "ingredients": "Milk Solids, Sugar, Cardamom, Rose Water",
@@ -156,8 +166,9 @@
       },
       "rasmalai": {
         "name": "Rasmalai",
+        "desc": "Melt-in-your-mouth cheese discs in saffron milk",
         "notes": "Soft, melt-in-your-mouth paneer discs soaked in creamy, saffron-infused reduced milk. Garnished with pistachios.",
-        "details_spicy": "🍰 Sweet & Creamy",
+        "details_tag": "🍰 Sweet & Creamy",
         "details_time": "⏱ 20 mins",
         "details_serves": "🍽 Serves 1",
         "ingredients": "Paneer, Milk, Saffron, Sugar, Pistachios",
@@ -165,8 +176,9 @@
       },
       "kesar_pista_kulfi": {
         "name": "Kesar Pista Kulfi",
+        "desc": "Traditional frozen ice cream with saffron and pistachio",
         "notes": "Traditional Indian ice cream with a rich, creamy texture, infused with aromatic saffron and loaded with crunchy pistachios.",
-        "details_spicy": "🍰 Frozen Delight",
+        "details_tag": "🍰 Frozen Delight",
         "details_time": "⏱ 10 mins",
         "details_serves": "🍽 Serves 1",
         "ingredients": "Milk, Saffron, Pistachios, Sugar, Cardamom",
@@ -249,7 +261,7 @@
     "text": "Your Review",
     "text_placeholder": "Tell us about your visit...",
     "submit": "Submit Review",
-    "pinned_review_text": "Absolutely loved the food and ambience! Every dish was crafted with such care and the atmosphere was warm and elegant. A truly memorable dining experience — will definitely be coming back!",
+    "pinned_review_text": "Absolutely loved the food and ambiance! Every dish was crafted with such care and the atmosphere was warm and elegant. A truly memorable dining experience — will definitely be coming back!",
     "pinned_review_date": "14 May 2026",
     "rating_error": "Please select a star rating.",
     "name_error": "Name should contain only letters and be 3–30 characters long.",
@@ -274,6 +286,22 @@
     "contact": "Contact",
     "phone": "Phone:",
     "email": "Email:"
+  },
+  "giftcards": {
+    "label": "Luxury Gifting",
+    "title": "Gift Cards & Vouchers",
+    "subtitle": "Share the gift of an exceptional dining experience at The Lighthouse",
+    "select_value": "Select Voucher Value",
+    "select_theme": "Select Design Theme",
+    "recipient_name": "Recipient Name",
+    "sender_name": "Your Name",
+    "personal_message": "Personal Message",
+    "purchase_btn": "Purchase Gift Card"
+  },
+  "loyalty": {
+    "label": "Exclusive Club",
+    "title": "The Lighthouse Club",
+    "subtitle": "Join our premium club to earn points on reservations and reviews, and unlock exclusive dining rewards."
   },
   "footer": {
     "desc": "Experience timeless fine dining with handcrafted dishes, luxury ambiance, and unforgettable moments.",
