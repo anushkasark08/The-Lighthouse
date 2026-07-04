@@ -11,7 +11,9 @@ dotenv.config();
 // Connect to database
 const connectDB = require('./src/config/database');
 connectDB();
-
+// Add recommendation routes
+const recommendationRoutes = require('./src/routes/recommendationRoutes');
+app.use('/api/recommendations', recommendationRoutes);
 const app = express();
 // Add table routes
 const tableRoutes = require('./src/routes/tableRoutes');

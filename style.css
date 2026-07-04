@@ -2944,3 +2944,177 @@ body.light-theme .polaroid-tape {
         font-size: 0.75rem;
     }
 }
+/* ============================================
+   RECOMMENDATIONS STYLES
+   ============================================ */
+
+.recommendations-section {
+    margin: 30px 0;
+    padding: 0 20px;
+}
+
+.section-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.8rem;
+    color: #c9a962;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.recommendations-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 20px;
+    padding: 0;
+}
+
+.dish-card {
+    background: #1a1714;
+    border-radius: 12px;
+    overflow: hidden;
+    border: 1px solid #2a2520;
+    transition: all 0.3s ease;
+    cursor: pointer;
+    position: relative;
+}
+
+.dish-card:hover {
+    transform: translateY(-5px);
+    border-color: #c9a962;
+    box-shadow: 0 8px 30px rgba(201, 169, 98, 0.15);
+}
+
+.dish-image {
+    position: relative;
+    height: 180px;
+    overflow: hidden;
+    background: #0a0806;
+}
+
+.dish-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.3s ease;
+}
+
+.dish-card:hover .dish-image img {
+    transform: scale(1.05);
+}
+
+.favorite-badge {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: rgba(0,0,0,0.7);
+    padding: 5px 10px;
+    border-radius: 20px;
+    font-size: 0.8rem;
+}
+
+.dish-info {
+    padding: 15px;
+}
+
+.dish-name {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.2rem;
+    color: #f5f2ed;
+    margin: 0 0 5px 0;
+}
+
+.dish-description {
+    color: #888;
+    font-size: 0.85rem;
+    margin: 0 0 10px 0;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+.dish-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 10px;
+}
+
+.dish-price {
+    color: #c9a962;
+    font-weight: 600;
+    font-size: 1.1rem;
+}
+
+.dish-rating {
+    color: #ffd700;
+    font-size: 0.9rem;
+}
+
+.favorite-btn {
+    background: none;
+    border: none;
+    color: #888;
+    font-size: 1.2rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    padding: 5px;
+}
+
+.favorite-btn:hover {
+    color: #ff6b6b;
+    transform: scale(1.2);
+}
+
+/* Loader */
+.loader-container {
+    text-align: center;
+    padding: 40px;
+    color: #888;
+}
+
+.loader-spinner {
+    width: 40px;
+    height: 40px;
+    border: 3px solid #2a2520;
+    border-top: 3px solid #c9a962;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    margin: 0 auto 15px;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .recommendations-grid {
+        grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+        gap: 15px;
+    }
+    
+    .dish-image {
+        height: 140px;
+    }
+    
+    .section-title {
+        font-size: 1.4rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .recommendations-grid {
+        grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+        gap: 10px;
+    }
+    
+    .dish-image {
+        height: 120px;
+    }
+    
+    .dish-name {
+        font-size: 1rem;
+    }
+}
