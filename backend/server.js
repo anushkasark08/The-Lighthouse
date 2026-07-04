@@ -15,6 +15,28 @@ connectDB();
 const recommendationRoutes = require('./src/routes/recommendationRoutes');
 app.use('/api/recommendations', recommendationRoutes);
 const app = express();
+// Import WebSocket Server
+const WebSocketServer = require('./src/services/webSocketServer');
+
+// ... after app initialization ...
+
+// Create HTTP server
+const http = require('http');
+const server = http.createServer(app);
+
+// Initialize WebSocket Server
+const webSocketServer = new WebSocketServer(server);
+app.set('webSocketServer', webSocketServer);
+
+// Add order routes
+const orderRoutes = require('./src/routes/orderRoutes');
+app.use('/api/orders', orderRoutes);
+
+// ... start server ...
+server.listen(PORT, () => {
+    console.log(`Server running on port ${PORT}`);
+    console.log(`WebSocket server running on port ${PORT}`);
+});
 // Add table routes
 const tableRoutes = require('./src/routes/tableRoutes');
 app.use('/api/tables', tableRoutes);
