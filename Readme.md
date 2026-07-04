@@ -20,10 +20,10 @@ Designed with elegant dark aesthetics, immersive visuals, smooth animations, and
   - [📱 Fully Responsive Design](#-fully-responsive-design)
   - [⚡ Smooth User Experience](#-smooth-user-experience)
   - [✨ Advanced UI Interactions](#-advanced-ui-interactions)
-  - [🗓️ Reservation Features](#️-reservation-features)
+  - [🗓️ Reservation Features](#%EF%B8%8F-reservation-features)
   - [📍 Google Maps Integration](#-google-maps-integration)
   - [📸 Website Assets](#-website-assets)
-- [🛠️ Tech Stack](#️-tech-stack)
+- [🛠️ Tech Stack](#️%EF%B8%8F-tech-stack)
 - [📂 Project Structure](#-project-structure)
 - [🚀 Getting Started](#-getting-started)
 - [🎨 Customization](#-customization)
@@ -34,11 +34,14 @@ Designed with elegant dark aesthetics, immersive visuals, smooth animations, and
 - [⭐ Support](#-support)
 - [🔗 Repository](#-repository)
 
+---
+
 # ✨ Features
 
 ## 🎨 Premium UI & Branding
 
 - Elegant dark-themed luxury interface
+- Built-in dark/light theme toggle
 - Gold-accented modern design
 - Premium typography using:
   - **Cormorant Garamond**
@@ -54,9 +57,11 @@ Interactive category-based menu tabs:
 - 🍳 Breakfast
 - 🥗 Lunch
 - 🍽️ Dinner
+- 🍰 Desserts
 - 🍸 Drinks
 
 Switch seamlessly between menu sections without page reloads.
+Search and veg/non-veg filters help users quickly discover matching dishes.
 
 ---
 
@@ -78,6 +83,8 @@ Switch seamlessly between menu sections without page reloads.
 - Scroll reveal animations
 - Hover effects and transitions
 - Parallax scrolling backgrounds
+- Interactive 3D menu cards
+- Customer review submission with local storage
 
 ---
 
@@ -93,7 +100,7 @@ Switch seamlessly between menu sections without page reloads.
 ## 📍 Google Maps Integration
 
 - Embedded Google Maps support
-- Custom grayscale styling matching site aesthetics
+- Location section with address, contact details, hours, and social links
 
 ---
 
@@ -154,17 +161,32 @@ The-Lighthouse/
 │
 ├── images/
 │   ├── breakfast.jpg
+│   ├── Butter_Chicken.jpg
 │   ├── chef.jpg
+│   ├── Chicken_Keema_Dosa.jpg
 │   ├── dinner.jpg
 │   ├── drinks.jpg
+│   ├── Fresh_Lime_Soda.jpg
+│   ├── Gulab_Jamun.jpg
 │   ├── hero-restaurant.jpg
-│   └── lunch.jpg
+│   ├── Hyderabadi_Chicken_Biryani.jpg
+│   ├── Idli_Sambar.jpg
+│   ├── Kulfi.jpg
+│   ├── lunch.jpg
+│   ├── Mango_Lassi.jpg
+│   ├── Masala_Chai.jpg
+│   ├── MasalaDosa.jpg
+│   ├── Paneer_Butter_Masala.jpg
+│   └── Rasmalai.jpg
 │
+├── CODE_OF_CONDUCT.md
+├── CONTRIBUTING.md
 ├── Favicon.ico
 ├── index.html
 ├── LICENSE
-├── README.md
+├── Readme.md
 ├── robots.txt
+├── SECURITY.md
 ├── sitemap.xml
 ├── script.js
 └── style.css
@@ -177,7 +199,7 @@ The-Lighthouse/
 ## 1️⃣ Clone the Repository
 
 ```bash
-git clone https://github.com/Anushka-Sarkar/the-lighthouse-restaurant.git
+git clone https://github.com/anushkasark08/The-Lighthouse.git
 ```
 
 ---
@@ -185,7 +207,7 @@ git clone https://github.com/Anushka-Sarkar/the-lighthouse-restaurant.git
 ## 2️⃣ Navigate to the Project Directory
 
 ```bash
-cd the-lighthouse-restaurant
+cd The-Lighthouse
 ```
 
 ---
@@ -197,7 +219,65 @@ Open the `index.html` file directly in your browser.
 OR use the VS Code **Live Server** extension for a better development experience.
 
 ---
+## 4️⃣ Browser Compatibility
 
+This website is tested and supported on:
+
+- Google Chrome
+- Mozilla Firefox
+- Microsoft Edge
+- Brave Browser
+- Opera
+
+For the best experience, use the latest browser version.
+---
+## 5️⃣ Deployment Guide
+
+### Deploy on GitHub Pages
+
+1. Fork the repository
+2. Open repository Settings
+3. Navigate to Pages
+4. Select the main branch
+5. Save changes
+
+Your website will be deployed automatically.
+
+### Deploy on Netlify
+
+1. Visit Netlify
+2. Drag and drop the project folder
+3. Deployment will start automatically
+
+### Deploy on Vercel
+
+1. Import the GitHub repository
+2. Click Deploy
+3. Vercel will build and host the project
+---
+## 6️⃣ Accessibility Features
+
+- Semantic HTML structure
+- Mobile responsive layout
+- Keyboard-friendly navigation
+- Smooth scrolling support
+- Readable typography and contrast
+- Accessible navigation menu
+---
+## 🛠️ Troubleshooting
+
+### Images not loading?
+
+Make sure all images are inside the `images/` folder with correct file names.
+
+### JavaScript interactions not working?
+
+Ensure JavaScript is enabled in your browser.
+
+### Layout looks broken?
+
+Clear browser cache or use the latest browser version.
+---
 # 🎨 Customization
 
 This project uses **CSS Variables** for easy theme customization.
@@ -217,8 +297,8 @@ Modify colors inside `style.css`:
 
 # 🌟 Future Improvements
 
-- Dark/Light mode toggle
 - Online reservation backend
+- Newsletter subscription backend
 - Payment gateway integration
 - Food ordering functionality
 - Multi-language support
@@ -256,6 +336,32 @@ git push origin feature-name
 
 ---
 
+## 💖 Contributors
+
+Thanks to all the amazing people who contribute to **The Lighthouse** 🚀
+
+<p align="center">
+  <a href="https://github.com/anushkasark08/The-Lighthouse/graphs/contributors">
+    <img src="https://contrib.rocks/image?repo=anushkasark08/The-Lighthouse" alt="Contributors"/>
+  </a>
+</p>
+
+---
+
+## ⭐ Project Support
+
+<p align="center">
+  <a href="https://github.com/anushkasark08/The-Lighthouse/stargazers">
+    <img src="https://img.shields.io/github/stars/anushkasark08/The-Lighthouse?style=social" alt="Stars">
+  </a>
+  &nbsp;&nbsp;
+  <a href="https://github.com/anushkasark08/The-Lighthouse/network/members">
+    <img src="https://img.shields.io/github/forks/anushkasark08/The-Lighthouse?style=social" alt="Forks">
+  </a>
+</p>
+
+---
+
 # 📜 License
 
 This project is licensed under the **MIT License**.
@@ -286,4 +392,4 @@ If you like this project:
 # 🔗 Repository
 
 GitHub Repository:  
-https://github.com/Anushka-Sarkar/the-lighthouse-restaurant
+https://github.com/anushkasark08/The-Lighthouse
