@@ -2,7 +2,9 @@ const express = require('express');
 const cors = require('cors');
 const helmet = require('helmet');
 const dotenv = require('dotenv');
-
+// Add pricing routes
+const pricingRoutes = require('./src/routes/pricingRoutes');
+app.use('/api/pricing', pricingRoutes);
 // Load env vars
 dotenv.config();
 

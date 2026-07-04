@@ -2807,3 +2807,140 @@ body.light-theme .polaroid-tape {
         background: radial-gradient(ellipse at center, #1a1714 0%, #0a0806 100%);
     }
 }
+/* ============================================
+   DYNAMIC PRICE DISPLAY STYLES
+   ============================================ */
+
+/* Price update animation */
+.price-updated {
+    animation: pricePulse 0.5s ease;
+}
+
+@keyframes pricePulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.1); color: #c9a962; }
+    100% { transform: scale(1); }
+}
+
+/* Discount badge */
+.discount-badge {
+    background: #4CAF50;
+    color: white;
+    padding: 2px 10px;
+    border-radius: 20px;
+    font-size: 0.7rem;
+    font-weight: 600;
+    display: inline-block;
+    animation: discountPop 0.5s ease;
+}
+
+@keyframes discountPop {
+    0% { transform: scale(0); }
+    80% { transform: scale(1.2); }
+    100% { transform: scale(1); }
+}
+
+/* Price tooltip */
+.price-tooltip {
+    position: absolute;
+    background: #1a1714;
+    border: 1px solid #c9a962;
+    padding: 12px 16px;
+    border-radius: 8px;
+    font-size: 0.85rem;
+    z-index: 100;
+    min-width: 180px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.6);
+    color: #f5f2ed;
+}
+
+.price-tooltip p {
+    margin: 4px 0;
+}
+
+.price-tooltip .tooltip-title {
+    color: #c9a962;
+    font-weight: 600;
+    margin-bottom: 8px;
+}
+
+.price-tooltip .tooltip-item {
+    display: flex;
+    justify-content: space-between;
+    padding: 2px 0;
+}
+
+.price-tooltip .tooltip-item .label {
+    color: #888;
+}
+
+.price-tooltip .tooltip-item .value {
+    color: #f5f2ed;
+    font-weight: 500;
+}
+
+/* Price trend indicators */
+.price-trend {
+    display: inline-block;
+    margin-left: 8px;
+    font-weight: bold;
+    font-size: 1.1rem;
+}
+
+.price-trend.up { color: #4CAF50; }
+.price-trend.down { color: #f44336; }
+.price-trend.stable { color: #888; }
+
+/* Dynamic price tag */
+.price-tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.price-tag .original {
+    text-decoration: line-through;
+    color: #888;
+    font-size: 0.9rem;
+}
+
+.price-tag .current {
+    color: #c9a962;
+    font-weight: 700;
+    font-size: 1.2rem;
+}
+
+.price-tag .discount {
+    background: #4CAF50;
+    color: white;
+    padding: 2px 10px;
+    border-radius: 20px;
+    font-size: 0.7rem;
+    font-weight: 600;
+}
+
+/* Price error state */
+.price-error {
+    color: #ff6b6b !important;
+}
+
+.price-error::after {
+    content: ' ⚠️';
+}
+
+/* Responsive price display */
+@media (max-width: 768px) {
+    .price-tag .current {
+        font-size: 1rem;
+    }
+    
+    .price-tag .original {
+        font-size: 0.8rem;
+    }
+    
+    .price-tooltip {
+        min-width: 140px;
+        padding: 8px 12px;
+        font-size: 0.75rem;
+    }
+}
