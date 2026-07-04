@@ -958,3 +958,80 @@ guestsInput?.addEventListener('change', updateAvailableSlots);
 //     console.log('Auto-login successful');
 //   }
 // })();
+
+// ============================================
+//   3D MENU INTEGRATION
+// ============================================
+
+// Check if we're on the 3D menu page
+const is3DMenuPage = document.querySelector('.menu-3d-container');
+
+if (is3DMenuPage) {
+    console.log('🍽️ 3D Menu page detected');
+    
+    // Dynamically load 3D menu scripts
+    function loadScript(src, type = 'module') {
+        return new Promise((resolve, reject) => {
+            const script = document.createElement('script');
+            script.src = src;
+            script.type = type;
+            script.onload = resolve;
+            script.onerror = reject;
+            document.body.appendChild(script);
+        });
+    }
+
+    // Load 3D viewer scripts
+    Promise.all([
+        loadScript('js/threeDViewer.js'),
+        loadScript('js/arViewer.js'),
+        loadScript('js/menu3D.js')
+    ]).then(() => {
+        console.log('✅ 3D Menu scripts loaded successfully');
+    }).catch((error) => {
+        console.error('❌ Failed to load 3D Menu scripts:', error);
+    });
+}
+
+// ============================================
+//   KEYBOARD SHORTCUTS FOR 3D MENU
+// ============================================
+
+document.addEventListener('keydown', (e) => {
+    // Only active on 3D menu page
+    if (!is3DMenuPage) return;
+    
+    // 'R' key - Toggle auto-rotate
+    if (e.key === 'r' || e.key === 'R') {
+        const toggleBtn = document.getElementById('toggle-rotate');
+        if (toggleBtn) toggleBtn.click();
+    }
+    
+    // 'F' key - Toggle fullscreen
+    if (e.key === 'f' || e.key === 'F') {
+        const fullscreenBtn = document.getElementById('fullscreen-btn');
+        if (fullscreenBtn) fullscreenBtn.click();
+    }
+    
+    // 'ESC' key - Close AR
+    if (e.key === 'Escape') {
+        const arOverlay = document.getElementById('ar-overlay');
+        if (arOverlay && arOverlay.style.display === 'flex') {
+            const closeBtn = document.querySelector('.ar-close-btn');
+            if (closeBtn) closeBtn.click();
+        }
+    }
+    
+    // Number keys 1-3 for dish selection
+    if (e.key >= '1' && e.key <= '3') {
+        const buttons = document.querySelectorAll('.dish-selector button');
+        const index = parseInt(e.key) - 1;
+        if (buttons[index]) buttons[index].click();
+    }
+});
+
+console.log('🎮 Keyboard shortcuts:');
+console.log('  R - Toggle auto-rotate');
+console.log('  F - Toggle fullscreen');
+console.log('  ESC - Close AR');
+console.log('  1,2,3 - Select dishes');

@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>3D Menu - The Lighthouse</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../style.css">
+    <link rel="stylesheet" href="../css/3d-viewer.css">
+</head>
+<body>
+    <div class="menu-3d-container">
+        <!-- Header -->
+        <header class="menu-header">
+            <h1>🍽️ Signature Dishes <span class="gold">in 3D</span></h1>
+            <p>Rotate, zoom, and explore our signature dishes in immersive 3D</p>
+        </header>
+
+        <!-- Dish Selector -->
+        <div class="dish-selector">
+            <button class="active" data-dish="truffle-burger">
+                <span class="icon">🍔</span> Truffle Burger
+            </button>
+            <button data-dish="lobster-thermidor">
+                <span class="icon">🦞</span> Lobster Thermidor
+            </button>
+            <button data-dish="chocolate-fondant">
+                <span class="icon">🍫</span> Chocolate Fondant
+            </button>
+        </div>
+
+        <!-- 3D Viewer -->
+        <div class="viewer-wrapper">
+            <div id="viewer-container">
+                <!-- Loader -->
+                <div id="loader-3d">
+                    <div class="loader-spinner"></div>
+                    <div class="loader-bar">
+                        <div id="loader-progress" style="width: 0%">0%</div>
+                    </div>
+                    <p>Loading 3D Model...</p>
+                </div>
+                
+                <!-- Error -->
+                <div id="error-3d" style="display: none;"></div>
+            </div>
+        </div>
+
+        <!-- Dish Info -->
+        <div class="dish-info">
+            <div class="dish-details">
+                <h2 id="dish-name-3d">Truffle Burger</h2>
+                <div class="price-tag" id="dish-price-3d">Rs. 890</div>
+                <p class="description" id="dish-description-3d">Premium Angus beef with black truffle, aged cheddar, and caramelized onions</p>
+            </div>
+            <div class="dish-actions">
+                <button id="ar-button" class="btn-ar" data-model="/models/truffle-burger.glb">
+                    📱 View in AR
+                </button>
+                <button id="toggle-rotate" class="btn-control">🔄 Auto Rotate</button>
+                <button id="reset-view" class="btn-control">🎯 Reset View</button>
+                <button id="fullscreen-btn" class="btn-control">⛶ Fullscreen</button>
+            </div>
+        </div>
+
+        <!-- Back to Main Menu -->
+        <div style="text-align: center; margin-top: 40px;">
+            <a href="../index.html" style="color: #c9a962; text-decoration: none; font-weight: 500; transition: color 0.3s;">
+                ← Back to Main Menu
+            </a>
+        </div>
+    </div>
+
+    <!-- AR Overlay -->
+    <div id="ar-overlay" style="display: none;">
+        <div id="ar-message" class="ar-message">📱 Point your camera at a flat surface</div>
+        <div id="ar-controls"></div>
+    </div>
+
+    <!-- Three.js Import Map -->
+    <script type="importmap">
+    {
+        "imports": {
+            "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js",
+            "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/"
+        }
+    }
+    </script>
+    
+    <!-- 3D Menu Script -->
+    <script type="module" src="../js/menu3D.js"></script>
+</body>
+</html>
