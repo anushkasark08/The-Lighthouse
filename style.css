@@ -65,6 +65,19 @@ a {
   padding: 0 24px;
 }
 
+/* Accessibility: screen-reader-only content */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
 /* Typography */
 h1,
 h2,
@@ -282,6 +295,7 @@ body.light-theme .hero .btn-outline:hover {
 
 .nav.scrolled {
   background-color: rgba(26, 23, 20, 0.95);
+  -webkit-backdrop-filter: blur(10px);
   backdrop-filter: blur(10px);
   padding: 12px 0;
 }
@@ -330,6 +344,7 @@ body.light-theme .hero .btn-outline:hover {
 
 .nav-link {
   font-size: 0.875rem;
+  font-weight:700;
   letter-spacing: 1px;
   text-transform: uppercase;
   color: var(--color-text);
@@ -967,6 +982,25 @@ body.light-theme .scroll-arrow {
   }
 }
 
+/* Chef's Picks Section */
+.chef-section {
+  padding: 100px 0;
+  background-color: var(--color-bg-lighter);
+}
+
+.chef-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 24px;
+  margin-top: 40px;
+}
+
+@media (max-width: 768px) {
+  .chef-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
 /* Menu Section */
 .menu-section {
   padding: 120px 0;
@@ -1093,6 +1127,12 @@ body.light-theme .scroll-arrow {
   font-size: 0.9rem;
 }
 
+.category-count {
+  color: var(--color-text-muted);
+  font-size: 0.9rem;
+  margin-top: 8px;
+}
+
 .menu-controls {
   margin-bottom: 40px;
   display: flex;
@@ -1130,6 +1170,9 @@ body.light-theme .scroll-arrow {
 }
 
 .diet-btn {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
   padding: 10px 22px;
   border: 1px solid var(--color-border);
   background-color: transparent;
@@ -1190,7 +1233,7 @@ body.light-theme .scroll-arrow {
   color: #48bb78;
 }
 
-.food-tag.nonveg {
+.food-tag.non-veg {
   background-color: rgba(201, 74, 74, 0.15);
   color: #ff7b7b;
 }
@@ -2599,26 +2642,6 @@ body.light-theme .time-slot-btn.limited .availability {
   flex-wrap: wrap;
 }
 
-.diet-btn {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  padding: 10px 22px;
-  border: 1px solid var(--color-border);
-  background-color: transparent;
-  color: var(--color-text-muted);
-  cursor: pointer;
-  transition: all 0.3s ease;
-  border-radius: 30px;
-}
-
-.diet-btn:hover,
-.diet-btn.active {
-  background-color: var(--color-primary);
-  color: var(--color-bg);
-  border-color: var(--color-primary);
-}
-
 .diet-dot {
   display: inline-block;
   width: 10px;
@@ -3009,19 +3032,6 @@ body.light-theme .polaroid-tape {
 
 
 /* Light Theme: Footer */
-.footer-bottom {
-  padding: 28px 0;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: 20px;
-}
-
-.footer-bottom p {
-  color: var(--color-text-muted);
-  font-size: 0.9rem;
-}
-
 body.light-theme .footer {
   /* Scope the contrast adjustments specifically to the footer */
   --color-bg: #fcfaf5;
@@ -3034,12 +3044,4 @@ body.light-theme .footer {
 
 body.light-theme .newsletter-form input {
   background-color: var(--color-bg-card);
-}
-
-/* RESPONSIVE */
-@media (max-width: 1024px) {
-  .footer-top {
-    grid-template-columns: 1fr 1fr;
-    gap: 50px;
-  }
 }
