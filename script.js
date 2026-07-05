@@ -328,21 +328,15 @@ function getActiveDiet() {
 function filterMenuItems(filter = 'all', searchText = '', diet = 'all') {
   const menuItems = document.querySelectorAll('.menu-item');
   let visibleCount = 0;
-  const searchText = menuSearch ? menuSearch.value.trim().toLowerCase() : "";
+  const effectiveSearch = (searchText || (menuSearch ? menuSearch.value : "") || "").trim().toLowerCase();
 
   menuItems.forEach((item) => {
     const h3 = item.querySelector('h3');
-    const itemName = h3 ? h3.textContent.toLowerCase() : "";
-    const category = item.dataset.category || "";
-    const type = item.dataset.type || item.dataset.diet || "all";
-  const searchLower = searchText.toLowerCase();
-
-  menuItems.forEach((item) => {
-    const itemName = (item.querySelector('h3')?.textContent || "").toLowerCase();
+    const itemName = (h3 ? h3.textContent : "").toLowerCase();
     const category = item.dataset.category || 'all';
     const itemDiet = item.dataset.diet || item.dataset.type || 'all';
 
-    const matchesSearch = itemName.includes(searchLower);
+    const matchesSearch = itemName.includes(effectiveSearch);
     const matchesFilter = filter === 'all' || category === filter;
     const matchesDiet = diet === 'all' || itemDiet === diet;
 
@@ -351,15 +345,14 @@ function filterMenuItems(filter = 'all', searchText = '', diet = 'all') {
         h3.dataset.original = h3.innerHTML;
       }
       const originalText = h3.dataset.original;
-      if (searchText) {
-        const regex = new RegExp(`(${searchText})`, 'gi');
+      if (effectiveSearch) {
+        const regex = new RegExp(`(${effectiveSearch})`, 'gi');
         h3.innerHTML = originalText.replace(regex, '<span class="search-highlight">$1</span>');
       } else {
         h3.innerHTML = originalText;
       }
     }
 
-    // Use both class manipulation (from HEAD) and display toggle (from main) for robustness
     if (matchesSearch && matchesFilter && matchesDiet) {
       item.classList.remove('hidden-item', 'diet-hidden');
       item.style.display = "";
@@ -369,6 +362,7 @@ function filterMenuItems(filter = 'all', searchText = '', diet = 'all') {
       item.style.display = "none";
     }
   });
+
 
   menuPanels.forEach((panel) => {
     if (panel.classList.contains('active')) {
@@ -885,28 +879,37 @@ function initSkeletonLoaders() {
 // =============================================
 // REVIEWS
 // =============================================
+const REVIEWS_STORAGE_KEY = "lighthouse_reviews";
+
+// Pinned review is a general/overall review, not tied to a specific dish.
+const PINNED_REVIEW = {
+  name: "Rasshi Srivastav",
+  rating: 5,
+  text: "Absolutely loved the food and ambience! Every dish was crafted with such care and the atmosphere was warm and elegant. A truly memorable dining experience - will definitely be coming back!",
+  date: "14 May 2026",
+  dishId: null,
+};
+
+// Shared accessor so both the reviews section and the per-dish review
+// panels on the menu cards read from the same source of truth.
+function getReviews() {
+  try {
+    return JSON.parse(localStorage.getItem(REVIEWS_STORAGE_KEY)) || [];
+  } catch {
+    return [];
+  }
+}
+
 function setupReviews() {
-  const storageKey = "lighthouse_reviews";
+  const storageKey = REVIEWS_STORAGE_KEY;
   const reviewForm = document.getElementById("review-form");
   const reviewMsg = document.getElementById("review-msg");
   const starBtns = document.querySelectorAll("#star-input .star-btn");
   const ratingInput = document.getElementById("review-rating");
+  const dishSelect = document.getElementById("review-dish");
   let selectedRating = 0;
 
-  const pinnedReview = {
-    name: "Rasshi Srivastav",
-    rating: 5,
-    text: "Absolutely loved the food and ambience! Every dish was crafted with such care and the atmosphere was warm and elegant. A truly memorable dining experience - will definitely be coming back!",
-    date: "14 May 2026",
-  };
-
-  function getReviews() {
-    try {
-      return JSON.parse(localStorage.getItem(storageKey)) || [];
-    } catch {
-      return [];
-    }
-  }
+  const pinnedReview = PINNED_REVIEW;
 
   function renderReviews() {
     const grid = document.getElementById("reviews-grid");
@@ -948,6 +951,20 @@ function setupReviews() {
       grid.appendChild(card);
     });
   }
+
+  function populateDishOptions() {
+    if (!dishSelect || dishSelect.dataset.populated === "true") return;
+    document.querySelectorAll(".menu-panel .menu-item[data-diet]").forEach((menuItem) => {
+      const data = getMenuItemData(menuItem);
+      if (!data.title || dishSelect.querySelector(`option[value="${data.id}"]`)) return;
+      const option = document.createElement("option");
+      option.value = data.id;
+      option.textContent = data.title;
+      dishSelect.appendChild(option);
+    });
+    dishSelect.dataset.populated = "true";
+  }
+  populateDishOptions();
 
   function isMeaningfulReview(text) {
     const value = text.trim();
@@ -1001,12 +1018,15 @@ function setupReviews() {
         return;
       }
 
+      const dishId = dishSelect && dishSelect.value ? dishSelect.value : null;
+
       const reviews = getReviews();
       reviews.unshift({
         id: Date.now(),
         name,
         rating: selectedRating,
         text,
+        dishId,
         date: new Date().toLocaleDateString("en-IN", {
           day: "2-digit",
           month: "short",
@@ -1016,6 +1036,7 @@ function setupReviews() {
 
       localStorage.setItem(storageKey, JSON.stringify(reviews));
       renderReviews();
+      if (typeof refreshDishReviewPanel === "function") refreshDishReviewPanel(dishId);
       reviewForm.reset();
       selectedRating = 0;
       if (ratingInput) ratingInput.value = 0;
@@ -1034,6 +1055,115 @@ function setupReviews() {
   // Expose global render function for i18n
   window.renderReviews = renderReviews;
   renderReviews();
+}
+
+// =============================================
+// PER-DISH REVIEW PANELS (on the menu cards)
+// =============================================
+let openDishPanelId = null;
+
+function getReviewsForDish(dishId) {
+  const pinned = PINNED_REVIEW.dishId === dishId ? [PINNED_REVIEW] : [];
+  const matching = getReviews().filter((review) => review.dishId === dishId);
+  return [...pinned, ...matching];
+}
+
+function translateOrFallback(key, fallback) {
+  return typeof i18next !== 'undefined' && i18next.t && i18next.t(key) !== key
+    ? i18next.t(key)
+    : fallback;
+}
+
+function renderDishReviewPanel(panel, dishId) {
+  const reviews = getReviewsForDish(dishId);
+
+  if (!reviews.length) {
+    panel.innerHTML = `<p class="dish-reviews-empty">${translateOrFallback('reviews.no_dish_reviews', 'No reviews yet — be the first!')}</p>`;
+    return;
+  }
+
+  panel.innerHTML = "";
+  reviews.forEach((review) => {
+    const rating = Math.max(0, Math.min(5, Math.round(Number(review.rating) || 0)));
+    const stars = "\u2605".repeat(rating) + "\u2606".repeat(5 - rating);
+    const snippet = review.text.length > 120 ? `${review.text.slice(0, 120).trim()}\u2026` : review.text;
+
+    const entry = document.createElement("div");
+    entry.className = "dish-review-entry";
+    entry.innerHTML = `
+      <div class="dish-review-top">
+        <span class="dish-review-name"></span>
+        <span class="dish-review-stars">${stars}</span>
+      </div>
+      <p class="dish-review-snippet"></p>
+    `;
+    entry.querySelector(".dish-review-name").textContent = review.name;
+    entry.querySelector(".dish-review-snippet").textContent = snippet;
+    panel.appendChild(entry);
+  });
+}
+
+// Called after a new review is submitted so an already-open panel stays fresh.
+function refreshDishReviewPanel(dishId) {
+  if (openDishPanelId !== dishId) return;
+  const panel = document.getElementById(`dish-reviews-${dishId}`);
+  if (panel) renderDishReviewPanel(panel, dishId);
+}
+
+function closeAllDishReviewPanels() {
+  document.querySelectorAll(".dish-reviews-panel.open").forEach((panel) => {
+    panel.classList.remove("open");
+    panel.hidden = true;
+  });
+  document.querySelectorAll(".reviews-toggle-btn.active").forEach((btn) => {
+    btn.classList.remove("active");
+  });
+  openDishPanelId = null;
+}
+
+function setupMenuDishReviewPanels() {
+  const menuItems = document.querySelectorAll(".menu-panel .menu-item[data-diet]");
+  if (!menuItems.length) return;
+
+  menuItems.forEach((item) => {
+    if (item.querySelector(".reviews-toggle-btn")) return; // avoid duplicate setup
+
+    const data = getMenuItemData(item);
+    // Reviews live in .menu-actions next to Add/Favorite (in back-content), since
+    // the front face flips away on hover on desktop and would swallow a click there.
+    const actionsContainer = item.querySelector(".menu-actions") || item.querySelector(".back-content");
+    if (!actionsContainer || !data.title) return;
+
+    const toggleBtn = document.createElement("button");
+    toggleBtn.type = "button";
+    toggleBtn.className = "menu-action-btn reviews-toggle-btn";
+    toggleBtn.dataset.dishId = data.id;
+    toggleBtn.setAttribute("aria-expanded", "false");
+    toggleBtn.textContent = `\uD83D\uDCAC ${translateOrFallback('reviews.view_reviews', 'Reviews')}`;
+    actionsContainer.appendChild(toggleBtn);
+
+    const panel = document.createElement("div");
+    panel.className = "dish-reviews-panel";
+    panel.id = `dish-reviews-${data.id}`;
+    panel.hidden = true;
+    item.appendChild(panel);
+
+    toggleBtn.addEventListener("click", (e) => {
+      e.stopPropagation();
+      const isOpen = panel.classList.contains("open");
+      const wasOpenId = openDishPanelId;
+      closeAllDishReviewPanels();
+
+      if (isOpen && wasOpenId === data.id) return; // clicking an already-open panel just closes it
+
+      renderDishReviewPanel(panel, data.id);
+      panel.hidden = false;
+      panel.classList.add("open");
+      toggleBtn.classList.add("active");
+      toggleBtn.setAttribute("aria-expanded", "true");
+      openDishPanelId = data.id;
+    });
+  });
 }
 
 // =============================================
@@ -1351,6 +1481,7 @@ document.addEventListener('DOMContentLoaded', () => {
   setupAutoScroll();
   setupReviews();
   setupOrderFeatures();
+  setupMenuDishReviewPanels();
   handleCardFlip();
   initSkeletonLoaders();
   displayCategoryCount();
@@ -1435,7 +1566,8 @@ document.addEventListener('DOMContentLoaded', () => {
       `).join('');
     }
   }
-}
+});
+
 
 function setupOrderFeatures() {
   const menuItems = document.querySelectorAll(".menu-item");
@@ -2005,8 +2137,12 @@ document.addEventListener("DOMContentLoaded", () => {
       modal.style.display = "none";
     }
   });
+});
+
+// =============================================
 // Feature 9: Live Table Availability Estimator
 // =============================================
+
 function setupTableAvailabilityEstimator() {
   const dateInput = document.getElementById("reservation-date");
   const timeSelect = document.getElementById("time");
@@ -2064,8 +2200,12 @@ function setupTableAvailabilityEstimator() {
       }, 0);
     });
   }
+}
+
+// =============================================
 // Feature 10: Search Suggestions Handler
 // =============================================
+
 function setupSearchSuggestions() {
   const chips = document.querySelectorAll(".suggestion-chip");
   const searchInput = document.getElementById("menu-search");
@@ -2076,8 +2216,14 @@ function setupSearchSuggestions() {
     chip.addEventListener("click", () => {
       searchInput.value = chip.dataset.query;
       searchInput.dispatchEvent(new Event("input"));
+    });
+  });
+}
+
+// =============================================
 // Feature 9: Reservation Success & Calendar Integration
 // =============================================
+
 function showReservationSuccessModal(date, time, guests) {
   const modal = document.getElementById("reservation-success-modal");
   const dateEl = document.getElementById("summary-date");
@@ -2145,8 +2291,12 @@ END:VCALENDAR`;
   };
 
   modal.style.display = "block";
+}
+
+// =============================================
 // Feature 11: Scroll Reveal & Autoplay
 // =============================================
+
 function setupIntersectionObserver() {
   const reveals = document.querySelectorAll(".reveal");
   if (!reveals.length) return;
@@ -2210,8 +2360,13 @@ function setupAutoScroll() {
   grid.addEventListener("touchstart", stopAutoplay, { passive: true });
   grid.addEventListener("touchend", () => {
     if (isScrollable()) startAutoplay();
+  });
+}
+
+// =============================================
 // Feature 6: Interactive FAQ Accordion
 // =============================================
+
 function setupFaqAccordion() {
   const faqQuestions = document.querySelectorAll(".faq-question");
   faqQuestions.forEach(question => {
@@ -2365,6 +2520,7 @@ document.addEventListener('DOMContentLoaded', () => {
   setupAutoScroll();
   setupReviews();
   setupOrderFeatures();
+  setupMenuDishReviewPanels();
   handleCardFlip();
   initSkeletonLoaders();
   displayCategoryCount();
