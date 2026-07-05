@@ -758,7 +758,7 @@ body.light-theme .scroll-arrow {
 
 .hero-scroll {
   position: absolute;
-  bottom: 11px;
+  bottom: 24px;
   left: 50%;
   transform: translateX(-50%);
   display: flex;
