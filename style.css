@@ -1234,14 +1234,30 @@ body.light-theme .scroll-arrow {
   font-weight: 600;
 }
 
+
 .food-tag.veg {
-  background-color: rgba(72, 187, 120, 0.15);
-  color: #48bb78;
+  
+  background-color: transparent; 
+  padding: 0;
+  border: none;
 }
 
+/* Optional: Add this if you need to align the icon */
+.food-tag.veg img {
+  display: block;
+}
+
+/* Update this block in style.css */
 .food-tag.nonveg {
-  background-color: rgba(201, 74, 74, 0.15);
-  color: #ff7b7b;
+  /* Remove the background-color and color lines since you're using an image */
+  background-color: transparent; 
+  padding: 0; /* Adjust padding to fit the icon neatly */
+  border: none;
+}
+
+/* Optional: Add this if you need to align the icon */
+.food-tag.nonveg img {
+  display: block;
 }
 
 .food-card {
