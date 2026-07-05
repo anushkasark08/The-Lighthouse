@@ -212,13 +212,11 @@ function setupThemeToggle() {
   const isLightOnLoad = savedTheme === "light";
   
   document.body.classList.toggle("light-theme", isLightOnLoad);
-  themeToggle.textContent = isLightOnLoad ? "\u2600" : "\u263E";
   updateThemeImages(isLightOnLoad);
 
   themeToggle.addEventListener("click", () => {
     const isLight = document.body.classList.toggle("light-theme");
     try { localStorage.setItem("theme", isLight ? "light" : "dark"); } catch (e) {}
-    themeToggle.textContent = isLight ? "\u2600" : "\u263E";
     updateThemeImages(isLight);
   });
 }
@@ -328,13 +326,6 @@ function getActiveDiet() {
 function filterMenuItems(filter = 'all', searchText = '', diet = 'all') {
   const menuItems = document.querySelectorAll('.menu-item');
   let visibleCount = 0;
-  const searchText = menuSearch ? menuSearch.value.trim().toLowerCase() : "";
-
-  menuItems.forEach((item) => {
-    const h3 = item.querySelector('h3');
-    const itemName = h3 ? h3.textContent.toLowerCase() : "";
-    const category = item.dataset.category || "";
-    const type = item.dataset.type || item.dataset.diet || "all";
   const searchLower = searchText.toLowerCase();
 
   menuItems.forEach((item) => {
@@ -345,19 +336,6 @@ function filterMenuItems(filter = 'all', searchText = '', diet = 'all') {
     const matchesSearch = itemName.includes(searchLower);
     const matchesFilter = filter === 'all' || category === filter;
     const matchesDiet = diet === 'all' || itemDiet === diet;
-
-    if (h3) {
-      if (!h3.dataset.original) {
-        h3.dataset.original = h3.innerHTML;
-      }
-      const originalText = h3.dataset.original;
-      if (searchText) {
-        const regex = new RegExp(`(${searchText})`, 'gi');
-        h3.innerHTML = originalText.replace(regex, '<span class="search-highlight">$1</span>');
-      } else {
-        h3.innerHTML = originalText;
-      }
-    }
 
     // Use both class manipulation (from HEAD) and display toggle (from main) for robustness
     if (matchesSearch && matchesFilter && matchesDiet) {
@@ -667,10 +645,6 @@ async function handleFormSubmit(e) {
       const apiData = { date: dateVal, time: timeVal, guests: guestsVal, specialRequests: structuredRequests };
       const result = await reservationAPI.createReservation(apiData);
       if (result.success) {
-        showReservationToast('success', `Reservation confirmed for ${selectedTable}! Check your email for details.`);
-        addLoyaltyPoints(100, "Table Reservation");
-        showDigitalTicket(formData.guest_name, formData.booking_date, formData.booking_time, formData.guest_count, selectedTable);
-        showReservationSuccessModal(dateVal, timeVal, guestsVal);
         showReservationToast('success', `Reservation confirmed for ${selectedTable || formData.guest_count + ' guest(s)'}! Check your email for details.`);
         if (typeof addLoyaltyPoints === 'function') addLoyaltyPoints(100, "Table Reservation");
         reservationForm.reset();
@@ -688,33 +662,12 @@ async function handleFormSubmit(e) {
   if (typeof emailjs === 'undefined' || EMAILJS_CONFIG.publicKey === 'YOUR_PUBLIC_KEY' || EMAILJS_CONFIG.publicKey === 'abc123XYZ') {
     console.warn('[EmailJS] Not configured — running in demo mode.');
     await new Promise(r => setTimeout(r, 1200));
-    showReservationToast('success', `Thank you, ${formData.guest_name}! We've registered your request for ${formData.guest_count} guest(s) at ${selectedTable} on ${formData.booking_date} at ${formData.booking_time}.`);
-    addLoyaltyPoints(100, "Table Reservation");
-    showDigitalTicket(formData.guest_name, formData.booking_date, formData.booking_time, formData.guest_count, selectedTable);
-    showReservationSuccessModal(dateVal, timeVal, guestsVal);
     showReservationToast('success', `Thank you, ${formData.guest_name}! We've registered your request for ${formData.guest_count} guest(s) at ${selectedTable || 'your table'} on ${formData.booking_date} at ${formData.booking_time}.`);
     if (typeof addLoyaltyPoints === 'function') addLoyaltyPoints(100, "Table Reservation");
     reservationForm.reset();
     updateAvailableTimes();
     submitBtn.textContent = originalText;
     submitBtn.disabled = false;
-  } else {
-    try {
-      await emailjs.send(EMAILJS_CONFIG.serviceId, EMAILJS_CONFIG.guestTemplateId, formData);
-      await emailjs.send(EMAILJS_CONFIG.serviceId, EMAILJS_CONFIG.adminTemplateId, formData);
-      showReservationToast('success', `Thank you, ${formData.guest_name}! A confirmation for ${selectedTable} has been sent to ${formData.guest_email}.`);
-      addLoyaltyPoints(100, "Table Reservation");
-      showDigitalTicket(formData.guest_name, formData.booking_date, formData.booking_time, formData.guest_count, selectedTable);
-      showReservationSuccessModal(dateVal, timeVal, guestsVal);
-      reservationForm.reset();
-      updateAvailableTimes();
-    } catch (err) {
-      console.error('[EmailJS] Error:', err);
-      showReservationToast('error', 'We couldn\'t send your confirmation email. Please call us at (555) 123-4567.');
-    } finally {
-      submitBtn.textContent = originalText;
-      submitBtn.disabled = false;
-    }
     return;
   }
 
@@ -1133,267 +1086,6 @@ function renderOrderState() {
         </div>
       `).join('');
     }
-  }
-
-  if (favoriteItemsEl) {
-    if (favorites.length === 0) {
-      favoriteItemsEl.innerHTML = '<p class="order-empty">No favorites added yet.</p>';
-    } else {
-      favoriteItemsEl.innerHTML = favorites.map(item => `
-        <div class="order-item">
-          <img src="${item.image}" alt="${item.title}" class="order-item-img">
-          <div class="order-item-details">
-            <h4>${item.title}</h4>
-            <p>\u20B9${item.price}</p>
-          </div>
-          <button class="menu-action-btn favorite-btn active" style="margin-left:auto;" onclick="removeFavorite('${item.id}')">\u2665</button>
-        </div>
-      `).join('');
-    }
-  }
-
-  document.querySelectorAll(".favorite-btn").forEach((btn) => {
-    const isFavorite = favorites.some((item) => item.id === btn.dataset.id);
-    btn.classList.toggle("active", isFavorite);
-    btn.textContent = isFavorite ? "\u2665" : "\u2661";
-  });
-}
-
-// ── 3D Card flip for touch devices ──
-function handleCardFlip() {
-  const cards = document.querySelectorAll('.food-card-3d');
-  if (isTouchDevice) {
-    cards.forEach((card) => {
-      card.addEventListener('click', function (e) {
-        if (e.target.closest('a') || e.target.closest('button')) return;
-        this.classList.toggle('flipped');
-      });
-    });
-  }
-}
-
-document.addEventListener('click', function (e) {
-  if (!e.target.closest('.food-card-3d')) {
-    document.querySelectorAll('.food-card-3d.flipped').forEach((card) => {
-      card.classList.remove('flipped');
-    });
-  }
-});
-
-// ── Skeletons ──
-function initSkeletonLoaders() {
-  const cards = document.querySelectorAll(".food-card");
-  cards.forEach((card) => {
-    const img = card.querySelector("img");
-    if (!img) return;
-
-    img.classList.add("image-hidden");
-    const revealImage = () => {
-      img.classList.remove("image-hidden");
-      img.classList.add("image-loaded");
-    };
-
-    if (img.complete && img.naturalWidth > 0) {
-      revealImage();
-    } else {
-      img.addEventListener("load", revealImage, { once: true });
-      img.addEventListener("error", revealImage, { once: true });
-    }
-  });
-}
-
-// ── PDF menu download ──
-function loadHtml2Pdf() {
-  return new Promise((resolve, reject) => {
-    if (typeof html2pdf !== 'undefined') {
-      resolve();
-      return;
-    }
-    const script = document.createElement('script');
-    script.src = 'https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js';
-    script.onload = resolve;
-    script.onerror = reject;
-    document.head.appendChild(script);
-  });
-}
-
-function showLoadingOverlay() {
-  const overlay = document.createElement('div');
-  overlay.className = 'pdf-loading';
-  overlay.id = 'pdfLoading';
-  overlay.innerHTML = `
-    <div class="spinner"></div>
-    <p>Generating your menu PDF...</p>
-    <p style="font-size: 0.9rem; color: rgba(255,255,255,0.7); margin-top: 10px;">Please wait</p>
-  `;
-  document.body.appendChild(overlay);
-}
-
-function hideLoadingOverlay() {
-  const overlay = document.getElementById('pdfLoading');
-  if (overlay) overlay.remove();
-}
-
-const downloadBtn = document.getElementById('downloadMenuPDF');
-if (downloadBtn) {
-  downloadBtn.addEventListener('click', async () => {
-    showLoadingOverlay();
-    try {
-      await loadHtml2Pdf();
-      const element = document.getElementById('menu');
-      const opt = {
-        margin:       10,
-        filename:     'The_Lighthouse_Menu.pdf',
-        image:        { type: 'jpeg', quality: 0.98 },
-        html2canvas:  { scale: 2, useCORS: true, backgroundColor: '#1a1714' },
-        jsPDF:        { unit: 'mm', format: 'a4', orientation: 'portrait' }
-      };
-      await html2pdf().set(opt).from(element).save();
-    } catch (e) {
-      console.error('PDF generation error:', e);
-      alert('Could not generate PDF. Please try again.');
-    } finally {
-      hideLoadingOverlay();
-    }
-  });
-}
-
-// ── Display menu category count ──
-function displayCategoryCount() {
-  const categoryBtns = document.querySelectorAll('.filter-btn:not([data-filter="all"])');
-  const countEl = document.getElementById('menu-category-count');
-  if (countEl) countEl.textContent = categoryBtns.length + ' Menu Categories Available';
-}
-
-// ── Open / Closed badge ──
-function updateOpenStatusBadge() {
-  const sessions = [
-    { name: 'Breakfast', open: [7, 0],  close: [11, 0]  },
-    { name: 'Lunch',     open: [11, 30], close: [15, 0]  },
-    { name: 'Dinner',    open: [17, 0],  close: [23, 0]  },
-    { name: 'Bar',       open: [11, 0],  close: [24, 0]  },
-  ];
-
-  function getOpenSession() {
-    const now = new Date();
-    const h = now.getHours();
-    const m = now.getMinutes();
-    const mins = h * 60 + m;
-    return sessions.find(s => {
-      const openMins  = s.open[0]  * 60 + s.open[1];
-      const closeMins = s.close[0] * 60 + s.close[1];
-      return mins >= openMins && mins < closeMins;
-    }) || null;
-  }
-
-  function render() {
-    const badge = document.getElementById('open-status-badge');
-    if (!badge) return;
-    const session = getOpenSession();
-    if (session) {
-      badge.className = 'status-badge status-badge--open';
-      badge.textContent = `Open — ${session.name}`;
-      if (typeof i18next !== 'undefined' && i18next.t) {
-        badge.textContent = `${i18next.t('location.open') || 'Open'} — ${i18next.t('location.' + session.name.toLowerCase()) || session.name}`;
-      }
-    } else {
-      badge.className = 'status-badge status-badge--closed';
-      badge.textContent = 'Closed';
-      if (typeof i18next !== 'undefined' && i18next.t) {
-        badge.textContent = i18next.t('location.closed') || 'Closed';
-      }
-    }
-  }
-
-  render();
-  setInterval(render, 60000);
-}
-
-// ── Translate UI Content ──
-function updateContent() {
-  if (typeof i18next === 'undefined' || !i18next.t) return;
-  
-  document.querySelectorAll("[data-i18n]").forEach((elem) => {
-    const key = elem.getAttribute("data-i18n");
-    elem.textContent = i18next.t(key);
-  });
-
-  document.querySelectorAll("[data-i18n-placeholder]").forEach((elem) => {
-    const key = elem.getAttribute("data-i18n-placeholder");
-    elem.setAttribute("placeholder", i18next.t(key));
-  });
-
-  document.querySelectorAll("[data-i18n-title]").forEach((elem) => {
-    const key = elem.getAttribute("data-i18n-title");
-    elem.setAttribute("title", i18next.t(key));
-  });
-
-  const noResults = document.querySelector(".no-results");
-  if (noResults) {
-    noResults.textContent = i18next.t('menu.no_results');
-  }
-
-  const dietNoResults = document.querySelectorAll(".diet-no-results");
-  dietNoResults.forEach((el) => {
-    el.textContent = i18next.t('menu.diet_no_results');
-  });
-
-  renderReviews();
-}
-
-// ── Initialise page ──
-document.addEventListener('DOMContentLoaded', () => {
-  handleScroll();
-  setReservationDateRange();
-  updateAvailableTimes();
-  setupThemeToggle();
-  setupIntersectionObserver();
-  setupAutoScroll();
-  setupReviews();
-  setupOrderFeatures();
-  handleCardFlip();
-  initSkeletonLoaders();
-  displayCategoryCount();
-  updateOpenStatusBadge();
-  setupSeatingMap();
-  setupGiftCardCustomizer();
-  setupVirtualSommelier();
-  setupLoyaltyClub();
-  setupTableAvailabilityEstimator();
-  setupSearchSuggestions();
-  setupFaqAccordion();
-
-  if (typeof i18next !== 'undefined') {
-    i18next
-      .use(i18nextHttpBackend)
-      .use(i18nextBrowserLanguageDetector)
-      .init({
-        fallbackLng: 'en',
-        supportedLngs: ['en', 'hi', 'gu'],
-        load: 'languageOnly',
-        backend: {
-          loadPath: './locales/{{lng}}/translation.json'
-        },
-        detection: {
-          order: ['localStorage', 'navigator'],
-          caches: ['localStorage']
-        }
-      }, function (err, t) {
-        if (err) return console.error(err);
-
-        const activeLang = i18next.resolvedLanguage || 'en';
-        const langSelector = document.getElementById('languageSelector');
-        if (langSelector) {
-          langSelector.value = activeLang;
-          langSelector.addEventListener('change', (e) => {
-            i18next.changeLanguage(e.target.value, (err, t) => {
-              if (err) return console.error(err);
-              updateContent();
-            });
-          });
-        }
-        updateContent();
-      });
   } else {
     // Fallback Cart Renderer
     const cartList = document.querySelector("#cartView .order-list");
@@ -1956,278 +1648,6 @@ function addLoyaltyPoints(points, reason) {
 }
 
 // =============================================
-// Feature 7: Digital Reservation Ticket & Events
-// =============================================
-function showDigitalTicket(name, date, time, guests, table) {
-  const modal = document.getElementById("ticket-modal");
-  const guestNameEl = document.getElementById("ticket-guest-name");
-  const dateEl = document.getElementById("ticket-date");
-  const timeEl = document.getElementById("ticket-time");
-  const guestsEl = document.getElementById("ticket-guests");
-  const tableEl = document.getElementById("ticket-table");
-  const bookingCodeEl = document.getElementById("ticket-booking-code");
-
-  if (!modal) return;
-
-  if (guestNameEl) guestNameEl.textContent = name;
-  if (dateEl) dateEl.textContent = date;
-  if (timeEl) timeEl.textContent = time;
-  if (guestsEl) guestsEl.textContent = `${guests} Guest(s)`;
-  if (tableEl) tableEl.textContent = table || "Assigned Table";
-
-  const randomCode = "LH-" + Math.floor(1000 + Math.random() * 9000) + "-" + Math.floor(1000 + Math.random() * 9000);
-  if (bookingCodeEl) bookingCodeEl.textContent = randomCode;
-
-  modal.style.display = "block";
-}
-
-// Ticket Event Handlers
-document.addEventListener("DOMContentLoaded", () => {
-  const modal = document.getElementById("ticket-modal");
-  const closeBtn = document.getElementById("closeTicketModal");
-  const printBtn = document.getElementById("printTicketBtn");
-
-  if (closeBtn && modal) {
-    closeBtn.addEventListener("click", () => {
-      modal.style.display = "none";
-    });
-  }
-
-  if (printBtn) {
-    printBtn.addEventListener("click", () => {
-      window.print();
-    });
-  }
-
-  // Close modal when clicking outside content
-  window.addEventListener("click", (e) => {
-    if (e.target === modal) {
-      modal.style.display = "none";
-    }
-  });
-// Feature 9: Live Table Availability Estimator
-// =============================================
-function setupTableAvailabilityEstimator() {
-  const dateInput = document.getElementById("reservation-date");
-  const timeSelect = document.getElementById("time");
-  const estimator = document.getElementById("availability-estimator");
-
-  if (!dateInput || !timeSelect || !estimator) return;
-
-  function updateEstimator() {
-    const dateVal = dateInput.value;
-    const timeVal = timeSelect.value;
-
-    if (!dateVal || !timeVal) {
-      estimator.style.display = "none";
-      return;
-    }
-
-    const seed = dateVal.replace(/-/g, "") + timeVal.replace(/:/g, "");
-    let hash = 0;
-    for (let i = 0; i < seed.length; i++) {
-      hash = seed.charCodeAt(i) + ((hash << 5) - hash);
-    }
-    const availabilityIndex = Math.abs(hash) % 3;
-
-    estimator.className = "availability-estimator"; // reset classes
-    estimator.innerHTML = "";
-
-    const dot = document.createElement("span");
-    dot.className = "availability-dot";
-    estimator.appendChild(dot);
-
-    const text = document.createElement("span");
-
-    if (availabilityIndex === 0) {
-      estimator.classList.add("low");
-      text.textContent = "⚠️ Peak Hour - Highly Popular! Only 2 tables remaining.";
-    } else if (availabilityIndex === 1) {
-      estimator.classList.add("medium");
-      text.textContent = "⚡ Filling up fast - 5 tables remaining for this time slot.";
-    } else {
-      estimator.classList.add("high");
-      text.textContent = "✅ Excellent Choice - Table availability is high.";
-    }
-
-    estimator.appendChild(text);
-    estimator.style.display = "flex";
-  }
-
-  dateInput.addEventListener("change", updateEstimator);
-  timeSelect.addEventListener("change", updateEstimator);
-  
-  if (reservationForm) {
-    reservationForm.addEventListener("reset", () => {
-      setTimeout(() => {
-        estimator.style.display = "none";
-      }, 0);
-    });
-  }
-// Feature 10: Search Suggestions Handler
-// =============================================
-function setupSearchSuggestions() {
-  const chips = document.querySelectorAll(".suggestion-chip");
-  const searchInput = document.getElementById("menu-search");
-
-  if (!chips.length || !searchInput) return;
-
-  chips.forEach(chip => {
-    chip.addEventListener("click", () => {
-      searchInput.value = chip.dataset.query;
-      searchInput.dispatchEvent(new Event("input"));
-// Feature 9: Reservation Success & Calendar Integration
-// =============================================
-function showReservationSuccessModal(date, time, guests) {
-  const modal = document.getElementById("reservation-success-modal");
-  const dateEl = document.getElementById("summary-date");
-  const timeEl = document.getElementById("summary-time");
-  const guestsEl = document.getElementById("summary-guests");
-  const googleBtn = document.getElementById("googleCalBtn");
-  const icsBtn = document.getElementById("icsCalBtn");
-  const closeBtn = document.getElementById("closeSuccessModal");
-
-  if (!modal) return;
-
-  if (dateEl) dateEl.textContent = date;
-  if (timeEl) timeEl.textContent = time;
-  if (guestsEl) guestsEl.textContent = guests + " Guest(s)";
-
-  // Format Date for iCal / Google Cal
-  const startDateTime = new Date(`${date}T${time}:00`);
-  const finalStart = isNaN(startDateTime.getTime()) ? new Date() : startDateTime;
-  const finalEnd = new Date(finalStart.getTime() + 2 * 60 * 60 * 1000); // 2 hours
-
-  const formatTime = (dt) => dt.toISOString().replace(/-|:|\.\d\d\d/g, "");
-
-  // Google Calendar URL
-  const googleUrl = `https://calendar.google.com/calendar/render?action=TEMPLATE&text=Table+Reservation+-+The+Lighthouse&dates=${formatTime(finalStart)}/${formatTime(finalEnd)}&details=Table+reservation+confirmed+for+${guests}+guests.+We+look+forward+to+serving+you.&location=123+Harbor+View+Drive,+Coastal+City,+CA`;
-  
-  if (googleBtn) {
-    googleBtn.onclick = () => window.open(googleUrl, "_blank");
-  }
-
-  // iCalendar (.ics) Download
-  if (icsBtn) {
-    icsBtn.onclick = () => {
-      const icsContent = `BEGIN:VCALENDAR
-VERSION:2.0
-PRODID:-//The Lighthouse//NONSGML Table Reservation//EN
-BEGIN:VEVENT
-UID:${Date.now()}@thelighthouse.com
-DTSTAMP:${formatTime(new Date())}
-DTSTART:${formatTime(finalStart)}
-DTEND:${formatTime(finalEnd)}
-SUMMARY:Table Reservation - The Lighthouse
-DESCRIPTION:Table reservation confirmed for ${guests} guests.
-LOCATION:123 Harbor View Drive, Coastal City, CA
-END:VEVENT
-END:VCALENDAR`;
-
-      const blob = new Blob([icsContent], { type: "text/calendar;charset=utf-8" });
-      const link = document.createElement("a");
-      link.href = URL.createObjectURL(blob);
-      link.download = `lighthouse_reservation_${date}.ics`;
-      link.click();
-    };
-  }
-
-  if (closeBtn) {
-    closeBtn.onclick = () => {
-      modal.style.display = "none";
-    };
-  }
-
-  window.onclick = (e) => {
-    if (e.target === modal) {
-      modal.style.display = "none";
-    }
-  };
-
-  modal.style.display = "block";
-// Feature 11: Scroll Reveal & Autoplay
-// =============================================
-function setupIntersectionObserver() {
-  const reveals = document.querySelectorAll(".reveal");
-  if (!reveals.length) return;
-
-  const observer = new IntersectionObserver((entries) => {
-    entries.forEach((entry) => {
-      if (entry.isIntersecting) {
-        entry.target.classList.add("active");
-        observer.unobserve(entry.target);
-      }
-    });
-  }, {
-    threshold: 0.1,
-    rootMargin: "0px 0px -50px 0px"
-  });
-
-  reveals.forEach((el) => observer.observe(el));
-}
-
-function setupAutoScroll() {
-  const grid = document.getElementById("reviews-grid");
-  if (!grid) return;
-
-  let autoplayTimer = null;
-
-  function startAutoplay() {
-    autoplayTimer = setInterval(() => {
-      const maxScroll = grid.scrollWidth - grid.clientWidth;
-      if (grid.scrollLeft >= maxScroll - 10) {
-        grid.scrollTo({ left: 0, behavior: "smooth" });
-      } else {
-        grid.scrollBy({ left: 320, behavior: "smooth" });
-      }
-    }, 4000);
-  }
-
-  function stopAutoplay() {
-    if (autoplayTimer) {
-      clearInterval(autoplayTimer);
-      autoplayTimer = null;
-    }
-  }
-
-  const isScrollable = () => grid.scrollWidth > grid.clientWidth;
-
-  if (isScrollable()) {
-    startAutoplay();
-  }
-
-  window.addEventListener("resize", () => {
-    stopAutoplay();
-    if (isScrollable()) {
-      startAutoplay();
-    }
-  });
-
-  grid.addEventListener("mouseenter", stopAutoplay);
-  grid.addEventListener("mouseleave", () => {
-    if (isScrollable()) startAutoplay();
-  });
-  grid.addEventListener("touchstart", stopAutoplay, { passive: true });
-  grid.addEventListener("touchend", () => {
-    if (isScrollable()) startAutoplay();
-// Feature 6: Interactive FAQ Accordion
-// =============================================
-function setupFaqAccordion() {
-  const faqQuestions = document.querySelectorAll(".faq-question");
-  faqQuestions.forEach(question => {
-    question.addEventListener("click", () => {
-      const item = question.parentElement;
-      const isActive = item.classList.contains("active");
-      
-      // Close all other items
-      document.querySelectorAll(".faq-item").forEach(el => el.classList.remove("active"));
-      
-      if (!isActive) {
-        item.classList.add("active");
-      }
-    });
-  });
-}
 // PDF MENU DOWNLOAD
 // =============================================
 function loadHtml2Pdf() {
@@ -2347,6 +1767,142 @@ function updateContent() {
   updateOpenStatusBadge();
 }
 
+function setupTableAvailabilityEstimator() {
+  const estimatorDateInput = document.getElementById("reservation-date");
+  const estimatorTimeSelect = document.getElementById("time");
+  const estimator = document.getElementById("availability-estimator");
+
+  if (!estimatorDateInput || !estimatorTimeSelect || !estimator) return;
+
+  function updateEstimator() {
+    const dateVal = estimatorDateInput.value;
+    const timeVal = estimatorTimeSelect.value;
+
+    if (!dateVal || !timeVal) {
+      estimator.style.display = "none";
+      return;
+    }
+
+    const seed = dateVal.replace(/-/g, "") + timeVal.replace(/:/g, "");
+    let hash = 0;
+    for (let i = 0; i < seed.length; i++) {
+      hash = seed.charCodeAt(i) + ((hash << 5) - hash);
+    }
+    const availabilityIndex = Math.abs(hash) % 3;
+
+    estimator.className = "availability-estimator";
+    estimator.innerHTML = "";
+
+    const dot = document.createElement("span");
+    dot.className = "availability-dot";
+    estimator.appendChild(dot);
+
+    const text = document.createElement("span");
+
+    if (availabilityIndex === 0) {
+      estimator.classList.add("low");
+      text.textContent = "Peak Hour - Only 2 tables remaining.";
+    } else if (availabilityIndex === 1) {
+      estimator.classList.add("medium");
+      text.textContent = "Filling up fast - 5 tables remaining for this time slot.";
+    } else {
+      estimator.classList.add("high");
+      text.textContent = "Excellent choice - Table availability is high.";
+    }
+
+    estimator.appendChild(text);
+    estimator.style.display = "flex";
+  }
+
+  estimatorDateInput.addEventListener("change", updateEstimator);
+  estimatorTimeSelect.addEventListener("change", updateEstimator);
+
+  if (reservationForm) {
+    reservationForm.addEventListener("reset", () => {
+      setTimeout(() => {
+        estimator.style.display = "none";
+      }, 0);
+    });
+  }
+}
+
+function setupSearchSuggestions() {
+  const chips = document.querySelectorAll(".suggestion-chip");
+  const searchInput = document.getElementById("menu-search");
+
+  if (!chips.length || !searchInput) return;
+
+  chips.forEach((chip) => {
+    chip.addEventListener("click", () => {
+      searchInput.value = chip.dataset.query;
+      searchInput.dispatchEvent(new Event("input"));
+    });
+  });
+}
+
+function setupFaqAccordion() {
+  const faqQuestions = document.querySelectorAll(".faq-question");
+  faqQuestions.forEach((question) => {
+    question.addEventListener("click", () => {
+      const item = question.parentElement;
+      const isActive = item.classList.contains("active");
+
+      document.querySelectorAll(".faq-item").forEach((el) => el.classList.remove("active"));
+
+      if (!isActive) {
+        item.classList.add("active");
+      }
+    });
+  });
+}
+
+function showDigitalTicket(name, date, time, guests, table) {
+  const modal = document.getElementById("ticket-modal");
+  const guestNameEl = document.getElementById("ticket-guest-name");
+  const dateEl = document.getElementById("ticket-date");
+  const timeEl = document.getElementById("ticket-time");
+  const guestsEl = document.getElementById("ticket-guests");
+  const tableEl = document.getElementById("ticket-table");
+  const bookingCodeEl = document.getElementById("ticket-booking-code");
+
+  if (!modal) return;
+
+  if (guestNameEl) guestNameEl.textContent = name;
+  if (dateEl) dateEl.textContent = date;
+  if (timeEl) timeEl.textContent = time;
+  if (guestsEl) guestsEl.textContent = `${guests} Guest(s)`;
+  if (tableEl) tableEl.textContent = table || "Assigned Table";
+
+  const randomCode = "LH-" + Math.floor(1000 + Math.random() * 9000) + "-" + Math.floor(1000 + Math.random() * 9000);
+  if (bookingCodeEl) bookingCodeEl.textContent = randomCode;
+
+  modal.style.display = "block";
+}
+
+function setupTicketModal() {
+  const modal = document.getElementById("ticket-modal");
+  const closeBtn = document.getElementById("closeTicketModal");
+  const printBtn = document.getElementById("printTicketBtn");
+
+  if (closeBtn && modal) {
+    closeBtn.addEventListener("click", () => {
+      modal.style.display = "none";
+    });
+  }
+
+  if (printBtn) {
+    printBtn.addEventListener("click", () => {
+      window.print();
+    });
+  }
+
+  window.addEventListener("click", (e) => {
+    if (e.target === modal) {
+      modal.style.display = "none";
+    }
+  });
+}
+
 // =============================================
 // INITIALIZATION
 // =============================================
@@ -2373,6 +1929,10 @@ document.addEventListener('DOMContentLoaded', () => {
   setupGiftCardCustomizer();
   setupVirtualSommelier();
   setupLoyaltyClub();
+  setupTableAvailabilityEstimator();
+  setupSearchSuggestions();
+  setupFaqAccordion();
+  setupTicketModal();
 
   // i18next Setup
   if (typeof i18next !== 'undefined' && typeof i18nextHttpBackend !== 'undefined' && typeof i18nextBrowserLanguageDetector !== 'undefined') {
