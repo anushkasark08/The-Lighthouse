@@ -34,7 +34,8 @@ const checkoutBtn = document.querySelector(".order-checkout") || document.getEle
 const cartItemsEl = document.getElementById("cartItems");
 const favoriteItemsEl = document.getElementById("favoriteItems");
 
-const isTouchDevice = window.matchMedia('(hover: none) and (pointer: coarse)').matches;
+const isTouchDevice =
+  'ontouchstart' in window || navigator.maxTouchPoints > 1;
 
 // Initial state
 let cart = [];
