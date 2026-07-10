@@ -1,0 +1,154 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Frontend Component Tests Menu Component Menu Snapshot matches design 1`] = `
+<DocumentFragment>
+  <section
+    class="menu-section"
+  >
+    <div
+      class="tabs"
+    >
+      <button
+        class="active"
+      >
+        ALL
+      </button>
+      <button
+        class=""
+      >
+        BREAKFAST
+      </button>
+      <button
+        class=""
+      >
+        LUNCH
+      </button>
+      <button
+        class=""
+      >
+        DINNER
+      </button>
+      <button
+        class=""
+      >
+        DRINKS
+      </button>
+    </div>
+    <div
+      class="menu-grid"
+    >
+      <div
+        class="menu-item"
+      >
+        <h3>
+          Butter Chicken
+        </h3>
+        <span>
+          $15.99
+        </span>
+      </div>
+    </div>
+  </section>
+</DocumentFragment>
+`;
+
+exports[`Frontend Component Tests Navbar Component Navbar Snapshot matches design 1`] = `
+<DocumentFragment>
+  <nav
+    class="navbar"
+  >
+    <div
+      class="logo"
+    >
+      The Lighthouse
+    </div>
+    <ul
+      class="nav-links"
+    >
+      <li>
+        <a
+          href="#hero"
+        >
+          Home
+        </a>
+      </li>
+      <li>
+        <a
+          href="#menu"
+        >
+          Menu
+        </a>
+      </li>
+      <li>
+        <a
+          href="#reservation"
+        >
+          Reservation
+        </a>
+      </li>
+    </ul>
+    <button
+      id="themeToggle"
+    >
+      🌙
+    </button>
+  </nav>
+</DocumentFragment>
+`;
+
+exports[`Frontend Component Tests ReservationForm Component ReservationForm Snapshot matches design 1`] = `
+<DocumentFragment>
+  <form
+    class="reservation-form"
+  >
+    <h2>
+      Book a Table
+    </h2>
+    <input
+      name="name"
+      placeholder="Your Name"
+      required=""
+      type="text"
+      value=""
+    />
+    <input
+      name="email"
+      placeholder="Your Email"
+      required=""
+      type="email"
+      value=""
+    />
+    <input
+      name="phone"
+      placeholder="Phone Number"
+      type="tel"
+      value=""
+    />
+    <input
+      name="date"
+      required=""
+      type="date"
+      value=""
+    />
+    <input
+      name="time"
+      required=""
+      type="time"
+      value=""
+    />
+    <input
+      max="10"
+      min="1"
+      name="guests"
+      required=""
+      type="number"
+      value="2"
+    />
+    <button
+      type="submit"
+    >
+      Submit Reservation
+    </button>
+  </form>
+</DocumentFragment>
+`;
