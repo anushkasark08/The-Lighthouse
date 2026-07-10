@@ -2,15 +2,22 @@
 
 <div align="center">
 
+[![Node.js Version](https://img.shields.io/badge/Node.js-%3E%3D18.0.0-green.svg)](https://nodejs.org/)
+[![MongoDB](https://img.shields.io/badge/MongoDB-%234ea94b.svg?logo=mongodb&logoColor=white)](https://www.mongodb.com/)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![Build Status](https://github.com/vansh2604-star/The-Lighthouse/actions/workflows/build.yml/badge.svg)](https://github.com/vansh2604-star/The-Lighthouse/actions)
+
+<br/>
+
 A premium **MERN stack** restaurant web application solving a real problem in modern food apps — the **"Black Box Menu" problem**.
 
 Built with MongoDB, Express, React (Vite), and Node.js. Features a live menu availability engine, persistent dietary profiles, a smart reservation wizard with in-booking menu preview, and an admin dashboard — all wrapped in an elegant dark luxury UI.
 
 🏆 Officially part of **GirlScript Summer of Code 2026 (GSSoC'26)**
 
-[![Stars](https://img.shields.io/github/stars/anushkasark08/The-Lighthouse?style=social)](https://github.com/anushkasark08/The-Lighthouse/stargazers)
+[![Stars](https://img.shields.io/github/stars/vansh2604-star/The-Lighthouse?style=social)](https://github.com/vansh2604-star/The-Lighthouse/stargazers)
 &nbsp;&nbsp;
-[![Forks](https://img.shields.io/github/forks/anushkasark08/The-Lighthouse?style=social)](https://github.com/anushkasark08/The-Lighthouse/network/members)
+[![Forks](https://img.shields.io/github/forks/vansh2604-star/The-Lighthouse?style=social)](https://github.com/vansh2604-star/The-Lighthouse/network/members)
 
 </div>
 
@@ -214,7 +221,7 @@ The-Lighthouse/
 ### 1️⃣ Clone the Repository
 
 ```bash
-git clone https://github.com/anushkasark08/The-Lighthouse.git
+git clone https://github.com/vansh2604-star/The-Lighthouse.git
 cd The-Lighthouse
 ```
 
@@ -353,30 +360,34 @@ The design system uses **CSS variables** in `frontend/src/index.css`. Change the
 
 ---
 
-## 🤝 Contributing
+## 🤝 Contributing & Guidelines
 
-Contributions are welcome and appreciated!
+We welcome contributions to **The Lighthouse**! To keep the workflow clean and structured, please follow these guidelines:
 
 ### Steps to Contribute
 
-1. Fork the repository
+1. **Fork the Repository** – Click the "Fork" button at the top right of this page.
+2. **Clone your Fork** – Clone it locally to your machine.
+   ```bash
+   git clone https://github.com/vansh2604-star/The-Lighthouse.git
+   ```
+3. **Create a Branch** – Create a branch for your feature or bug fix:
+   ```bash
+   git checkout -b feature/your-feature-name
+   ```
+4. **Commit Changes** – Keep your commits concise and descriptive:
+   ```bash
+   git commit -m "feat: add user login functionality"
+   ```
+5. **Push to GitHub** – Push your changes to your fork:
+   ```bash
+   git push origin feature/your-feature-name
+   ```
+6. **Submit a Pull Request (PR)** – Open a PR against the `main` branch. Provide a clear description of the changes you made.
 
-2. Create a feature branch
-```bash
-git checkout -b feature/your-feature-name
-```
+### 📝 Commit Standards
 
-3. Commit your changes
-```bash
-git commit -m "feat: add your feature description"
-```
-
-4. Push the branch
-```bash
-git push origin feature/your-feature-name
-```
-
-5. Open a Pull Request
+Please use standard semantic commit messages (e.g., `feat:`, `fix:`, `docs:`, `style:`, `refactor:`, `test:`, `chore:`).
 
 ---
 
@@ -385,8 +396,8 @@ git push origin feature/your-feature-name
 Thanks to all the amazing people who contribute to **The Lighthouse** 🚀
 
 <p align="center">
-  <a href="https://github.com/anushkasark08/The-Lighthouse/graphs/contributors">
-    <img src="https://contrib.rocks/image?repo=anushkasark08/The-Lighthouse" alt="Contributors"/>
+  <a href="https://github.com/vansh2604-star/The-Lighthouse/graphs/contributors">
+    <img src="https://contrib.rocks/image?repo=vansh2604-star/The-Lighthouse" alt="Contributors"/>
   </a>
 </p>
 
@@ -411,4 +422,11 @@ Special thanks to:
 ## 🔗 Repository
 
 GitHub Repository:
-https://github.com/anushkasark08/The-Lighthouse
+https://github.com/vansh2604-star/The-Lighthouse
+
+
+## 📂 Documentation
+
+- [Frontend README](./frontend/README.md) — UI, design, and assets
+- [Backend README](./backend/README.md) — API, environment variables, and server setup
+
