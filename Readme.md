@@ -125,6 +125,55 @@ Most restaurant websites and food apps share the same flaw — the **"Black Box 
 
 ---
 
+## 🏗️ System Architecture
+
+```mermaid
+flowchart LR
+
+    User((User))
+
+    subgraph Frontend["Frontend (React + Vite)"]
+        UI[React Components]
+        Router[React Router]
+        Context[Context API]
+        Axios[Axios Client]
+    end
+
+    subgraph Backend["Backend (Node.js + Express)"]
+        Auth[Authentication]
+        Menu[Menu API]
+        Reservation[Reservation API]
+        Review[Review API]
+        Admin[Admin Dashboard]
+    end
+
+    subgraph Database["MongoDB"]
+        UserDB[(Users)]
+        MenuDB[(Menu Items)]
+        ReserveDB[(Reservations)]
+        ReviewDB[(Reviews)]
+    end
+
+    User --> UI
+    UI --> Router
+    Router --> Context
+    Context --> Axios
+
+    Axios --> Auth
+    Axios --> Menu
+    Axios --> Reservation
+    Axios --> Review
+    Axios --> Admin
+
+    Auth --> UserDB
+    Menu --> MenuDB
+    Reservation --> ReserveDB
+    Review --> ReviewDB
+    Admin --> MenuDB
+    Admin --> ReviewDB
+
+``` 
+
 ## 📂 Project Structure
 
 ```
