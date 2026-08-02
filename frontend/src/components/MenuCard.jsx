@@ -324,6 +324,15 @@ const MenuCard = ({ item }) => {
                 </span>
                 <span className="menu-card-detail__tag">⏱ {item.preparationTime} min</span>
                 <span className="menu-card-detail__tag">{item.category}</span>
+                {(item.chefSelection || []).map((cs) => (
+                  <span key={cs} className="menu-card-detail__tag">👨‍🍳 {cs}</span>
+                ))}
+                {(item.flavorProfile || []).map((fp) => (
+                  <span key={fp} className="menu-card-detail__tag">🌶️ {fp}</span>
+                ))}
+                {(item.diningOccasion || []).map((doOcc) => (
+                  <span key={doOcc} className="menu-card-detail__tag">🍷 {doOcc}</span>
+                ))}
               </div>
 
               <div className="menu-card-detail__reviews">

@@ -10,7 +10,8 @@ const CATEGORIES = ['breakfast', 'lunch', 'dinner', 'desserts', 'drinks'];
 
 const emptyForm = {
   name: '', description: '', price: '', category: 'dinner',
-  isVeg: false, tags: [], isAvailable: true, image: '', preparationTime: 20
+  isVeg: false, tags: [], isAvailable: true, image: '', preparationTime: 20,
+  chefSelection: [], flavorProfile: [], diningOccasion: []
 };
 
 const AdminDashboard = () => {
@@ -45,6 +46,16 @@ const AdminDashboard = () => {
       ...f,
       tags: f.tags.includes(tag) ? f.tags.filter((t) => t !== tag) : [...f.tags, tag]
     }));
+  };
+
+  const handleArrayToggle = (field, val) => {
+    setForm((f) => {
+      const arr = f[field] || [];
+      return {
+        ...f,
+        [field]: arr.includes(val) ? arr.filter((x) => x !== val) : [...arr, val]
+      };
+    });
   };
 
   const handleAddItem = async (e) => {
@@ -220,6 +231,45 @@ const AdminDashboard = () => {
                             {tag}
                           </button>
                         </Tooltip>
+                      ))}
+                    </div>
+                  </div>
+
+                  <div className="form-group" style={{ gridColumn: '1 / -1' }}>
+                    <label className="form-label">Chef's Selection</label>
+                    <div style={{ display: 'flex', gap: 'var(--space-xs)', flexWrap: 'wrap' }}>
+                      {["Chef's Special", "Executive Signature", "Sommelier Choice", "Artisanal Recipe", "Seasonal Highlight", "Masterclass Creation"].map((val) => (
+                        <button type="button" key={val} className={`allergen-chip ${(form.chefSelection || []).includes(val) ? 'active' : ''}`}
+                          style={(form.chefSelection || []).includes(val) ? { background: 'rgba(201,169,98,0.1)', borderColor: 'var(--color-primary)', color: 'var(--color-primary)' } : {}}
+                          onClick={() => handleArrayToggle('chefSelection', val)}>
+                          {val}
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+
+                  <div className="form-group" style={{ gridColumn: '1 / -1' }}>
+                    <label className="form-label">Flavor Profile</label>
+                    <div style={{ display: 'flex', gap: 'var(--space-xs)', flexWrap: 'wrap' }}>
+                      {["Smoky & Rich", "Tangy & Zesty", "Velvety & Creamy", "Spicy & Fiery", "Umami Savory", "Fresh & Herbaceous", "Sweet & Delicate"].map((val) => (
+                        <button type="button" key={val} className={`allergen-chip ${(form.flavorProfile || []).includes(val) ? 'active' : ''}`}
+                          style={(form.flavorProfile || []).includes(val) ? { background: 'rgba(201,169,98,0.1)', borderColor: 'var(--color-primary)', color: 'var(--color-primary)' } : {}}
+                          onClick={() => handleArrayToggle('flavorProfile', val)}>
+                          {val}
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+
+                  <div className="form-group" style={{ gridColumn: '1 / -1' }}>
+                    <label className="form-label">Dining Occasion</label>
+                    <div style={{ display: 'flex', gap: 'var(--space-xs)', flexWrap: 'wrap' }}>
+                      {["Romantic Dinner", "Family Feast", "Quick & Light Bite", "Celebration & Gala", "Late Night Indulgence", "Executive Business Lunch"].map((val) => (
+                        <button type="button" key={val} className={`allergen-chip ${(form.diningOccasion || []).includes(val) ? 'active' : ''}`}
+                          style={(form.diningOccasion || []).includes(val) ? { background: 'rgba(201,169,98,0.1)', borderColor: 'var(--color-primary)', color: 'var(--color-primary)' } : {}}
+                          onClick={() => handleArrayToggle('diningOccasion', val)}>
+                          {val}
+                        </button>
                       ))}
                     </div>
                   </div>

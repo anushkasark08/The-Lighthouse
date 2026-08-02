@@ -26,6 +26,16 @@ exports.getMenuItems = async (req, res) => {
     if (req.query.workout) {
       filter.workoutTags = req.query.workout;
     }
+    // Filter by Curate Your Dining fields
+    if (req.query.chefSelection) {
+      filter.chefSelection = req.query.chefSelection;
+    }
+    if (req.query.flavorProfile) {
+      filter.flavorProfile = req.query.flavorProfile;
+    }
+    if (req.query.diningOccasion) {
+      filter.diningOccasion = req.query.diningOccasion;
+    }
     // Filter by energy band (e.g. ?energy=light|moderate|heavy)
     if (req.query.energy) {
       if (req.query.energy === 'light') {

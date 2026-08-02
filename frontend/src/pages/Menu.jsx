@@ -3,6 +3,7 @@ import { useAuth } from '../context/AuthContext';
 import { useMenu } from '../context/MenuContext';
 import MenuCard from '../components/MenuCard';
 import Tooltip from '../components/Tooltip';
+import CurateYourDining from '../components/CurateYourDining';
 import './Menu.css';
 
 const CATEGORIES = ['all', 'breakfast', 'lunch', 'dinner', 'desserts', 'drinks'];
@@ -18,6 +19,9 @@ const Menu = () => {
   const [category, setCategory] = useState('all');
   const [dietFilter, setDietFilter] = useState('all');
   const [search, setSearch] = useState('');
+  const [selectedChef, setSelectedChef] = useState('all');
+  const [selectedFlavor, setSelectedFlavor] = useState('all');
+  const [selectedOccasion, setSelectedOccasion] = useState('all');
   const [selectedRecIndex, setSelectedRecIndex] = useState(0);
 
   useEffect(() => {
@@ -27,6 +31,8 @@ const Menu = () => {
   }, [user]);
 
   const filtered = useMemo(() => {
+    const norm = (val) => (val || '').toString().trim().toLowerCase().replace(/’/g, "'");
+
     return items.filter((item) => {
       const matchCat = category === 'all' || item.category === category;
       const matchDiet = dietFilter === 'all'
@@ -36,9 +42,27 @@ const Menu = () => {
         || item.name.toLowerCase().includes(search.toLowerCase())
         || item.description?.toLowerCase().includes(search.toLowerCase());
 
-      return matchCat && matchDiet && matchSearch;
+      const matchChef = selectedChef === 'all' || (
+        Array.isArray(item.chefSelection)
+          ? item.chefSelection.some((c) => norm(c) === norm(selectedChef))
+          : (typeof item.chefSelection === 'string' && norm(item.chefSelection) === norm(selectedChef))
+      );
+
+      const matchFlavor = selectedFlavor === 'all' || (
+        Array.isArray(item.flavorProfile)
+          ? item.flavorProfile.some((f) => norm(f) === norm(selectedFlavor))
+          : (typeof item.flavorProfile === 'string' && norm(item.flavorProfile) === norm(selectedFlavor))
+      );
+
+      const matchOccasion = selectedOccasion === 'all' || (
+        Array.isArray(item.diningOccasion)
+          ? item.diningOccasion.some((o) => norm(o) === norm(selectedOccasion))
+          : (typeof item.diningOccasion === 'string' && norm(item.diningOccasion) === norm(selectedOccasion))
+      );
+
+      return matchCat && matchDiet && matchSearch && matchChef && matchFlavor && matchOccasion;
     });
-  }, [items, category, dietFilter, search]);
+  }, [items, category, dietFilter, search, selectedChef, selectedFlavor, selectedOccasion]);
 
   const chefRecommendations = useMemo(() => {
     const specials = items.filter(item => (item.tags || []).includes('chef-special') || item.averageRating >= 4.5);
@@ -51,6 +75,15 @@ const Menu = () => {
     setCategory('all');
     setDietFilter('all');
     setSearch('');
+    setSelectedChef('all');
+    setSelectedFlavor('all');
+    setSelectedOccasion('all');
+  };
+
+  const handleResetCuration = () => {
+    setSelectedChef('all');
+    setSelectedFlavor('all');
+    setSelectedOccasion('all');
   };
 
   return (
@@ -280,6 +313,19 @@ const Menu = () => {
         </div>
       </div>
 
+      {/* Curate Your Dining Multi-Section Filtering System */}
+      <div className="container">
+        <CurateYourDining
+          selectedChef={selectedChef}
+          onSelectChef={setSelectedChef}
+          selectedFlavor={selectedFlavor}
+          onSelectFlavor={setSelectedFlavor}
+          selectedOccasion={selectedOccasion}
+          onSelectOccasion={setSelectedOccasion}
+          onResetCuration={handleResetCuration}
+        />
+      </div>
+
       {/* Main Menu Grid Area */}
       <div className="container menu-content-area">
         {!loading && (
@@ -312,13 +358,26 @@ const Menu = () => {
             <svg className="menu-empty-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
               <path d="M12 3v3m0 0a8 8 0 00-8 8h16a8 8 0 00-8-8zM4 14h16v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2z" />
             </svg>
-            <h3 className="menu-empty-title">No Dishes Match Your Selection</h3>
+            <h3 className="menu-empty-title">
+              {(selectedChef !== 'all' || selectedFlavor !== 'all' || selectedOccasion !== 'all')
+                ? 'No Dishes Match Your Current Curation'
+                : 'No Dishes Match Your Selection'}
+            </h3>
             <p className="menu-empty-desc">
-              We couldn't find any items matching your selected criteria. Try adjusting your dietary preferences or clearing your search.
+              {(selectedChef !== 'all' || selectedFlavor !== 'all' || selectedOccasion !== 'all')
+                ? 'Try adjusting your Chef selection, flavor profile, or dining occasion filters to explore more dishes.'
+                : "We couldn't find any items matching your selected criteria. Try adjusting your dietary preferences or clearing your search."}
             </p>
-            <button className="btn-reset-filters" onClick={handleClearFilters}>
-              Reset Filters
-            </button>
+            <div style={{ display: 'flex', gap: 'var(--space-md)', flexWrap: 'wrap', justifyContent: 'center' }}>
+              {(selectedChef !== 'all' || selectedFlavor !== 'all' || selectedOccasion !== 'all') && (
+                <button className="btn-reset-filters" onClick={handleResetCuration}>
+                  ✦ Clear Curate Filters
+                </button>
+              )}
+              <button className="btn-reset-filters" onClick={handleClearFilters}>
+                Reset All Filters
+              </button>
+            </div>
           </div>
         ) : (
           <div className="grid-3" style={{ paddingBottom: 'var(--space-3xl)' }}>

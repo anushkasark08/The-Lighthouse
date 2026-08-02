@@ -23,7 +23,10 @@ const menuItems = [
     sortOrder: 1,
     calories: 220,
     workoutTags: ['Light & Fresh'],
-    badge: null
+    badge: null,
+    chefSelection: ['Artisanal Recipe'],
+    flavorProfile: ['Tangy & Zesty', 'Fresh & Herbaceous'],
+    diningOccasion: ['Quick & Light Bite', 'Executive Business Lunch']
   },
   {
     name: 'Masala Dosa',
@@ -39,7 +42,10 @@ const menuItems = [
     sortOrder: 2,
     calories: 310,
     workoutTags: ['Light & Fresh'],
-    badge: 'Bestseller'
+    badge: 'Bestseller',
+    chefSelection: ["Chef's Special"],
+    flavorProfile: ['Tangy & Zesty', 'Spicy & Fiery'],
+    diningOccasion: ['Quick & Light Bite', 'Family Feast']
   },
   {
     name: 'Chicken Keema Dosa',
@@ -55,7 +61,10 @@ const menuItems = [
     sortOrder: 3,
     calories: 430,
     workoutTags: ['Post-Workout Fuel'],
-    badge: null
+    badge: null,
+    chefSelection: ['Executive Signature'],
+    flavorProfile: ['Spicy & Fiery', 'Umami Savory'],
+    diningOccasion: ['Family Feast', 'Quick & Light Bite']
   },
   // ── Lunch ──
   {
@@ -72,7 +81,10 @@ const menuItems = [
     sortOrder: 1,
     calories: 520,
     workoutTags: ['Indulgent'],
-    badge: "Chef's Pick"
+    badge: "Chef's Pick",
+    chefSelection: ["Chef's Special", 'Artisanal Recipe'],
+    flavorProfile: ['Velvety & Creamy', 'Sweet & Delicate'],
+    diningOccasion: ['Family Feast', 'Romantic Dinner']
   },
   {
     name: 'Butter Chicken',
@@ -88,7 +100,10 @@ const menuItems = [
     sortOrder: 2,
     calories: 590,
     workoutTags: ['Post-Workout Fuel'],
-    badge: 'Bestseller'
+    badge: 'Bestseller',
+    chefSelection: ['Executive Signature', 'Sommelier Choice'],
+    flavorProfile: ['Velvety & Creamy', 'Smoky & Rich'],
+    diningOccasion: ['Family Feast', 'Celebration & Gala']
   },
   {
     name: 'Hyderabadi Chicken Biryani',
@@ -104,7 +119,10 @@ const menuItems = [
     sortOrder: 3,
     calories: 640,
     workoutTags: ['Post-Workout Fuel'],
-    badge: "Chef's Pick"
+    badge: "Chef's Pick",
+    chefSelection: ["Chef's Special", 'Masterclass Creation'],
+    flavorProfile: ['Smoky & Rich', 'Spicy & Fiery', 'Umami Savory'],
+    diningOccasion: ['Celebration & Gala', 'Family Feast', 'Executive Business Lunch']
   },
   // ── Dinner ──
   {
@@ -121,7 +139,10 @@ const menuItems = [
     sortOrder: 1,
     calories: 480,
     workoutTags: ['Post-Workout Fuel'],
-    badge: null
+    badge: null,
+    chefSelection: ["Chef's Special"],
+    flavorProfile: ['Smoky & Rich', 'Spicy & Fiery'],
+    diningOccasion: ['Romantic Dinner', 'Executive Business Lunch']
   },
   {
     name: 'Coastal Fish Curry',
@@ -137,7 +158,10 @@ const menuItems = [
     sortOrder: 2,
     calories: 410,
     workoutTags: ['Post-Workout Fuel'],
-    badge: null
+    badge: null,
+    chefSelection: ['Seasonal Highlight', 'Sommelier Choice'],
+    flavorProfile: ['Tangy & Zesty', 'Fresh & Herbaceous'],
+    diningOccasion: ['Romantic Dinner', 'Celebration & Gala']
   },
   {
     name: 'Dal Makhani',
@@ -153,7 +177,10 @@ const menuItems = [
     sortOrder: 3,
     calories: 380,
     workoutTags: ['Indulgent'],
-    badge: null
+    badge: null,
+    chefSelection: ['Artisanal Recipe'],
+    flavorProfile: ['Velvety & Creamy', 'Smoky & Rich'],
+    diningOccasion: ['Family Feast', 'Late Night Indulgence']
   },
   // ── Desserts ──
   {
@@ -170,7 +197,10 @@ const menuItems = [
     sortOrder: 1,
     calories: 300,
     workoutTags: ['Indulgent'],
-    badge: 'Bestseller'
+    badge: 'Bestseller',
+    chefSelection: ['Artisanal Recipe'],
+    flavorProfile: ['Sweet & Delicate', 'Velvety & Creamy'],
+    diningOccasion: ['Celebration & Gala', 'Late Night Indulgence']
   },
   {
     name: 'Kulfi',
@@ -186,7 +216,10 @@ const menuItems = [
     sortOrder: 2,
     calories: 270,
     workoutTags: ['Indulgent'],
-    badge: null
+    badge: null,
+    chefSelection: ['Seasonal Highlight'],
+    flavorProfile: ['Sweet & Delicate', 'Fresh & Herbaceous'],
+    diningOccasion: ['Late Night Indulgence', 'Family Feast']
   },
   {
     name: 'Rasmalai',
@@ -202,7 +235,10 @@ const menuItems = [
     sortOrder: 3,
     calories: 260,
     workoutTags: ['Indulgent'],
-    badge: null
+    badge: null,
+    chefSelection: ["Chef's Special", 'Executive Signature'],
+    flavorProfile: ['Sweet & Delicate', 'Velvety & Creamy'],
+    diningOccasion: ['Romantic Dinner', 'Celebration & Gala']
   },
   // ── Drinks ──
   {
@@ -219,7 +255,10 @@ const menuItems = [
     sortOrder: 1,
     calories: 210,
     workoutTags: ['Pre-Workout Energy'],
-    badge: null
+    badge: null,
+    chefSelection: ['Seasonal Highlight'],
+    flavorProfile: ['Tangy & Zesty', 'Sweet & Delicate'],
+    diningOccasion: ['Quick & Light Bite', 'Family Feast']
   },
   {
     name: 'Masala Chai',
@@ -235,7 +274,10 @@ const menuItems = [
     sortOrder: 2,
     calories: 90,
     workoutTags: ['Light & Fresh'],
-    badge: null
+    badge: null,
+    chefSelection: ['Artisanal Recipe'],
+    flavorProfile: ['Fresh & Herbaceous', 'Spicy & Fiery'],
+    diningOccasion: ['Quick & Light Bite', 'Executive Business Lunch']
   },
   {
     name: 'Fresh Lime Soda',
@@ -251,7 +293,10 @@ const menuItems = [
     sortOrder: 3,
     calories: 60,
     workoutTags: ['Light & Fresh'],
-    badge: null
+    badge: null,
+    chefSelection: [],
+    flavorProfile: ['Tangy & Zesty', 'Fresh & Herbaceous'],
+    diningOccasion: ['Quick & Light Bite', 'Late Night Indulgence']
   },
   {
     name: 'Virgin Mojito',
@@ -267,7 +312,10 @@ const menuItems = [
     sortOrder: 4,
     calories: 70,
     workoutTags: ['Light & Fresh'],
-    badge: null
+    badge: null,
+    chefSelection: [],
+    flavorProfile: ['Tangy & Zesty', 'Fresh & Herbaceous'],
+    diningOccasion: ['Romantic Dinner', 'Celebration & Gala']
   },
   {
     name: 'Filter Coffee',
@@ -283,7 +331,10 @@ const menuItems = [
     sortOrder: 5,
     calories: 85,
     workoutTags: ['Light & Fresh'],
-    badge: null
+    badge: null,
+    chefSelection: ['Artisanal Recipe'],
+    flavorProfile: ['Smoky & Rich', 'Umami Savory'],
+    diningOccasion: ['Quick & Light Bite', 'Executive Business Lunch']
   },
   {
     name: 'Kokum Sharbat',
@@ -299,7 +350,10 @@ const menuItems = [
     sortOrder: 6,
     calories: 50,
     workoutTags: ['Light & Fresh'],
-    badge: null
+    badge: null,
+    chefSelection: ['Seasonal Highlight'],
+    flavorProfile: ['Tangy & Zesty', 'Fresh & Herbaceous'],
+    diningOccasion: ['Quick & Light Bite', 'Executive Business Lunch']
   }
 ];
 

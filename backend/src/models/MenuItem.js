@@ -91,6 +91,21 @@ const menuItemSchema = new mongoose.Schema(
       type: String,
       enum: ['Bestseller', "Chef's Pick", null],
       default: null
+    },
+    chefSelection: {
+      type: [String],
+      enum: ["Chef's Special", "Executive Signature", "Sommelier Choice", "Artisanal Recipe", "Seasonal Highlight", "Masterclass Creation"],
+      default: []
+    },
+    flavorProfile: {
+      type: [String],
+      enum: ["Smoky & Rich", "Tangy & Zesty", "Velvety & Creamy", "Spicy & Fiery", "Umami Savory", "Fresh & Herbaceous", "Sweet & Delicate"],
+      default: []
+    },
+    diningOccasion: {
+      type: [String],
+      enum: ["Romantic Dinner", "Family Feast", "Quick & Light Bite", "Celebration & Gala", "Late Night Indulgence", "Executive Business Lunch"],
+      default: []
     }
   },
   {
@@ -98,8 +113,10 @@ const menuItemSchema = new mongoose.Schema(
   }
 );
 
-// Index for fast filtered queries
 menuItemSchema.index({ category: 1, isAvailable: 1 });
 menuItemSchema.index({ isVeg: 1, isAvailable: 1 });
+menuItemSchema.index({ chefSelection: 1, isAvailable: 1 });
+menuItemSchema.index({ flavorProfile: 1, isAvailable: 1 });
+menuItemSchema.index({ diningOccasion: 1, isAvailable: 1 });
 
 module.exports = mongoose.model('MenuItem', menuItemSchema);
