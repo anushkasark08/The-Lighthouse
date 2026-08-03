@@ -106,7 +106,7 @@ const menuItemSchema = new mongoose.Schema(
       type: [String],
       enum: ["Romantic Dinner", "Family Feast", "Quick & Light Bite", "Celebration & Gala", "Late Night Indulgence", "Executive Business Lunch"],
       default: []
-
+    },
     // ---- NEW FIELDS: Cooking Request customization (owner-configured) ----
     // Predefined cooking preferences the owner offers for this dish
     // (e.g. 'Less Spicy', 'Extra Crispy', 'No Onions'). When empty, the
