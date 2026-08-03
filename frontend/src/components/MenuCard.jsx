@@ -4,7 +4,6 @@ import { getReviews } from '../api/reviewApi';
 import { useMenu } from '../context/MenuContext';
 import { useAuth } from '../context/AuthContext';
 import { useCart } from '../context/CartContext';
-import { useEffect, useState } from 'react';
 import { useReservation } from '../context/ReservationContext';
 import { useEffect, useState, useCallback } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
@@ -47,7 +46,7 @@ const MenuCard = ({ item }) => {
   // Cooking Request customization state (per open modal instance)
   const [selectedOptions, setSelectedOptions] = useState([]);
   const [customInstructions, setCustomInstructions] = useState('');
-  const [quantity, setQuantity] = useState(1);
+  const [modalQuantity, setModalQuantity] = useState(1);
   const [justAdded, setJustAdded] = useState(false);
   const [adding, setAdding] = useState(false);
   const [addError, setAddError] = useState(null);
@@ -56,7 +55,7 @@ const MenuCard = ({ item }) => {
   const itemId = item._id || item.id;
 
   const preOrderItem = preOrder.find(p => (p.menuItem._id || p.menuItem.id) === itemId);
-  const quantity = preOrderItem ? preOrderItem.quantity : 0;
+  const preOrderQty = preOrderItem ? preOrderItem.quantity : 0;
 
   const handlePreOrderAction = (event) => {
     event.stopPropagation();
@@ -70,12 +69,12 @@ const MenuCard = ({ item }) => {
 
   const handleIncrement = (event) => {
     event.stopPropagation();
-    updatePreOrderQuantity(itemId, quantity + 1);
+    updatePreOrderQuantity(itemId, preOrderQty + 1);
   };
 
   const handleDecrement = (event) => {
     event.stopPropagation();
-    updatePreOrderQuantity(itemId, quantity - 1);
+    updatePreOrderQuantity(itemId, preOrderQty - 1);
   };
 
   // Owner-configured options win if present on the item; otherwise fall
@@ -153,7 +152,7 @@ const MenuCard = ({ item }) => {
     setIsOpen(false);
     setSelectedOptions([]);
     setCustomInstructions('');
-    setQuantity(1);
+    setModalQuantity(1);
     setAddError(null);
   };
 
@@ -171,7 +170,7 @@ const MenuCard = ({ item }) => {
     setAdding(true);
     try {
       await addToCart(item, {
-        quantity,
+        quantity : modalQuantity,
         selectedCookingOptions: selectedOptions,
         customInstructions
       });
@@ -180,7 +179,7 @@ const MenuCard = ({ item }) => {
       setTimeout(() => setJustAdded(false), 1600);
       setSelectedOptions([]);
       setCustomInstructions('');
-      setQuantity(1);
+      setModalQuantity(1);
     } catch (err) {
       setAddError(err.response?.data?.error || 'Could not add this to your cart. Please try again.');
     } finally {
@@ -614,15 +613,15 @@ const MenuCard = ({ item }) => {
                 <div className="qty-stepper">
                   <button
                     type="button"
-                    onClick={() => setQuantity((q) => Math.max(1, q - 1))}
+                    onClick={() => setModalQuantity((q) => Math.max(1, q - 1))}
                     aria-label="Decrease quantity"
                   >
                     −
                   </button>
-                  <span>{quantity}</span>
+                  <span>{modalQuantity}</span>
                   <button
                     type="button"
-                    onClick={() => setQuantity((q) => q + 1)}
+                    onClick={() => setModalQuantity((q) => q + 1)}
                     aria-label="Increase quantity"
                   >
                     +
@@ -635,7 +634,7 @@ const MenuCard = ({ item }) => {
                   onClick={handleAddToCart}
                   disabled={!item.isAvailable || adding}
                 >
-                  {adding ? 'Adding…' : justAdded ? '✓ Added to Cart' : `Add to Cart · ₹${item.price * quantity}`}
+                  {adding ? 'Adding…' : justAdded ? '✓ Added to Cart' : `Add to Cart · ₹${item.price * modalQuantity}`}
                 </button>
               </div>
 
