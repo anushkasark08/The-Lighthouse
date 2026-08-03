@@ -68,15 +68,15 @@ const Reserve = () => {
     return () => window.removeEventListener('nav-to-confirm', handleNavConfirm);
   }, []);
 
-  // Automatically fetch slots when date, guests, or seatingPreference changes
-  const checkSlots = async () => {
+ // Automatically fetch slots when date, guests, or seatingPreference changes
+  const checkSlots = useCallback(async () => {
     if (!reservationDetails.date || !reservationDetails.guests) return;
     setSlotsLoading(true);
     setError('');
     try {
-      const { data } = await getAvailableSlots(
-        reservationDetails.date, 
-        reservationDetails.guests, 
+     const { data } = await getAvailableSlots(
+       reservationDetails.date,
+        reservationDetails.guests,
         reservationDetails.seatingPreference
       );
       setSlots(data.data.slots || []);
@@ -84,13 +84,14 @@ const Reserve = () => {
       setError(err.response?.data?.error || 'Failed to fetch available slots');
     } finally {
       setSlotsLoading(false);
-    }
-  };
+   }
+  }, [reservationDetails.date, reservationDetails.guests, reservationDetails.seatingPreference]);
+
   useEffect(() => {
     if (reservationDetails.date && reservationDetails.guests) {
       checkSlots();
     }
-  }, [reservationDetails.date, reservationDetails.guests, reservationDetails.seatingPreference]);
+ }, [reservationDetails.date, reservationDetails.guests, reservationDetails.seatingPreference, checkSlots]);
 
   useEffect(() => {
     if (window.location.hash === '#reservation-form') {
