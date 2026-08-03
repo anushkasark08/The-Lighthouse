@@ -1,16 +1,20 @@
 import { useState, useEffect } from 'react';
 import { Link, NavLink, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
+import { useCart } from '../context/CartContext';
 import Tooltip from './Tooltip';
 import ConfirmModal from './ConfirmModal';
+import CartDrawer from './CartDrawer';
 import './Navbar.css';
 
 const Navbar = () => {
   const { user, logout } = useAuth();
+  const { cartCount } = useCart();
   const navigate = useNavigate();
   const [scrolled, setScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
   const [showLogoutConfirm, setShowLogoutConfirm] = useState(false);
+  const [cartOpen, setCartOpen] = useState(false);
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 60);
@@ -48,6 +52,9 @@ const Navbar = () => {
           <NavLink to="/menu" onClick={() => setMenuOpen(false)} className={({ isActive }) => isActive ? 'nav-link nav-link--active' : 'nav-link'}>
             Menu
           </NavLink>
+          <NavLink to="/reserve" onClick={() => setMenuOpen(false)} className={({ isActive }) => isActive ? 'nav-link nav-link--active' : 'nav-link'}>
+            Reserve & Pre-order
+          </NavLink>
 
           {user ? (
             <>
@@ -70,6 +77,18 @@ const Navbar = () => {
               </Link>
             </Tooltip>
           )}
+
+          <Tooltip content="View your cart" position="bottom">
+            <button
+              type="button"
+              className="navbar__cart-btn"
+              onClick={() => setCartOpen(true)}
+              aria-label="Open cart"
+            >
+              🛒
+              {cartCount > 0 && <span className="navbar__cart-badge">{cartCount}</span>}
+            </button>
+          </Tooltip>
         </nav>
 
         <Tooltip content="Toggle navigation menu" position="bottom">
@@ -92,6 +111,8 @@ const Navbar = () => {
         onConfirm={handleConfirmLogout}
         onCancel={handleCancelLogout}
       />
+
+      <CartDrawer isOpen={cartOpen} onClose={() => setCartOpen(false)} />
     </header>
   );
 };

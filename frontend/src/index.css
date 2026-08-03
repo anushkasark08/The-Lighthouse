@@ -457,3 +457,93 @@ h1, h2, h3, h4, h5 {
 ::-webkit-scrollbar-track { background: var(--color-bg); }
 ::-webkit-scrollbar-thumb { background: var(--color-surface); border-radius: 3px; }
 ::-webkit-scrollbar-thumb:hover { background: var(--color-text-faint); }
+
+/* ── Reserve Page ── */
+.reserve-page { padding-top: var(--navbar-h); padding-bottom: var(--space-3xl); }
+.reserve-card { border-radius: var(--radius-xl); padding: var(--space-2xl); max-width: 800px; margin: 0 auto; }
+.reserve-step { display: flex; flex-direction: column; gap: var(--space-lg); }
+.reserve-step__title { font-family: var(--font-serif); font-size: 1.8rem; color: var(--color-text); margin: 0; }
+.reserve-step__subtitle { font-size: 0.88rem; color: var(--color-text-muted); margin: 0; }
+.reserve-step__fields { display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-md); }
+.reserve-step__actions { display: flex; justify-content: space-between; align-items: center; padding-top: var(--space-lg); border-top: 1px solid var(--color-border); margin-top: var(--space-md); }
+
+.slots-section { border-top: 1px solid var(--color-border); padding-top: var(--space-md); }
+.slots-title { font-size: 1rem; font-weight: 600; color: var(--color-text); margin-bottom: var(--space-sm); }
+.no-slots { font-size: 0.85rem; color: var(--color-text-muted); text-align: center; padding: var(--space-md); }
+.slots-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(110px, 1fr)); gap: var(--space-sm); max-height: 240px; overflow-y: auto; padding: 4px; }
+.slot-btn { display: flex; flex-direction: column; align-items: center; gap: 2px; padding: 0.5rem; border-radius: var(--radius-md); background: var(--color-bg-card); border: 1px solid var(--color-border); color: var(--color-text-muted); transition: all var(--transition); }
+.slot-btn:hover:not(:disabled) { border-color: var(--color-primary); color: var(--color-text); }
+.slot-btn--selected { border-color: var(--color-primary) !important; background: rgba(201,169,98,0.08) !important; color: var(--color-primary) !important; }
+.slot-btn--unavail { opacity: 0.35; cursor: not-allowed; }
+.slot-time { font-size: 0.9rem; font-weight: 500; }
+.slot-status { font-size: 0.6rem; color: inherit; text-transform: uppercase; letter-spacing: 0.02em; }
+
+.preorder-menu-filters { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: var(--space-md); border-bottom: 1px solid var(--color-border); padding-bottom: var(--space-sm); }
+.preorder-dishes-grid { display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-md); max-height: 380px; overflow-y: auto; padding-right: 4px; }
+.preorder-card { display: flex; background: var(--color-bg-card); border: 1px solid var(--color-border); border-radius: var(--radius-md); overflow: hidden; height: 110px; }
+.preorder-card img { width: 100px; height: 100%; object-fit: cover; flex-shrink: 0; }
+.preorder-card__info { flex: 1; padding: var(--space-sm); display: flex; flex-direction: column; justify-content: space-between; }
+.preorder-card__name { font-size: 0.88rem; font-weight: 500; color: var(--color-text); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 160px; }
+.preorder-card__price { font-size: 0.82rem; color: var(--color-primary); margin-top: 2px; }
+.preorder-card__time { font-size: 0.7rem; color: var(--color-text-faint); }
+.preorder-card__actions { margin-top: auto; }
+
+.booking-review-summary { display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-md); }
+.booking-summary-column { padding: var(--space-md); border-radius: var(--radius-md); background: var(--color-bg-card); border: 1px solid var(--color-border); }
+.booking-summary-column h3 { font-size: 1.1rem; color: var(--color-primary); border-bottom: 1px solid var(--color-border); padding-bottom: 6px; margin-bottom: var(--space-sm); }
+
+.preorder-review-list { display: flex; flex-direction: column; gap: var(--space-xs); max-height: 180px; overflow-y: auto; padding: 6px 0; }
+.preorder-review-item { display: flex; justify-content: space-between; font-size: 0.85rem; color: var(--color-text); }
+.preorder-review-item strong { color: var(--color-primary); margin-left: 4px; }
+.preorder-review-totals { margin-top: auto; padding-top: 6px; }
+
+.confirm-row { display: flex; justify-content: space-between; align-items: center; padding: 6px 0; font-size: 0.85rem; border-bottom: 1px dashed rgba(255,255,255,0.03); }
+.confirm-row:last-child { border-bottom: none; }
+.confirm-row span { color: var(--color-text-muted); }
+.confirm-row strong { color: var(--color-text); }
+
+.confirmation-channels { display: flex; gap: var(--space-sm); margin-top: 6px; }
+.channel-btn { flex: 1; padding: 0.5rem; border-radius: var(--radius-sm); background: var(--color-surface); border: 1px solid var(--color-border); color: var(--color-text-muted); font-size: 0.82rem; transition: all var(--transition); text-align: center; cursor: pointer; }
+.channel-btn--active { background: rgba(201,169,98,0.08); border-color: var(--color-primary); color: var(--color-primary); font-weight: 500; }
+
+.deposit-section { background: rgba(201,169,98,0.03); border: 1px dashed var(--color-primary); border-radius: var(--radius-md); padding: var(--space-md); display: flex; flex-direction: column; gap: var(--space-xs); }
+.deposit-header { display: flex; justify-content: space-between; align-items: center; }
+.deposit-badge { background: rgba(201,169,98,0.12); color: var(--color-primary); padding: 2px 6px; border-radius: 3px; font-size: 0.65rem; font-weight: 600; text-transform: uppercase; }
+.deposit-desc { font-size: 0.78rem; color: var(--color-text-muted); line-height: 1.4; margin: 0; }
+
+.deposit-checkbox-container { display: block; position: relative; padding-left: 28px; cursor: pointer; font-size: 0.82rem; color: var(--color-text); user-select: none; margin-top: 4px; }
+.deposit-checkbox-container input { position: absolute; opacity: 0; cursor: pointer; height: 0; width: 0; }
+.checkmark { position: absolute; top: 2px; left: 0; height: 18px; width: 18px; background-color: var(--color-surface); border: 1px solid var(--color-border); border-radius: 4px; }
+.deposit-checkbox-container:hover input ~ .checkmark { border-color: var(--color-primary); }
+.deposit-checkbox-container input:checked ~ .checkmark { background-color: var(--color-primary); border-color: var(--color-primary); }
+.checkmark:after { content: ""; position: absolute; display: none; }
+.deposit-checkbox-container input:checked ~ .checkmark:after { display: block; }
+.deposit-checkbox-container .checkmark:after { left: 6px; top: 2px; width: 5px; height: 10px; border: solid black; border-width: 0 2px 2px 0; transform: rotate(45deg); }
+.checkbox-label { line-height: 18px; }
+
+.auth-prompt { background: rgba(224, 92, 92, 0.08); border: 1px solid rgba(224, 92, 92, 0.2); border-radius: var(--radius-md); padding: var(--space-md); font-size: 0.88rem; color: var(--color-error); text-align: center; }
+
+.success-card { background: var(--color-bg-card); border: 1px solid var(--color-border); border-radius: var(--radius-md); padding: var(--space-lg); margin-top: var(--space-lg); display: flex; flex-direction: column; gap: var(--space-md); text-align: left; }
+.success-details { display: flex; flex-direction: column; gap: 2px; }
+.success-row { display: flex; justify-content: space-between; align-items: center; padding: 8px 0; border-bottom: 1px dashed rgba(255,255,255,0.04); font-size: 0.9rem; }
+.success-row:last-child { border-bottom: none; }
+.success-row span { color: var(--color-text-muted); }
+.success-row strong { color: var(--color-text); }
+.success-text { color: var(--color-success) !important; }
+.success-alert { background: rgba(76, 175, 125, 0.1); border: 1px solid rgba(76, 175, 125, 0.2); color: var(--color-success); padding: var(--space-md); border-radius: var(--radius-md); font-size: 0.85rem; line-height: 1.4; text-align: center; }
+
+.reserve-success { padding: var(--space-2xl) 0; text-align: center; display: flex; flex-direction: column; align-items: center; gap: var(--space-sm); max-width: 600px; margin: 0 auto; }
+.success-icon { font-size: 4rem; margin-bottom: var(--space-sm); animation: bounce 1s infinite alternate; }
+
+@keyframes bounce {
+  from { transform: translateY(0); }
+  to { transform: translateY(-10px); }
+}
+
+.animate-fade-in { animation: fadeIn 0.5s ease forwards; }
+@keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
+
+@media (max-width: 768px) {
+  .reserve-step__fields, .preorder-dishes-grid, .booking-review-summary { grid-template-columns: 1fr; }
+  .reserve-card { padding: var(--space-lg); }
+}

@@ -788,6 +788,13 @@ body.light-theme .clicktoscroll {
   text-shadow: 0 1px 8px rgba(0, 0, 0, 0.55), 0 2px 16px rgba(0, 0, 0, 0.35);
 }
 
+/* Makes the scroll CTA elements appear interactive */
+.clicktoscroll,
+.scroll-indicator,
+.scroll-arrow {
+  cursor: pointer;
+}
+
 body.light-theme .scroll-indicator {
   background: linear-gradient(to bottom, #e5e2df, transparent);
 }
@@ -2048,7 +2055,13 @@ body.light-theme .time-slot-btn.limited .availability {
   gap: 28px;
   margin-bottom: 72px;
 }
-
+.review-count {
+  text-align: center;
+  margin: 12px 0 24px;
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--color-text-muted);
+}
 .reviews-empty {
   grid-column: 1 / -1;
   text-align: center;

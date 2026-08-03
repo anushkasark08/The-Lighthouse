@@ -42,6 +42,7 @@ app.use('/api/auth', require('./src/routes/authRoutes'));
 app.use('/api/reservations', require('./src/routes/reservationRoutes'));
 app.use('/api/menu', require('./src/routes/menuRoutes'));
 app.use('/api/reviews', require('./src/routes/reviewRoutes'));
+app.use('/api/cart', require('./src/routes/cartRoutes'));
 
 // Health check
 app.get('/api/health', (req, res) => {
@@ -49,7 +50,7 @@ app.get('/api/health', (req, res) => {
     success: true,
     message: 'The Lighthouse API is running',
     timestamp: new Date().toISOString(),
-    routes: ['/api/auth', '/api/reservations', '/api/menu', '/api/reviews']
+    routes: ['/api/auth', '/api/reservations', '/api/menu', '/api/reviews', '/api/cart']
   });
 });
 
@@ -58,7 +59,7 @@ app.use((err, req, res, next) => {
   console.error(err.stack);
   res.status(500).json({
     success: false,
-    error: 'Something went wrong!'
+    error: err.stack
   });
 });
 
@@ -67,6 +68,7 @@ app.listen(PORT, () => {
   console.log(`\n🌊 The Lighthouse API running on port ${PORT}`);
   console.log(`🔗 Health check: http://localhost:${PORT}/api/health`);
   console.log(`📋 Menu API:     http://localhost:${PORT}/api/menu`);
+  console.log(`🛒 Cart API:     http://localhost:${PORT}/api/cart`);
   console.log(`📅 Reservations: http://localhost:${PORT}/api/reservations\n`);
 });
 

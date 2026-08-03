@@ -3,7 +3,11 @@ import { getMenuItems } from '../api/menuApi';
 import { getReviews } from '../api/reviewApi';
 import { useMenu } from '../context/MenuContext';
 import { useAuth } from '../context/AuthContext';
+import { useCart } from '../context/CartContext';
 import { useEffect, useState } from 'react';
+import { useReservation } from '../context/ReservationContext';
+import { useEffect, useState, useCallback } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 import Tooltip from './Tooltip';
 
 const TAG_LABELS = {
@@ -14,16 +18,74 @@ const TAG_LABELS = {
   'spicy':        { label: 'Spicy', icon: '🌶️' }
 };
 
+// Fallback cooking-request options, used when a menu item doesn't yet carry
+// its own `cookingOptions` from the backend. Once MenuItem documents store
+// owner-configured options per item/category, those take priority (see
+// `cookingOptions` below) and this map is only a safety net.
+const DEFAULT_COOKING_OPTIONS_BY_CATEGORY = {
+  breakfast: ['Mild', 'Medium Spicy', 'Too Spicy', 'Extra Crispy', 'No Onions', 'No Garlic'],
+  lunch:     ['Mild', 'Medium Spicy', 'Too Spicy', 'No Onions', 'No Garlic', 'Less Oil'],
+  dinner:    ['Mild', 'Medium Spicy', 'Too Spicy', 'No Onions', 'No Garlic', 'Less Oil'],
+  desserts:  ['Less Sweet', 'Extra Sweet', 'No Nuts'],
+  drinks:    ['Less Sweet', 'Extra Ice', 'No Ice']
+};
+
+const DEFAULT_MAX_INSTRUCTIONS_LENGTH = 120;
+
 const MenuCard = ({ item }) => {
   const { updateItem } = useMenu();
   const { user } = useAuth();
+  const { addToCart } = useCart();
+  const navigate = useNavigate();
+  const { reservationDetails, preOrder, addToPreOrder, updatePreOrderQuantity, hasActiveBookingDetails } = useReservation();
   const [toggling, setToggling] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
   const [dishReviews, setDishReviews] = useState([]);
   const [relatedItems, setRelatedItems] = useState([]);
   const [loadingDetails, setLoadingDetails] = useState(false);
 
+  // Cooking Request customization state (per open modal instance)
+  const [selectedOptions, setSelectedOptions] = useState([]);
+  const [customInstructions, setCustomInstructions] = useState('');
+  const [quantity, setQuantity] = useState(1);
+  const [justAdded, setJustAdded] = useState(false);
+  const [adding, setAdding] = useState(false);
+  const [addError, setAddError] = useState(null);
+
   const isAdmin = user?.role === 'admin';
+  const itemId = item._id || item.id;
+
+  const preOrderItem = preOrder.find(p => (p.menuItem._id || p.menuItem.id) === itemId);
+  const quantity = preOrderItem ? preOrderItem.quantity : 0;
+
+  const handlePreOrderAction = (event) => {
+    event.stopPropagation();
+    if (!hasActiveBookingDetails()) {
+      alert("Please select your reservation date and time first so we can check kitchen availability for that day!");
+      navigate('/reserve');
+      return;
+    }
+    addToPreOrder(item);
+  };
+
+  const handleIncrement = (event) => {
+    event.stopPropagation();
+    updatePreOrderQuantity(itemId, quantity + 1);
+  };
+
+  const handleDecrement = (event) => {
+    event.stopPropagation();
+    updatePreOrderQuantity(itemId, quantity - 1);
+  };
+
+  // Owner-configured options win if present on the item; otherwise fall
+  // back to sensible category defaults so the feature works even before
+  // every dish has been configured.
+  const cookingOptions = item.cookingOptions?.length
+    ? item.cookingOptions
+    : (DEFAULT_COOKING_OPTIONS_BY_CATEGORY[item.category] || DEFAULT_COOKING_OPTIONS_BY_CATEGORY.dinner);
+  const allowCustomInstructions = item.allowCustomInstructions !== false;
+  const maxInstructionsLength = item.customInstructionsMaxLength || DEFAULT_MAX_INSTRUCTIONS_LENGTH;
 
   useEffect(() => {
     if (!isOpen) return;
@@ -86,7 +148,56 @@ const MenuCard = ({ item }) => {
   };
 
   const handleOpen = () => setIsOpen(true);
-  const handleClose = () => setIsOpen(false);
+
+  const handleClose = () => {
+    setIsOpen(false);
+    setSelectedOptions([]);
+    setCustomInstructions('');
+    setQuantity(1);
+    setAddError(null);
+  };
+
+  const toggleCookingOption = (option) => {
+    setSelectedOptions((prev) =>
+      prev.includes(option) ? prev.filter((o) => o !== option) : [...prev, option]
+    );
+  };
+
+  const handleAddToCart = async (event) => {
+    event.stopPropagation();
+    if (!item.isAvailable) return;
+
+    setAddError(null);
+    setAdding(true);
+    try {
+      await addToCart(item, {
+        quantity,
+        selectedCookingOptions: selectedOptions,
+        customInstructions
+      });
+
+      setJustAdded(true);
+      setTimeout(() => setJustAdded(false), 1600);
+      setSelectedOptions([]);
+      setCustomInstructions('');
+      setQuantity(1);
+    } catch (err) {
+      setAddError(err.response?.data?.error || 'Could not add this to your cart. Please try again.');
+    } finally {
+      setAdding(false);
+    }
+  };
+
+  // Quick-add from the card itself, without opening the customization modal
+  const handleQuickAdd = async (event) => {
+    event.stopPropagation();
+    if (!item.isAvailable) return;
+    try {
+      await addToCart(item, { quantity: 1 });
+    } catch (err) {
+      console.error('Quick add failed', err);
+    }
+  };
 
   return (
     <>
@@ -143,6 +254,17 @@ const MenuCard = ({ item }) => {
             </Tooltip>
           </div>
 
+          <Tooltip content={item.isAvailable ? 'Add to cart, or open dish for cooking requests' : 'Currently sold out'} position="top">
+            <button
+              type="button"
+              className="menu-card__quick-add"
+              onClick={handleQuickAdd}
+              disabled={!item.isAvailable}
+            >
+              + Add
+            </button>
+          </Tooltip>
+
           {isAdmin && (
             <div className="menu-card__admin" onClick={(event) => event.stopPropagation()}>
               <Tooltip content={item.isAvailable ? "Mark as sold out" : "Mark as available"} position="top">
@@ -166,6 +288,54 @@ const MenuCard = ({ item }) => {
         </div>
 
         <style>{`
+          .menu-card__preorder-row {
+            margin-top: var(--space-md);
+            border-top: 1px dashed var(--color-border);
+            padding-top: var(--space-md);
+            display: flex;
+            justify-content: stretch;
+            align-items: center;
+          }
+          .btn-preorder {
+            width: 100%;
+            padding: var(--space-sm) var(--space-md);
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            font-weight: 600;
+          }
+          .preorder-controls {
+            display: flex;
+            width: 100%;
+            align-items: center;
+            justify-content: space-between;
+            border: 1px solid var(--color-primary);
+            border-radius: var(--radius-md);
+            background: rgba(201, 169, 98, 0.04);
+            overflow: hidden;
+          }
+          .preorder-btn {
+            background: none;
+            border: none;
+            color: var(--color-primary);
+            font-size: 1.2rem;
+            width: 40px;
+            height: 38px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: background var(--transition);
+          }
+          .preorder-btn:hover {
+            background: rgba(201, 169, 98, 0.12);
+          }
+          .preorder-qty {
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: var(--color-text);
+          }
+
           .menu-card { position: relative; display: flex; flex-direction: column; cursor: pointer; transition: transform var(--transition), border-color var(--transition), box-shadow var(--transition); }
           .menu-card:hover { transform: translateY(-4px); border-color: var(--color-border-hover); box-shadow: 0 12px 30px rgba(0,0,0,0.18); }
           .menu-card--unavailable { opacity: 0.6; }
@@ -232,6 +402,22 @@ const MenuCard = ({ item }) => {
           }
           .menu-card__admin-label { font-size: 0.75rem; color: var(--color-text-faint); }
 
+          .menu-card__quick-add {
+            margin-top: var(--space-sm);
+            width: 100%;
+            padding: 0.55rem 0;
+            border-radius: var(--radius-md);
+            border: 1px solid var(--color-border-hover);
+            background: rgba(201, 169, 98, 0.08);
+            color: var(--color-primary-light);
+            font-size: 0.85rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background var(--transition), border-color var(--transition);
+          }
+          .menu-card__quick-add:hover:not(:disabled) { background: rgba(201, 169, 98, 0.18); }
+          .menu-card__quick-add:disabled { opacity: 0.4; cursor: not-allowed; }
+
           .menu-card-detail__backdrop {
             position: fixed;
             inset: 0;
@@ -291,6 +477,57 @@ const MenuCard = ({ item }) => {
             .menu-card-detail__media { min-height: 240px; }
             .menu-card-detail__content { padding: var(--space-lg); }
           }
+
+          .cooking-request {
+            padding: var(--space-md);
+            border: 1px solid var(--color-border);
+            border-radius: var(--radius-md);
+            background: rgba(255,255,255,0.03);
+            display: flex;
+            flex-direction: column;
+            gap: var(--space-sm);
+          }
+          .cooking-request__heading { font-family: var(--font-serif); font-size: 1.05rem; color: var(--color-text); margin: 0; }
+          .cooking-request__hint { font-size: 0.82rem; color: var(--color-text-muted); margin: -0.2rem 0 0; }
+          .cooking-request__options { display: flex; flex-wrap: wrap; gap: 0.5rem; }
+          .cooking-request__chip {
+            padding: 0.4rem 0.85rem;
+            border-radius: var(--radius-full);
+            border: 1px solid var(--color-border);
+            background: transparent;
+            color: var(--color-text-muted);
+            font-size: 0.82rem;
+            cursor: pointer;
+            transition: all var(--transition);
+          }
+          .cooking-request__chip:hover { border-color: var(--color-border-hover); color: var(--color-text); }
+          .cooking-request__chip--active {
+            background: rgba(201, 169, 98, 0.16);
+            border-color: var(--color-primary);
+            color: var(--color-primary-light);
+          }
+          .cooking-request__notes { display: flex; flex-direction: column; gap: 0.3rem; }
+          .cooking-request__textarea {
+            width: 100%;
+            resize: vertical;
+            background: var(--color-bg-elevated);
+            border: 1px solid var(--color-border);
+            border-radius: var(--radius-md);
+            color: var(--color-text);
+            padding: 0.6rem 0.75rem;
+            font-family: var(--font-sans);
+            font-size: 0.85rem;
+          }
+          .cooking-request__textarea:focus { outline: none; border-color: var(--color-primary); }
+          .cooking-request__count { align-self: flex-end; font-size: 0.72rem; color: var(--color-text-faint); }
+
+          .qty-stepper { display: inline-flex; align-items: center; gap: 0.9rem; border: 1px solid var(--color-border); border-radius: var(--radius-full); padding: 0.35rem 0.9rem; }
+          .qty-stepper button { border: none; background: transparent; color: var(--color-text); font-size: 1.1rem; cursor: pointer; width: 20px; }
+          .qty-stepper span { min-width: 18px; text-align: center; color: var(--color-text); font-size: 0.95rem; }
+
+          .menu-card-detail__add-row { display: flex; align-items: center; gap: var(--space-md); }
+          .menu-card-detail__add-btn { flex: 1; }
+          .cooking-request__error { color: var(--color-error); font-size: 0.85rem; margin: -0.4rem 0 0; }
         `}</style>
       </article>
 
@@ -334,6 +571,75 @@ const MenuCard = ({ item }) => {
                   <span key={doOcc} className="menu-card-detail__tag">🍷 {doOcc}</span>
                 ))}
               </div>
+
+              <div className="cooking-request">
+                <h4 className="cooking-request__heading">🍳 Cooking Request</h4>
+                <p className="cooking-request__hint">Let the kitchen know how you'd like this prepared.</p>
+
+                <div className="cooking-request__options">
+                  {cookingOptions.map((option) => {
+                    const active = selectedOptions.includes(option);
+                    return (
+                      <button
+                        key={option}
+                        type="button"
+                        className={`cooking-request__chip ${active ? 'cooking-request__chip--active' : ''}`}
+                        onClick={() => toggleCookingOption(option)}
+                        aria-pressed={active}
+                      >
+                        {active ? '✓ ' : ''}{option}
+                      </button>
+                    );
+                  })}
+                </div>
+
+                {allowCustomInstructions && (
+                  <div className="cooking-request__notes">
+                    <textarea
+                      className="cooking-request__textarea"
+                      placeholder="Any other instructions? e.g. no coriander, mild spice"
+                      value={customInstructions}
+                      maxLength={maxInstructionsLength}
+                      onChange={(event) => setCustomInstructions(event.target.value)}
+                      rows={2}
+                    />
+                    <span className="cooking-request__count">
+                      {customInstructions.length}/{maxInstructionsLength}
+                    </span>
+                  </div>
+                )}
+              </div>
+
+              <div className="menu-card-detail__add-row">
+                <div className="qty-stepper">
+                  <button
+                    type="button"
+                    onClick={() => setQuantity((q) => Math.max(1, q - 1))}
+                    aria-label="Decrease quantity"
+                  >
+                    −
+                  </button>
+                  <span>{quantity}</span>
+                  <button
+                    type="button"
+                    onClick={() => setQuantity((q) => q + 1)}
+                    aria-label="Increase quantity"
+                  >
+                    +
+                  </button>
+                </div>
+
+                <button
+                  type="button"
+                  className="btn btn-primary menu-card-detail__add-btn"
+                  onClick={handleAddToCart}
+                  disabled={!item.isAvailable || adding}
+                >
+                  {adding ? 'Adding…' : justAdded ? '✓ Added to Cart' : `Add to Cart · ₹${item.price * quantity}`}
+                </button>
+              </div>
+
+              {addError && <p className="cooking-request__error">⚠️ {addError}</p>}
 
               <div className="menu-card-detail__reviews">
                 <h4>Guest reviews</h4>

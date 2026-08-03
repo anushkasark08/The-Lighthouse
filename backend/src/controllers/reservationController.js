@@ -8,7 +8,7 @@ const emailService = require('../services/emailService');
 // @access  Public
 exports.getAvailableSlots = async (req, res) => {
   try {
-    const { date, guests } = req.query;
+    const { date, guests, seatingPreference } = req.query;
 
     if (!date || !guests) {
       return res.status(400).json({
@@ -23,7 +23,7 @@ exports.getAvailableSlots = async (req, res) => {
       return res.status(400).json({ success: false, error: 'Invalid guests value' });
     }
 
-    const result = await availabilityService.getAvailableSlots(date, guests);
+    const result = await availabilityService.getAvailableSlots(date, guests, seatingPreference);
     res.status(200).json(result);
   } catch (error) {
     res.status(500).json({
@@ -38,7 +38,7 @@ exports.getAvailableSlots = async (req, res) => {
 // @access  Private
 exports.createReservation = async (req, res) => {
   try {
-    const { date, time, guests, specialRequests } = req.body;
+    const { date, time, guests, specialRequests, seatingPreference, preOrder, confirmationChannel, depositAmount } = req.body;
 
     // Basic validation to avoid malformed requests
     if (!date || !time || !guests) {
@@ -72,7 +72,7 @@ exports.createReservation = async (req, res) => {
     const cleanedSpecialRequests = typeof specialRequests === 'string' ? specialRequests.trim().slice(0, 1000) : '';
 
     // Check availability
-    const availability = await availabilityService.getAvailableSlots(date, guests);
+    const availability = await availabilityService.getAvailableSlots(date, guests, seatingPreference);
     const selectedSlot = availability.data.slots.find(s => s.time === time);
     
     if (!selectedSlot || !selectedSlot.available) {
@@ -93,11 +93,16 @@ exports.createReservation = async (req, res) => {
     const bookedTableIds = activeReservations.map(res => res.table);
 
     // 2. Find a single active table of sufficient capacity that is NOT in the booked IDs list
-    const assignedTable = await Table.findOne({
+    const tableQuery = {
       _id: { $nin: bookedTableIds },
       capacity: { $gte: guestsNum },
       isActive: true
-    });
+    };
+    if (seatingPreference && seatingPreference !== 'any') {
+      tableQuery.section = seatingPreference;
+    }
+    
+    const assignedTable = await Table.findOne(tableQuery);
 
     if (!assignedTable) {
       return res.status(400).json({
@@ -114,16 +119,21 @@ exports.createReservation = async (req, res) => {
       time,
       guests: guestsNum,
       specialRequests: cleanedSpecialRequests,
-      status: 'confirmed'
+      status: 'confirmed',
+      seatingPreference: seatingPreference || 'any',
+      preOrder: preOrder || [],
+      confirmationChannel: confirmationChannel || 'email',
+      depositAmount: depositAmount || 0,
+      depositPaid: depositAmount > 0
     });
 
+    // Populate table and preOrder menuItem details
+    const populatedReservation = await Reservation.findById(reservation._id)
+      .populate('table', 'tableNumber capacity section')
+      .populate('preOrder.menuItem', 'name price image preparationTime');
+
     // Send confirmation email asynchronously without blocking the client response
-    emailService.sendReservationConfirmation(req.user.email, {
-      date,
-      time,
-      guests: guestsNum,
-      specialRequests: cleanedSpecialRequests
-    }).catch(err => {
+    emailService.sendReservationConfirmation(req.user.email, populatedReservation).catch(err => {
       // Log the error internally so developers can investigate email issues, 
       // but do not let it crash the reservation success flow.
       console.error('Email delivery failed for reservation:', reservation._id, err);
@@ -131,7 +141,7 @@ exports.createReservation = async (req, res) => {
 
     res.status(201).json({
       success: true,
-      data: reservation,
+      data: populatedReservation,
       message: 'Reservation confirmed! Check your email for details.'
     });
   } catch (error) {
@@ -149,6 +159,7 @@ exports.getReservations = async (req, res) => {
   try {
     const reservations = await Reservation.find({ user: req.user.id })
       .populate('table', 'tableNumber capacity section')
+      .populate('preOrder.menuItem', 'name price image preparationTime')
       .sort({ date: -1 });
 
     res.status(200).json({

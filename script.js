@@ -155,6 +155,20 @@ function smoothScroll(e) {
   closeMobileMenu();
 }
 
+function scrollToSection(selector) {
+  const target = document.querySelector(selector);
+  if (!target) return;
+
+  const prefersReduced = window.matchMedia(
+    "(prefers-reduced-motion: reduce)"
+  ).matches;
+
+  window.scrollTo({
+    top: target.offsetTop - 80,
+    behavior: prefersReduced ? "auto" : "smooth",
+  });
+}
+
 function toggleMobileMenu() {
   if (!navToggle || !navMenu) return;
   navToggle.classList.toggle("active");
@@ -2091,7 +2105,24 @@ function setupReservationModal() {
     form.addEventListener("submit", (e) => {
       e.preventDefault();
       const name = document.getElementById("modal-name")?.value.trim();
-      const email = document.getElementById("modal-email")?.value.trim();
+      const emailField = document.getElementById("modal-email");
+      if (!(emailField instanceof HTMLInputElement)) {
+        return;
+      }
+      if (!emailField.checkValidity()) {
+        emailField.reportValidity();
+        return;
+      }
+      const email = emailField?.value.trim();
+      if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email)) {
+          addError(
+              emailField,
+              typeof i18next !== "undefined" && i18next.t
+                  ? i18next.t("reservation.email_error")
+                  : "Please enter a valid email address."
+          );
+          return;
+      }
       const phone = document.getElementById("modal-phone")?.value.trim();
       const guests = document.getElementById("modal-guests")?.value || "2";
       const date = document.getElementById("modal-date")?.value;
@@ -2457,6 +2488,14 @@ document.addEventListener('DOMContentLoaded', () => {
   navLinks.forEach((link) => link.addEventListener("click", smoothScroll));
   document.querySelectorAll(".nav-cta, .nav-cta-mobile, .hero-buttons a").forEach((link) => {
     link.addEventListener("click", smoothScroll);
+  });
+
+  document
+  .querySelectorAll(".clicktoscroll, .scroll-indicator, .scroll-arrow")
+  .forEach((element) => {
+    element.addEventListener("click", () => {
+      scrollToSection("#about");
+    });
   });
 
   filterBtns.forEach((btn) => {

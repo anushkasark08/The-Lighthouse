@@ -35,6 +35,36 @@ const reservationSchema = new mongoose.Schema({
     enum: ['pending', 'confirmed', 'cancelled', 'completed', 'no-show'],
     default: 'pending'
   },
+  seatingPreference: {
+    type: String,
+    enum: ['main', 'window', 'private', 'outdoor', 'any'],
+    default: 'any'
+  },
+  preOrder: [{
+    menuItem: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'MenuItem',
+      required: true
+    },
+    quantity: {
+      type: Number,
+      required: true,
+      min: 1
+    }
+  }],
+  confirmationChannel: {
+    type: String,
+    enum: ['email', 'whatsapp', 'sms'],
+    default: 'email'
+  },
+  depositAmount: {
+    type: Number,
+    default: 0
+  },
+  depositPaid: {
+    type: Boolean,
+    default: false
+  },
   confirmationEmailSent: {
     type: Boolean,
     default: false

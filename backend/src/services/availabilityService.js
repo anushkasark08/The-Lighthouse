@@ -10,7 +10,7 @@ class AvailabilityService {
     };
   }
 
-  async getAvailableSlots(date, guests) {
+  async getAvailableSlots(date, guests, seatingPreference) {
     // Validate date is not in the past
     const bookingDate = new Date(date);
     const today = new Date();
@@ -21,10 +21,16 @@ class AvailabilityService {
     }
 
     // Get available tables
-    const availableTables = await Table.find({
-      capacity: { $gte: parseInt(guests) },
+    const tableQuery = {
+      capacity: { $gte: parseInt(guests, 10) },
       isActive: true
-    });
+    };
+
+    if (seatingPreference && seatingPreference !== 'any') {
+      tableQuery.section = seatingPreference;
+    }
+
+    const availableTables = await Table.find(tableQuery);
 
     if (availableTables.length === 0) {
       return {

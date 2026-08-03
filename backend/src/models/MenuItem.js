@@ -106,6 +106,26 @@ const menuItemSchema = new mongoose.Schema(
       type: [String],
       enum: ["Romantic Dinner", "Family Feast", "Quick & Light Bite", "Celebration & Gala", "Late Night Indulgence", "Executive Business Lunch"],
       default: []
+
+    // ---- NEW FIELDS: Cooking Request customization (owner-configured) ----
+    // Predefined cooking preferences the owner offers for this dish
+    // (e.g. 'Less Spicy', 'Extra Crispy', 'No Onions'). When empty, the
+    // frontend falls back to sensible category defaults.
+    cookingOptions: {
+      type: [String],
+      default: []
+    },
+    // Whether customers can add free-text cooking instructions for this item
+    allowCustomInstructions: {
+      type: Boolean,
+      default: true
+    },
+    // Max character length for the free-text cooking instructions field
+    customInstructionsMaxLength: {
+      type: Number,
+      min: [0, 'Max length cannot be negative'],
+      max: [500, 'Max length cannot exceed 500 characters'],
+      default: 120
     }
   },
   {
