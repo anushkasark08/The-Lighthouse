@@ -19,63 +19,39 @@ const App = () => {
     <BrowserRouter>
       <AuthProvider>
         <MenuProvider>
-        <CartProvider>
-          <div style={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
-            <CustomCursor />
-            <Navbar />
-            <Routes>
-              <Route path="/" element={<Home />} />
-              <Route path="/menu" element={<Menu />} />
-              <Route path="/reserve" element={<Reserve />} />
-              <Route path="/auth" element={<Auth />} />
-              <Route
-                path="/admin"
-                element={
-                  <ProtectedRoute requireAdmin>
-                    <AdminDashboard />
-                  </ProtectedRoute>
-                }
-              />
-              {/* 404 fallback */}
-              <Route path="*" element={
-                <div style={{ textAlign: 'center', padding: '8rem 2rem' }}>
-                  <p style={{ fontFamily: 'var(--font-serif)', fontSize: '4rem', color: 'var(--color-primary)' }}>404</p>
-                  <p style={{ color: 'var(--color-text-muted)', marginTop: '1rem' }}>Page not found.</p>
-                </div>
-              } />
-            </Routes>
-            <Footer />
-          </div>
-        </CartProvider>
-          <ReservationProvider>
-            <div style={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
-              <CustomCursor />
-              <Navbar />
-              <Routes>
-                <Route path="/" element={<Home />} />
-                <Route path="/menu" element={<Menu />} />
-                <Route path="/reserve" element={<Reserve />} />
-                <Route path="/auth" element={<Auth />} />
-                <Route
-                  path="/admin"
-                  element={
-                    <ProtectedRoute requireAdmin>
-                      <AdminDashboard />
-                    </ProtectedRoute>
-                  }
-                />
-                {/* 404 fallback */}
-                <Route path="*" element={
-                  <div style={{ textAlign: 'center', padding: '8rem 2rem' }}>
-                    <p style={{ fontFamily: 'var(--font-serif)', fontSize: '4rem', color: 'var(--color-primary)' }}>404</p>
-                    <p style={{ color: 'var(--color-text-muted)', marginTop: '1rem' }}>Page not found.</p>
-                  </div>
-                } />
-              </Routes>
-              <ReservationSummarySticky />
-              <Footer />
-            </div>
-          </ReservationProvider>
+          <CartProvider>
+            <ReservationProvider>
+              <div style={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
+                <CustomCursor />
+                <Navbar />
+                <Routes>
+                  <Route path="/" element={<Home />} />
+                  <Route path="/menu" element={<Menu />} />
+                  <Route path="/reserve" element={<Reserve />} />
+                  <Route path="/auth" element={<Auth />} />
+                  <Route
+                    path="/admin"
+                    element={
+                      <ProtectedRoute requireAdmin>
+                        <AdminDashboard />
+                      </ProtectedRoute>
+                    }
+                  />
+                  <Route
+                    path="*"
+                    element={
+                      <div style={{ textAlign: 'center', padding: '8rem 2rem' }}>
+                        <p style={{ fontFamily: 'var(--font-serif)', fontSize: '4rem', color: 'var(--color-primary)' }}>404</p>
+                        <p style={{ color: 'var(--color-text-muted)', marginTop: '1rem' }}>Page not found.</p>
+                      </div>
+                    }
+                  />
+                </Routes>
+                <ReservationSummarySticky />
+                <Footer />
+              </div>
+            </ReservationProvider>
+          </CartProvider>
         </MenuProvider>
       </AuthProvider>
     </BrowserRouter>

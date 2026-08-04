@@ -4,9 +4,8 @@ import { getReviews } from '../api/reviewApi';
 import { useMenu } from '../context/MenuContext';
 import { useAuth } from '../context/AuthContext';
 import { useCart } from '../context/CartContext';
-import { useEffect, useState } from 'react';
-import { useReservation } from '../context/ReservationContext';
 import { useEffect, useState, useCallback } from 'react';
+import { useReservation } from '../context/ReservationContext';
 import { Link, useNavigate } from 'react-router-dom';
 import Tooltip from './Tooltip';
 
@@ -47,7 +46,6 @@ const MenuCard = ({ item }) => {
   // Cooking Request customization state (per open modal instance)
   const [selectedOptions, setSelectedOptions] = useState([]);
   const [customInstructions, setCustomInstructions] = useState('');
-  const [quantity, setQuantity] = useState(1);
   const [justAdded, setJustAdded] = useState(false);
   const [adding, setAdding] = useState(false);
   const [addError, setAddError] = useState(null);
@@ -56,7 +54,7 @@ const MenuCard = ({ item }) => {
   const itemId = item._id || item.id;
 
   const preOrderItem = preOrder.find(p => (p.menuItem._id || p.menuItem.id) === itemId);
-  const quantity = preOrderItem ? preOrderItem.quantity : 0;
+  const currentQuantity = preOrderItem ? preOrderItem.quantity : 0;
 
   const handlePreOrderAction = (event) => {
     event.stopPropagation();
@@ -70,12 +68,12 @@ const MenuCard = ({ item }) => {
 
   const handleIncrement = (event) => {
     event.stopPropagation();
-    updatePreOrderQuantity(itemId, quantity + 1);
+    updatePreOrderQuantity(itemId, currentQuantity + 1);
   };
 
   const handleDecrement = (event) => {
     event.stopPropagation();
-    updatePreOrderQuantity(itemId, quantity - 1);
+    updatePreOrderQuantity(itemId, currentQuantity - 1);
   };
 
   // Owner-configured options win if present on the item; otherwise fall
