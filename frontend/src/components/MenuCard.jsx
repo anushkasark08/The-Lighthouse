@@ -1,12 +1,11 @@
-import { toggleAvailability } from '../api/menuApi';
-import { getMenuItems } from '../api/menuApi';
+import { toggleAvailability, getMenuItems } from '../api/menuApi';
 import { getReviews } from '../api/reviewApi';
 import { useMenu } from '../context/MenuContext';
 import { useAuth } from '../context/AuthContext';
 import { useCart } from '../context/CartContext';
-import { useEffect, useState, useCallback } from 'react';
+import { useEffect, useState } from 'react';
 import { useReservation } from '../context/ReservationContext';
-import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import Tooltip from './Tooltip';
 
 const TAG_LABELS = {
@@ -54,7 +53,7 @@ const MenuCard = ({ item }) => {
   const itemId = item._id || item.id;
 
   const preOrderItem = preOrder.find(p => (p.menuItem._id || p.menuItem.id) === itemId);
-  const currentQuantity = preOrderItem ? preOrderItem.quantity : 0;
+  const preOrderQuantity = preOrderItem ? preOrderItem.quantity : 0;
 
   const handlePreOrderAction = (event) => {
     event.stopPropagation();
@@ -68,12 +67,12 @@ const MenuCard = ({ item }) => {
 
   const handleIncrement = (event) => {
     event.stopPropagation();
-    updatePreOrderQuantity(itemId, currentQuantity + 1);
+    updatePreOrderQuantity(itemId, preOrderQuantity + 1);
   };
 
   const handleDecrement = (event) => {
     event.stopPropagation();
-    updatePreOrderQuantity(itemId, currentQuantity - 1);
+    updatePreOrderQuantity(itemId, preOrderQuantity - 1);
   };
 
   // Owner-configured options win if present on the item; otherwise fall

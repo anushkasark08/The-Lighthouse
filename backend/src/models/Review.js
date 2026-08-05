@@ -32,8 +32,8 @@ const reviewSchema = new mongoose.Schema(
   }
 );
 
-// One review per user (can be removed if multiple reviews per user are allowed)
-reviewSchema.index({ user: 1 }, { unique: false });
+// One review per user per menu item (can be removed if multiple reviews per user are allowed)
+reviewSchema.index({ user: 1, menuItem: 1 }, { unique: true });
 
 // Recalculates and stores average rating + review count on the linked MenuItem.
 // Only runs when a review is actually tied to a dish (menuItem is not null) —

@@ -1,4 +1,4 @@
-import { useState, useEffect, useMemo } from 'react';
+﻿import { useState, useEffect, useMemo } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { getAvailableSlots, createReservation } from '../api/reservationApi';
 import { useMenu } from '../context/MenuContext';
@@ -18,28 +18,28 @@ const SEATING_OPTIONS = [
 
 const CATEGORIES = ['all', 'breakfast', 'lunch', 'dinner', 'desserts', 'drinks'];
 const CATEGORY_ICONS = {
-  all: '🍽️', breakfast: '🍳', lunch: '🥗',
-  dinner: '🌙', desserts: '🍰', drinks: '🍸'
+  all: 'ðŸ½ï¸', breakfast: 'ðŸ³', lunch: 'ðŸ¥—',
+  dinner: 'ðŸŒ™', desserts: 'ðŸ°', drinks: 'ðŸ¸'
 };
 
 const Reserve = () => {
   const { user } = useAuth();
   const navigate = useNavigate();
   const { items: menuItems, fetchMenu } = useMenu();
-  const { 
-    reservationDetails, 
-    preOrder, 
-    setReservationDetails, 
-    addToPreOrder, 
-    updatePreOrderQuantity, 
-    clearReservation 
+  const {
+    reservationDetails,
+    preOrder,
+    setReservationDetails,
+    addToPreOrder,
+    updatePreOrderQuantity,
+    clearReservation
   } = useReservation();
 
   const [step, setStep] = useState(0);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const [success, setSuccess] = useState(false);
-  
+
   // Local state for slots
   const [slots, setSlots] = useState([]);
   const [slotsLoading, setSlotsLoading] = useState(false);
@@ -75,8 +75,8 @@ const Reserve = () => {
     setError('');
     try {
       const { data } = await getAvailableSlots(
-        reservationDetails.date, 
-        reservationDetails.guests, 
+        reservationDetails.date,
+        reservationDetails.guests,
         reservationDetails.seatingPreference
       );
       setSlots(data.data.slots || []);
@@ -184,12 +184,12 @@ const Reserve = () => {
     return (
       <main className="page-enter reserve-page">
         <div className="container reserve-success animate-fade-in">
-          <div className="success-icon">🎉</div>
+          <div className="success-icon">ðŸŽ‰</div>
           <h1 className="section-title">Reservation Confirmed!</h1>
           <div className="divider">
             <div className="divider-line" /><div className="divider-diamond" /><div className="divider-line right" />
           </div>
-          
+
           <div className="success-card glass">
             <div className="success-details">
               <div className="success-row"><span>Date & Time</span><strong>{formattedDate} at {reservationDetails.time}</strong></div>
@@ -200,16 +200,16 @@ const Reserve = () => {
                 <>
                   <div className="success-row"><span>Pre-ordered Dishes</span><strong>{totalItems} items</strong></div>
                   <div className="success-row"><span>Estimated Preparation Time</span><strong>{maxPrepTime} mins (Ready on arrival)</strong></div>
-                  <div className="success-row"><span>Estimate Total Bill</span><strong className="gold">₹{totalBill}</strong></div>
+                  <div className="success-row"><span>Estimate Total Bill</span><strong className="gold">â‚¹{totalBill}</strong></div>
                 </>
               )}
               {reservationDetails.depositAmount > 0 && (
-                <div className="success-row"><span>Refundable Deposit Paid</span><strong className="success-text">₹{reservationDetails.depositAmount} ✓</strong></div>
+                <div className="success-row"><span>Refundable Deposit Paid</span><strong className="success-text">â‚¹{reservationDetails.depositAmount} âœ“</strong></div>
               )}
             </div>
-            
+
             <div className="success-alert">
-              🍽️ <strong>Ready When Seated:</strong> Your table is secured and your pre-ordered dishes will be served fresh shortly after you sit down.
+              ðŸ½ï¸ <strong>Ready When Seated:</strong> Your table is secured and your pre-ordered dishes will be served fresh shortly after you sit down.
             </div>
           </div>
 
@@ -240,12 +240,12 @@ const Reserve = () => {
             <div key={i} className="step-item">
               <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 6 }}>
                 <Tooltip content={`Step ${i + 1}: ${label}`} position="bottom">
-                  <div 
+                  <div
                     className={`step-circle ${i < step ? 'done' : i === step ? 'active' : ''}`}
                     onClick={() => i < step && setStep(i)}
                     style={{ cursor: i < step ? 'pointer' : 'default' }}
                   >
-                    {i < step ? '✓' : i + 1}
+                    {i < step ? 'âœ“' : i + 1}
                   </div>
                 </Tooltip>
                 <span className={`step-label ${i < step ? 'done' : i === step ? 'active' : ''}`}>{label}</span>
@@ -257,31 +257,31 @@ const Reserve = () => {
 
         {/* WIZARD CARD PANEL */}
         <div className="reserve-card glass" id="reservation-form">
-          
+
           {/* STEP 0: RESERVE TABLE */}
           {step === 0 && (
             <div className="reserve-step">
               <h2 className="reserve-step__title">1. Seating Details & Time Slot</h2>
-              
+
               <div className="reserve-step__fields">
                 <div className="form-group">
                   <label className="form-label">Date</label>
                   <Tooltip content="Choose your dining date" position="top">
-                    <input 
-                      className="form-input" 
-                      type="date" 
-                      value={reservationDetails.date} 
-                      min={today} 
-                      onChange={(e) => setReservationDetails({ date: e.target.value })} 
+                    <input
+                      className="form-input"
+                      type="date"
+                      value={reservationDetails.date}
+                      min={today}
+                      onChange={(e) => setReservationDetails({ date: e.target.value })}
                     />
                   </Tooltip>
                 </div>
                 <div className="form-group">
                   <label className="form-label">Number of Guests</label>
                   <Tooltip content="Select the size of your party" position="top">
-                    <select 
-                      className="form-select" 
-                      value={reservationDetails.guests} 
+                    <select
+                      className="form-select"
+                      value={reservationDetails.guests}
                       onChange={(e) => setReservationDetails({ guests: Number(e.target.value) })}
                     >
                       {[1,2,3,4,5,6,7,8].map((n) => <option key={n} value={n}>{n} {n === 1 ? 'guest' : 'guests'}</option>)}
@@ -291,9 +291,9 @@ const Reserve = () => {
                 <div className="form-group" style={{ gridColumn: 'span 2' }}>
                   <label className="form-label">Seating Preference</label>
                   <Tooltip content="Choose where you would prefer to sit" position="top">
-                    <select 
-                      className="form-select" 
-                      value={reservationDetails.seatingPreference} 
+                    <select
+                      className="form-select"
+                      value={reservationDetails.seatingPreference}
                       onChange={(e) => setReservationDetails({ seatingPreference: e.target.value })}
                     >
                       {SEATING_OPTIONS.map((opt) => <option key={opt.value} value={opt.value}>{opt.label}</option>)}
@@ -313,8 +313,8 @@ const Reserve = () => {
                   ) : (
                     <div className="slots-grid">
                       {slots.map((slot) => (
-                        <Tooltip 
-                          key={slot.time} 
+                        <Tooltip
+                          key={slot.time}
                           content={slot.available ? `${slot.tablesAvailable} table${slot.tablesAvailable > 1 ? 's' : ''} available` : 'Fully booked'}
                           position="top"
                         >
@@ -336,12 +336,12 @@ const Reserve = () => {
               {error && <p className="form-error" role="alert">{error}</p>}
 
               <div className="reserve-step__actions" style={{ justifyContent: 'flex-end' }}>
-                <button 
+                <button
                   className="btn btn-primary"
                   onClick={() => setStep(1)}
                   disabled={!reservationDetails.date || !reservationDetails.time}
                 >
-                  Continue to Pre-order Menu →
+                  Continue to Pre-order Menu â†’
                 </button>
               </div>
             </div>
@@ -377,7 +377,7 @@ const Reserve = () => {
                       className={`diet-btn ${dietFilter === diet ? 'diet-btn--active' : ''}`}
                       onClick={() => setDietFilter(diet)}
                     >
-                      {diet === 'all' ? 'All' : diet === 'veg' ? '🟢 Veg' : '🔴 Non-Veg'}
+                      {diet === 'all' ? 'All' : diet === 'veg' ? 'ðŸŸ¢ Veg' : 'ðŸ”´ Non-Veg'}
                     </button>
                   ))}
                 </div>
@@ -394,12 +394,12 @@ const Reserve = () => {
                     const itemId = item._id || item.id;
                     const orderItem = preOrder.find(p => (p.menuItem._id || p.menuItem.id) === itemId);
                     const qty = orderItem ? orderItem.quantity : 0;
-                    
+
                     return (
                       <div key={itemId} className="preorder-card glass">
-                        <img 
-                          src={item.image || '/images/dinner.jpg'} 
-                          alt={item.name} 
+                        <img
+                          src={item.image || '/images/dinner.jpg'}
+                          alt={item.name}
                           onError={(e) => { e.target.src = '/images/dinner.jpg'; }}
                         />
                         <div className="preorder-card__info">
@@ -409,15 +409,15 @@ const Reserve = () => {
                                 <span className={`tonight-item__dot ${item.isVeg ? 'veg' : 'nonveg'}`} />
                                 <h4 className="preorder-card__name">{item.name}</h4>
                               </div>
-                              <p className="preorder-card__price">₹{item.price}</p>
+                              <p className="preorder-card__price">â‚¹{item.price}</p>
                             </div>
-                            <span className="preorder-card__time">⏱ {item.preparationTime} min</span>
+                            <span className="preorder-card__time">â± {item.preparationTime} min</span>
                           </div>
 
                           <div className="preorder-card__actions">
                             {qty > 0 ? (
                               <div className="preorder-controls" style={{ height: '32px' }}>
-                                <button className="preorder-btn" style={{ height: '30px', width: '30px' }} onClick={() => updatePreOrderQuantity(itemId, qty - 1)}>−</button>
+                                <button className="preorder-btn" style={{ height: '30px', width: '30px' }} onClick={() => updatePreOrderQuantity(itemId, qty - 1)}>âˆ’</button>
                                 <span className="preorder-qty" style={{ fontSize: '0.8rem' }}>{qty}</span>
                                 <button className="preorder-btn" style={{ height: '30px', width: '30px' }} onClick={() => updatePreOrderQuantity(itemId, qty + 1)}>+</button>
                               </div>
@@ -436,9 +436,9 @@ const Reserve = () => {
 
               {/* Bottom Actions */}
               <div className="reserve-step__actions">
-                <button className="btn btn-ghost" onClick={() => setStep(0)}>← Seating Details</button>
+                <button className="btn btn-ghost" onClick={() => setStep(0)}>â† Seating Details</button>
                 <button className="btn btn-primary" onClick={() => setStep(2)}>
-                  {totalItems > 0 ? `Review Pre-order (${totalItems} items) →` : 'Review & Confirm Table →'}
+                  {totalItems > 0 ? `Review Pre-order (${totalItems} items) â†’` : 'Review & Confirm Table â†’'}
                 </button>
               </div>
             </div>
@@ -475,12 +475,12 @@ const Reserve = () => {
                       {preOrder.map((item) => (
                         <div key={item.menuItem._id || item.menuItem.id} className="preorder-review-item">
                           <span>{item.menuItem.name} <strong>x{item.quantity}</strong></span>
-                          <span>₹{item.menuItem.price * item.quantity}</span>
+                          <span>â‚¹{item.menuItem.price * item.quantity}</span>
                         </div>
                       ))}
                       <div className="preorder-review-totals border-top">
                         <div className="confirm-row" style={{ padding: '8px 0', fontSize: '0.85rem' }}><span>Est. Prep Time</span><strong>{maxPrepTime} mins</strong></div>
-                        <div className="confirm-row" style={{ padding: '8px 0', fontSize: '1rem' }}><span className="gold">Estimated Total</span><strong className="gold">₹{totalBill}</strong></div>
+                        <div className="confirm-row" style={{ padding: '8px 0', fontSize: '1rem' }}><span className="gold">Estimated Total</span><strong className="gold">â‚¹{totalBill}</strong></div>
                       </div>
                     </div>
                   )}
@@ -490,13 +490,15 @@ const Reserve = () => {
               {/* Special Requests Input */}
               <div className="form-group" style={{ marginTop: 'var(--space-md)' }}>
                 <label className="form-label">Special Requests (Occasion details, allergens, etc.)</label>
-                <textarea 
-                  className="form-textarea" 
-                  placeholder="E.g., Vegetarian kitchen preparation, celebrating an anniversary..." 
-                  value={specialRequests} 
-                  onChange={(e) => setSpecialRequests(e.target.value)} 
-                  rows={2} 
+                <textarea
+                  className="form-textarea"
+                  placeholder="E.g., Vegetarian kitchen preparation, celebrating an anniversary..."
+                  value={specialRequests}
+                  onChange={(e) => setSpecialRequests(e.target.value)}
+                  rows={2}
+                  maxLength={500}
                 />
+                <div className="char-counter">{specialRequests.length} / 500</div>
               </div>
 
               {/* Alert Channel Selection */}
@@ -504,9 +506,9 @@ const Reserve = () => {
                 <label className="form-label">Receive Confirmation Via</label>
                 <div className="confirmation-channels">
                   {[
-                    { value: 'email', label: '📧 Email' },
-                    { value: 'whatsapp', label: '💬 WhatsApp' },
-                    { value: 'sms', label: '📱 SMS' }
+                    { value: 'email', label: 'ðŸ“§ Email' },
+                    { value: 'whatsapp', label: 'ðŸ’¬ WhatsApp' },
+                    { value: 'sms', label: 'ðŸ“± SMS' }
                   ].map((ch) => (
                     <button
                       key={ch.value}
@@ -523,19 +525,19 @@ const Reserve = () => {
               <div className="deposit-section glass">
                 <div className="deposit-header">
                   <span className="deposit-badge">Refundable Deposit</span>
-                  <h4>₹{reservationDetails.depositAmount}</h4>
+                  <h4>â‚¹{reservationDetails.depositAmount}</h4>
                 </div>
                 <p className="deposit-desc">
                   To prevent no-shows and support kitchen ingredient planning, a small deposit is required. It is fully refunded or adjusted in your final bill upon arrival.
                 </p>
                 <label className="deposit-checkbox-container">
-                  <input 
-                    type="checkbox" 
-                    checked={depositChecked} 
-                    onChange={(e) => setDepositChecked(e.target.checked)} 
+                  <input
+                    type="checkbox"
+                    checked={depositChecked}
+                    onChange={(e) => setDepositChecked(e.target.checked)}
                   />
                   <span className="checkmark" />
-                  <span className="checkbox-label">Authorize payment of ₹{reservationDetails.depositAmount} refundable deposit</span>
+                  <span className="checkbox-label">Authorize payment of â‚¹{reservationDetails.depositAmount} refundable deposit</span>
                 </label>
               </div>
 
@@ -543,13 +545,13 @@ const Reserve = () => {
 
               {/* Submit Buttons */}
               <div className="reserve-step__actions">
-                <button className="btn btn-ghost" onClick={() => setStep(1)}>← Modify Pre-orders</button>
-                <button 
+                <button className="btn btn-ghost" onClick={() => setStep(1)}>â† Modify Pre-orders</button>
+                <button
                   className="btn btn-primary"
                   onClick={handleConfirmReservation}
                   disabled={!user || loading || (reservationDetails.depositAmount > 0 && !depositChecked)}
                 >
-                  {loading ? <span className="spinner" style={{ width: 18, height: 18, borderWidth: 2 }} /> : 'Confirm Booking ✓'}
+                  {loading ? <span className="spinner" style={{ width: 18, height: 18, borderWidth: 2 }} /> : 'Confirm Booking âœ“'}
                 </button>
               </div>
             </div>

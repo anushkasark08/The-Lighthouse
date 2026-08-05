@@ -33,6 +33,18 @@ exports.createReview = async (req, res) => {
   try {
     const { rating, comment, menuItem } = req.body;
 
+    const existing = await Review.findOne({
+      user: req.user.id,
+      menuItem: menuItem || null
+    });
+
+    if (existing) {
+      return res.status(400).json({
+        success: false,
+        error: 'You have already reviewed this item'
+      });
+    }
+
     const review = await Review.create({
       user: req.user.id,
       rating,

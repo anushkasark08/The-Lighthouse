@@ -68,8 +68,14 @@ exports.createReservation = async (req, res) => {
       return res.status(400).json({ success: false, error: 'User email is invalid. Please verify your account email.' });
     }
 
-    // Sanitize special requests
-    const cleanedSpecialRequests = typeof specialRequests === 'string' ? specialRequests.trim().slice(0, 1000) : '';
+    // Sanitize and validate special requests
+    const cleanedSpecialRequests = typeof specialRequests === 'string' ? specialRequests.trim() : '';
+    if (cleanedSpecialRequests.length > 500) {
+      return res.status(400).json({
+        success: false,
+        error: 'Special requests cannot exceed 500 characters'
+      });
+    }
 
     // Check availability
     const availability = await availabilityService.getAvailableSlots(date, guests, seatingPreference);

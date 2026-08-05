@@ -171,8 +171,8 @@ const Menu = () => {
                   <div className="showcase-hero__footer">
                     <div className="showcase-rating">
                       <span className="star">★</span>
-                      <span className="score">{featuredDish.averageRating || '4.9'} / 5.0</span>
-                      <span className="reviews">({featuredDish.reviewCount || 16} guest reviews)</span>
+                      <span className="score">{featuredDish.averageRating ? `${featuredDish.averageRating} / 5.0` : 'No ratings yet'}</span>
+                      <span className="reviews">({featuredDish.reviewCount || 0} guest reviews)</span>
                     </div>
 
                     <div className="showcase-progress">

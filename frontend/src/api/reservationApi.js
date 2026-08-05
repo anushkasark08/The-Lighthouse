@@ -1,7 +1,7 @@
 import api from './client';
 
-export const getAvailableSlots = (date, guests) =>
-  api.get('/reservations/slots', { params: { date, guests } });
+export const getAvailableSlots = (date, guests, seatingPreference) =>
+  api.get('/reservations/slots', { params: { date, guests, seatingPreference } });
 
 export const createReservation = (data) => api.post('/reservations', data);
 
