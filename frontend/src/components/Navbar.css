@@ -384,7 +384,7 @@
   }
 }
 
-@media (max-width: 768px) {
+@media (max-width: 900px) {
   .navbar__inner {
     padding: 0 var(--space-md);
   }
