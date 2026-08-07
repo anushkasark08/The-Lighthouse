@@ -6,7 +6,8 @@ const userSchema = new mongoose.Schema({
     type: String,
     required: [true, 'Please add a name'],
     trim: true,
-    maxlength: [50, 'Name cannot be more than 50 characters']
+    maxlength: [50, 'Name cannot be more than 50 characters'],
+    match: [/^[\p{L}\p{M}\s'.-]{2,50}$/u, 'Name must contain at least 2 letters and cannot be only symbols']
   },
   email: {
     type: String,

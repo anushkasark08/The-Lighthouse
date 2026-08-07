@@ -90,17 +90,6 @@ const Navbar = () => {
             </Tooltip>
           )}
 
-          <Tooltip content="View your cart" position="bottom">
-            <button
-              type="button"
-              className="navbar__cart-btn"
-              onClick={() => setCartOpen(true)}
-              aria-label="Open cart"
-            >
-              🛒
-              {cartCount > 0 && <span className="navbar__cart-badge">{cartCount}</span>}
-            </button>
-          </Tooltip>
         </nav>
 
         <Tooltip content="Toggle navigation menu" position="bottom">

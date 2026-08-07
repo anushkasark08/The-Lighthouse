@@ -28,7 +28,8 @@ const Auth = () => {
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setForm((f) => ({ ...f, [name]: value }));
+    const sanitized = name === 'phone' ? value.replace(/\D/g, '') : value;
+    setForm((f) => ({ ...f, [name]: sanitized }));
     setError('');
 
     if (name === 'email') {
@@ -74,6 +75,12 @@ const Auth = () => {
 
     if (!isLogin && (!form.phone || !phonePattern.test(form.phone) || invalidPhones.includes(form.phone))) {
       setError('Please enter a valid mobile number so we can keep your reservation secure.');
+      setLoading(false);
+      return;
+    }
+
+    if (!isLogin && (!form.name || !/^[\p{L}\p{M}\s'.-]{2,50}$/u.test(form.name))) {
+      setError('Name must contain at least 2 letters and cannot be only symbols.');
       setLoading(false);
       return;
     }

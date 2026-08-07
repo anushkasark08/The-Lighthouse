@@ -11,6 +11,8 @@ import Menu from './pages/Menu';
 import Reserve from './pages/Reserve';
 import Auth from './pages/Auth';
 import AdminDashboard from './pages/AdminDashboard';
+import Privacy from './pages/Privacy';
+import Terms from './pages/Terms';
 
 const App = () => {
   return (
@@ -26,6 +28,8 @@ const App = () => {
               <Route path="/menu" element={<Menu />} />
               <Route path="/reserve" element={<Reserve />} />
               <Route path="/auth" element={<Auth />} />
+              <Route path="/privacy" element={<Privacy />} />
+              <Route path="/terms" element={<Terms />} />
               <Route
                 path="/admin"
                 element={

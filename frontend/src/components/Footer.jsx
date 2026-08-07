@@ -42,7 +42,7 @@ const Footer = () => {
             <div className="footer-socials">
               <Tooltip content="Follow us on Instagram" position="top">
                 <a
-                  href="https://www.instagram.com"
+                  href="https://www.instagram.com/thelighthouse.kolkata"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="footer-social-btn"
@@ -57,7 +57,7 @@ const Footer = () => {
               </Tooltip>
               <Tooltip content="Follow us on Facebook" position="top">
                 <a
-                  href="https://www.facebook.com"
+                  href="https://www.facebook.com/thelighthouse.kolkata"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="footer-social-btn"
@@ -70,7 +70,7 @@ const Footer = () => {
               </Tooltip>
               <Tooltip content="Follow us on X (formerly Twitter)" position="top">
                 <a
-                  href="https://x.com"
+                  href="https://x.com/thelighthouse"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="footer-social-btn"
@@ -178,7 +178,7 @@ const Footer = () => {
               <span className="footer-heading-line" />
             </h3>
             <div className="footer-contact-list">
-              <Tooltip content="Visit us at Marine Drive, Mumbai" position="top">
+              <Tooltip content="Visit us at Sarat Bose Road, Kolkata" position="top">
                 <div className="footer-contact-item">
                   <div className="footer-contact-icon-wrapper">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -187,8 +187,8 @@ const Footer = () => {
                     </svg>
                   </div>
                   <div className="footer-contact-text">
-                    <p>12, Marine Drive,</p>
-                    <p>Mumbai, 400001</p>
+                    <p>42/3, Sarat Bose Road,</p>
+                    <p>Kolkata, 700029</p>
                   </div>
                 </div>
               </Tooltip>
@@ -318,15 +318,15 @@ const Footer = () => {
           </div>
 
           <div className="footer-legal-links">
-            <Link to="#" className="footer-legal-link" onClick={(e) => e.preventDefault()}>
+            <Link to="/privacy" className="footer-legal-link">
               Privacy Policy
             </Link>
             <span className="footer-legal-sep">|</span>
-            <Link to="#" className="footer-legal-link" onClick={(e) => e.preventDefault()}>
+            <Link to="/terms" className="footer-legal-link">
               Terms of Service
             </Link>
             <span className="footer-legal-sep">|</span>
-            <Link to="#" className="footer-legal-link" onClick={(e) => e.preventDefault()}>
+            <Link to="/privacy" className="footer-legal-link">
               Cookie Policy
             </Link>
           </div>
