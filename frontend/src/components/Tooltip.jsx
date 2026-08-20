@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import './Tooltip.css';
 
 const Tooltip = ({ 
@@ -8,16 +8,22 @@ const Tooltip = ({
   delay = 300 
 }) => {
   const [isVisible, setIsVisible] = useState(false);
-  const [timeoutId, setTimeoutId] = useState(null);
+  const timeoutRef = useRef(null);
+
+  useEffect(() => {
+    return () => {
+      if (timeoutRef.current) clearTimeout(timeoutRef.current);
+    };
+  }, []);
 
   const handleMouseEnter = () => {
-    const id = setTimeout(() => setIsVisible(true), delay);
-    setTimeoutId(id);
+    if (timeoutRef.current) clearTimeout(timeoutRef.current);
+    timeoutRef.current = setTimeout(() => setIsVisible(true), delay);
   };
 
   const handleMouseLeave = () => {
-    clearTimeout(timeoutId);
-    setIsVisible(false);
+    if (timeoutRef.current) clearTimeout(timeoutRef.current);
+    timeoutRef.current = setTimeout(() => setIsVisible(false), 100);
   };
 
   return (

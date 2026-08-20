@@ -111,7 +111,7 @@ const Navbar = () => {
                 </NavLink>
               )}
               <div className="navbar__user">
-                <span className="navbar__user-name">Hi, {user.name.split(' ')[0]}</span>
+                <span className="navbar__user-name">Hi, {user.name?.split(' ')[0] || 'User'}</span>
                 <Tooltip content="Sign out of your account" position="bottom">
                   <button className="btn btn-ghost" onClick={handleLogoutClick}>Logout</button>
                 </Tooltip>

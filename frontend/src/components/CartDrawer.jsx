@@ -1,9 +1,11 @@
 import { useEffect } from 'react';
 import { createPortal } from 'react-dom';
+import { useNavigate } from 'react-router-dom';
 import { useCart } from '../context/CartContext';
 
 const CartDrawer = ({ isOpen, onClose }) => {
   const { cartItems, removeFromCart, updateQuantity, clearCart, cartTotal } = useCart();
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (!isOpen) return;
@@ -100,7 +102,7 @@ const CartDrawer = ({ isOpen, onClose }) => {
                 <span>Total</span>
                 <strong>₹{cartTotal}</strong>
               </div>
-              <button type="button" className="btn btn-primary cart-drawer__checkout">
+              <button type="button" className="btn btn-primary cart-drawer__checkout" onClick={() => { onClose(); navigate('/reserve'); }}>
                 Proceed to Reserve
               </button>
             </div>

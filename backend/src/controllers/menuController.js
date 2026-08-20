@@ -163,10 +163,18 @@ exports.getMenuItem = async (req, res) => {
 // @access  Admin
 exports.createMenuItem = async (req, res) => {
   try {
-    const item = await MenuItem.create(req.body);
+    const allowed = ['name', 'description', 'price', 'category', 'isVeg', 'allergens', 'tags',
+      'customizations', 'isAvailable', 'image', 'preparationTime', 'sortOrder', 'calories',
+      'workoutTags', 'badge', 'cookingOptions', 'allowCustomInstructions', 'customInstructionsMaxLength',
+      'chefSelection', 'flavorProfile', 'diningOccasion'];
+    const filtered = {};
+    for (const key of allowed) {
+      if (req.body[key] !== undefined) filtered[key] = req.body[key];
+    }
+    const item = await MenuItem.create(filtered);
     res.status(201).json({ success: true, data: item });
   } catch (error) {
-    res.status(400).json({ success: false, error: error.message });
+    res.status(400).json({ success: false, error: 'Validation failed' });
   }
 };
 
@@ -179,7 +187,16 @@ exports.updateMenuItem = async (req, res) => {
       return res.status(400).json({ success: false, error: 'Invalid menu item ID format' });
     }
 
-    const item = await MenuItem.findByIdAndUpdate(req.params.id, req.body, {
+    const allowed = ['name', 'description', 'price', 'category', 'isVeg', 'allergens', 'tags',
+      'customizations', 'isAvailable', 'image', 'preparationTime', 'sortOrder', 'calories',
+      'workoutTags', 'badge', 'cookingOptions', 'allowCustomInstructions', 'customInstructionsMaxLength',
+      'chefSelection', 'flavorProfile', 'diningOccasion'];
+    const filtered = {};
+    for (const key of allowed) {
+      if (req.body[key] !== undefined) filtered[key] = req.body[key];
+    }
+
+    const item = await MenuItem.findByIdAndUpdate(req.params.id, filtered, {
       new: true,
       runValidators: true
     });

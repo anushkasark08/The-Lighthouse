@@ -6,6 +6,7 @@ import { getReviews, deleteReview } from '../api/reviewApi';
 import { useSocket } from '../hooks/useSocket';
 import MenuCard from '../components/MenuCard';
 import Tooltip from '../components/Tooltip';
+import ConfirmModal from '../components/ConfirmModal';
 import toast, { Toaster } from 'react-hot-toast';
 
 const CATEGORIES = ['breakfast', 'lunch', 'dinner', 'desserts', 'drinks'];
@@ -24,6 +25,7 @@ const AdminDashboard = () => {
   const [form, setForm] = useState(emptyForm);
   const [saving, setSaving] = useState(false);
   const [msg, setMsg] = useState('');
+  const [reviewToDelete, setReviewToDelete] = useState(null);
 
   const onReservationCreated = useCallback((data) => {
     toast(
@@ -64,7 +66,9 @@ const AdminDashboard = () => {
 
   useEffect(() => {
     fetchMenu({ showAll: 'true' });
-    getReviews().then(({ data }) => setReviews(data.data));
+    getReviews()
+      .then(({ data }) => setReviews(data.data))
+      .catch(() => {});
   }, [fetchMenu]);
 
   const stats = {
@@ -104,11 +108,18 @@ const AdminDashboard = () => {
   };
 
   const handleDeleteReview = async (id) => {
+    setReviewToDelete(id);
+  };
+
+  const confirmDeleteReview = async () => {
+    if (!reviewToDelete) return;
     try {
-      await deleteReview(id);
-      setReviews((prev) => prev.filter((r) => r._id !== id));
+      await deleteReview(reviewToDelete);
+      setReviews((prev) => prev.filter((r) => r._id !== reviewToDelete));
     } catch (err) {
       console.error(err);
+    } finally {
+      setReviewToDelete(null);
     }
   };
 
@@ -343,6 +354,16 @@ const AdminDashboard = () => {
           .admin-form-grid { grid-template-columns: 1fr; }
         }
       `}</style>
+
+      <ConfirmModal
+        isOpen={!!reviewToDelete}
+        title="Delete Review?"
+        message="This action cannot be undone. Are you sure you want to delete this review?"
+        confirmText="Delete"
+        cancelText="Cancel"
+        onConfirm={confirmDeleteReview}
+        onCancel={() => setReviewToDelete(null)}
+      />
     </main>
   );
 };

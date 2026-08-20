@@ -38,7 +38,10 @@ exports.getAvailableSlots = async (req, res) => {
 // @access  Private
 exports.createReservation = async (req, res) => {
   try {
-    const { date, time, guests, specialRequests, seatingPreference, preOrder, confirmationChannel, depositAmount } = req.body;
+    const { date, time, guests, specialRequests, seatingPreference, preOrder, confirmationChannel } = req.body;
+
+    // Deposit is server-calculated, not client-supplied
+    const depositAmount = parseInt(guests, 10) > 4 ? 500 : 0;
 
     // Basic validation to avoid malformed requests
     if (!date || !time || !guests) {

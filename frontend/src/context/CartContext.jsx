@@ -5,8 +5,19 @@ const CartContext = createContext(null);
 export const CartProvider = ({ children }) => {
   const [cartItems, setCartItems] = useState([]);
 
-  const addToCart = useCallback((entry) => {
-    // entry: { menuItemId, name, image, basePrice, selectedToppings, selectedVariant, quantity, unitPrice }
+  const addToCart = useCallback((menuItem, options = {}) => {
+    const entry = {
+      menuItemId: menuItem._id || menuItem.id,
+      name: menuItem.name,
+      image: menuItem.image,
+      basePrice: menuItem.price,
+      quantity: options.quantity || 1,
+      unitPrice: options.unitPrice || menuItem.price,
+      selectedToppings: options.selectedToppings || [],
+      selectedVariant: options.selectedVariant || null,
+      selectedCookingOptions: options.selectedCookingOptions || [],
+      customInstructions: options.customInstructions || ''
+    };
     const cartItemId = `${entry.menuItemId}-${Date.now()}-${Math.random().toString(36).slice(2, 8)}`;
     setCartItems((prev) => [...prev, { ...entry, cartItemId }]);
   }, []);

@@ -1,4 +1,5 @@
 const Review = require('../models/Review');
+const mongoose = require('mongoose');
 
 // @desc    Get all reviews
 // @route   GET /api/reviews
@@ -7,6 +8,9 @@ exports.getReviews = async (req, res) => {
   try {
     const filter = {};
     if (req.query.menuItem) {
+      if (!mongoose.Types.ObjectId.isValid(req.query.menuItem)) {
+        return res.status(400).json({ success: false, error: 'Invalid menuItem ID' });
+      }
       filter.menuItem = req.query.menuItem;
     }
 
