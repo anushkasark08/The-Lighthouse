@@ -1,4 +1,4 @@
-import { useEffect, useState, useMemo } from 'react';
+import { useEffect, useState, useMemo, useCallback } from 'react';
 import { useAuth } from '../context/AuthContext';
 import { useMenu } from '../context/MenuContext';
 import MenuCard from '../components/MenuCard';
@@ -11,6 +11,24 @@ const CATEGORY_ICONS = {
   dinner: '🌙', desserts: '🍰', drinks: '🍸'
 };
 
+const CURATED_FILTERS = {
+  chefSelection: {
+    label: "Chef's Selection",
+    icon: '👨‍🍳',
+    options: ["Chef's Signature", 'Guest Favorite', 'Seasonal Special', 'New Arrival']
+  },
+  flavorProfile: {
+    label: 'Flavor Profile',
+    icon: '🌿',
+    options: ['Light & Delicate', 'Rich & Indulgent', 'Spicy & Aromatic']
+  },
+  diningOccasion: {
+    label: 'Dining Occasion',
+    icon: '🥂',
+    options: ['Date Night', 'Celebration', 'Casual Lunch', 'Executive Dining']
+  }
+};
+
 const Menu = () => {
   const { user } = useAuth();
   const { items, loading, error, fetchMenu } = useMenu();
@@ -19,6 +37,30 @@ const Menu = () => {
   const [dietFilter, setDietFilter] = useState('all');
   const [search, setSearch] = useState('');
   const [selectedRecIndex, setSelectedRecIndex] = useState(0);
+  const [curatedOpen, setCuratedOpen] = useState(false);
+  const [curatedFilters, setCuratedFilters] = useState({
+    chefSelection: [],
+    flavorProfile: [],
+    diningOccasion: []
+  });
+
+  const toggleCuratedFilter = useCallback((key, value) => {
+    setCuratedFilters(prev => {
+      const list = prev[key];
+      const next = list.includes(value)
+        ? list.filter(v => v !== value)
+        : [...list, value];
+      return { ...prev, [key]: next };
+    });
+  }, []);
+
+  const activeCuratedCount = curatedFilters.chefSelection.length
+    + curatedFilters.flavorProfile.length
+    + curatedFilters.diningOccasion.length;
+
+  const resetCuratedFilters = () => {
+    setCuratedFilters({ chefSelection: [], flavorProfile: [], diningOccasion: [] });
+  };
 
   useEffect(() => {
     const params = {};
@@ -36,9 +78,17 @@ const Menu = () => {
         || item.name.toLowerCase().includes(search.toLowerCase())
         || item.description?.toLowerCase().includes(search.toLowerCase());
 
-      return matchCat && matchDiet && matchSearch;
+      // Curated filters (OR within group, AND across groups)
+      const matchChef = curatedFilters.chefSelection.length === 0
+        || curatedFilters.chefSelection.some(v => (item.chefSelection || []).includes(v));
+      const matchFlavor = curatedFilters.flavorProfile.length === 0
+        || curatedFilters.flavorProfile.some(v => (item.flavorProfile || []).includes(v));
+      const matchOccasion = curatedFilters.diningOccasion.length === 0
+        || curatedFilters.diningOccasion.some(v => (item.diningOccasion || []).includes(v));
+
+      return matchCat && matchDiet && matchSearch && matchChef && matchFlavor && matchOccasion;
     });
-  }, [items, category, dietFilter, search]);
+  }, [items, category, dietFilter, search, curatedFilters]);
 
   const chefRecommendations = useMemo(() => {
     const specials = items.filter(item => (item.tags || []).includes('chef-special') || item.averageRating >= 4.5);
@@ -51,6 +101,7 @@ const Menu = () => {
     setCategory('all');
     setDietFilter('all');
     setSearch('');
+    resetCuratedFilters();
   };
 
   return (
@@ -277,6 +328,59 @@ const Menu = () => {
               )}
             </div>
           </div>
+        </div>
+      </div>
+
+      {/* Curate Your Dining Panel */}
+      <div className="container">
+        <div className="curated-panel">
+          <button
+            className="curated-panel__toggle"
+            onClick={() => setCuratedOpen(prev => !prev)}
+          >
+            <span className="curated-panel__title">
+              <span className="curated-panel__icon">✨</span>
+              Curate Your Dining
+            </span>
+            <span className="curated-panel__meta">
+              {activeCuratedCount > 0 && (
+                <span className="curated-panel__badge">{activeCuratedCount} active</span>
+              )}
+              <span className={`curated-panel__arrow ${curatedOpen ? 'curated-panel__arrow--open' : ''}`}>▾</span>
+            </span>
+          </button>
+
+          {curatedOpen && (
+            <div className="curated-panel__body">
+              <div className="curated-panel__sections">
+                {Object.entries(CURATED_FILTERS).map(([key, { label, icon, options }]) => (
+                  <div key={key} className="curated-section">
+                    <h4 className="curated-section__heading">
+                      <span>{icon}</span> {label}
+                    </h4>
+                    <div className="curated-section__chips">
+                      {options.map(opt => (
+                        <button
+                          key={opt}
+                          className={`curated-chip ${curatedFilters[key].includes(opt) ? 'curated-chip--active' : ''}`}
+                          onClick={() => toggleCuratedFilter(key, opt)}
+                        >
+                          {opt}
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+                ))}
+              </div>
+              {activeCuratedCount > 0 && (
+                <div className="curated-panel__footer">
+                  <button className="curated-reset-btn" onClick={resetCuratedFilters}>
+                    Reset Curation Filters
+                  </button>
+                </div>
+              )}
+            </div>
+          )}
         </div>
       </div>
 

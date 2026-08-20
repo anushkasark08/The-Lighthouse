@@ -37,6 +37,17 @@ exports.getMenuItems = async (req, res) => {
       }
     }
 
+    // Curate Your Dining filters (comma-separated values)
+    if (req.query.chefSelection) {
+      filter.chefSelection = { $in: req.query.chefSelection.split(',') };
+    }
+    if (req.query.flavorProfile) {
+      filter.flavorProfile = { $in: req.query.flavorProfile.split(',') };
+    }
+    if (req.query.diningOccasion) {
+      filter.diningOccasion = { $in: req.query.diningOccasion.split(',') };
+    }
+
     // By default, public users only see available items
     // Admin can pass ?showAll=true to see unavailable items too
     const isAdmin = req.user && req.user.role === 'admin';

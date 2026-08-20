@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import { getMenuItems } from '../api/menuApi';
 import { getReviews, createReview } from '../api/reviewApi';
 import MenuCard from '../components/MenuCard';
@@ -17,6 +18,7 @@ const Stars = ({ rating }) => (
 
 const Home = () => {
   const { user } = useAuth();
+  const { t } = useTranslation();
   const [featured, setFeatured] = useState([]);
   const [reviews, setReviews] = useState([]);
   const [loadingMenu, setLoadingMenu] = useState(true);
@@ -77,20 +79,19 @@ const Home = () => {
         <div className="hero__bg" style={{ backgroundImage: "url('/images/hero-restaurant.jpg')" }} />
         <div className="hero__overlay" />
         <div className="container hero__content">
-          <span className="section-label">Est. 2024 · Mumbai</span>
+          <span className="section-label">{t('hero.tagline')}</span>
           <h1 className="hero__title">
-            Where Every Dish<br />
-            <em className="gold">Tells a Story</em>
+            {t('hero.title')}
           </h1>
           <p className="hero__subtitle">
-            Fine dining with live menu availability — no surprises, only excellence.
+            {t('hero.subtitle')}
           </p>
           <div className="hero__cta">
             <Tooltip content="Start your reservation for tonight" position="top">
-              <Link to="/reserve#reservation-form" className="btn btn-primary">Reserve Table</Link>
+              <Link to="/reserve#reservation-form" className="btn btn-primary">{t('hero.reserve_table')}</Link>
             </Tooltip>
             <Tooltip content="Explore our live menu with real-time availability" position="top">
-              <Link to="/menu" className="btn btn-outline">Explore Menu</Link>
+              <Link to="/menu" className="btn btn-outline">{t('hero.explore_menu')}</Link>
             </Tooltip>
           </div>
           <div className="hero__feature-pill">

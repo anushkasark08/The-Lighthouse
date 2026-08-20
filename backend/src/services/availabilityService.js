@@ -58,16 +58,25 @@ class AvailabilityService {
     // Generate time slots
     const slots = this.generateTimeSlots();
     
-    // Filter available slots
+    // Filter available slots — account for buffer time between reservations
     const availableSlots = slots.map(slot => {
-      const slotTime = slot.time;
-      const conflictingReservations = reservations.filter(r => r.time === slotTime);
-      const isAvailable = conflictingReservations.length < availableTables.length;
-      
+      const [slotH, slotM] = slot.time.split(':').map(Number);
+      const slotMinutes = slotH * 60 + slotM;
+
+      // A table is unavailable if it has a reservation within ±bufferMinutes
+      const conflictingReservations = reservations.filter(r => {
+        const [rH, rM] = r.time.split(':').map(Number);
+        const rMinutes = rH * 60 + rM;
+        return Math.abs(slotMinutes - rMinutes) < this.bufferMinutes;
+      });
+
+      const tablesAvailable = availableTables.length - conflictingReservations.length;
+      const isAvailable = tablesAvailable > 0;
+
       return {
-        time: slotTime,
+        time: slot.time,
         available: isAvailable,
-        tablesAvailable: isAvailable ? availableTables.length - conflictingReservations.length : 0
+        tablesAvailable: isAvailable ? tablesAvailable : 0
       };
     });
 

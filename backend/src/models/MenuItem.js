@@ -126,6 +126,23 @@ const menuItemSchema = new mongoose.Schema(
       min: [0, 'Max length cannot be negative'],
       max: [500, 'Max length cannot exceed 500 characters'],
       default: 120
+    },
+
+    // ---- CURATE YOUR DINING: curated attributes ----
+    chefSelection: {
+      type: [String],
+      enum: ['Chef\'s Signature', 'Guest Favorite', 'Seasonal Special', 'New Arrival'],
+      default: []
+    },
+    flavorProfile: {
+      type: [String],
+      enum: ['Light & Delicate', 'Rich & Indulgent', 'Spicy & Aromatic'],
+      default: []
+    },
+    diningOccasion: {
+      type: [String],
+      enum: ['Date Night', 'Celebration', 'Casual Lunch', 'Executive Dining'],
+      default: []
     }
   },
   {

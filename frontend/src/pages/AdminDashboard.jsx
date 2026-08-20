@@ -1,10 +1,12 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useCallback } from 'react';
 import { useAuth } from '../context/AuthContext';
 import { useMenu } from '../context/MenuContext';
 import { createMenuItem } from '../api/menuApi';
 import { getReviews, deleteReview } from '../api/reviewApi';
+import { useSocket } from '../hooks/useSocket';
 import MenuCard from '../components/MenuCard';
 import Tooltip from '../components/Tooltip';
+import toast, { Toaster } from 'react-hot-toast';
 
 const CATEGORIES = ['breakfast', 'lunch', 'dinner', 'desserts', 'drinks'];
 
@@ -22,6 +24,43 @@ const AdminDashboard = () => {
   const [form, setForm] = useState(emptyForm);
   const [saving, setSaving] = useState(false);
   const [msg, setMsg] = useState('');
+
+  const onReservationCreated = useCallback((data) => {
+    toast(
+      () => (
+        <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+          <span style={{ fontSize: '1.3rem' }}>🛎️</span>
+          <div>
+            <strong>New Booking</strong>
+            <div style={{ fontSize: '0.8rem', color: 'var(--color-text-muted)' }}>
+              {data.guestName} · {data.guests} guests · {data.time}
+              {data.table ? ` · Table #${data.table}` : ''}
+            </div>
+          </div>
+        </div>
+      ),
+      { duration: 6000, style: { background: '#1a1714', color: '#e8e0d4', border: '1px solid #c9a962' } }
+    );
+  }, []);
+
+  const onReservationCancelled = useCallback((data) => {
+    toast(
+      () => (
+        <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+          <span style={{ fontSize: '1.3rem' }}>⚠️</span>
+          <div>
+            <strong>Cancelled</strong>
+            <div style={{ fontSize: '0.8rem', color: 'var(--color-text-muted)' }}>
+              {data.guestName} · Table #{data.table || '?'} · {data.time}
+            </div>
+          </div>
+        </div>
+      ),
+      { duration: 6000, style: { background: '#1a1714', color: '#e8e0d4', border: '1px solid #c9a962' } }
+    );
+  }, []);
+
+  useSocket(onReservationCreated, onReservationCancelled);
 
   useEffect(() => {
     fetchMenu({ showAll: 'true' });
@@ -75,6 +114,7 @@ const AdminDashboard = () => {
 
   return (
     <main className="page-enter admin-page">
+      <Toaster position="top-right" />
       <div className="container">
         <div className="admin-header">
           <div>
