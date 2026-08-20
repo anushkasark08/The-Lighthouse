@@ -116,7 +116,7 @@ const MenuCard = ({ item }) => {
     setQuantity(1);
     setJustAdded(false);
     setAddError(null);
-  }, [isOpen, item._id]);
+  }, [isOpen, item._id, item.customizations?.variants]);
 
   useEffect(() => {
     if (!isOpen) return;

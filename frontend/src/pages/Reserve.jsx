@@ -69,27 +69,27 @@ const Reserve = () => {
   }, []);
 
   // Automatically fetch slots when date, guests, or seatingPreference changes
-  const checkSlots = async () => {
-    if (!reservationDetails.date || !reservationDetails.guests) return;
-    setSlotsLoading(true);
-    setError('');
-    try {
-      const { data } = await getAvailableSlots(
-        reservationDetails.date,
-        reservationDetails.guests,
-        reservationDetails.seatingPreference
-      );
-      setSlots(data.data.slots || []);
-    } catch (err) {
-      setError(err.response?.data?.error || 'Failed to fetch available slots');
-    } finally {
-      setSlotsLoading(false);
-    }
-  };
   useEffect(() => {
-    if (reservationDetails.date && reservationDetails.guests) {
-      checkSlots();
-    }
+    if (!reservationDetails.date || !reservationDetails.guests) return;
+    let cancelled = false;
+    const fetchSlots = async () => {
+      setSlotsLoading(true);
+      setError('');
+      try {
+        const { data } = await getAvailableSlots(
+          reservationDetails.date,
+          reservationDetails.guests,
+          reservationDetails.seatingPreference
+        );
+        if (!cancelled) setSlots(data.data.slots || []);
+      } catch (err) {
+        if (!cancelled) setError(err.response?.data?.error || 'Failed to fetch available slots');
+      } finally {
+        if (!cancelled) setSlotsLoading(false);
+      }
+    };
+    fetchSlots();
+    return () => { cancelled = true; };
   }, [reservationDetails.date, reservationDetails.guests, reservationDetails.seatingPreference]);
 
   useEffect(() => {
