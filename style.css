@@ -757,6 +757,30 @@ body.light-theme .theme-toggle:hover {
   flex-wrap: wrap;
 }
 
+.chef-recommendation {
+  margin-top: 20px;
+  padding: 10px 18px;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 8px;
+  display: inline-block;
+  max-width: 100%;
+  text-align: center;
+  font-size: 0.9rem;
+  color: #ccc6bc;
+}
+
+.chef-recommendation strong {
+  color: #f5f2ed;
+}
+
+@media (max-width: 640px) {
+  .chef-recommendation {
+    font-size: 0.8rem;
+    padding: 8px 14px;
+  }
+}
+
 /* Light Theme: Hero */
 body.light-theme .hero-tagline {
   color: rgba(45, 0, 57, 0.985);

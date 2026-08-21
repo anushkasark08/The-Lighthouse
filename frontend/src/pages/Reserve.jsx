@@ -306,7 +306,7 @@ const Reserve = () => {
               {reservationDetails.date && (
                 <div className="slots-section" style={{ marginTop: 'var(--space-md)' }}>
                   <h3 className="slots-title">Available Time Slots</h3>
-                  {slotsLoading ? (
+                  {slotsLoading && slots.length === 0 ? (
                     <div style={{ display: 'flex', justifyContent: 'center', padding: '2rem' }}><div className="spinner" /></div>
                   ) : slots.length === 0 ? (
                     <p className="no-slots">No slots available for the selected criteria. Try changing the date or seating section.</p>

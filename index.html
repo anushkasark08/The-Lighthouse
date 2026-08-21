@@ -19,6 +19,23 @@
   <script
     src="https://cdnjs.cloudflare.com/ajax/libs/i18next-browser-languagedetector/8.0.0/i18nextBrowserLanguageDetector.min.js"
     defer></script>
+  <script defer>
+    document.addEventListener('DOMContentLoaded', function() {
+      if (typeof i18next !== 'undefined') {
+        i18next
+          .use(i18nextHttpBackend)
+          .use(i18nextBrowserLanguageDetector)
+          .init({
+            fallbackLng: 'en',
+            supportedLngs: ['en', 'hi', 'gu'],
+            backend: { loadPath: '/locales/{{lng}}/translation.json' },
+            interpolation: { escapeValue: false }
+          }).then(function() {
+            if (typeof updateContent === 'function') updateContent();
+          });
+      }
+    });
+  </script>
 </head>
 
 <body>
@@ -91,13 +108,13 @@
       <h1 class="hero-title" data-i18n="hero.title">The Lighthouse</h1>
       <p class="hero-subtitle" data-i18n="hero.subtitle">Where culinary artistry meets timeless elegance</p>
       <div class="hero-buttons">
-        <a href="#menu" class="btn btn-primary" data-i18n="hero.explore_menu">Explore Menu</a>
+        <a href="#menu" class="btn btn-outline" data-i18n="hero.explore_menu">Explore Menu</a>
         <a href="#reservation" class="btn btn-outline" data-i18n="hero.reserve_table">Reserve Table</a>
       </div>
       <div class="chef-recommendation">
         <p><strong>🍽️ Chef's Recommendation:</strong> <span id="chefRecommendation"></span></p>
       </div>
-      <div class="hero-scroll">
+      <div class="hero-scroll" onclick="document.getElementById('menu').scrollIntoView({behavior:'smooth'})">
         <span data-i18n="hero.scroll_discover">Scroll To Discover</span>
         <span class="clicktoscroll" data-i18n="hero.click_scroll">Click To Scroll</span>
         <div class="scroll-indicator"></div>
