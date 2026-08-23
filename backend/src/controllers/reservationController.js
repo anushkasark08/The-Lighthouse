@@ -26,9 +26,10 @@ exports.getAvailableSlots = async (req, res) => {
     const result = await availabilityService.getAvailableSlots(date, guests, seatingPreference);
     res.status(200).json(result);
   } catch (error) {
+    console.error('getAvailableSlots error:', error);
     res.status(500).json({
       success: false,
-      error: error.message
+      error: 'Failed to fetch available slots'
     });
   }
 };
@@ -191,9 +192,10 @@ exports.createReservation = async (req, res) => {
       message: 'Reservation confirmed! Check your email for details.'
     });
   } catch (error) {
+    console.error('createReservation error:', error);
     res.status(500).json({
       success: false,
-      error: error.message
+      error: 'Failed to create reservation'
     });
   }
 };
@@ -214,9 +216,10 @@ exports.getReservations = async (req, res) => {
       data: reservations
     });
   } catch (error) {
+    console.error('getReservations error:', error);
     res.status(500).json({
       success: false,
-      error: error.message
+      error: 'Failed to fetch reservations'
     });
   }
 };
@@ -280,9 +283,10 @@ exports.cancelReservation = async (req, res) => {
       message: 'Reservation cancelled successfully'
     });
   } catch (error) {
+    console.error('cancelReservation error:', error);
     res.status(500).json({
       success: false,
-      error: error.message
+      error: 'Failed to cancel reservation'
     });
   }
 };

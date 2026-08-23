@@ -26,7 +26,8 @@ exports.getReviews = async (req, res) => {
       data: reviews
     });
   } catch (error) {
-    res.status(500).json({ success: false, error: error.message });
+    console.error('getReviews error:', error);
+    res.status(500).json({ success: false, error: 'Failed to fetch reviews' });
   }
 };
 
@@ -64,7 +65,8 @@ exports.createReview = async (req, res) => {
       message: 'Thank you for your review!'
     });
   } catch (error) {
-    res.status(400).json({ success: false, error: error.message });
+    console.error('createReview error:', error);
+    res.status(400).json({ success: false, error: 'Failed to create review' });
   }
 };
 
@@ -85,6 +87,7 @@ exports.deleteReview = async (req, res) => {
     await review.deleteOne();
     res.status(200).json({ success: true, data: {}, message: 'Review deleted' });
   } catch (error) {
-    res.status(500).json({ success: false, error: error.message });
+    console.error('deleteReview error:', error);
+    res.status(500).json({ success: false, error: 'Failed to delete review' });
   }
 };

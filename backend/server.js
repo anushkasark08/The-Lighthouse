@@ -112,12 +112,9 @@ app.get('/api/health', (req, res) => {
 // Global error handler
 app.use((err, req, res, next) => {
   console.error(err.stack);
-  const message = process.env.NODE_ENV === 'production'
-    ? 'Internal server error'
-    : err.message;
   res.status(500).json({
     success: false,
-    error: message
+    error: 'Internal server error'
   });
 });
 

@@ -205,7 +205,7 @@ exports.updateMenuItem = async (req, res) => {
     }
     res.status(200).json({ success: true, data: item });
   } catch (error) {
-    res.status(400).json({ success: false, error: error.message });
+    res.status(400).json({ success: false, error: 'Failed to update menu item' });
   }
 };
 
@@ -255,7 +255,8 @@ exports.deleteMenuItem = async (req, res) => {
     }
     res.status(200).json({ success: true, data: {}, message: 'Menu item deleted' });
   } catch (error) {
-    res.status(500).json({ success: false, error: error.message });
+    console.error('deleteMenuItem error:', error);
+    res.status(500).json({ success: false, error: 'Failed to delete menu item' });
   }
 };
 
