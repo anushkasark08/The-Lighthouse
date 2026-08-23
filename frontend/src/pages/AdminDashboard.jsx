@@ -277,7 +277,7 @@ const AdminDashboard = () => {
                 </div>
                 <div style={{ display: 'flex', justifyContent: 'flex-end', gap: 'var(--space-md)', marginTop: 'var(--space-lg)', borderTop: '1px solid var(--color-border)', paddingTop: 'var(--space-lg)' }}>
                   <Tooltip content="Cancel and close the form" position="top">
-                    <button type="button" className="btn btn-ghost" onClick={() => setShowAddForm(false)}>Cancel</button>
+                    <button type="button" className="btn btn-ghost" onClick={() => { setForm(emptyForm); setShowAddForm(false); }}>Cancel</button>
                   </Tooltip>
                   <Tooltip content="Add this dish to your menu" position="top">
                     <button type="submit" className="btn btn-primary" disabled={saving}>

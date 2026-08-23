@@ -157,8 +157,7 @@ const Reserve = () => {
         seatingPreference: reservationDetails.seatingPreference,
         specialRequests: specialRequests,
         preOrder: preOrderPayload,
-        confirmationChannel: reservationDetails.confirmationChannel,
-        depositAmount: reservationDetails.depositAmount
+        confirmationChannel: reservationDetails.confirmationChannel
       });
       setSuccess(true);
     } catch (err) {
@@ -284,7 +283,7 @@ const Reserve = () => {
                       value={reservationDetails.guests}
                       onChange={(e) => setReservationDetails({ guests: Number(e.target.value) })}
                     >
-                      {[1,2,3,4,5,6,7,8].map((n) => <option key={n} value={n}>{n} {n === 1 ? 'guest' : 'guests'}</option>)}
+                      {[1,2,3,4,5,6,7,8,9,10,12,15,20].map((n) => <option key={n} value={n}>{n} {n === 1 ? 'guest' : 'guests'}</option>)}
                     </select>
                   </Tooltip>
                 </div>
