@@ -17,7 +17,7 @@ const navMenu = document.getElementById("navMenu");
 const navLinks = document.querySelectorAll(".nav-link");
 const heroBg = document.getElementById("heroBg");
 const reservationBg = document.getElementById("reservationBg");
-const reservationForm = document.getElementById("reservationForm");
+const reservationForm = document.getElementById("reservationModalForm");
 const dateInput = document.getElementById("reservation-date") || document.getElementById("date");
 const timeSelect = document.getElementById("time");
 const guestsSelect = document.getElementById("guests");
@@ -652,8 +652,8 @@ async function handleFormSubmit(e) {
   e.preventDefault();
 
   let isValid = true;
-  const emailInput = document.getElementById("email");
-  const phoneInput = document.getElementById("phone");
+  const emailInput = document.getElementById("modal-email");
+  const phoneInput = document.getElementById("modal-phone");
   const selectedTableInput = document.getElementById("selected-table");
   const submitBtn = reservationForm.querySelector('button[type="submit"]');
 
@@ -696,9 +696,9 @@ async function handleFormSubmit(e) {
   const structuredRequests = selectedTable ? `[Zone: ${selectedZone.toUpperCase()}, Table: ${selectedTable}] ${requestsVal}`.trim() : requestsVal.trim();
 
   const formData = {
-    guest_name: document.getElementById('name').value.trim(),
+    guest_name: document.getElementById('modal-name').value.trim(),
     guest_email: emailInput.value.trim(),
-    guest_phone: phoneInput ? phoneInput.value.trim() : document.getElementById('phone').value.trim(),
+    guest_phone: phoneInput ? phoneInput.value.trim() : document.getElementById('modal-phone').value.trim(),
     guest_count: guestsVal,
     booking_date: formatBookingDate(dateVal),
     booking_time: formatBookingTime(timeVal),
@@ -717,12 +717,10 @@ async function handleFormSubmit(e) {
       const apiData = { date: dateVal, time: timeVal, guests: guestsVal, specialRequests: structuredRequests };
       const result = await reservationAPI.createReservation(apiData);
       if (result.success) {
-        showReservationToast('success', `Reservation confirmed for ${selectedTable}! Check your email for details.`);
+        showReservationToast('success', `Reservation confirmed for ${selectedTable || formData.guest_count + ' guest(s)'}! Check your email for details.`);
         addLoyaltyPoints(100, "Table Reservation");
         showDigitalTicket(formData.guest_name, formData.booking_date, formData.booking_time, formData.guest_count, selectedTable);
         showReservationSuccessModal(dateVal, timeVal, guestsVal);
-        showReservationToast('success', `Reservation confirmed for ${selectedTable || formData.guest_count + ' guest(s)'}! Check your email for details.`);
-        if (typeof addLoyaltyPoints === 'function') addLoyaltyPoints(100, "Table Reservation");
         reservationForm.reset();
         updateAvailableTimes();
         submitBtn.textContent = originalText;
@@ -738,12 +736,10 @@ async function handleFormSubmit(e) {
   if (typeof emailjs === 'undefined' || EMAILJS_CONFIG.publicKey === 'YOUR_PUBLIC_KEY' || EMAILJS_CONFIG.publicKey === 'abc123XYZ') {
     console.warn('[EmailJS] Not configured — running in demo mode.');
     await new Promise(r => setTimeout(r, 1200));
-    showReservationToast('success', `Thank you, ${formData.guest_name}! We've registered your request for ${formData.guest_count} guest(s) at ${selectedTable} on ${formData.booking_date} at ${formData.booking_time}.`);
+    showReservationToast('success', `Thank you, ${formData.guest_name}! We've registered your request for ${formData.guest_count} guest(s) at ${selectedTable || 'your table'} on ${formData.booking_date} at ${formData.booking_time}.`);
     addLoyaltyPoints(100, "Table Reservation");
     showDigitalTicket(formData.guest_name, formData.booking_date, formData.booking_time, formData.guest_count, selectedTable);
     showReservationSuccessModal(dateVal, timeVal, guestsVal);
-    showReservationToast('success', `Thank you, ${formData.guest_name}! We've registered your request for ${formData.guest_count} guest(s) at ${selectedTable || 'your table'} on ${formData.booking_date} at ${formData.booking_time}.`);
-    if (typeof addLoyaltyPoints === 'function') addLoyaltyPoints(100, "Table Reservation");
     reservationForm.reset();
     updateAvailableTimes();
     submitBtn.textContent = originalText;

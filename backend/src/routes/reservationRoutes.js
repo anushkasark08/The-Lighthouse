@@ -7,10 +7,11 @@ const {
   cancelReservation
 } = require('../controllers/reservationController');
 const { protect } = require('../middleware/auth');
+const { validate, reservationValidation } = require('../middleware/validation');
 const rateLimiter = require('../middleware/rateLimiter');
 
 router.get('/slots', rateLimiter({ windowMs: 10 * 60 * 1000, max: 60 }), getAvailableSlots);
-router.post('/', rateLimiter({ windowMs: 60 * 60 * 1000, max: 6 }), protect, createReservation);
+router.post('/', rateLimiter({ windowMs: 60 * 60 * 1000, max: 6 }), protect, validate(reservationValidation), createReservation);
 router.get('/', protect, getReservations);
 router.delete('/:id', protect, cancelReservation);
 
