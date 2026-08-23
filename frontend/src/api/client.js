@@ -19,7 +19,9 @@ api.interceptors.response.use(
     if (err.response?.status === 401) {
       localStorage.removeItem('lh_token');
       localStorage.removeItem('lh_user');
-      window.location.href = '/auth';
+      if (window.location.pathname !== '/auth') {
+        window.location.href = '/auth';
+      }
     }
     return Promise.reject(err);
   }

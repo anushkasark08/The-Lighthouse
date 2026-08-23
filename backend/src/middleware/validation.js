@@ -1,9 +1,9 @@
 const dns = require('dns');
 
-// Force Node to use public DNS servers instead of localhost (127.0.0.1)
-dns.setServers(['8.8.8.8', '8.8.4.4']);
+// Use a scoped resolver instead of overriding global DNS
+const emailResolver = dns.promises.createResolver();
+emailResolver.setServers(['8.8.8.8', '8.8.4.4']);
 
-const dnsPromises = dns.promises;
 const { body, validationResult } = require('express-validator');
 
 const validateEmailDomain = async (email) => {
@@ -17,14 +17,14 @@ const validateEmailDomain = async (email) => {
 
   try {
     // Check MX records
-    const mxRecords = await dnsPromises.resolveMx(domain);
+    const mxRecords = await emailResolver.resolveMx(domain);
 
     if (mxRecords && mxRecords.length > 0) {
       return true;
     }
 
     // Fallback to A records
-    const aRecords = await dnsPromises.resolve4(domain);
+    const aRecords = await emailResolver.resolve4(domain);
 
     if (aRecords && aRecords.length > 0) {
       return true;

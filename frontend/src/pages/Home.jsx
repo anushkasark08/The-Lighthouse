@@ -50,7 +50,7 @@ const Home = () => {
       // Prepend new review to the list
       const freshReview = {
         ...data.data,
-        user: { name: user.name }
+        user: { name: user?.name || 'Anonymous' }
       };
       setReviews((prev) => [freshReview, ...prev].slice(0, 3));
       setTimeout(() => setFormSuccess(false), 5000);
@@ -63,12 +63,12 @@ const Home = () => {
 
   useEffect(() => {
     getMenuItems({ tag: 'chef-special' })
-      .then(({ data }) => setFeatured(data.data.slice(0, 3)))
+      .then(({ data }) => setFeatured((data?.data || []).slice(0, 3)))
       .catch(console.error)
       .finally(() => setLoadingMenu(false));
 
     getReviews()
-      .then(({ data }) => setReviews(data.data.slice(0, 3)))
+      .then(({ data }) => setReviews((data?.data || []).slice(0, 3)))
       .catch(console.error);
   }, []);
 

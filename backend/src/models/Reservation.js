@@ -77,12 +77,12 @@ const reservationSchema = new mongoose.Schema({
 reservationSchema.index({ date: 1, time: 1 });
 reservationSchema.index({ user: 1, status: 1 });
 
-// Enforce unique bookings: A table can only have one active ('confirmed') reservation per date and time slot
+// Enforce unique bookings: A table can only have one active ('pending' or 'confirmed') reservation per date and time slot
 reservationSchema.index(
   { table: 1, date: 1, time: 1 },
-  { 
-    unique: true, 
-    partialFilterExpression: { status: 'confirmed' } 
+  {
+    unique: true,
+    partialFilterExpression: { status: { $in: ['pending', 'confirmed'] } }
   }
 );
 

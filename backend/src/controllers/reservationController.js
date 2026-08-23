@@ -17,7 +17,7 @@ exports.getAvailableSlots = async (req, res) => {
       });
     }
 
- 
+
     const guestsNum = parseInt(guests, 10);
     if (Number.isNaN(guestsNum) || guestsNum <= 0) {
       return res.status(400).json({ success: false, error: 'Invalid guests value' });
@@ -58,9 +58,9 @@ exports.createReservation = async (req, res) => {
     const now = new Date();
 
     if (Number.isNaN(requestedDateTime.getTime()) || requestedDateTime <= now) {
-      return res.status(400).json({ 
-        success: false, 
-        error: 'Reservation time slot must be in the future' 
+      return res.status(400).json({
+        success: false,
+        error: 'Reservation time slot must be in the future'
       });
     }
 

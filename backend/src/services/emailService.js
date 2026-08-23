@@ -1,5 +1,15 @@
 const nodemailer = require('nodemailer');
 
+function escapeHtml(str) {
+  if (!str) return '';
+  return String(str)
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#39;');
+}
+
 class EmailService {
   constructor() {
     this.transporter = null;
@@ -41,7 +51,7 @@ class EmailService {
       `;
 
       reservationDetails.preOrder.forEach(item => {
-        const dishName = item.menuItem?.name || 'Dish';
+        const dishName = escapeHtml(item.menuItem?.name || 'Dish');
         const dishPrice = item.menuItem?.price || 0;
         const itemTotal = dishPrice * item.quantity;
         totalEstimate += itemTotal;
@@ -78,12 +88,12 @@ class EmailService {
           <h2 style="text-align: center; color: #f5f2ed; font-weight: 300;">Reservation Confirmed!</h2>
           
           <div style="background-color: #2a2520; padding: 20px; border-radius: 8px; margin: 20px 0; border: 1px solid rgba(201, 169, 98, 0.15);">
-            <p style="margin: 8px 0;"><strong>Date:</strong> ${new Date(reservationDetails.date).toLocaleDateString()}</p>
-            <p style="margin: 8px 0;"><strong>Time:</strong> ${reservationDetails.time}</p>
-            <p style="margin: 8px 0;"><strong>Guests:</strong> ${reservationDetails.guests}</p>
-            <p style="margin: 8px 0;"><strong>Seating Preference:</strong> ${sectionName}</p>
-            ${reservationDetails.depositAmount ? `<p style="margin: 8px 0;"><strong>Refundable Deposit:</strong> ₹${reservationDetails.depositAmount} (Paid via ${reservationDetails.confirmationChannel.toUpperCase()})</p>` : ''}
-            ${reservationDetails.specialRequests ? `<p style="margin: 8px 0;"><strong>Special Requests:</strong> ${reservationDetails.specialRequests}</p>` : ''}
+            <p style="margin: 8px 0;"><strong>Date:</strong> ${escapeHtml(new Date(reservationDetails.date).toLocaleDateString())}</p>
+            <p style="margin: 8px 0;"><strong>Time:</strong> ${escapeHtml(reservationDetails.time)}</p>
+            <p style="margin: 8px 0;"><strong>Guests:</strong> ${escapeHtml(String(reservationDetails.guests))}</p>
+            <p style="margin: 8px 0;"><strong>Seating Preference:</strong> ${escapeHtml(sectionName)}</p>
+            ${reservationDetails.depositAmount ? `<p style="margin: 8px 0;"><strong>Refundable Deposit:</strong> ₹${escapeHtml(String(reservationDetails.depositAmount))} (Paid via ${escapeHtml(reservationDetails.confirmationChannel)})</p>` : ''}
+            ${reservationDetails.specialRequests ? `<p style="margin: 8px 0;"><strong>Special Requests:</strong> ${escapeHtml(reservationDetails.specialRequests)}</p>` : ''}
             
             ${preOrderHtml}
           </div>

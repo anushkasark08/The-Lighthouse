@@ -12,8 +12,12 @@ const CartDrawer = ({ isOpen, onClose }) => {
     const handleEscape = (event) => {
       if (event.key === 'Escape') onClose();
     };
+    document.body.style.overflow = 'hidden';
     window.addEventListener('keydown', handleEscape);
-    return () => window.removeEventListener('keydown', handleEscape);
+    return () => {
+      document.body.style.overflow = '';
+      window.removeEventListener('keydown', handleEscape);
+    };
   }, [isOpen, onClose]);
 
   if (!isOpen) return null;

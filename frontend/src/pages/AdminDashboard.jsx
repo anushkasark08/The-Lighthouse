@@ -68,7 +68,7 @@ const AdminDashboard = () => {
     fetchMenu({ showAll: 'true' });
     getReviews()
       .then(({ data }) => setReviews(data.data))
-      .catch(() => {});
+      .catch((err) => console.error('Failed to load reviews:', err));
   }, [fetchMenu]);
 
   const stats = {
