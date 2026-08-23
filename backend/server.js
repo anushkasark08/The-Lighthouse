@@ -8,6 +8,12 @@ const dotenv = require('dotenv');
 // Load env vars
 dotenv.config();
 
+// Validate required environment variables
+if (!process.env.JWT_SECRET) {
+  console.error('FATAL: JWT_SECRET environment variable is required');
+  process.exit(1);
+}
+
 // Connect to database
 const connectDB = require('./src/config/database');
 connectDB();
@@ -40,7 +46,7 @@ io.use((socket, next) => {
   const token = socket.handshake.auth?.token || socket.handshake.query?.token;
   if (!token) return next(new Error('Authentication required'));
   try {
-    const decoded = jwt.verify(token, process.env.JWT_SECRET || 'lighthouse_jwt_secret');
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
     if (decoded.role !== 'admin' && decoded.role !== 'staff') {
       return next(new Error('Insufficient permissions'));
     }
