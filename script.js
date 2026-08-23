@@ -1,6 +1,16 @@
 // =============================================
 // DOM ELEMENTS & GLOBAL VARIABLES
 // =============================================
+function escapeHTML(str) {
+  if (str == null) return '';
+  return String(str)
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#39;');
+}
+
 const nav = document.getElementById("nav");
 const navToggle = document.getElementById("navToggle");
 const navMenu = document.getElementById("navMenu");
@@ -369,8 +379,9 @@ function filterMenuItems(filter = 'all', searchText = '', diet = 'all') {
     }
     const original = el.dataset.original;
     if (query) {
+      const escaped = escapeHTML(original);
       const regex = new RegExp(`(${escapeRegex(query)})`, 'gi');
-      el.innerHTML = original.replace(regex, '<span class="search-highlight">$1</span>');
+      el.innerHTML = escaped.replace(regex, '<span class="search-highlight">$1</span>');
     } else {
       el.textContent = original;
     }
@@ -472,7 +483,7 @@ function getAvailableTables(dateStr, timeStr, guestsCount) {
 
 class ReservationAPI {
   constructor() {
-    this.baseURL = 'http://localhost:5005/api';
+    this.baseURL = 'http://localhost:5000/api';
     this.token = localStorage.getItem('token');
   }
   setToken(token) {
@@ -618,7 +629,7 @@ function showReservationToast(type, message) {
     <div class="reservation-toast__icon">${type === 'success' ? '✓' : '✕'}</div>
     <div class="reservation-toast__body">
       <p class="reservation-toast__title">${type === 'success' ? 'Reservation Requested!' : 'Something went wrong'}</p>
-      <p class="reservation-toast__msg">${message}</p>
+      <p class="reservation-toast__msg">${escapeHTML(message)}</p>
     </div>
     <button class="reservation-toast__close" aria-label="Close">✕</button>
   `;
@@ -1189,13 +1200,13 @@ function renderOrderState() {
     } else {
       cartItemsEl.innerHTML = cart.map(item => `
         <div class="order-item">
-          ${item.image ? `<img src="${item.image}" alt="${item.title}" class="order-item-img" style="width: 50px; height: 50px; object-fit: cover; border-radius: 4px;">` : ''}
+          ${item.image ? `<img src="${escapeHTML(item.image)}" alt="${escapeHTML(item.title)}" class="order-item-img" style="width: 50px; height: 50px; object-fit: cover; border-radius: 4px;">` : ''}
           <div class="order-item-details" style="flex:1;">
-            <h4 style="margin: 0; font-size: 0.95rem;">${item.title}</h4>
+            <h4 style="margin: 0; font-size: 0.95rem;">${escapeHTML(item.title)}</h4>
             ${item.customizations ? `
               <div class="order-item-customizations" style="font-size: 0.75rem; color: #9a958e;">
-                <span>${item.customizations.spice || ''}</span> | <span>Side: ${item.customizations.side || 'None'}</span>
-                ${item.customizations.toppings && item.customizations.toppings.length ? `<br><span>Extras: ${item.customizations.toppings.join(', ')}</span>` : ''}
+                <span>${escapeHTML(item.customizations.spice || '')}</span> | <span>Side: ${escapeHTML(item.customizations.side || 'None')}</span>
+                ${item.customizations.toppings && item.customizations.toppings.length ? `<br><span>Extras: ${escapeHTML(item.customizations.toppings.join(', '))}</span>` : ''}
               </div>
             ` : ''}
             <p style="margin: 4px 0 0 0; color: #9a958e; font-size: 0.8rem;">\u20B9${item.price}</p>
@@ -1216,9 +1227,9 @@ function renderOrderState() {
     } else {
       favoriteItemsEl.innerHTML = favorites.map(item => `
         <div class="order-item">
-          <img src="${item.image}" alt="${item.title}" class="order-item-img">
+          <img src="${escapeHTML(item.image)}" alt="${escapeHTML(item.title)}" class="order-item-img">
           <div class="order-item-details">
-            <h4>${item.title}</h4>
+            <h4>${escapeHTML(item.title)}</h4>
             <p>\u20B9${item.price}</p>
           </div>
           <button class="menu-action-btn favorite-btn active" style="margin-left:auto;" onclick="removeFavorite('${item.id}')">\u2665</button>
@@ -1673,13 +1684,13 @@ function setupVirtualSommelier() {
       <div class="sommelier-pairing-card">
         <div class="pairing-info">
           <span class="pairing-label">Perfect Pairing Recommendation</span>
-          <h4 id="pairing-name">${pairing.name}</h4>
-          <p id="pairing-desc">${pairing.desc}</p>
+          <h4 id="pairing-name">${escapeHTML(pairing.name)}</h4>
+          <p id="pairing-desc">${escapeHTML(pairing.desc)}</p>
           <div class="tasting-notes">
-            <strong>Tasting Notes:</strong> <span id="pairing-notes">${pairing.notes}</span>
+            <strong>Tasting Notes:</strong> <span id="pairing-notes">${escapeHTML(pairing.notes)}</span>
           </div>
           <div class="pairing-price-row">
-            <span class="pairing-price" id="pairing-price">₹${pairing.price}</span>
+            <span class="pairing-price" id="pairing-price">₹${escapeHTML(String(pairing.price))}</span>
             <button type="button" class="btn btn-primary btn-sm" id="sommelier-add-btn">Add Pairing to Cart</button>
           </div>
         </div>
@@ -1857,8 +1868,8 @@ function setupLoyaltyClub() {
       activeCodesContainer.style.display = "block";
       vouchersList.innerHTML = member.vouchers.map(v => `
         <div class="voucher-code-item">
-          <div><strong>${v.reward}</strong> Code:</div>
-          <span>${v.code}</span>
+          <div><strong>${escapeHTML(v.reward)}</strong> Code:</div>
+          <span>${escapeHTML(v.code)}</span>
         </div>
       `).join("");
     } else {
