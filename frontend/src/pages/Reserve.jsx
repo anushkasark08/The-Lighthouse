@@ -18,8 +18,8 @@ const SEATING_OPTIONS = [
 
 const CATEGORIES = ['all', 'breakfast', 'lunch', 'dinner', 'desserts', 'drinks'];
 const CATEGORY_ICONS = {
-  all: 'ðŸ½ï¸', breakfast: 'ðŸ³', lunch: 'ðŸ¥—',
-  dinner: 'ðŸŒ™', desserts: 'ðŸ°', drinks: 'ðŸ¸'
+  all: '\u{1F37D}\uFE0F', breakfast: '\u{1F373}', lunch: '\u{1F957}',
+  dinner: '\u{1F319}', desserts: '\u{1F370}', drinks: '\u{1F378}'
 };
 
 const Reserve = () => {

@@ -97,52 +97,6 @@ if (typeof emailjs !== 'undefined' && EMAILJS_CONFIG.publicKey !== 'YOUR_PUBLIC_
 // =============================================
 // NAVIGATION & SCROLLING
 // =============================================
-function updateActiveNavLink() {
-  const scrollPosition = window.scrollY + 150;
-
-  document.querySelectorAll("section[id]").forEach((section) => {
-    const sectionTop = section.offsetTop;
-    const sectionHeight = section.offsetHeight;
-    const sectionId = section.id;
-
-    if (scrollPosition >= sectionTop && scrollPosition < sectionTop + sectionHeight) {
-      const hasLink = Array.from(navLinks).some((link) => link.dataset.section === sectionId);
-      if (!hasLink) return;
-      navLinks.forEach((link) => {
-        link.classList.remove('active');
-        if (link.getAttribute('data-section') === sectionId) {
-          link.classList.add('active');
-        }
-      });
-    }
-  });
-}
-
-function handleScroll() {
-  const currentScroll = window.scrollY;
-
-  if (nav) {
-    nav.classList.toggle("scrolled", currentScroll > 50);
-  }
-
-  if (!isTouchDevice) {
-    if (heroBg) {
-      heroBg.style.transform = `translateY(${currentScroll * 0.5}px)`;
-    }
-
-    const reservationSection = document.getElementById("reservation");
-    if (reservationBg && reservationSection && currentScroll > window.innerHeight) {
-      const offset = (currentScroll - reservationSection.offsetTop) * 0.3;
-      reservationBg.style.transform = `translateY(${offset}px)`;
-    }
-  }
-
-  if (backToTopBtn) {
-    backToTopBtn.classList.toggle("visible", currentScroll > 300);
-  }
-
-  updateActiveNavLink();
-}
 
 function smoothScroll(e) {
   const targetId = this.getAttribute('href');
@@ -182,48 +136,6 @@ function scrollToSection(selector) {
   window.scrollTo({
     top: target.offsetTop - 80,
     behavior: prefersReduced ? "auto" : "smooth",
-  });
-}
-
-function toggleMobileMenu() {
-  if (!navToggle || !navMenu) return;
-  navToggle.classList.toggle("active");
-  navMenu.classList.toggle("active");
-  document.body.style.overflow = navMenu.classList.contains("active") ? "hidden" : "";
-}
-
-function closeMobileMenu() {
-  if (!navToggle || !navMenu) return;
-  navToggle.classList.remove("active");
-  navMenu.classList.remove("active");
-  document.body.style.overflow = "";
-}
-
-function setupAutoScroll() {
-  if (!heroScroll) return;
-
-  function stopAutoScroll() {
-    if (autoScrollInterval) {
-      clearInterval(autoScrollInterval);
-      autoScrollInterval = null;
-    }
-  }
-
-  function startAutoScroll() {
-    autoScrollInterval = setInterval(() => {
-      window.scrollBy({ top: 2, behavior: "instant" });
-      if (window.scrollY + window.innerHeight >= document.body.scrollHeight) {
-        stopAutoScroll();
-      }
-    }, 15);
-  }
-
-  heroScroll.addEventListener("click", () => {
-    autoScrollInterval ? stopAutoScroll() : startAutoScroll();
-  });
-
-  ["mousemove", "touchstart", "keydown", "wheel", "pointerdown"].forEach((eventName) => {
-    window.addEventListener(eventName, stopAutoScroll, { passive: true });
   });
 }
 
@@ -447,12 +359,6 @@ function filterMenuItems(filter = 'all', searchText = '', diet = 'all') {
       }
     }
   });
-}
-
-function displayCategoryCount() {
-  const categoryBtns = document.querySelectorAll('.filter-btn:not([data-filter="all"])');
-  const countEl = document.getElementById('menu-category-count');
-  if (countEl) countEl.textContent = categoryBtns.length + ' Menu Categories Available';
 }
 
 // =============================================
@@ -1208,9 +1114,9 @@ function renderOrderState() {
             <p style="margin: 4px 0 0 0; color: #9a958e; font-size: 0.8rem;">\u20B9${item.price}</p>
           </div>
           <div class="qty-control">
-            <button onclick="updateCartQty('${item.id}', -1)">-</button>
+            <button onclick="updateCartQty('${escapeHTML(item.id)}', -1)">-</button>
             <span>${item.qty}</span>
-            <button onclick="updateCartQty('${item.id}', 1)">+</button>
+            <button onclick="updateCartQty('${escapeHTML(item.id)}', 1)">+</button>
           </div>
         </div>
       `).join('');
@@ -1228,7 +1134,7 @@ function renderOrderState() {
             <h4>${escapeHTML(item.title)}</h4>
             <p>\u20B9${item.price}</p>
           </div>
-          <button class="menu-action-btn favorite-btn active" style="margin-left:auto;" onclick="removeFavorite('${item.id}')">\u2665</button>
+          <button class="menu-action-btn favorite-btn active" style="margin-left:auto;" onclick="removeFavorite('${escapeHTML(item.id)}')">\u2665</button>
         </div>
       `).join('');
     }
@@ -2639,31 +2545,32 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   const phoneInput = document.getElementById('modal-phone');
-const phoneError = document.getElementById('phone-error');
+  const phoneError = document.getElementById('phone-error');
 
-phoneInput.addEventListener('input', () => {
-    // 1. Remove non-numeric characters without slicing at 10 digits
-    phoneInput.value = phoneInput.value.replace(/\D/g, '');
+  if (phoneInput) {
+    phoneInput.addEventListener('input', () => {
+      // 1. Remove non-numeric characters without slicing at 10 digits
+      phoneInput.value = phoneInput.value.replace(/\D/g, '');
 
-    const val = phoneInput.value;
+      const val = phoneInput.value;
 
-    // 2. Show the error if the length exceeds 10 OR if it's incomplete on input
-    // If you only want the error to appear when they typed *more* than 10 digits while typing:
-    if (val.length > 10) {
-        phoneError.style.display = 'block';
-        phoneInput.style.borderColor = 'red';
-    } else {
-        phoneError.style.display = 'none';
-        phoneInput.style.borderColor = '';
-    }
-});
+      // 2. Show the error if the length exceeds 10 OR if it's incomplete on input
+      if (val.length > 10) {
+          if (phoneError) phoneError.style.display = 'block';
+          phoneInput.style.borderColor = 'red';
+      } else {
+          if (phoneError) phoneError.style.display = 'none';
+          phoneInput.style.borderColor = '';
+      }
+    });
 
-// 3. Keep the blur listener to catch cases where they typed FEWER than 10 digits and left the field
-phoneInput.addEventListener('blur', () => {
-    const isValid = /^\d{10}$/.test(phoneInput.value);
-    if (!isValid && phoneInput.value.length > 0) {
-        phoneError.style.display = 'block';
-        phoneInput.style.borderColor = 'red';
-    }
-});
+    // 3. Keep the blur listener to catch cases where they typed FEWER than 10 digits and left the field
+    phoneInput.addEventListener('blur', () => {
+      const isValid = /^\d{10}$/.test(phoneInput.value);
+      if (!isValid && phoneInput.value.length > 0) {
+          if (phoneError) phoneError.style.display = 'block';
+          phoneInput.style.borderColor = 'red';
+      }
+    });
+  }
 });

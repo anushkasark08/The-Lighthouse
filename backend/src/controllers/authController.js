@@ -154,9 +154,6 @@ exports.getMe = async (req, res) => {
 // @desc    Update dietary profile
 // @route   PATCH /api/auth/me/dietary
 // @access  Private
-// @desc    Update dietary profile
-// @route   PATCH /api/auth/me/dietary
-// @access  Private
 exports.updateDietaryProfile = async (req, res) => {
   try {
     if (!req.user || !req.user.id) {

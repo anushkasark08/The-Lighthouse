@@ -7,8 +7,7 @@ const DEFAULT_DETAILS = {
   time: '',
   guests: 2,
   seatingPreference: 'any',
-  confirmationChannel: 'email',
-  depositAmount: 200
+  confirmationChannel: 'email'
 };
 
 export const ReservationProvider = ({ children }) => {

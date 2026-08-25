@@ -62,14 +62,17 @@ const Home = () => {
   };
 
   useEffect(() => {
+    let cancelled = false;
     getMenuItems({ tag: 'chef-special' })
-      .then(({ data }) => setFeatured((data?.data || []).slice(0, 3)))
+      .then(({ data }) => { if (!cancelled) setFeatured((data?.data || []).slice(0, 3)); })
       .catch(console.error)
-      .finally(() => setLoadingMenu(false));
+      .finally(() => { if (!cancelled) setLoadingMenu(false); });
 
     getReviews()
-      .then(({ data }) => setReviews((data?.data || []).slice(0, 3)))
+      .then(({ data }) => { if (!cancelled) setReviews((data?.data || []).slice(0, 3)); })
       .catch(console.error);
+
+    return () => { cancelled = true; };
   }, []);
 
   return (
