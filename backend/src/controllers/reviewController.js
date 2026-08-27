@@ -38,6 +38,26 @@ exports.createReview = async (req, res) => {
   try {
     const { rating, comment, menuItem } = req.body;
 
+    // Validate rating
+    const ratingNum = parseInt(rating, 10);
+    if (Number.isNaN(ratingNum) || ratingNum < 1 || ratingNum > 5) {
+      return res.status(400).json({ success: false, error: 'Rating must be a number between 1 and 5' });
+    }
+
+    // Validate comment
+    if (!comment || typeof comment !== 'string' || comment.trim().length === 0) {
+      return res.status(400).json({ success: false, error: 'Comment is required' });
+    }
+    const cleanedComment = comment.trim();
+    if (cleanedComment.length > 500) {
+      return res.status(400).json({ success: false, error: 'Comment cannot exceed 500 characters' });
+    }
+
+    // Validate menuItem if provided
+    if (menuItem && !mongoose.Types.ObjectId.isValid(menuItem)) {
+      return res.status(400).json({ success: false, error: 'Invalid menu item ID' });
+    }
+
     const existing = await Review.findOne({
       user: req.user.id,
       menuItem: menuItem || null
@@ -52,8 +72,8 @@ exports.createReview = async (req, res) => {
 
     const review = await Review.create({
       user: req.user.id,
-      rating,
-      comment,
+      rating: ratingNum,
+      comment: cleanedComment,
       menuItem: menuItem || null
     });
 

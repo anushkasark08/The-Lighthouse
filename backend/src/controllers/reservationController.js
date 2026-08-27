@@ -1,7 +1,9 @@
 const Reservation = require('../models/Reservation');
 const Table = require('../models/Table');
+const MenuItem = require('../models/MenuItem');
 const availabilityService = require('../services/availabilityService');
 const emailService = require('../services/emailService');
+const mongoose = require('mongoose');
 
 // @desc    Get available slots
 // @route   GET /api/reservations/slots
@@ -19,11 +21,11 @@ exports.getAvailableSlots = async (req, res) => {
 
 
     const guestsNum = parseInt(guests, 10);
-    if (Number.isNaN(guestsNum) || guestsNum <= 0) {
-      return res.status(400).json({ success: false, error: 'Invalid guests value' });
+    if (Number.isNaN(guestsNum) || guestsNum <= 0 || guestsNum > 20) {
+      return res.status(400).json({ success: false, error: 'Guests must be between 1 and 20' });
     }
 
-    const result = await availabilityService.getAvailableSlots(date, guests, seatingPreference);
+    const result = await availabilityService.getAvailableSlots(date, guestsNum, seatingPreference);
     res.status(200).json(result);
   } catch (error) {
     console.error('getAvailableSlots error:', error);
@@ -55,7 +57,8 @@ exports.createReservation = async (req, res) => {
     }
 
     // Prevent past-date and past-time reservations
-    const requestedDateTime = new Date(`${date}T${time}`);
+    // Parse as UTC to avoid timezone mismatch between client (IST) and server
+    const requestedDateTime = new Date(`${date}T${time}:00.000Z`);
     const now = new Date();
 
     if (Number.isNaN(requestedDateTime.getTime()) || requestedDateTime <= now) {
@@ -79,6 +82,25 @@ exports.createReservation = async (req, res) => {
         success: false,
         error: 'Special requests cannot exceed 500 characters'
       });
+    }
+
+    // Validate preOrder items exist and have valid quantities
+    let validatedPreOrder = [];
+    if (preOrder && Array.isArray(preOrder) && preOrder.length > 0) {
+      for (const item of preOrder) {
+        if (!item.menuItem || !mongoose.Types.ObjectId.isValid(item.menuItem)) {
+          return res.status(400).json({ success: false, error: 'Invalid menu item ID in pre-order' });
+        }
+        const menuDoc = await MenuItem.findById(item.menuItem);
+        if (!menuDoc || !menuDoc.isAvailable) {
+          return res.status(400).json({ success: false, error: `Menu item ${item.menuItem} is not available` });
+        }
+        const qty = parseInt(item.quantity, 10);
+        if (Number.isNaN(qty) || qty <= 0 || qty > 20) {
+          return res.status(400).json({ success: false, error: 'Pre-order quantity must be between 1 and 20' });
+        }
+        validatedPreOrder.push({ menuItem: item.menuItem, quantity: qty });
+      }
     }
 
     // Check slot availability first
@@ -137,7 +159,7 @@ exports.createReservation = async (req, res) => {
           specialRequests: cleanedSpecialRequests,
           status: 'confirmed',
           seatingPreference: seatingPreference || 'any',
-          preOrder: preOrder || [],
+          preOrder: validatedPreOrder,
           confirmationChannel: confirmationChannel || 'email',
           depositAmount: depositAmount || 0,
           depositPaid: depositAmount > 0
@@ -229,6 +251,9 @@ exports.getReservations = async (req, res) => {
 // @access  Private
 exports.cancelReservation = async (req, res) => {
   try {
+    if (!mongoose.Types.ObjectId.isValid(req.params.id)) {
+      return res.status(400).json({ success: false, error: 'Invalid reservation ID format' });
+    }
     const reservation = await Reservation.findById(req.params.id);
 
     if (!reservation) {

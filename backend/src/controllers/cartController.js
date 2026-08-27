@@ -129,6 +129,18 @@ exports.updateCartItem = async (req, res) => {
       return res.status(404).json({ success: false, error: 'Cart item not found' });
     }
 
+    // Validate cooking options against the menu item's allowed options
+    if (selectedCookingOptions !== undefined && Array.isArray(selectedCookingOptions)) {
+      const MenuItem = require('../models/MenuItem');
+      const menuItem = await MenuItem.findById(line.menuItem);
+      if (menuItem?.cookingOptions?.length) {
+        const invalid = selectedCookingOptions.filter((opt) => !menuItem.cookingOptions.includes(opt));
+        if (invalid.length > 0) {
+          return res.status(400).json({ success: false, error: `Invalid cooking option(s): ${invalid.join(', ')}` });
+        }
+      }
+    }
+
     if (quantity !== undefined) {
       line.quantity = Math.max(1, parseInt(quantity, 10) || 1);
     }

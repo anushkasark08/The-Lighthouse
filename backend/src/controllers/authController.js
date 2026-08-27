@@ -165,15 +165,24 @@ exports.updateDietaryProfile = async (req, res) => {
 
     const { dietaryPreference, allergenAlerts } = req.body;
 
-const fieldsToUpdate = {};
+    const fieldsToUpdate = {};
 
-if (dietaryPreference !== undefined) {
-  fieldsToUpdate.dietaryPreference = dietaryPreference;
-}
+    const ALLOWED_DIETARY = ['all', 'veg', 'non-veg'];
+    const ALLOWED_ALLERGENS = ['gluten', 'dairy', 'nuts', 'eggs', 'soy', 'shellfish', 'fish'];
 
-if (allergenAlerts !== undefined) {
-  fieldsToUpdate.allergenAlerts = allergenAlerts;
-}
+    if (dietaryPreference !== undefined) {
+      if (!ALLOWED_DIETARY.includes(dietaryPreference)) {
+        return res.status(400).json({ success: false, error: `Invalid dietaryPreference. Allowed: ${ALLOWED_DIETARY.join(', ')}` });
+      }
+      fieldsToUpdate.dietaryPreference = dietaryPreference;
+    }
+
+    if (allergenAlerts !== undefined) {
+      if (!Array.isArray(allergenAlerts) || !allergenAlerts.every(a => ALLOWED_ALLERGENS.includes(a))) {
+        return res.status(400).json({ success: false, error: `Invalid allergenAlerts. Allowed: ${ALLOWED_ALLERGENS.join(', ')}` });
+      }
+      fieldsToUpdate.allergenAlerts = allergenAlerts;
+    }
 
 if (Object.keys(fieldsToUpdate).length === 0) {
   return res.status(400).json({
