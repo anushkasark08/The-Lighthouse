@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { useNavigate, Link } from 'react-router-dom';
+import { useNavigate, useLocation, Link } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 
 const DIETARY_OPTIONS = [
@@ -11,6 +11,8 @@ const DIETARY_OPTIONS = [
 const Auth = () => {
   const { login, register } = useAuth();
   const navigate = useNavigate();
+  const location = useLocation();
+  const redirectTo = location.state?.from || '/';
 
   const [isLogin, setIsLogin] = useState(true);
   const [loading, setLoading] = useState(false);
@@ -91,7 +93,7 @@ const Auth = () => {
       } else {
         await register(form);
       }
-      navigate('/');
+      navigate(redirectTo);
     } catch (err) {
       setError(err.response?.data?.error || 'Something went wrong. Please try again.');
     } finally {
