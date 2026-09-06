@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 const MenuItem = require('../models/MenuItem');
+const Reservation = require('../models/Reservation');
 
 // @desc    Get all menu items (with optional filters)
 // @route   GET /api/menu
@@ -168,7 +169,7 @@ exports.createMenuItem = async (req, res) => {
     });
     res.status(201).json({ success: true, data: item });
   } catch (error) {
-    res.status(400).json({ success: false, error: error.message });
+    res.status(400).json({ success: false, error: 'Failed to create menu item' });
   }
 };
 
@@ -206,7 +207,7 @@ exports.updateMenuItem = async (req, res) => {
     }
     res.status(200).json({ success: true, data: item });
   } catch (error) {
-    res.status(400).json({ success: false, error: error.message });
+    res.status(400).json({ success: false, error: 'Failed to update menu item' });
   }
 };
 
@@ -254,9 +255,16 @@ exports.deleteMenuItem = async (req, res) => {
     if (!item) {
       return res.status(404).json({ success: false, error: 'Menu item not found' });
     }
+
+    // Clean up preOrder references in active reservations
+    await Reservation.updateMany(
+      { 'preOrder.menuItem': req.params.id, status: { $ne: 'cancelled' } },
+      { $pull: { preOrder: { menuItem: req.params.id } } }
+    );
+
     res.status(200).json({ success: true, data: {}, message: 'Menu item deleted' });
   } catch (error) {
-    res.status(500).json({ success: false, error: error.message });
+    res.status(500).json({ success: false, error: 'Failed to delete menu item' });
   }
 };
 

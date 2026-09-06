@@ -28,7 +28,7 @@ exports.getAvailableSlots = async (req, res) => {
   } catch (error) {
     res.status(500).json({
       success: false,
-      error: error.message
+      error: 'Failed to fetch available slots'
     });
   }
 };
@@ -167,7 +167,7 @@ exports.createReservation = async (req, res) => {
   } catch (error) {
     res.status(500).json({
       success: false,
-      error: error.message
+      error: 'Failed to create reservation'
     });
   }
 };
@@ -190,7 +190,7 @@ exports.getReservations = async (req, res) => {
   } catch (error) {
     res.status(500).json({
       success: false,
-      error: error.message
+      error: 'Failed to fetch reservations'
     });
   }
 };
@@ -240,7 +240,7 @@ exports.cancelReservation = async (req, res) => {
   } catch (error) {
     res.status(500).json({
       success: false,
-      error: error.message
+      error: 'Failed to cancel reservation'
     });
   }
 };
