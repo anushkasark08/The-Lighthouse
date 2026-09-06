@@ -1,12 +1,37 @@
-import { createContext, useContext, useState, useCallback, useMemo } from 'react';
+import { createContext, useContext, useState, useCallback, useMemo, useEffect } from 'react';
 
 const CartContext = createContext(null);
+const CART_STORAGE_KEY = 'lighthouse_cart';
+
+function loadCart() {
+  try {
+    const stored = localStorage.getItem(CART_STORAGE_KEY);
+    return stored ? JSON.parse(stored) : [];
+  } catch {
+    return [];
+  }
+}
 
 export const CartProvider = ({ children }) => {
-  const [cartItems, setCartItems] = useState([]);
+  const [cartItems, setCartItems] = useState(loadCart);
 
-  const addToCart = useCallback((entry) => {
-    // entry: { menuItemId, name, image, basePrice, selectedToppings, selectedVariant, quantity, unitPrice }
+  useEffect(() => {
+    localStorage.setItem(CART_STORAGE_KEY, JSON.stringify(cartItems));
+  }, [cartItems]);
+
+  const addToCart = useCallback((menuItem, options = {}) => {
+    const entry = {
+      menuItemId: menuItem._id || menuItem.id,
+      name: menuItem.name,
+      image: menuItem.image,
+      basePrice: menuItem.price,
+      quantity: options.quantity || 1,
+      unitPrice: options.unitPrice || menuItem.price,
+      selectedToppings: options.selectedToppings || [],
+      selectedVariant: options.selectedVariant || null,
+      selectedCookingOptions: options.selectedCookingOptions || [],
+      customInstructions: options.customInstructions || ''
+    };
     const cartItemId = `${entry.menuItemId}-${Date.now()}-${Math.random().toString(36).slice(2, 8)}`;
     setCartItems((prev) => [...prev, { ...entry, cartItemId }]);
   }, []);
