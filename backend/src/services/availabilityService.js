@@ -12,11 +12,12 @@ class AvailabilityService {
 
   async getAvailableSlots(date, guests, seatingPreference) {
     // Validate date is not in the past
-    const bookingDate = new Date(date);
+    // Use consistent comparison: parse both as UTC midnight
+    const bookingDate = new Date(date + 'T00:00:00Z');
     const today = new Date();
-    today.setHours(0, 0, 0, 0);
+    const todayUTC = new Date(Date.UTC(today.getFullYear(), today.getMonth(), today.getDate()));
     
-    if (bookingDate < today) {
+    if (bookingDate < todayUTC) {
       throw new Error('Cannot book for past dates');
     }
 
@@ -44,10 +45,8 @@ class AvailabilityService {
     }
 
     // Get existing reservations for the date
-    const startOfDay = new Date(date);
-    startOfDay.setHours(0, 0, 0, 0);
-    const endOfDay = new Date(date);
-    endOfDay.setHours(23, 59, 59, 999);
+    const startOfDay = new Date(date + 'T00:00:00Z');
+    const endOfDay = new Date(date + 'T23:59:59.999Z');
 
     const reservations = await Reservation.find({
       date: { $gte: startOfDay, $lte: endOfDay },
