@@ -219,7 +219,7 @@ The-Lighthouse/
 
 ### Prerequisites
 
-- **Node.js** ≥ 18
+- **Node.js** ≥ 20.19 (or ≥ 22.12)
 - **MongoDB** running locally — [Install MongoDB Community](https://www.mongodb.com/try/download/community)
   - Or use a free [MongoDB Atlas](https://www.mongodb.com/atlas) cloud instance
 
